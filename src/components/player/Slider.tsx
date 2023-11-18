@@ -65,8 +65,8 @@ function Thumb(props: {
         className={clsx(
           'h-4 rounded-full',
           isFocusVisible || state.isThumbDragging(index)
-            ? 'w-1.5 bg-slate-900'
-            : 'w-1 bg-slate-700',
+            ? 'w-1.5 bg-pink-900'
+            : 'w-1 bg-pink-700',
         )}
       >
         <VisuallyHidden>
@@ -113,14 +113,14 @@ export function Slider(
           props.onChangeStart?.()
         }}
         ref={trackRef}
-        className="relative w-full bg-slate-100 md:rounded-full"
+        className="relative w-full bg-pink-100 md:rounded-full"
       >
         <div
           className={clsx(
             'h-2 md:rounded-l-xl md:rounded-r-md',
             isFocusVisible || state.isThumbDragging(0)
-              ? 'bg-slate-900'
-              : 'bg-slate-700',
+              ? 'bg-pink-900'
+              : 'bg-pink-700',
           )}
           style={{
             width:
@@ -150,7 +150,7 @@ export function Slider(
             'hidden rounded-md px-1 py-0.5 font-mono text-sm leading-6 md:block',
             state.getThumbMaxValue(0) === 0 && 'opacity-0',
             isFocusVisible || state.isThumbDragging(0)
-              ? 'bg-slate-100 text-slate-900'
+              ? 'bg-pink-100 text-slate-900'
               : 'text-slate-500',
           )}
         >

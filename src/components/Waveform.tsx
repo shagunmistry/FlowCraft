@@ -11,8 +11,8 @@ function randomBetween(min: number, max: number, seed = 1) {
 export function Waveform(props: React.ComponentPropsWithoutRef<'svg'>) {
   let id = useId()
   let bars = {
-    total: 100,
-    width: 2,
+    total: 10,
+    width: 50,
     gap: 2,
     minHeight: 40,
     maxHeight: 100,
@@ -28,10 +28,10 @@ export function Waveform(props: React.ComponentPropsWithoutRef<'svg'>) {
       <defs>
         <linearGradient id={`${id}-fade`} x1="0" x2="0" y1="0" y2="1">
           <stop offset="40%" stopColor="white" />
-          <stop offset="100%" stopColor="black" />
+          <stop offset="100%" stopColor="orange" />
         </linearGradient>
         <linearGradient id={`${id}-gradient`}>
-          <stop offset="0%" stopColor="#4989E8" />
+          <stop offset="0%" stopColor="#FF69B4" />
           <stop offset="50%" stopColor="#6159DA" />
           <stop offset="100%" stopColor="#FF54AD" />
         </linearGradient>

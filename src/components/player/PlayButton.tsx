@@ -8,7 +8,7 @@ export function PlayButton({ player }: { player: PlayerAPI }) {
   return (
     <button
       type="button"
-      className="group relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-700 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-700 focus:ring-offset-2 md:h-14 md:w-14"
+      className="group relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-700 hover:bg-pink-900 focus:outline-none focus:ring-2 focus:ring-slate-700 focus:ring-offset-2 md:h-14 md:w-14"
       onClick={() => player.toggle()}
       aria-label={player.playing ? 'Pause' : 'Play'}
     >

@@ -127,39 +127,61 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 export default function TextBox() {
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>('')
 
   const context = useContext(DiagramContext)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     context.loading = true
+    setLoading(true)
 
     console.log('title', title)
     console.log('description', description)
     context.description = description
     context.title = title
 
-    const diagram = await fetch('/api/generate-diagram', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: title,
-        description: description,
-      }),
-    })
+    try {
+      setError(null)
+      const diagram = await fetch('/api/generate-diagram', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: title,
+          description: description,
+        }),
+      })
 
-    console.log('Diagram Response: ', diagram)
+      console.log('Diagram Response: ', diagram)
 
-    const diagramJson = await diagram.json()
+      const diagramJson = await diagram.json()
 
-    console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
-    const diagramResult = JSON.parse(diagramJson.result)
+      console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
+      const diagramResult = JSON.parse(diagramJson.result)
 
-    if (diagramResult && diagramResult.nodes && diagramResult.edges) {
-      context.setNodes(diagramResult.nodes)
-      context.setEdges(diagramResult.edges)
+      if (diagramResult && diagramResult.nodes && diagramResult.edges) {
+        context.setNodes(diagramResult.nodes)
+        context.setEdges(diagramResult.edges)
+      }
+
+      context.loading = false
+      setLoading(false)
+    } catch (e) {
+      console.log('Error generating diagram: ', e)
+      context.loading = false
+      setLoading(false)
+      setError('There was an error generating the diagram, please try again')
     }
+  }
 
-    context.loading = false
+  if (loading) {
+    return (
+      <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
+        <div className="flex h-full items-center justify-center">
+          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -227,6 +249,17 @@ export default function TextBox() {
           </div>
         </div>
       </div>
+      {error && (
+        <div className="absolute inset-x-px bottom-0">
+          <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
+            <div className="flex">
+              <span className="text-sm italic text-red-500 group-hover:text-red-600">
+                {error}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   )
 }

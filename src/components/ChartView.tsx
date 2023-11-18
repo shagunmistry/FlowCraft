@@ -6,7 +6,7 @@ import {
   TypeNode,
 } from '@/lib/Contexts/DiagramContext'
 import { useContext, useEffect, useState } from 'react'
-import ReactFlow from 'reactflow'
+import ReactFlow, { Controls, Background } from 'reactflow'
 
 import 'reactflow/dist/style.css'
 
@@ -51,7 +51,10 @@ export default function ChartView() {
 
   return (
     <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
-      <ReactFlow nodes={nodes} edges={edges} />
+      <ReactFlow nodes={nodes} edges={edges}>
+        <Controls />
+        <Background color="#aaa" gap={16} />
+      </ReactFlow>
     </div>
   )
 }
