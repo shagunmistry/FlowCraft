@@ -1,44 +1,43 @@
-import { supabase } from '@/lib/supabase'
-import { OpenAiApiEdge, openAiModel } from '@/lib/openai'
+import { MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE, supabase } from '@/lib/supabase'
+import {
+  openAiModel,
+  promptForExampleCode,
+  promptForReactFlowContext,
+  promptForResponse,
+  promptForUserMessage,
+} from '@/lib/openai'
 import GPT3Tokenizer from 'gpt3-tokenizer'
-import { match_documents_for_react_flow } from '@/lib/utils'
+import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+
+export const maxDuration = 1000 * 60 * 5 // 5 minutes
 
 export async function POST(req: Request) {
   const json = await req.json()
-
-  const {
-    diagramDescription,
-    diagramTitle,
-    // isRetry,
-    // previouslyGeneratedDiagramCode,
-    // errorDetails,
-  } = json
-
-  let summarizedDiagramDescription = ''
-
-  const diagramFunction: string = match_documents_for_react_flow
-
-  const diagramTypeEmbedding = await openAiModel.embeddings.create({
-    input: diagramTitle,
+  const { title: diagramTitle, description: diagramDescription } = json
+  const reactFlowNodesAndEdgesEmbedding = await openAiModel.embeddings.create({
+    input: 'Custom Nodes and Edges',
     model: 'text-embedding-ada-002',
   })
 
-  if (!diagramTypeEmbedding) {
-    throw new Error(
+  if (!reactFlowNodesAndEdgesEmbedding) {
+    console.error(
       'Failed to create embeddings for the diagram description or type',
     )
   }
 
-  const diagramTypeEmbeddings = diagramTypeEmbedding.data.map(
+  const diagramTypeEmbeddings = reactFlowNodesAndEdgesEmbedding.data.map(
     (embedding) => embedding.embedding,
   )
 
   console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
 
-  const { error: matchError, data } = await supabase.rpc(diagramFunction, {
-    query_embedding: diagramTypeEmbeddings[0],
-    match_count: 2,
-  })
+  const { error: matchError, data } = await supabase.rpc(
+    MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
+    {
+      query_embedding: diagramTypeEmbeddings[0],
+      match_count: 5,
+    },
+  )
 
   if (matchError) {
     throw new Error(matchError.message)
@@ -63,87 +62,55 @@ export async function POST(req: Request) {
 
   console.log('Context Text: ', contextText)
 
-  const summarizedDiagramDescriptionPrompt =
-    getSummaryPromptForDiagramDescription(diagramDescription)
+  const assistantMessage1: ChatCompletionMessageParam = {
+    role: 'assistant',
+    content: promptForReactFlowContext(contextText),
+  }
 
-  const summarizeRes = await OpenAiApiEdge.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: [
-      {
-        role: 'user',
-        content: summarizedDiagramDescriptionPrompt,
-      },
-    ],
+  const userMessage2: ChatCompletionMessageParam = {
+    role: 'user',
+    content: promptForResponse,
+  }
+
+  const assistantMessage3: ChatCompletionMessageParam = {
+    role: 'assistant',
+    content: promptForExampleCode,
+  }
+
+  const userMessage: ChatCompletionMessageParam = {
+    role: 'user',
+    content: promptForUserMessage(diagramTitle, diagramDescription),
+  }
+
+  const res = await openAiModel.chat.completions.create({
+    model: 'gpt-3.5-turbo-16k',
+    messages: [assistantMessage1, assistantMessage3, userMessage2, userMessage],
     temperature: 0.7,
   })
 
-  const summarizeResponse = await summarizeRes.json()
+  if (res?.choices?.[0]?.message) {
+    console.log('1. Response from OpenAI: ', res.choices[0].message.content)
 
-  console.log('Summarize Response: ', summarizeResponse)
-
-  if (
-    summarizeResponse &&
-    summarizeResponse.choices &&
-    summarizeResponse.choices[0] &&
-    summarizeResponse.choices[0].message &&
-    summarizeResponse.choices[0].message.content
-  ) {
-    summarizedDiagramDescription = summarizeResponse.choices[0].message.content
-
-    const assistantPrompt = getAssistantPrompt(contextText)
-
-    const finalPrompt = getTemplateForDiagramBasedOnChosenType(
-      contextText,
-      summarizedDiagramDescription,
-      diagramType,
-      isRetry,
-      previouslyGeneratedDiagramCode,
-      errorDetails,
-    )
-
-    console.log('Final Prompt to send: ', finalPrompt)
-
-    const res = await openAiModel.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are a senior developer with expertise in MermaidJS and Diagramming.',
-        },
-        {
-          role: 'assistant',
-          content: assistantPrompt,
-        },
-        {
-          role: 'user',
-          content: finalPrompt,
-        },
-      ],
-      temperature: 0.7,
-    })
-
-    console.log('Response from OpenAI: ', res)
-
-    if (
-      res &&
-      res.choices &&
-      res.choices[0] &&
-      res.choices[0].message &&
-      res.choices[0].message.content
-    ) {
-      console.log('Response from OpenAI 2: ', res.choices[0].message.content)
-      return new Response(JSON.stringify(res.choices[0].message.content), {
+    return new Response(
+      JSON.stringify({
+        result: res.choices[0].message.content,
+      }),
+      {
         headers: {
-          'content-type': 'application/json;charset=UTF-8',
+          'content-type': 'application/json',
         },
-      })
-    }
-  } else {
-    throw new Error('Failed to summarize diagram description')
+      },
+    )
   }
 
-  return new Response('Failed to generate diagram', {
-    status: 500,
-  })
+  return new Response(
+    JSON.stringify({
+      result: 'Failed to generate diagram',
+    }),
+    {
+      headers: {
+        'content-type': 'application/json',
+      },
+    },
+  )
 }

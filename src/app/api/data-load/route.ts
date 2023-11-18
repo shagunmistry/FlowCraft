@@ -13,12 +13,23 @@ export async function GET(req: Request) {
     }
   }
 
-  await generateEmbeddings(docs as ApifyData[])
+  try {
+    await generateEmbeddings(docs as ApifyData[])
 
-  return {
-    status: 200,
-    body: JSON.stringify({
-      hello: 'world',
-    }),
+    return {
+      status: 200,
+      body: JSON.stringify({
+        message: 'Embeddings generated',
+      }),
+    }
+  } catch (e) {
+    console.log('Error generating embeddings: ', e)
+
+    return {
+      status: 500,
+      body: JSON.stringify({
+        error: 'Could not generate embeddings',
+      }),
+    }
   }
 }

@@ -2,7 +2,11 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 import OpenAI from 'openai'
 
-import { supabase, checkIfEmbeddingsExist } from '@/lib/supabase'
+import {
+  supabase,
+  checkIfEmbeddingsExist,
+  DOCUMENTS_FOR_REACT_FLOW_TABLE,
+} from '@/lib/supabase'
 
 export interface ApifyData {
   markdown: string
@@ -31,9 +35,11 @@ export const openAiModel = new OpenAI({
 
 export const generateEmbeddings = async (data: ApifyData[]) => {
   const _openAiModel = openAiModel
-  const tableToSaveTo = 'documents_for_react_flow'
+  const tableToSaveTo = DOCUMENTS_FOR_REACT_FLOW_TABLE
 
   const embeddingsExist = await checkIfEmbeddingsExist(tableToSaveTo)
+
+  console.log('embeddingsExist: ', embeddingsExist)
   if (embeddingsExist) {
     console.log('Embeddings already exist for this table')
     return
@@ -122,3 +128,83 @@ export const generateEmbeddings = async (data: ApifyData[]) => {
     }, 5000)
   })
 }
+
+export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. Use your knowledge about the topic of the title/description to generate the diagram. \n\n`
+
+export const promptForDiagramDescription = (diagramDescription: string) => {
+  return `Diagram Description: ${diagramDescription}`
+}
+
+export const promptForDiagramTitle = (diagramTitle: string) => {
+  return `Diagram Title: ${diagramTitle}`
+}
+
+export const promptForReactFlowContext = (context: string) => {
+  return `ReactFlow Context: \n ${context}`
+}
+
+export const promptForUserMessage = (
+  diagramTitle: string,
+  diagramDescription: string,
+) => {
+  return `${promptForDiagram}  \n\nDiagram Title: ${diagramTitle}\nDiagram Description: ${diagramDescription}
+  \n PLEASE RESPOND IN JSON INCLUDING VALID REACTFLOW NODE AND EDGE ARRAY.`
+}
+
+export const promptForResponse = `The response MUST be in JSON BODY including valid ReactFlow Node and Edge array. The response will be validated and if it is not valid, you will be asked to try again.
+\n Example Response: \n
+\`\`\`JSON
+{
+  "nodes": [
+    {
+      "id": "1",
+      "data": {
+        "label": "Hello"
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "input"
+    },
+    {
+      "id": "2",
+      "data": {
+        "label": "World"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "1-2",
+      "source": "1",
+      "target": "2"
+    }
+  ]
+}
+\`\`\`
+`
+
+export const promptForExampleCode = `Here is an example of a valid ReactFlow Node and Edge array: 
+\`\`\`javascript
+const edges = [{ id: '1-2', source: '1', target: '2' }];
+
+const nodes = [
+  {
+    id: '1',
+    data: { label: 'Hello' },
+    position: { x: 0, y: 0 },
+    type: 'input',
+  },
+  {
+    id: '2',
+    data: { label: 'World' },
+    position: { x: 100, y: 100 },
+  },
+];
+\`\`\`
+`

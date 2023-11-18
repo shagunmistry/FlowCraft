@@ -1,8 +1,169 @@
+import { DiagramContext } from '@/lib/Contexts/DiagramContext'
+import {
+  OpenAiApiEdge,
+  openAiModel,
+  promptForDiagram,
+  promptForDiagramTitle,
+  promptForExampleCode,
+  promptForReactFlowContext,
+  promptForResponse,
+  promptForUserMessage,
+} from '@/lib/openai'
+import { MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE, supabase } from '@/lib/supabase'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
+import { useContext, useState } from 'react'
+
+import GPT3Tokenizer from 'gpt3-tokenizer'
+import { ChatCompletionRequestMessage } from 'openai-edge'
+import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+
+// const generateDiagram = async (
+//   diagramTitle: string,
+//   diagramDescription: string,
+// ) => {
+//   const reactFlowNodesAndEdgesEmbedding = await openAiModel.embeddings.create({
+//     input: 'Nodes and Edges',
+//     model: 'text-embedding-ada-002',
+//   })
+
+//   if (!reactFlowNodesAndEdgesEmbedding) {
+//     console.error(
+//       'Failed to create embeddings for the diagram description or type',
+//     )
+//   }
+
+//   const diagramTypeEmbeddings = reactFlowNodesAndEdgesEmbedding.data.map(
+//     (embedding) => embedding.embedding,
+//   )
+
+//   console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
+
+//   const { error: matchError, data } = await supabase.rpc(
+//     MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
+//     {
+//       query_embedding: diagramTypeEmbeddings[0],
+//       match_count: 5,
+//     },
+//   )
+
+//   if (matchError) {
+//     throw new Error(matchError.message)
+//   }
+
+//   const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
+//   let tokenCount = 0
+//   let contextText = ''
+
+//   for (let i = 0; i < 2; i++) {
+//     const pageSection = data[i]
+//     const content = pageSection.content
+//     const encoded = tokenizer.encode(content)
+//     tokenCount += encoded.text.length
+
+//     if (tokenCount >= 1500) {
+//       break
+//     }
+
+//     contextText += `${content.trim()}\n---\n`
+//   }
+
+//   console.log('Context Text: ', contextText)
+
+//   const assistantMessage1: ChatCompletionMessageParam = {
+//     role: 'assistant',
+//     content: promptForReactFlowContext(contextText),
+//   }
+
+//   const assistantMessage2: ChatCompletionMessageParam = {
+//     role: 'assistant',
+//     content: promptForResponse,
+//   }
+
+//   const assistantMessage3: ChatCompletionMessageParam = {
+//     role: 'assistant',
+//     content: promptForExampleCode,
+//   }
+
+//   const userMessage: ChatCompletionMessageParam = {
+//     role: 'user',
+//     content: promptForUserMessage(diagramTitle, diagramDescription),
+//   }
+
+//   const res = await openAiModel.chat.completions.create({
+//     model: 'gpt-3.5-turbo-16k',
+//     messages: [
+//       assistantMessage1,
+//       assistantMessage2,
+//       assistantMessage3,
+//       userMessage,
+//     ],
+//     temperature: 0.7,
+//   })
+
+//   console.log('Response from OpenAI: ', res)
+
+//   return res
+
+//   // if (
+//   //   res &&
+//   //   res.choices &&
+//   //   res.choices[0] &&
+//   //   res.choices[0].message &&
+//   //   res.choices[0].message.content
+//   // ) {
+//   //   console.log('Response from OpenAI 2: ', res.choices[0].message.content)
+//   //   return new Response(JSON.stringify(res.choices[0].message.content), {
+//   //     headers: {
+//   //       'content-type': 'application/json;charset=UTF-8',
+//   //     },
+//   //   })
+//   // }
+
+//   // return new Response('Failed to generate diagram', {
+//   //   status: 500,
+//   // })
+// }
 
 export default function TextBox() {
+  const [title, setTitle] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
+
+  const context = useContext(DiagramContext)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    context.loading = true
+
+    console.log('title', title)
+    console.log('description', description)
+    context.description = description
+    context.title = title
+
+    const diagram = await fetch('/api/generate-diagram', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: title,
+        description: description,
+      }),
+    })
+
+    console.log('Diagram Response: ', diagram)
+
+    const diagramJson = await diagram.json()
+
+    console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
+    const diagramResult = JSON.parse(diagramJson.result)
+
+    if (diagramResult && diagramResult.nodes && diagramResult.edges) {
+      context.setNodes(diagramResult.nodes)
+      context.setEdges(diagramResult.edges)
+    }
+
+    context.loading = false
+  }
+
   return (
-    <form action="#" className="relative">
+    <form className="relative" onSubmit={handleSubmit}>
       <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
         <label htmlFor="title" className="sr-only">
           Title
@@ -13,6 +174,8 @@ export default function TextBox() {
           id="title"
           className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
           placeholder="Title"
+          defaultValue={''}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <label htmlFor="description" className="sr-only">
           Description
@@ -24,6 +187,7 @@ export default function TextBox() {
           className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
           placeholder="Write a description..."
           defaultValue={''}
+          onChange={(e) => setDescription(e.target.value)}
         />
 
         {/* Spacer element to match the height of the toolbar */}

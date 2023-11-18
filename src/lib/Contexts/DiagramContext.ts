@@ -3,14 +3,14 @@ import { createContext } from 'react'
 export type TypeNode = {
   id: string
   data: {
-    label: string
-    color: string
+    label?: string
+    color?: string
   }
   position: {
     x: number
     y: number
   }
-  type: string
+  type?: string
 }
 
 // example edge
@@ -26,9 +26,15 @@ export const DiagramContext = createContext<{
   setNodes: (nodes: TypeNode[]) => void
   edges: TypeEdge[]
   setEdges: (edges: TypeEdge[]) => void
+  title: string
+  description: string
+  loading: boolean
 }>({
   nodes: [],
   setNodes: () => {},
   edges: [],
   setEdges: () => {},
+  title: '',
+  description: '',
+  loading: false,
 })
