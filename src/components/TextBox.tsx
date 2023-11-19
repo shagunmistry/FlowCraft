@@ -1,128 +1,30 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import {
-  OpenAiApiEdge,
-  openAiModel,
-  promptForDiagram,
-  promptForDiagramTitle,
-  promptForExampleCode,
-  promptForReactFlowContext,
-  promptForResponse,
-  promptForUserMessage,
-} from '@/lib/openai'
-import { MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE, supabase } from '@/lib/supabase'
-import { PaperClipIcon } from '@heroicons/react/20/solid'
 import { useContext, useState } from 'react'
 
-import GPT3Tokenizer from 'gpt3-tokenizer'
-import { ChatCompletionRequestMessage } from 'openai-edge'
-import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+import Dropdown from './Dropdown'
 
-// const generateDiagram = async (
-//   diagramTitle: string,
-//   diagramDescription: string,
-// ) => {
-//   const reactFlowNodesAndEdgesEmbedding = await openAiModel.embeddings.create({
-//     input: 'Nodes and Edges',
-//     model: 'text-embedding-ada-002',
-//   })
-
-//   if (!reactFlowNodesAndEdgesEmbedding) {
-//     console.error(
-//       'Failed to create embeddings for the diagram description or type',
-//     )
-//   }
-
-//   const diagramTypeEmbeddings = reactFlowNodesAndEdgesEmbedding.data.map(
-//     (embedding) => embedding.embedding,
-//   )
-
-//   console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
-
-//   const { error: matchError, data } = await supabase.rpc(
-//     MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
-//     {
-//       query_embedding: diagramTypeEmbeddings[0],
-//       match_count: 5,
-//     },
-//   )
-
-//   if (matchError) {
-//     throw new Error(matchError.message)
-//   }
-
-//   const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
-//   let tokenCount = 0
-//   let contextText = ''
-
-//   for (let i = 0; i < 2; i++) {
-//     const pageSection = data[i]
-//     const content = pageSection.content
-//     const encoded = tokenizer.encode(content)
-//     tokenCount += encoded.text.length
-
-//     if (tokenCount >= 1500) {
-//       break
-//     }
-
-//     contextText += `${content.trim()}\n---\n`
-//   }
-
-//   console.log('Context Text: ', contextText)
-
-//   const assistantMessage1: ChatCompletionMessageParam = {
-//     role: 'assistant',
-//     content: promptForReactFlowContext(contextText),
-//   }
-
-//   const assistantMessage2: ChatCompletionMessageParam = {
-//     role: 'assistant',
-//     content: promptForResponse,
-//   }
-
-//   const assistantMessage3: ChatCompletionMessageParam = {
-//     role: 'assistant',
-//     content: promptForExampleCode,
-//   }
-
-//   const userMessage: ChatCompletionMessageParam = {
-//     role: 'user',
-//     content: promptForUserMessage(diagramTitle, diagramDescription),
-//   }
-
-//   const res = await openAiModel.chat.completions.create({
-//     model: 'gpt-3.5-turbo-16k',
-//     messages: [
-//       assistantMessage1,
-//       assistantMessage2,
-//       assistantMessage3,
-//       userMessage,
-//     ],
-//     temperature: 0.7,
-//   })
-
-//   console.log('Response from OpenAI: ', res)
-
-//   return res
-
-//   // if (
-//   //   res &&
-//   //   res.choices &&
-//   //   res.choices[0] &&
-//   //   res.choices[0].message &&
-//   //   res.choices[0].message.content
-//   // ) {
-//   //   console.log('Response from OpenAI 2: ', res.choices[0].message.content)
-//   //   return new Response(JSON.stringify(res.choices[0].message.content), {
-//   //     headers: {
-//   //       'content-type': 'application/json;charset=UTF-8',
-//   //     },
-//   //   })
-//   // }
-
-//   // return new Response('Failed to generate diagram', {
-//   //   status: 500,
-//   // })
-// }
+const exampleTitlesAndDescriptions = [
+  {
+    title: 'House Buying Process',
+    description:
+      'The house buying process is the process by which a person buys a house. The process can be broken down into 5 steps: 1. Find a house 2. Make an offer 3. Get a mortgage 4. Close on the house 5. Move in',
+  },
+  {
+    title: 'Paneer Tikka Masala Recipe',
+    description:
+      'Paneer Tikka Masala is a popular Indian dish. It is made by marinating paneer in a mixture of spices and then cooking it in a tomato-based sauce. The dish is typically served with rice or naan.',
+  },
+  {
+    title: 'How to Make a Paper Airplane',
+    description:
+      'Paper airplanes are a fun and easy way to pass the time. They can be made in many different shapes, sizes, and colors. This article will teach you how to make a paper airplane that flies far and fast!',
+  },
+  {
+    title: 'Patient Triaging Process',
+    description:
+      'The patient triaging process is a system that helps healthcare providers determine the order in which patients should be seen. It is used to prioritize patients based on their medical needs and the severity of their condition.',
+  },
+]
 
 export default function TextBox() {
   const [title, setTitle] = useState<string>('')
@@ -184,49 +86,61 @@ export default function TextBox() {
     )
   }
 
+  const selectExample = (title: string, description: string) => {
+    setTitle(title)
+    setDescription(description)
+  }
+
   return (
-    <form className="relative" onSubmit={handleSubmit}>
-      <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
-        <label htmlFor="title" className="sr-only">
-          Title
-        </label>
-        <input
-          type="text"
-          name="title"
-          id="title"
-          className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
-          placeholder="Title"
-          defaultValue={''}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <label htmlFor="description" className="sr-only">
-          Description
-        </label>
-        <textarea
-          rows={10}
-          name="description"
-          id="description"
-          className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-          placeholder="Write a description..."
-          defaultValue={''}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+    <>
+      {/** Show a dropdown for example title and description values */}
 
-        {/* Spacer element to match the height of the toolbar */}
-        <div aria-hidden="true">
-          <div className="py-2">
-            <div className="h-9" />
+      <Dropdown
+        values={exampleTitlesAndDescriptions}
+        selectExample={selectExample}
+      />
+      <form className="relative" onSubmit={handleSubmit}>
+        <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+          <label htmlFor="title" className="sr-only">
+            Diagram Title
+          </label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
+            placeholder="Diagram Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <label htmlFor="description" className="sr-only">
+            Diagram Description
+          </label>
+          <textarea
+            rows={10}
+            name="description"
+            id="description"
+            className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+            placeholder="Write a description about what you want to diagram"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
+          {/* Spacer element to match the height of the toolbar */}
+          <div aria-hidden="true">
+            <div className="py-2">
+              <div className="h-9" />
+            </div>
+            <div className="h-px" />
           </div>
-          <div className="h-px" />
         </div>
-      </div>
 
-      <div className="absolute inset-x-px bottom-0">
-        {/* Actions: These are just examples to demonstrate the concept, replace/wire these up however makes sense for your project. */}
+        <div className="absolute inset-x-px bottom-0">
+          {/* Actions: These are just examples to demonstrate the concept, replace/wire these up however makes sense for your project. */}
 
-        <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
-          <div className="flex">
-            <button
+          <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
+            <div className="flex">
+              {/* <button
               type="button"
               className="group -my-2 -ml-2 inline-flex items-center rounded-full px-3 py-2 text-left text-gray-400"
             >
@@ -237,29 +151,30 @@ export default function TextBox() {
               <span className="text-sm italic text-gray-500 group-hover:text-gray-600">
                 Attach a file
               </span>
-            </button>
-          </div>
-          <div className="flex-shrink-0">
-            <button
-              type="submit"
-              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Create
-            </button>
-          </div>
-        </div>
-      </div>
-      {error && (
-        <div className="absolute inset-x-px bottom-0">
-          <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
-            <div className="flex">
-              <span className="text-sm italic text-red-500 group-hover:text-red-600">
-                {error}
-              </span>
+            </button> */}
+            </div>
+            <div className="flex-shrink-0">
+              <button
+                type="submit"
+                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Create
+              </button>
             </div>
           </div>
         </div>
-      )}
-    </form>
+        {error && (
+          <div className="absolute inset-x-px">
+            <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
+              <div className="flex">
+                <span className="text-sm italic text-red-500 group-hover:text-red-600">
+                  {error}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </form>
+    </>
   )
 }

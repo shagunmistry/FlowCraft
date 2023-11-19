@@ -5,16 +5,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { EditorSection } from '@/components/EditorSection'
-// import { AudioProvider } from '@/components/AudioProvider'
 import { AudioPlayer } from '@/components/player/AudioPlayer'
 import { TinyWaveFormIcon } from '@/components/TinyWaveFormIcon'
 import { Waveform } from '@/components/Waveform'
 import FlowCraftLogo from '@/images/FlowCraftLogo.png'
 import {
   DiagramContext,
-  TypeEdge,
-  TypeNode,
 } from '@/lib/Contexts/DiagramContext'
+import { Edge, Node } from 'reactflow'
+
+import { Analytics } from '@vercel/analytics/react';
 
 export default function MainLayout({
   children,
@@ -26,8 +26,8 @@ export default function MainLayout({
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
 
-  const [nodes, setNodes] = useState<TypeNode[]>([])
-  const [edges, setEdges] = useState<TypeEdge[]>([])
+  const [nodes, setNodes] = useState<Node[]>([])
+  const [edges, setEdges] = useState<Edge[]>([])
 
   return (
     <DiagramContext.Provider
@@ -122,6 +122,7 @@ export default function MainLayout({
       {/* <div className="fixed inset-x-0 bottom-0 z-10 lg:left-112 xl:left-120">
         <AudioPlayer />
       </div> */}
+      <Analytics />
     </DiagramContext.Provider>
   )
 }
