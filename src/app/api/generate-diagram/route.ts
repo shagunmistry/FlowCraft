@@ -9,7 +9,7 @@ import {
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 
-export const maxDuration = 1000 * 60 * 5 // 5 minutes
+export const maxDuration = 200
 
 export async function POST(req: Request) {
   const json = await req.json()
