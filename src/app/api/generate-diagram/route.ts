@@ -9,13 +9,13 @@ import {
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 
-export const maxDuration = 1000 * 60 * 5 // 5 minutes
+export const maxDuration = 200
 
 export async function POST(req: Request) {
   const json = await req.json()
   const { title: diagramTitle, description: diagramDescription } = json
   const reactFlowNodesAndEdgesEmbedding = await openAiModel.embeddings.create({
-    input: 'Custom Nodes and Edges',
+    input: 'Custom Nodes and Custom Edges',
     model: 'text-embedding-ada-002',
   })
 
