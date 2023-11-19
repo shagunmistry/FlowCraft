@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   const json = await req.json()
   const { title: diagramTitle, description: diagramDescription } = json
   const reactFlowNodesAndEdgesEmbedding = await openAiModel.embeddings.create({
-    input: 'Custom Nodes and Edges',
+    input: 'Custom Nodes and Custom Edges',
     model: 'text-embedding-ada-002',
   })
 

@@ -151,7 +151,7 @@ export const promptForUserMessage = (
   \n PLEASE RESPOND IN JSON INCLUDING VALID REACTFLOW NODE AND EDGE ARRAY.`
 }
 
-export const promptForResponse = `The response MUST be in JSON BODY including valid ReactFlow Node and Edge array. The response will be validated and if it is not valid, you will be asked to try again.
+export const promptForResponse = `The response MUST be in JSON BODY including valid ReactFlow Custom Node and Custom Edge array. The response will be validated and if it is not valid, you will be asked to try again.
 \n Example Response: \n
 \`\`\`JSON
 {
@@ -189,7 +189,7 @@ export const promptForResponse = `The response MUST be in JSON BODY including va
 \`\`\`
 `
 
-export const promptForExampleCode = `Here is an example of a valid ReactFlow Node and Edge array: 
+export const promptForExampleCode = `Here is an example of a valid ReactFlow Node and Edge array:
 \`\`\`javascript
 const edges = [{ id: '1-2', source: '1', target: '2' }];
 
