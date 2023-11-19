@@ -78,11 +78,17 @@ export default function TextBox() {
 
   if (loading) {
     return (
-      <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
-        <div className="flex h-full items-center justify-center">
-          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
+      <>
+        <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
+          <p className="text-md text-center text-pink-900">
+            Please be patient while we generate your diagram, it may take a
+            couple minutes.
+          </p>
+          <div className="flex h-full items-center justify-center">
+            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
