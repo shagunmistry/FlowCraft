@@ -9,12 +9,11 @@ import { AudioPlayer } from '@/components/player/AudioPlayer'
 import { TinyWaveFormIcon } from '@/components/TinyWaveFormIcon'
 import { Waveform } from '@/components/Waveform'
 import FlowCraftLogo from '@/images/FlowCraftLogo.png'
-import {
-  DiagramContext,
-} from '@/lib/Contexts/DiagramContext'
+import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { Edge, Node } from 'reactflow'
 
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react'
+import { exampleTitlesAndDescriptions } from '@/components/TextBox'
 
 export default function MainLayout({
   children,
@@ -23,8 +22,12 @@ export default function MainLayout({
 }) {
   let hosts = ['Shagun Mistry']
 
-  const [title, setTitle] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
+  const [title, setTitle] = useState<string>(
+    exampleTitlesAndDescriptions[2].title,
+  )
+  const [description, setDescription] = useState<string>(
+    exampleTitlesAndDescriptions[2].description,
+  )
 
   const [nodes, setNodes] = useState<Node[]>([])
   const [edges, setEdges] = useState<Edge[]>([])

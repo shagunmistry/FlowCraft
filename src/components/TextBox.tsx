@@ -3,7 +3,7 @@ import { useContext, useState } from 'react'
 
 import Dropdown from './Dropdown'
 
-const exampleTitlesAndDescriptions = [
+export const exampleTitlesAndDescriptions = [
   {
     title: 'House Buying Process',
     description:

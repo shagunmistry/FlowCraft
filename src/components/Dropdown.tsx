@@ -13,7 +13,7 @@ export default function Dropdown({
   }[]
   selectExample: (title: string, description: string) => void
 }) {
-  const [selected, setSelected] = useState(values[0])
+  const [selected, setSelected] = useState(values[2])
 
   const handleSelect = (value: { title: string; description: string }) => {
     setSelected(value)

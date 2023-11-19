@@ -129,7 +129,7 @@ export const generateEmbeddings = async (data: ApifyData[]) => {
   })
 }
 
-export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. BE DETAILED AS MUCH AS POSSBILE. Use your knowledge about the topic of the title/description to generate the diagram. \n\n`
+export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. BE DETAILED AS MUCH AS POSSBILE IN THE LABELS USED. Use your knowledge about the topic of the title/description to generate the diagram. \n\n`
 
 export const promptForDiagramDescription = (diagramDescription: string) => {
   return `Diagram Description: ${diagramDescription}`
@@ -191,19 +191,98 @@ export const promptForResponse = `The response MUST ONLY be in JSON BODY includi
 
 export const promptForExampleCode = `Here is an example of a valid ReactFlow Node and Edge array:
 \`\`\`javascript
-const edges = [{ id: '1-2', source: '1', target: '2' }];
+const edges = [
+  {
+    id: 'A->B',
+    source: 'A',
+    target: 'B',
+    markerEnd: {
+      type: MarkerType.Arrow,
+    },
+    label: 'default arrow',
+  },
+  {
+    id: 'C->D',
+    source: 'C',
+    target: 'D',
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+    },
+    label: 'default closed arrow',
+  },
+  {
+    id: 'D->E',
+    source: 'D',
+    target: 'E',
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+    },
+    markerStart: {
+      type: MarkerType.ArrowClosed,
+      orient: 'auto-start-reverse',
+    },
+    label: 'marker start and marker end',
+  },
+  {
+    id: 'E->F',
+    source: 'E',
+    target: 'F',
+    markerEnd: 'logo',
+    label: 'custom marker',
+  },
+  {
+    id: 'B->G',
+    source: 'B',
+    target: 'G',
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 20,
+      height: 20,
+      color: '#FF0072',
+    },
+    label: 'marker size and color',
+    style: {
+      strokeWidth: 2,
+      stroke: '#FF0072',
+    },
+  },
+];
 
 const nodes = [
   {
-    id: '1',
-    data: { label: 'Hello' },
-    position: { x: 0, y: 0 },
-    type: 'input',
+    id: 'A',
+    position: { x: 20, y: 20 },
+    data: { label: 'A' },
   },
   {
-    id: '2',
-    data: { label: 'World' },
-    position: { x: 100, y: 100 },
+    id: 'B',
+    position: { x: 100, y: 200 },
+    data: { label: 'B' },
+  },
+  {
+    id: 'C',
+    position: { x: 300, y: 20 },
+    data: { label: 'C' },
+  },
+  {
+    id: 'D',
+    position: { x: 300, y: 170 },
+    data: { label: 'D' },
+  },
+  {
+    id: 'E',
+    position: { x: 250, y: 300 },
+    data: { label: 'E' },
+  },
+  {
+    id: 'F',
+    position: { x: 250, y: 450 },
+    data: { label: 'F' },
+  },
+  {
+    id: 'G',
+    position: { x: 20, y: 450 },
+    data: { label: 'G' },
   },
 ];
 \`\`\`
