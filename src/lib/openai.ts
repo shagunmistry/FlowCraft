@@ -129,7 +129,7 @@ export const generateEmbeddings = async (data: ApifyData[]) => {
   })
 }
 
-export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. Use your knowledge about the topic of the title/description to generate the diagram. \n\nThe response MUST be in JSON BODY including valid ReactFlow Custom Node and Custom Edge array`
+export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. Use your knowledge about the topic of the title/description to generate the diagram. \n\n`
 
 export const promptForDiagramDescription = (diagramDescription: string) => {
   return `Diagram Description: ${diagramDescription}`
@@ -151,7 +151,7 @@ export const promptForUserMessage = (
   \n PLEASE RESPOND IN JSON INCLUDING VALID REACTFLOW NODE AND EDGE ARRAY.`
 }
 
-export const promptForResponse = `The response MUST be in JSON BODY including valid ReactFlow Custom Node and Custom Edge array. The response will be validated and if it is not valid, you will be asked to try again.
+export const promptForResponse = `The response MUST ONLY be in JSON BODY including valid ReactFlow Node and Edge array. The response will be validated and if it is not valid, you will be asked to try again.
 \n Example Response: \n
 \`\`\`JSON
 {
