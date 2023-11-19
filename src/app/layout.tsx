@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   title: {
     template: '%s - FlowCraft',
     default:
-      'FlowCraft - Conversations with the most tragically misunderstood people of our time',
+      'FlowCraft - Generate diagrams with an AI. No more dragging and dropping from scratch.',
   },
   description:
-    'Conversations with the most tragically misunderstood people of our time.',
+    'Generate diagrams with a click. No more dragging and dropping from scratch.',
 }
 
 export default function RootLayout({
