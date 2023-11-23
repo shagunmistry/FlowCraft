@@ -204,27 +204,13 @@ export default function ChartView() {
   )
 
   const downloadPng = () => {
-    // const graph = document.querySelector('.react-flow__renderer')
-    // const svg = graph?.querySelector('svg')
-    // if (!svg) return
+    
+    // fit the graph to the screen 
+    const fitView = document.querySelector('.react-flow__controls-fitview') as HTMLElement
+    if (fitView) {
+      fitView.click()
+    }
 
-    // const svgData = new XMLSerializer().serializeToString(svg)
-    // const canvas = document.createElement('canvas')
-    // const svgSize = svg.getBoundingClientRect()
-    // canvas.width = svgSize.width
-    // canvas.height = svgSize.height
-    // const ctx = canvas.getContext('2d')
-    // if (!ctx) return
-
-    // const img = document.createElement('img')
-    // img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(svgData))
-    // img.onload = () => {
-    //   ctx.drawImage(img, 0, 0)
-    //   const a = document.createElement('a')
-    //   a.download = 'diagram.png'
-    //   a.href = canvas.toDataURL('image/png')
-    //   a.click()
-    // }
     const graph = document.querySelector('.react-flow__renderer')
 
     if (!graph) return
@@ -257,7 +243,7 @@ export default function ChartView() {
           <Background color="#aaa" gap={16} />
         </ReactFlow>
         <div className="mt-4 flex justify-center">
-          <button
+          {/* <button
             className="rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
             onClick={() => {
               setNodes((nodes) => [
@@ -271,7 +257,7 @@ export default function ChartView() {
             }}
           >
             Add Box
-          </button>
+          </button> */}
           <button
             className="ml-5 rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
             onClick={downloadPng}

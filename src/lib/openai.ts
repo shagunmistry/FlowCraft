@@ -129,7 +129,7 @@ export const generateEmbeddings = async (data: ApifyData[]) => {
   })
 }
 
-export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. BE DETAILED AS MUCH AS POSSBILE IN THE LABELS USED. Use your knowledge about the topic of the title/description to generate the diagram. \n\n`
+export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and easy to understand. BE DESCRIPTIVE AS MUCH AS POSSBILE IN THE EDGES AND NODES AND LABELS USED. Use your knowledge based on the context of the description to generate the diagram. \n\n`
 
 export const promptForDiagramDescription = (diagramDescription: string) => {
   return `Diagram Description: ${diagramDescription}`

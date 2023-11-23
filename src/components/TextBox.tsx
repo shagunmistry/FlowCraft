@@ -27,8 +27,12 @@ export const exampleTitlesAndDescriptions = [
 ]
 
 export default function TextBox() {
-  const [title, setTitle] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
+  const [title, setTitle] = useState<string>(
+    exampleTitlesAndDescriptions[2].title,
+  )
+  const [description, setDescription] = useState<string>(
+    exampleTitlesAndDescriptions[2].description,
+  )
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>('')
 
@@ -39,8 +43,8 @@ export default function TextBox() {
     context.loading = true
     setLoading(true)
 
-    console.log('title', title)
-    console.log('description', description)
+    console.log('--- title', title)
+    console.log('---- description', description)
     context.description = description
     context.title = title
 

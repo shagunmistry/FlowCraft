@@ -91,6 +91,25 @@ export async function POST(req: Request) {
   if (res?.choices?.[0]?.message) {
     console.log('1. Response from OpenAI: ', res.choices[0].message.content)
 
+    // if the response includes ```json or ``` then we need to extract the json
+    // and return it as the result
+    const response = res.choices[0].message.content as string
+    const match = response.match(/```JSON\n([\s\S]*?)\n```/)
+    const result = match ? match[1] : null
+
+    if (result) {
+      return new Response(
+        JSON.stringify({
+          result,
+        }),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+        },
+      )
+    }
+
     return new Response(
       JSON.stringify({
         result: res.choices[0].message.content,

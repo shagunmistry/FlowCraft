@@ -28,6 +28,7 @@ export default function MainLayout({
   const [description, setDescription] = useState<string>(
     exampleTitlesAndDescriptions[2].description,
   )
+  const [isOpen, setIsOpen] = useState(false)
 
   const [nodes, setNodes] = useState<Node[]>([])
   const [edges, setEdges] = useState<Edge[]>([])
@@ -83,6 +84,27 @@ export default function MainLayout({
               Where Ideas Take Shape
             </p>
           </div>
+          <div className="mt-10">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-md flex w-full items-center justify-between text-left font-medium text-pink-500 hover:text-pink-600 hover:underline focus:outline-none"
+            >
+              How to Use
+              <span className="ml-2">{isOpen ? '-' : '+'}</span>
+            </button>
+            {isOpen && (
+              <div className="mt-2">
+                <p className="text-sm text-pink-500">
+                  We use the power of AI to help you create beautiful diagrams.
+                  <br />
+                  Simply type in the title of your diagram and a description of
+                  what you want to create. The more descriptive you are, the
+                  better the diagram will be.
+                </p>
+              </div>
+            )}
+          </div>
+
           <EditorSection className="mt-12 hidden lg:block" />
           <section className="mt-10 lg:mt-12">
             <Link href="https://forms.gle/xPfF3KtEYMNg5M8D9">
