@@ -1,7 +1,6 @@
 import { createContext } from 'react'
 import { Edge, Node } from 'reactflow'
 
-
 export const DiagramContext = createContext<{
   nodes: Node[]
   setNodes: (nodes: Node[]) => void
@@ -11,6 +10,8 @@ export const DiagramContext = createContext<{
   description: string
   loading: boolean
   setLoading: (loading: boolean) => void
+  setTitle: (title: string) => void
+  setDescription: (description: string) => void
 }>({
   nodes: [],
   setNodes: () => {},
@@ -20,4 +21,6 @@ export const DiagramContext = createContext<{
   description: '',
   loading: false,
   setLoading: () => {},
+  setTitle: () => {},
+  setDescription: () => {},
 })

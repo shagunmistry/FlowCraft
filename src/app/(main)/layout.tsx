@@ -32,7 +32,6 @@ export default function MainLayout({
 
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
-
   const [loading, _setLoading] = useState<boolean>(false)
 
   return (
@@ -46,6 +45,8 @@ export default function MainLayout({
         description: description,
         loading: loading,
         setLoading: _setLoading,
+        setTitle: setTitle,
+        setDescription: setDescription,
       }}
     >
       <header className="bg-pink-50 lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-112 lg:items-start lg:overflow-y-auto xl:w-120">

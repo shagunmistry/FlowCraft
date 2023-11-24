@@ -43,8 +43,8 @@ export default function TextBox() {
 
     console.log('--- title', title)
     console.log('---- description', description)
-    context.description = description
-    context.title = title
+    context.setTitle(title)
+    context.setDescription(description)
 
     try {
       setError(null)
