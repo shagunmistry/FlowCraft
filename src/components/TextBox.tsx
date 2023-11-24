@@ -33,15 +33,13 @@ export default function TextBox() {
   const [description, setDescription] = useState<string>(
     exampleTitlesAndDescriptions[2].description,
   )
-  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>('')
 
   const context = useContext(DiagramContext)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    context.loading = true
-    setLoading(true)
+    context.setLoading(true)
 
     console.log('--- title', title)
     console.log('---- description', description)
@@ -70,17 +68,15 @@ export default function TextBox() {
         context.setEdges(diagramResult.edges)
       }
 
-      context.loading = false
-      setLoading(false)
+      context.setLoading(false)
     } catch (e) {
       console.log('Error generating diagram: ', e)
-      context.loading = false
-      setLoading(false)
+      context.setLoading(false)
       setError('There was an error generating the diagram, please try again')
     }
   }
 
-  if (loading) {
+  if (context.loading) {
     return (
       <>
         <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
@@ -110,7 +106,7 @@ export default function TextBox() {
         selectExample={selectExample}
       />
       <form className="relative" onSubmit={handleSubmit}>
-        <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+        <div className="overflow-hidden rounded-lg shadow-lg focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
           <label htmlFor="title" className="sr-only">
             Diagram Title
           </label>
@@ -166,7 +162,7 @@ export default function TextBox() {
             <div className="flex-shrink-0">
               <button
                 type="submit"
-                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="inline-flex items-center rounded-md bg-pink-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-pink-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Create
               </button>

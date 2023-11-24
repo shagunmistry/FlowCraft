@@ -15,6 +15,8 @@ import ReactFlow, {
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
+import Lottie from 'lottie-react'
+import LottieAnimation from '@/lib/LoaderAnimation.json'
 //@ts-ignore
 import { saveAsPng } from 'save-html-as-image'
 
@@ -149,7 +151,6 @@ const initialEdges = [
 export default function ChartView() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes)
   const [edges, setEdges] = useState<Edge[]>(initialEdges)
-  const [loading, setLoading] = useState<boolean>(false)
 
   const context = useContext(DiagramContext)
 
@@ -164,31 +165,12 @@ export default function ChartView() {
     setEdges(context.edges)
   }, [context.nodes, context.edges])
 
-  useEffect(() => {
-    if (!context.loading) {
-      setLoading(false)
-    }
-
-    if (context.loading) {
-      setLoading(true)
-    }
-  }, [context.loading])
-
-  if (loading) {
-    return (
-      <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
-        <div className="flex h-full items-center justify-center">
-          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
-        </div>
-      </div>
-    )
-  }
-
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
       setNodes((nds) => applyNodeChanges(changes, nds)),
     [],
   )
+
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) =>
       setEdges((eds) => {
@@ -204,9 +186,10 @@ export default function ChartView() {
   )
 
   const downloadPng = () => {
-    
-    // fit the graph to the screen 
-    const fitView = document.querySelector('.react-flow__controls-fitview') as HTMLElement
+    // fit the graph to the screen
+    const fitView = document.querySelector(
+      '.react-flow__controls-fitview',
+    ) as HTMLElement
     if (fitView) {
       fitView.click()
     }
@@ -231,17 +214,27 @@ export default function ChartView() {
       </h1>
 
       <div className="ml-5 mt-14 h-96 w-11/12 rounded-lg bg-pink-50 shadow-lg">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView={true}
-        >
-          <Controls />
-          <Background color="#aaa" gap={16} />
-        </ReactFlow>
+        {context.loading ? (
+          <>
+            <div className="text-md flex items-center justify-center text-center text-pink-500">
+              Please be patient while we generate your diagram, it may take a
+              couple minutes.
+            </div>
+            <Lottie animationData={LottieAnimation} loop={true} />
+          </>
+        ) : (
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            fitView={true}
+          >
+            <Controls />
+            <Background color="#aaa" gap={16} />
+          </ReactFlow>
+        )}
         <div className="mt-4 flex justify-center">
           {/* <button
             className="rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
@@ -261,6 +254,7 @@ export default function ChartView() {
           <button
             className="ml-5 rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
             onClick={downloadPng}
+            disabled={context.loading}
           >
             Share/Download
           </button>

@@ -10,6 +10,7 @@ export const DiagramContext = createContext<{
   title: string
   description: string
   loading: boolean
+  setLoading: (loading: boolean) => void
 }>({
   nodes: [],
   setNodes: () => {},
@@ -18,4 +19,5 @@ export const DiagramContext = createContext<{
   title: '',
   description: '',
   loading: false,
+  setLoading: () => {},
 })

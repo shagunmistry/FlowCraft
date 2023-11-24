@@ -30,19 +30,22 @@ export default function MainLayout({
   )
   const [isOpen, setIsOpen] = useState(false)
 
-  const [nodes, setNodes] = useState<Node[]>([])
-  const [edges, setEdges] = useState<Edge[]>([])
+  const [nodes, _setNodes] = useState<Node[]>([])
+  const [edges, _setEdges] = useState<Edge[]>([])
+
+  const [loading, _setLoading] = useState<boolean>(false)
 
   return (
     <DiagramContext.Provider
       value={{
         nodes: nodes,
         edges: edges,
-        setNodes: setNodes,
-        setEdges: setEdges,
+        setNodes: _setNodes,
+        setEdges: _setEdges,
         title: title,
         description: description,
-        loading: false,
+        loading: loading,
+        setLoading: _setLoading,
       }}
     >
       <header className="bg-pink-50 lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-112 lg:items-start lg:overflow-y-auto xl:w-120">
