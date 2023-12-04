@@ -12,6 +12,10 @@ export const DOCUMENTS_FOR_REACT_FLOW_TABLE = 'documents_for_react_flow'
 export const MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE =
   'match_documents_for_react_flow'
 
+export const DOCUMENTS_FOR_D2_TABLE = 'documents_for_d2'
+export const MATCH_DOCUMENTS_FOR_D2_TABLE = 'match_documents_for_d2'
+
+
 export interface Metadata {
   canonicalUrl: string
   title: string
