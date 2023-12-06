@@ -16,7 +16,14 @@ import ReactFlow, {
 
 import 'reactflow/dist/style.css'
 import Lottie from 'lottie-react'
+import Script from 'next/script'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
+
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import ReactMarkdown from 'react-markdown'
+
+import mermaid from 'mermaid'
 //@ts-ignore
 import { saveAsPng } from 'save-html-as-image'
 
@@ -25,6 +32,7 @@ import factory from '@/lib/mxgraphlib'
 
 // Get XML from example.xml
 import { exampleXML } from './Example'
+import { sampleFlowchart } from '@/lib/utils'
 
 const initialNodes: Node[] = [
   {
@@ -154,48 +162,49 @@ const initialEdges = [
   },
 ]
 
-const { mxGraph, mxGraphModel, mxGeometry, mxUtils, mxClient, mxCodec } =
-  factory
-
 export default function ChartView() {
-  console.log('mxClient', mxClient)
-
-  if (!mxClient.isBrowserSupported()) {
-    mxUtils.error('Browser is not supported!', 200, false)
-  }
-
   const [nodes, setNodes] = useState<Node[]>(initialNodes)
   const [edges, setEdges] = useState<Edge[]>(initialEdges)
+  const [diagramCode, setDiagramCode] = useState(sampleFlowchart)
 
   const context = useContext(DiagramContext)
 
-  let graph = null
+  useEffect(() => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'forest',
+    })
 
-  const containerRef = useCallback((container: any) => {
-    if (container !== null) {
-      let model = new mxGraphModel()
-      graph = new mxGraph(container, model)
-      const windowObj = window as any
-      windowObj['mxGraphModel'] = mxGraphModel
-      windowObj['mxGeometry'] = mxGeometry
-      let doc = mxUtils.parseXml(exampleXML)
-      let codec = new mxCodec(doc)
-      codec.decode(doc.documentElement, graph.getModel())
-      graph.getModel().beginUpdate()
+    mermaid.contentLoaded()
+    renderDiagram(diagramCode)
+  })
 
-      try {
-        var elt = doc.documentElement.firstChild
-        var cells = []
-        while (elt !== null) {
-          cells.push(codec.decodeCell(elt))
-          elt = elt.nextSibling
-        }
-        graph.addCells(cells)
-      } finally {
-        graph.getModel().endUpdate()
-      }
-    }
-  }, [])
+  const renderDiagram = (parsedData: string) => {
+    const diagramContainer = document.getElementById(
+      'diagram_view',
+    ) as HTMLElement
+    mermaid
+      .render('div', parsedData, diagramContainer)
+      .then((value) => {
+        console.log('Diagram generate: ', value)
+        const svgCode = value.svg
+
+        const svgImage = document.createElement('img')
+        svgImage.src = 'data:image/svg+xml;base64,' + btoa(svgCode)
+        svgImage.className = 'w-full'
+        diagramContainer.innerHTML = ''
+        diagramContainer.appendChild(svgImage)
+
+        showDiagramCode(parsedData)
+      })
+      .catch((err) => {
+        console.log('Error generating diagram', err)
+      })
+  }
+
+  const showDiagramCode = (parsedData: string) => {
+    setDiagramCode(parsedData)
+  }
 
   useEffect(() => {
     if (!context.nodes || !context.edges) return
@@ -206,6 +215,23 @@ export default function ChartView() {
 
     setNodes(context.nodes)
     setEdges(context.edges)
+
+    console.log('mermaid', mermaid)
+
+    mermaid.initialize({
+      darkMode: true,
+      startOnLoad: true,
+      theme: 'dark',
+    })
+
+    mermaid.contentLoaded()
+    const graphDefinition = 'graph TB\na-->b'
+    const container = document.querySelector('#graphDiv') as HTMLElement
+    mermaid.render('graphDiv', graphDefinition).then((result) => {
+      console.log('---------- result', result)
+      const { svg, bindFunctions } = result
+      container.innerHTML = svg
+    })
   }, [context.nodes, context.edges])
 
   const onNodesChange = useCallback(
@@ -252,6 +278,17 @@ export default function ChartView() {
 
   return (
     <>
+      <Script
+        type="module"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs";
+        mermaid.initialize({startOnLoad: true});
+        mermaid.contentLoaded();
+`,
+        }}
+      />
       <h1 className="ml-5 mt-7 text-2xl font-bold leading-7 text-pink-700">
         {context.title}
       </h1>
@@ -266,18 +303,28 @@ export default function ChartView() {
             <Lottie animationData={LottieAnimation} loop={true} />
           </>
         ) : (
-          // <ReactFlow
-          //   nodes={nodes}
-          //   edges={edges}
-          //   onNodesChange={onNodesChange}
-          //   onEdgesChange={onEdgesChange}
-          //   onConnect={onConnect}
-          //   fitView={true}
-          // >
-          //   <Controls />
-          //   <Background color="#aaa" gap={16} />
-          // </ReactFlow>
-          <div ref={containerRef}></div>
+          <>
+            <div id="diagram_view" className="w-full"></div>
+            {/** Display zoom in and zoomout buttons */}
+            <div className="flex justify-center">
+              <button
+                className="rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
+                onClick={() => {
+                  // Zoom into the diagram
+                }}
+              >
+                Zoom In
+              </button>
+              <button
+                className="ml-5 rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
+                onClick={() => {
+                  // Zoom out of the diagram
+                }}
+              >
+                Zoom Out
+              </button>
+            </div>
+          </>
         )}
         <div className="mt-4 flex justify-center">
           {/* <button
