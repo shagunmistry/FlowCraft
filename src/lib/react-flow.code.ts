@@ -89,7 +89,7 @@ export const ReactFlowExamples = {
           targetPosition: Position.Left,
         },
       ]`,
-    edgescode: `[
+    edgesCode: `[
         {
           id: 'edge-button',
           source: 'button-1',
@@ -198,3 +198,137 @@ export const ReactFlowExamples = {
       ]`,
   },
 }
+
+export const customNodeCodeExample = `
+const nodes = ${ReactFlowExamples.customNodes.nodesCode}
+
+const edges = ${ReactFlowExamples.customNodes.edgesCode}
+
+`
+
+export const customEdgeCodeExample = `
+const nodes = ${ReactFlowExamples.customEdges.nodesCode}
+
+const edges = ${ReactFlowExamples.customEdges.edgesCode}
+
+`
+
+export const differentEdgeTypesCodeExample = `
+const nodes = ${ReactFlowExamples.differentEdgeTypes.nodesCode}
+
+const edges = ${ReactFlowExamples.differentEdgeTypes.edgesCode}
+
+`
+
+export const allCombinedCodeExample = `
+Example One:
+\`\`\`javascript
+${customNodeCodeExample}
+\`\`\`
+
+Example Two:
+\`\`\`javascript
+${customEdgeCodeExample}
+\`\`\`
+
+Example Three:
+\`\`\`javascript
+${differentEdgeTypesCodeExample}
+\`\`\
+`
+
+// \`\`\`javascript
+// const nodes = [
+//   {
+//     id: 'A',
+//     position: { x: 20, y: 20 },
+//     data: { label: 'A' },
+//   },
+//   {
+//     id: 'B',
+//     position: { x: 100, y: 200 },
+//     data: { label: 'B' },
+//   },
+//   {
+//     id: 'C',
+//     position: { x: 300, y: 20 },
+//     data: { label: 'C' },
+//   },
+//   {
+//     id: 'D',
+//     position: { x: 300, y: 170 },
+//     data: { label: 'D' },
+//   },
+//   {
+//     id: 'E',
+//     position: { x: 250, y: 300 },
+//     data: { label: 'E' },
+//   },
+//   {
+//     id: 'F',
+//     position: { x: 250, y: 450 },
+//     data: { label: 'F' },
+//   },
+//   {
+//     id: 'G',
+//     position: { x: 20, y: 450 },
+//     data: { label: 'G' },
+//   },
+// ];
+
+// const edges = [
+//   {
+//     id: 'A->B',
+//     source: 'A',
+//     target: 'B',
+//     markerEnd: {
+//       type: MarkerType.Arrow,
+//     },
+//     label: 'default arrow',
+//   },
+//   {
+//     id: 'C->D',
+//     source: 'C',
+//     target: 'D',
+//     markerEnd: {
+//       type: MarkerType.ArrowClosed,
+//     },
+//     label: 'default closed arrow',
+//   },
+//   {
+//     id: 'D->E',
+//     source: 'D',
+//     target: 'E',
+//     markerEnd: {
+//       type: MarkerType.ArrowClosed,
+//     },
+//     markerStart: {
+//       type: MarkerType.ArrowClosed,
+//       orient: 'auto-start-reverse',
+//     },
+//     label: 'marker start and marker end',
+//   },
+//   {
+//     id: 'E->F',
+//     source: 'E',
+//     target: 'F',
+//     markerEnd: 'logo',
+//     label: 'custom marker',
+//   },
+//   {
+//     id: 'B->G',
+//     source: 'B',
+//     target: 'G',
+//     markerEnd: {
+//       type: MarkerType.ArrowClosed,
+//       width: 20,
+//       height: 20,
+//       color: '#FF0072',
+//     },
+//     label: 'marker size and color',
+//     style: {
+//       strokeWidth: 2,
+//       stroke: '#FF0072',
+//     },
+//   },
+// ];

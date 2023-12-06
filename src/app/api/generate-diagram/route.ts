@@ -83,7 +83,7 @@ export async function POST(req: Request) {
   }
 
   const res = await openAiModel.chat.completions.create({
-    model: 'gpt-3.5-turbo-16k',
+    model: 'gpt-4',
     messages: [assistantMessage1, assistantMessage3, userMessage2, userMessage],
     temperature: 0.7,
   })
@@ -94,8 +94,13 @@ export async function POST(req: Request) {
     // if the response includes ```json or ``` then we need to extract the json
     // and return it as the result
     const response = res.choices[0].message.content as string
-    const match = response.match(/```JSON\n([\s\S]*?)\n```/)
-    const result = match ? match[1] : null
+    const lowercasejsonMatch = response.match(/```json\n([\s\S]*?)\n```/)
+    const uppercasejsonMatch = response.match(/```JSON\n([\s\S]*?)\n```/)
+    const result = lowercasejsonMatch
+      ? lowercasejsonMatch[1]
+      : uppercasejsonMatch
+        ? uppercasejsonMatch[1]
+        : null
 
     if (result) {
       return new Response(
