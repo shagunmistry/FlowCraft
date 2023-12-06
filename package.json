@@ -23,6 +23,7 @@
     "clsx": "^1.2.1",
     "gpt3-tokenizer": "^1.1.5",
     "lottie-react": "^2.4.0",
+    "mermaid": "^10.6.1",
     "next": "13.4.16",
     "openai": "^4.19.0",
     "openai-edge": "^1.2.2",

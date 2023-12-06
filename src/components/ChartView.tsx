@@ -20,6 +20,12 @@ import LottieAnimation from '@/lib/LoaderAnimation.json'
 //@ts-ignore
 import { saveAsPng } from 'save-html-as-image'
 
+// @ts-ignore
+import factory from '@/lib/mxgraphlib'
+
+// Get XML from example.xml
+import { exampleXML } from './Example'
+
 const initialNodes: Node[] = [
   {
     id: '1',
@@ -148,11 +154,48 @@ const initialEdges = [
   },
 ]
 
+const { mxGraph, mxGraphModel, mxGeometry, mxUtils, mxClient, mxCodec } =
+  factory
+
 export default function ChartView() {
+  console.log('mxClient', mxClient)
+
+  if (!mxClient.isBrowserSupported()) {
+    mxUtils.error('Browser is not supported!', 200, false)
+  }
+
   const [nodes, setNodes] = useState<Node[]>(initialNodes)
   const [edges, setEdges] = useState<Edge[]>(initialEdges)
 
   const context = useContext(DiagramContext)
+
+  let graph = null
+
+  const containerRef = useCallback((container: any) => {
+    if (container !== null) {
+      let model = new mxGraphModel()
+      graph = new mxGraph(container, model)
+      const windowObj = window as any
+      windowObj['mxGraphModel'] = mxGraphModel
+      windowObj['mxGeometry'] = mxGeometry
+      let doc = mxUtils.parseXml(exampleXML)
+      let codec = new mxCodec(doc)
+      codec.decode(doc.documentElement, graph.getModel())
+      graph.getModel().beginUpdate()
+
+      try {
+        var elt = doc.documentElement.firstChild
+        var cells = []
+        while (elt !== null) {
+          cells.push(codec.decodeCell(elt))
+          elt = elt.nextSibling
+        }
+        graph.addCells(cells)
+      } finally {
+        graph.getModel().endUpdate()
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!context.nodes || !context.edges) return
@@ -223,17 +266,18 @@ export default function ChartView() {
             <Lottie animationData={LottieAnimation} loop={true} />
           </>
         ) : (
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            fitView={true}
-          >
-            <Controls />
-            <Background color="#aaa" gap={16} />
-          </ReactFlow>
+          // <ReactFlow
+          //   nodes={nodes}
+          //   edges={edges}
+          //   onNodesChange={onNodesChange}
+          //   onEdgesChange={onEdgesChange}
+          //   onConnect={onConnect}
+          //   fitView={true}
+          // >
+          //   <Controls />
+          //   <Background color="#aaa" gap={16} />
+          // </ReactFlow>
+          <div ref={containerRef}></div>
         )}
         <div className="mt-4 flex justify-center">
           {/* <button
