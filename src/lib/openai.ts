@@ -152,7 +152,7 @@ export const promptForUserMessage = (
   \n PLEASE RESPOND ONLY IN JSON INCLUDING VALID REACTFLOW NODE AND EDGE ARRAY.`
 }
 
-export const promptForResponse = `The response MUST ONLY be in JSON that includes valid ReactFlow Node and Edge array. The response will be validated and if it is not valid, you will be asked to try again.
+export const promptForResponse = `The response MUST ONLY be in JSON that includes valid ReactFlow Node and Edge array. Remember to position the edges and nodes so that it is a readable view. The response will be validated and if it is not valid, you will be asked to try again.
 \n Example Response FROM YOU: \n
 \`\`\`JSON
 {

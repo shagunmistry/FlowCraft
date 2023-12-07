@@ -19,6 +19,7 @@ import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 //@ts-ignore
 import { saveAsPng } from 'save-html-as-image'
+import Link from 'next/link'
 
 const initialNodes: Node[] = [
   {
@@ -207,13 +208,25 @@ export default function ChartView() {
     })
   }
 
+  const showHowToUse = () => {
+    // Take them to the how to use page
+  }
+
   return (
     <>
-      <h1 className="ml-5 mt-7 text-2xl font-bold leading-7 text-pink-700">
-        {context.title}
-      </h1>
+      <div className="ml-5 mr-5 mt-7 flex items-center justify-between">
+        <h1 className="text-2xl font-bold leading-7 text-pink-700">
+          {context.title}
+        </h1>
+        <Link
+          className="rounded-lg bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
+          href={'/howto'}
+        >
+          How to use
+        </Link>
+      </div>
 
-      <div className="ml-5 mt-14 h-96 w-11/12 rounded-lg bg-pink-50 shadow-lg">
+      <div className="ml-5 mt-14 h-screen w-11/12 rounded-xl bg-pink-50 shadow-lg">
         {context.loading ? (
           <>
             <div className="text-md flex items-center justify-center text-center text-pink-500">
@@ -236,27 +249,12 @@ export default function ChartView() {
           </ReactFlow>
         )}
         <div className="mt-4 flex justify-center">
-          {/* <button
-            className="rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
-            onClick={() => {
-              setNodes((nodes) => [
-                ...nodes,
-                {
-                  id: (nodes.length + 1).toString(),
-                  data: { label: (nodes.length + 1).toString() },
-                  position: { x: 0, y: 0 },
-                },
-              ])
-            }}
-          >
-            Add Box
-          </button> */}
           <button
             className="ml-5 rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
             onClick={downloadPng}
             disabled={context.loading}
           >
-            Share/Download
+            Download as PNG
           </button>
         </div>
       </div>
