@@ -7,9 +7,11 @@ import Image from 'next/image'
 
 import DemoImage from '@/images/CachingDiagram_FlowCraft_Demo3.png'
 import 'reactflow/dist/style.css'
-import ReactFlow, { Background } from 'reactflow'
+import ReactFlow, { Background, Controls } from 'reactflow'
 import FlowCraftLogo from '@/images/FlowCraftLogo.png'
 import Link from 'next/link'
+import HowToUseSteps from './HowToUseSteps'
+import CTA from './CTA'
 
 const exampleEdges = [
   {
@@ -17,37 +19,50 @@ const exampleEdges = [
     source: '1',
     target: '2',
     animated: true,
-    label: 'Customer contacts Amazon',
   },
   {
     id: 'e2-3',
     source: '2',
     target: '3',
     animated: true,
-    label: 'Amazon identifies the issue',
   },
   {
     id: 'e3-4',
     source: '3',
     target: '4',
     animated: true,
-    label: 'Amazon resolves the issue',
   },
   {
     id: 'e4-5',
     source: '4',
     target: '5',
     animated: true,
-    label: 'Customer is satisfied',
+  },
+  {
+    id: 'e5-6',
+    source: '5',
+    target: '6',
+    animated: true,
+  },
+  {
+    id: 'e6-7',
+    source: '6',
+    target: '7',
+    animated: true,
+  },
+  {
+    id: 'e7-8',
+    source: '7',
+    target: '8',
+    animated: true,
   },
 ]
 
 const exampleNodes = [
   {
     id: '1',
-    type: 'input',
     data: {
-      label: 'Customer has an issue',
+      label: 'Browse Products',
     },
     position: {
       x: 50,
@@ -56,45 +71,71 @@ const exampleNodes = [
   },
   {
     id: '2',
-    type: 'default',
     data: {
-      label: 'Customer contacts Amazon service',
+      label: 'Add to Cart',
     },
     position: {
-      x: 200,
+      x: 250,
       y: 50,
     },
   },
   {
     id: '3',
-    type: 'default',
     data: {
-      label: 'Amazon service identifies the issue',
+      label: 'Proceed to Checkout',
     },
     position: {
-      x: 350,
+      x: 450,
       y: 50,
     },
   },
   {
     id: '4',
-    type: 'default',
     data: {
-      label: 'Amazon service resolves the issue',
+      label: 'Provide Shipping Information',
     },
     position: {
-      x: 500,
+      x: 650,
       y: 50,
     },
   },
   {
     id: '5',
-    type: 'output',
     data: {
-      label: 'Customer is satisfied',
+      label: 'Review & Place Order',
     },
     position: {
-      x: 650,
+      x: 850,
+      y: 50,
+    },
+  },
+  {
+    id: '6',
+    data: {
+      label: 'Receive Confirmation Email',
+    },
+    position: {
+      x: 1050,
+      y: 50,
+    },
+  },
+  {
+    id: '7',
+    data: {
+      label: 'Track Shipment',
+    },
+    position: {
+      x: 1250,
+      y: 50,
+    },
+  },
+  {
+    id: '8',
+    data: {
+      label: 'Receive Package',
+    },
+    position: {
+      x: 1450,
       y: 50,
     },
   },
@@ -226,8 +267,11 @@ export default function HowToUse() {
               </Link>
             </div>
           </div>
-          <div className="relative ml-3 lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
+          <div className="relative ml-3 mt-5 lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
             <div className="ml-5 mt-14 h-screen w-11/12 rounded-xl bg-pink-50 shadow-lg">
+              <h1 className="animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-black text-2xl font-bold text-rose-400">
+                "How does an Amazon order work? Show step by step."
+              </h1>
               <ReactFlow
                 nodes={exampleNodes}
                 edges={exampleEdges}
@@ -238,6 +282,14 @@ export default function HowToUse() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="relative bg-white">
+        <HowToUseSteps />
+      </div>
+
+      <div className="relative bg-white">
+        <CTA />
       </div>
     </div>
   )

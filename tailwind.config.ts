@@ -12,10 +12,36 @@ export default {
       },
       spacing: {
         18: '4.5rem',
-        112: '28rem',
-        120: '30rem',
+        112: '15rem',
+        120: '20rem',
+      },
+      keyframes: {
+        typing: {
+          '0%': {
+            width: '0%',
+            visibility: 'hidden',
+          },
+          '100%': {
+            width: '100%',
+          },
+        },
+        blink: {
+          '50%': {
+            borderColor: 'transparent',
+          },
+          '100%': {
+            borderColor: 'black',
+          },
+        },
+      },
+      animation: {
+        typing: 'typing 2s steps(20) infinite alternate, blink .7s infinite',
       },
     },
   },
-  plugins: [typographyPlugin, formsPlugin],
+  plugins: [
+    typographyPlugin,
+    formsPlugin,
+    require('@tailwindcss/aspect-ratio'),
+  ],
 } satisfies Config
