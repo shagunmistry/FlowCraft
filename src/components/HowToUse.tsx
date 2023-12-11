@@ -171,7 +171,7 @@ export default function HowToUse() {
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Link
               href="/"
-              className="rounded-md bg-pink-500 px-3 py-2.5 text-sm font-semibold leading-6 text-white hover:bg-pink-200"
+              className="rounded-md bg-green-500 px-3 py-2.5 text-sm font-semibold leading-6 text-white hover:bg-pink-200"
             >
               Try Now <span aria-hidden="true">&rarr;</span>
             </Link>
@@ -208,7 +208,7 @@ export default function HowToUse() {
                 <div className="py-6">
                   <Link
                     href="/"
-                    className="-mx-3 block rounded-lg bg-pink-500 px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    className="-mx-3 block rounded-lg bg-green-500 px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Try Now
                   </Link>

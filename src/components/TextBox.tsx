@@ -114,7 +114,7 @@ export default function TextBox() {
             type="text"
             name="title"
             id="title"
-            className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
+            className="block w-full border-0 border-b-2 border-pink-200 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
             placeholder="Diagram Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}

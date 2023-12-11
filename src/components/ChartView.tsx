@@ -12,6 +12,7 @@ import ReactFlow, {
   Edge,
   Node,
   addEdge,
+  MiniMap,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -215,15 +216,15 @@ export default function ChartView() {
   return (
     <>
       <div className="ml-5 mr-5 mt-7 flex items-center justify-between">
-        <h1 className="text-2xl font-bold leading-7 text-pink-700">
+        <h1 className="text-black-900 text-2xl font-bold leading-7 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
-        <Link
-          className="rounded-lg bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
+        {/* <Link
+          className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
           href={'/howto'}
         >
           How to use
-        </Link>
+        </Link> */}
       </div>
 
       <div className="ml-5 mt-14 h-screen w-11/12 rounded-xl bg-pink-50 shadow-lg">
@@ -246,16 +247,19 @@ export default function ChartView() {
           >
             <Controls />
             <Background color="#aaa" gap={16} />
+            <MiniMap />
           </ReactFlow>
         )}
         <div className="mt-4 flex justify-center">
-          <button
-            className="ml-5 rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
-            onClick={downloadPng}
-            disabled={context.loading}
-          >
-            Download as PNG
-          </button>
+          {!context.loading ? (
+            <button
+              className="ml-5 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+              onClick={downloadPng}
+              disabled={context.loading}
+            >
+              Download as PNG
+            </button>
+          ) : null}
         </div>
       </div>
     </>
