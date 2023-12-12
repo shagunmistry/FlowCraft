@@ -1,18 +1,16 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import ReactFlow, {
   Controls,
   Background,
-  applyEdgeChanges,
-  applyNodeChanges,
-  NodeChange,
-  EdgeChange,
-  Edge,
   Node,
   addEdge,
   MiniMap,
+  useNodesState,
+  useEdgesState,
+  ConnectionLineType,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -20,7 +18,17 @@ import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 //@ts-ignore
 import { saveAsPng } from 'save-html-as-image'
-import Link from 'next/link'
+import { ArrowDownIcon } from '@heroicons/react/20/solid'
+import DownloadButton from './DownloadImageButton'
+
+const connectionLineStyle = { stroke: '#00FF00' }
+
+const defaultEdgeOptions = {
+  animated: true,
+  type: ConnectionLineType.SimpleBezier,
+}
+
+const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 
 const initialNodes: Node[] = [
   {
@@ -151,8 +159,11 @@ const initialEdges = [
 ]
 
 export default function ChartView() {
-  const [nodes, setNodes] = useState<Node[]>(initialNodes)
-  const [edges, setEdges] = useState<Edge[]>(initialEdges)
+  // const [nodes, setNodes] = useState<Node[]>(initialNodes)
+  // const [edges, setEdges] = useState<Edge[]>(initialEdges)
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const context = useContext(DiagramContext)
 
@@ -167,51 +178,25 @@ export default function ChartView() {
     setEdges(context.edges)
   }, [context.nodes, context.edges])
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    [],
-  )
+  // const onNodesChange = useCallback(
+  //   (changes: NodeChange[]) =>
+  //     setNodes((nds) => applyNodeChanges(changes, nds)),
+  //   [],
+  // )
 
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds) => {
-        console.log('New Edges: ', edges)
-        return applyEdgeChanges(changes, eds)
-      }),
-    [],
-  )
+  // const onEdgesChange = useCallback(
+  //   (changes: EdgeChange[]) =>
+  //     setEdges((eds) => {
+  //       console.log('New Edges: ', edges)
+  //       return applyEdgeChanges(changes, eds)
+  //     }),
+  //   [],
+  // )
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge(params, eds)),
     [],
   )
-
-  const downloadPng = () => {
-    // fit the graph to the screen
-    const fitView = document.querySelector(
-      '.react-flow__controls-fitview',
-    ) as HTMLElement
-    if (fitView) {
-      fitView.click()
-    }
-
-    const graph = document.querySelector('.react-flow__renderer')
-
-    if (!graph) return
-
-    saveAsPng(graph, {
-      fileName: 'diagram',
-      scale: 2,
-      backgroundColor: '#fff',
-      width: 2000,
-      height: 2000,
-    })
-  }
-
-  const showHowToUse = () => {
-    // Take them to the how to use page
-  }
 
   return (
     <>
@@ -219,12 +204,10 @@ export default function ChartView() {
         <h1 className="text-2xl font-bold leading-7 text-indigo-900 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
-        {/* <Link
-          className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
-          href={'/howto'}
-        >
-          How to use
-        </Link> */}
+        <div className="animate-bounce font-bold text-white">
+          Scroll Down
+          <ArrowDownIcon className="h-10 w-10" />
+        </div>
       </div>
 
       <div className="mt-14 h-screen rounded-xl bg-pink-50 shadow-lg">
@@ -243,14 +226,22 @@ export default function ChartView() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
-            fitView={true}
+            connectionLineStyle={connectionLineStyle}
+            connectionLineType={ConnectionLineType.SmoothStep}
+            snapToGrid={true}
+            snapGrid={[25, 25]}
+            defaultViewport={defaultViewport}
+            fitView
+            attributionPosition="bottom-left"
+            defaultEdgeOptions={defaultEdgeOptions}
           >
             <Controls />
             <Background color="#aaa" gap={16} />
             <MiniMap />
+            <DownloadButton />
           </ReactFlow>
         )}
-        <div className="mt-4 flex justify-center">
+        {/* <div className="mt-4 flex justify-center">
           {!context.loading ? (
             <button
               className="ml-5 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
@@ -260,7 +251,7 @@ export default function ChartView() {
               Download as PNG
             </button>
           ) : null}
-        </div>
+        </div> */}
       </div>
     </>
   )

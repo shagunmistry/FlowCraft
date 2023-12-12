@@ -1,6 +1,4 @@
 import { ApifyData, generateEmbeddings } from '@/lib/openai'
-import { Container } from '@/components/Container'
-import { getAllEpisodes } from '@/lib/episodes'
 import { getReactCodeFlowJSONFile } from '@/lib/supabase'
 import ChartView from '@/components/ChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
