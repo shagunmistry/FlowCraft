@@ -215,8 +215,8 @@ export default function ChartView() {
 
   return (
     <>
-      <div className="ml-5 mr-5 mt-7 flex items-center justify-between">
-        <h1 className="text-black-900 text-2xl font-bold leading-7 sm:truncate sm:text-3xl">
+      <div className="mr-5 mt-7 flex items-center justify-between">
+        <h1 className="text-2xl font-bold leading-7 text-indigo-900 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
         {/* <Link
@@ -227,7 +227,7 @@ export default function ChartView() {
         </Link> */}
       </div>
 
-      <div className="ml-5 mt-14 h-screen w-11/12 rounded-xl bg-pink-50 shadow-lg">
+      <div className="mt-14 h-screen rounded-xl bg-pink-50 shadow-lg">
         {context.loading ? (
           <>
             <div className="text-md flex items-center justify-center text-center text-pink-500">

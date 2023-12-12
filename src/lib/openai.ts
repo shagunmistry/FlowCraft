@@ -130,7 +130,14 @@ export const generateEmbeddings = async (data: ApifyData[]) => {
   })
 }
 
-export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and UNDERSTANDABLE. BE AS DESCRIPTIVE AS POSSBILE IN THE EDGES AND NODES AND LABELS USED. Use your knowledge based on the context of the description to generate the diagram. \n\n`
+export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and UNDERSTANDABLE. BE AS DESCRIPTIVE AS POSSBILE IN THE EDGES AND NODES AND LABELS USED. Use your knowledge based on the context of the description to generate the diagram. 
+
+\n
+The nodes are used to denote an entity or object, also referred to as a vertex. Each vertex could be used for representing any type of data, including locations, people, concepts, objects, or any other type of element, depending on the application.
+
+\n
+Edges represent the presence of a connection or relationship between two nodes. In social network analysis these are usually some type of social tie. We can say that in social network analysis, these connections are relationships between nodes, and edges in a graph are meant to represent them. In graph theory, edges are best thought of as a collection of pairs of nodes, where the two members of the pair are the nodes involved in the focal relationship. So if node A is related to node B via some relationship R, then AB is an edge in the relevant graph
+\n\n`
 
 export const promptForDiagramDescription = (diagramDescription: string) => {
   return `Diagram Description: ${diagramDescription}`

@@ -46,11 +46,13 @@ export default async function Home() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
           <p className="text-md font-semibold leading-7 text-white">
-            Diagram smarter, not harder
+            Diagram smarter, not harder. 🧠
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-indigo-700 sm:text-4xl">
             Text to Diagrams: Your ideas, visualized.
           </h1>
+          {/** The company name in subtitle format below */}
+          <p className="mt-4 text-xl text-gray-700 text-white">FlowCraft</p>
           <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 text-gray-700 text-white lg:max-w-none lg:grid-cols-2">
             <ChartDescriptionInput />
             <div>
@@ -71,7 +73,6 @@ export default async function Home() {
                 feedback on how we can improve. Please click on the Feedback
                 button to give us your thoughts.
               </p>
-              // add a subtitle here for "coming soon features"
               <p className="mt-8 text-sm font-semibold">
                 Editing features coming soon!
               </p>
@@ -79,10 +80,8 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <div className="relative pt-16 lg:pt-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <ChartView />
-        </div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <ChartView />
       </div>
     </div>
   )
