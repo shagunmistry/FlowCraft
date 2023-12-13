@@ -330,7 +330,7 @@ export const promptForUserMessageForChartJs = (
   diagramDescription: string,
 ) => {
   return `${promptForDiagram}  \n\nDiagram Title: ${diagramTitle}\nDiagram Description: ${diagramDescription}
-    \n PLEASE RESPOND ONLY IN JSON INCLUDING VALID CHARTJS DATA OBJECT.`
+    \n PLEASE RESPOND ONLY IN VALID JSON INCLUDING VALID CHARTJS DATA OBJECT.`
 }
 
 export const promptForChartJsExampleCode = `Here is an example of a valid ChartJS code:
