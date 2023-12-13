@@ -60,12 +60,18 @@ export default function TextBox() {
 
       const diagramJson = await diagram.json()
 
+      console.log('Diagram JSON 1: ', diagramJson)
+
       console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
       const diagramResult = JSON.parse(diagramJson.result)
 
-      if (diagramResult && diagramResult.nodes && diagramResult.edges) {
-        context.setNodes(diagramResult.nodes)
-        context.setEdges(diagramResult.edges)
+      // if (diagramResult && diagramResult.nodes && diagramResult.edges) {
+      //   context.setNodes(diagramResult.nodes)
+      //   context.setEdges(diagramResult.edges)
+      // }
+
+      if (diagramResult && diagramResult.data) {
+        context.setChartJsData(diagramResult)
       }
 
       context.setLoading(false)

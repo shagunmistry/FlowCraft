@@ -12,6 +12,8 @@ export const DiagramContext = createContext<{
   setLoading: (loading: boolean) => void
   setTitle: (title: string) => void
   setDescription: (description: string) => void
+  chartJsData: any
+  setChartJsData: (chartJsData: any) => void
 }>({
   nodes: [],
   setNodes: () => {},
@@ -23,4 +25,6 @@ export const DiagramContext = createContext<{
   setLoading: () => {},
   setTitle: () => {},
   setDescription: () => {},
+  chartJsData: {},
+  setChartJsData: () => {},
 })

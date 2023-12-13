@@ -21,6 +21,8 @@ import { saveAsPng } from 'save-html-as-image'
 import { ArrowDownIcon } from '@heroicons/react/20/solid'
 import DownloadButton from './DownloadImageButton'
 
+import Chart from 'chart.js/auto'
+
 const connectionLineStyle = { stroke: '#00FF00' }
 
 const defaultEdgeOptions = {
@@ -178,20 +180,16 @@ export default function ChartView() {
     setEdges(context.edges)
   }, [context.nodes, context.edges])
 
-  // const onNodesChange = useCallback(
-  //   (changes: NodeChange[]) =>
-  //     setNodes((nds) => applyNodeChanges(changes, nds)),
-  //   [],
-  // )
-
-  // const onEdgesChange = useCallback(
-  //   (changes: EdgeChange[]) =>
-  //     setEdges((eds) => {
-  //       console.log('New Edges: ', edges)
-  //       return applyEdgeChanges(changes, eds)
-  //     }),
-  //   [],
-  // )
+  useEffect(() => {
+    if (!context.loading && context.chartJsData) {
+      console.log('context.chartJsData', context.chartJsData)
+      const ctx = document.getElementById('myChart') as HTMLCanvasElement
+      const myChart = new Chart(ctx, {
+        type: context.chartJsData.type || 'bar',
+        ...context.chartJsData,
+      })
+    }
+  }, [context.loading, context.chartJsData])
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge(params, eds)),
@@ -220,38 +218,30 @@ export default function ChartView() {
             <Lottie animationData={LottieAnimation} loop={true} />
           </>
         ) : (
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            connectionLineStyle={connectionLineStyle}
-            connectionLineType={ConnectionLineType.SmoothStep}
-            snapToGrid={true}
-            snapGrid={[25, 25]}
-            defaultViewport={defaultViewport}
-            fitView
-            attributionPosition="bottom-left"
-            defaultEdgeOptions={defaultEdgeOptions}
-          >
-            <Controls />
-            <Background color="#aaa" gap={16} />
-            <MiniMap />
-            <DownloadButton />
-          </ReactFlow>
+          // <ReactFlow
+          //   nodes={nodes}
+          //   edges={edges}
+          //   onNodesChange={onNodesChange}
+          //   onEdgesChange={onEdgesChange}
+          //   onConnect={onConnect}
+          //   connectionLineStyle={connectionLineStyle}
+          //   connectionLineType={ConnectionLineType.SmoothStep}
+          //   snapToGrid={true}
+          //   snapGrid={[25, 25]}
+          //   defaultViewport={defaultViewport}
+          //   fitView
+          //   attributionPosition="bottom-left"
+          //   defaultEdgeOptions={defaultEdgeOptions}
+          // >
+          //   <Controls />
+          //   <Background color="#aaa" gap={16} />
+          //   <MiniMap />
+          //   <DownloadButton />
+          // </ReactFlow>
+          <div className="flex items-center justify-center">
+            <canvas id="myChart" className="h-max"></canvas>
+          </div>
         )}
-        {/* <div className="mt-4 flex justify-center">
-          {!context.loading ? (
-            <button
-              className="ml-5 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
-              onClick={downloadPng}
-              disabled={context.loading}
-            >
-              Download as PNG
-            </button>
-          ) : null}
-        </div> */}
       </div>
     </>
   )

@@ -33,6 +33,7 @@ export default function MainLayout({
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
   const [loading, _setLoading] = useState<boolean>(false)
+  const [chartJsData, setChartJsData] = useState<any>(null)
 
   return (
     <DiagramContext.Provider
@@ -47,6 +48,8 @@ export default function MainLayout({
         setLoading: _setLoading,
         setTitle: setTitle,
         setDescription: setDescription,
+        chartJsData: chartJsData,
+        setChartJsData: setChartJsData,
       }}
     >
       {/* <header className="bg-pink-50 lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-112 lg:items-start lg:overflow-y-auto xl:w-120">

@@ -1,12 +1,19 @@
 import { ApifyData, generateEmbeddings } from '@/lib/openai'
-import { getReactCodeFlowJSONFile } from '@/lib/supabase'
+import {
+  DOCUMENTS_FOR_CHARTJS_TABLE,
+  DOCUMENTS_FOR_REACT_FLOW_TABLE,
+  getChartJsJSONFile,
+  getReactCodeFlowJSONFile,
+} from '@/lib/supabase'
 import ChartView from '@/components/ChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 
 const getEmbeddings = async () => {
-  const docs = await getReactCodeFlowJSONFile()
+  const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
+  const chartJsDocs = await getChartJsJSONFile()
+ 
 
-  if (!docs) {
+  if (!reactFlowCodeDocs || !chartJsDocs) {
     return {
       status: 404,
       body: JSON.stringify({
@@ -16,7 +23,15 @@ const getEmbeddings = async () => {
   }
 
   try {
-    await generateEmbeddings(docs as ApifyData[])
+    await generateEmbeddings(
+      reactFlowCodeDocs as ApifyData[],
+      DOCUMENTS_FOR_REACT_FLOW_TABLE,
+    )
+
+    await generateEmbeddings(
+      chartJsDocs as ApifyData[],
+      DOCUMENTS_FOR_CHARTJS_TABLE,
+    )
 
     return {
       status: 200,
@@ -37,7 +52,7 @@ const getEmbeddings = async () => {
 }
 
 export default async function Home() {
-  const embeddingsLoaded = await getEmbeddings()
+  await getEmbeddings()
 
   return (
     <div className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700 py-24 sm:py-32">

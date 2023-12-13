@@ -1,11 +1,8 @@
 import { ApifyData, generateEmbeddings } from '@/lib/openai'
-import {
-  DOCUMENTS_FOR_REACT_FLOW_TABLE,
-  getReactCodeFlowJSONFile,
-} from '@/lib/supabase'
+import { DOCUMENTS_FOR_CHARTJS_TABLE, getChartJsJSONFile } from '@/lib/supabase'
 
 export async function GET(req: Request) {
-  const docs = await getReactCodeFlowJSONFile()
+  const docs = await getChartJsJSONFile()
 
   if (!docs) {
     return {
@@ -17,10 +14,8 @@ export async function GET(req: Request) {
   }
 
   try {
-    await generateEmbeddings(
-      docs as ApifyData[],
-      DOCUMENTS_FOR_REACT_FLOW_TABLE,
-    )
+    await generateEmbeddings(docs as ApifyData[], DOCUMENTS_FOR_CHARTJS_TABLE)
+
     return {
       status: 200,
       body: JSON.stringify({
