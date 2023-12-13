@@ -1,4 +1,8 @@
-import { MATCH_DOCUMENTS_FOR_CHARTJS_TABLE, MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE, supabase } from '@/lib/supabase'
+import {
+  MATCH_DOCUMENTS_FOR_CHARTJS_TABLE,
+  MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
+  supabase,
+} from '@/lib/supabase'
 import {
   inputForChartJsContext,
   inputForReactFlowContext,
@@ -14,18 +18,24 @@ import {
 } from '@/lib/openai'
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+import { DiagramOrChartType } from '@/lib/utils'
 
 export const maxDuration = 200
 
 export async function POST(req: Request) {
   const json = await req.json()
   const { title: diagramTitle, description: diagramDescription } = json
-  // const inputEmbedding = await openAiModel.embeddings.create({
-  //   input: inputForReactFlowContext,
-  //   model: 'text-embedding-ada-002',
-  // })
+  const type = json.type as DiagramOrChartType
+
+  const inputToUse =
+    type === 'Flow Diagram' ? inputForReactFlowContext : inputForChartJsContext
+  const matchFunctionToUse =
+    type === 'Flow Diagram'
+      ? MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
+      : MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
+
   const inputEmbedding = await openAiModel.embeddings.create({
-    input: inputForChartJsContext,
+    input: inputToUse,
     model: 'text-embedding-ada-002',
   })
 
@@ -41,16 +51,10 @@ export async function POST(req: Request) {
 
   console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
 
-    // const matchFunctionToUse = MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
-    const matchFunctionToUse = MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
-
-  const { error: matchError, data } = await supabase.rpc(
-    matchFunctionToUse,
-    {
-      query_embedding: diagramTypeEmbeddings[0],
-      match_count: 5,
-    },
-  )
+  const { error: matchError, data } = await supabase.rpc(matchFunctionToUse, {
+    query_embedding: diagramTypeEmbeddings[0],
+    match_count: 5,
+  })
 
   if (matchError) {
     throw new Error(matchError.message)
@@ -75,44 +79,34 @@ export async function POST(req: Request) {
 
   console.log('Context Text: ', contextText)
 
-  // const assistantMessage1: ChatCompletionMessageParam = {
-  //   role: 'assistant',
-  //   content: promptForReactFlowContext(contextText),
-  // }
-
-  // const userMessage2: ChatCompletionMessageParam = {
-  //   role: 'user',
-  //   content: promptForResponse,
-  // }
-
-  // const assistantMessage3: ChatCompletionMessageParam = {
-  //   role: 'assistant',
-  //   content: promptForExampleCode,
-  // }
-
-  // const userMessage: ChatCompletionMessageParam = {
-  //   role: 'user',
-  //   content: promptForUserMessage(diagramTitle, diagramDescription),
-  // }
-
   const assistantMessage1: ChatCompletionMessageParam = {
     role: 'assistant',
-    content: promptForChartJsContext(contextText),
+    content:
+      type === 'Flow Diagram'
+        ? promptForReactFlowContext(contextText)
+        : promptForChartJsContext(contextText),
   }
 
   const userMessage2: ChatCompletionMessageParam = {
     role: 'user',
-    content: promptForChartJsResponse,
+    content:
+      type === 'Flow Diagram' ? promptForResponse : promptForChartJsResponse,
   }
 
   const assistantMessage3: ChatCompletionMessageParam = {
     role: 'assistant',
-    content: promptForChartJsExampleCode,
+    content:
+      type === 'Flow Diagram'
+        ? promptForExampleCode
+        : promptForChartJsExampleCode,
   }
 
   const userMessage: ChatCompletionMessageParam = {
     role: 'user',
-    content: promptForUserMessageForChartJs(diagramTitle, diagramDescription),
+    content:
+      type === 'Flow Diagram'
+        ? promptForUserMessage(diagramTitle, diagramDescription)
+        : promptForUserMessageForChartJs(diagramTitle, diagramDescription),
   }
 
   const res = await openAiModel.chat.completions.create({

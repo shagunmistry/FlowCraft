@@ -11,7 +11,6 @@ import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
   const chartJsDocs = await getChartJsJSONFile()
- 
 
   if (!reactFlowCodeDocs || !chartJsDocs) {
     return {
@@ -58,14 +57,15 @@ export default async function Home() {
     <div className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <p className="text-md font-semibold leading-7 text-white">
-            Diagram smarter, not harder. 🧠
+          <p className="text-semibold mt-4 text-xl text-indigo-700">
+            FlowCraft
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-indigo-700 sm:text-4xl">
             Text to Diagrams: Your ideas, visualized.
           </h1>
-          {/** The company name in subtitle format below */}
-          <p className="mt-4 text-xl text-gray-700 text-white">FlowCraft</p>
+          <p className="text-md font-semibold leading-7 text-white">
+            Diagram smarter, not harder. 🧠
+          </p>
           <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 text-gray-700 text-white lg:max-w-none lg:grid-cols-2">
             <ChartDescriptionInput />
             <div>

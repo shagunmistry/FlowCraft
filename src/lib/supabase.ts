@@ -130,24 +130,24 @@ export const loadChartJsData = async (): Promise<boolean> => {
 }
 
 export const getChartJsJSONFile = async (): Promise<ApifyData[] | null> => {
-  if (process.env.CHARTJS_SUPABASE_FILE) {
-    console.log('Checking Chart.js JSON file')
-    const response = await fetch(process.env.CHARTJS_SUPABASE_FILE, {
-      method: 'GET',
-    })
+  // if (process.env.CHARTJS_SUPABASE_FILE) {
+  //   console.log('Checking Chart.js JSON file')
+  //   const response = await fetch(process.env.CHARTJS_SUPABASE_FILE, {
+  //     method: 'GET',
+  //   })
 
-    if (!response.status || response.status !== 200) {
-      return null
-    }
+  //   if (!response.status || response.status !== 200) {
+  //     return null
+  //   }
 
-    const json = await response.json()
+  //   const json = await response.json()
 
-    if (!json) {
-      return null
-    }
+  //   if (!json) {
+  //     return null
+  //   }
 
-    return json
-  }
+  //   return json
+  // }
 
   return null
 }

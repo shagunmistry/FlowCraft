@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn } from '@/lib/utils'
@@ -14,6 +14,10 @@ export default function Dropdown({
   selectExample: (title: string, description: string) => void
 }) {
   const [selected, setSelected] = useState(values[2])
+
+  useEffect(() => {
+    setSelected(values[2])
+  }, [values])
 
   const handleSelect = (value: { title: string; description: string }) => {
     setSelected(value)

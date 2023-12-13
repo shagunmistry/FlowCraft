@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -17,7 +17,6 @@ import 'reactflow/dist/style.css'
 import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 //@ts-ignore
-import { saveAsPng } from 'save-html-as-image'
 import { ArrowDownIcon } from '@heroicons/react/20/solid'
 import DownloadButton from './DownloadImageButton'
 
@@ -167,29 +166,45 @@ export default function ChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
+  const [chartCreated, setChartCreated] = useState<boolean>(false)
+
+  const [chartJsData, setChartJsData] = useState<any>()
+
   const context = useContext(DiagramContext)
 
   useEffect(() => {
-    if (!context.nodes || !context.edges) return
-    if (context.nodes.length === 0 || context.edges.length === 0) return
+    if (context.type === 'Flow Diagram') {
+      if (!context.nodes || !context.edges) return
+      if (context.nodes.length === 0 || context.edges.length === 0) return
 
-    console.log('context.nodes', context.nodes)
-    console.log('context.edges', context.edges)
+      console.log('context.nodes', context.nodes)
+      console.log('context.edges', context.edges)
 
-    setNodes(context.nodes)
-    setEdges(context.edges)
-  }, [context.nodes, context.edges])
-
-  useEffect(() => {
-    if (!context.loading && context.chartJsData) {
+      setNodes(context.nodes)
+      setEdges(context.edges)
+    } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
+
+      // if a chart was already created, destroy it
+      if (chartCreated) {
+        Chart.getChart(ctx)?.destroy()
+      }
+
       const myChart = new Chart(ctx, {
         type: context.chartJsData.type || 'bar',
         ...context.chartJsData,
       })
+
+      setChartCreated(true)
     }
-  }, [context.loading, context.chartJsData])
+  }, [
+    context.nodes,
+    context.edges,
+    context.loading,
+    context.chartJsData,
+    context.type,
+  ])
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge(params, eds)),
@@ -218,29 +233,34 @@ export default function ChartView() {
             <Lottie animationData={LottieAnimation} loop={true} />
           </>
         ) : (
-          // <ReactFlow
-          //   nodes={nodes}
-          //   edges={edges}
-          //   onNodesChange={onNodesChange}
-          //   onEdgesChange={onEdgesChange}
-          //   onConnect={onConnect}
-          //   connectionLineStyle={connectionLineStyle}
-          //   connectionLineType={ConnectionLineType.SmoothStep}
-          //   snapToGrid={true}
-          //   snapGrid={[25, 25]}
-          //   defaultViewport={defaultViewport}
-          //   fitView
-          //   attributionPosition="bottom-left"
-          //   defaultEdgeOptions={defaultEdgeOptions}
-          // >
-          //   <Controls />
-          //   <Background color="#aaa" gap={16} />
-          //   <MiniMap />
-          //   <DownloadButton />
-          // </ReactFlow>
-          <div className="flex items-center justify-center">
-            <canvas id="myChart" className="h-max"></canvas>
-          </div>
+          <>
+            {context.type === 'Flow Diagram' ? (
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                connectionLineStyle={connectionLineStyle}
+                connectionLineType={ConnectionLineType.SmoothStep}
+                snapToGrid={true}
+                snapGrid={[25, 25]}
+                defaultViewport={defaultViewport}
+                fitView
+                attributionPosition="bottom-left"
+                defaultEdgeOptions={defaultEdgeOptions}
+              >
+                <Controls />
+                <Background color="#aaa" gap={16} />
+                <MiniMap />
+                <DownloadButton />
+              </ReactFlow>
+            ) : (
+              <div className="flex items-center justify-center">
+                <canvas id="myChart" className="h-max"></canvas>
+              </div>
+            )}
+          </>
         )}
       </div>
     </>
