@@ -269,7 +269,7 @@ export const inputForReactFlowContext =
   'Custom Nodes and Custom Edges and Dagre Tree and Horizontal Flow and Sub Flow and Elkjs Tree'
 
 /** Chart JS */
-export const promptForChartJsDiagram = `Given the following diagram description and title, your task is to generate an explainable ChartJS Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and UNDERSTANDABLE. BE AS DESCRIPTIVE AS POSSBILE IN THE DATA OBJECT YOU GENERATE. Use your knowledge based on the context of the description to generate the diagram.
+export const promptForChartJsDiagram = `Given the following diagram description and title, your task is to generate an explainable ChartJS Code Flow based on the description and title. The chart needs to be user friendly and understandable. It MUST have labels on the Y and X axis. BE AS DESCRIPTIVE AS POSSBILE IN THE DATA OBJECT YOU GENERATE. Use your knowledge based on the context of the description to generate the diagram.
 
 \n
 label 	string 	The label for the dataset which appears in the legend and tooltips.
