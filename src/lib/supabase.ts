@@ -15,6 +15,8 @@ export const MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE =
 export const DOCUMENTS_FOR_D2_TABLE = 'documents_for_d2'
 export const MATCH_DOCUMENTS_FOR_D2_TABLE = 'match_documents_for_d2'
 
+export const DOCUMENTS_FOR_CHARTJS_TABLE = 'documents_for_chartjs'
+export const MATCH_DOCUMENTS_FOR_CHARTJS_TABLE = 'match_documents_for_chartjs'
 
 export interface Metadata {
   canonicalUrl: string
@@ -37,9 +39,7 @@ export const checkIfEmbeddingsExist = async (
 ): Promise<boolean> => {
   console.log('Checking if embeddings exist for table: ', tableToCheck)
 
-  const { data, error } = await supabase
-    .from('documents_for_react_flow')
-    .select('*')
+  const { data, error } = await supabase.from(tableToCheck).select('*')
 
   if (error) {
     console.log('Error checking checkIfEmbeddingsExist : ', error)
@@ -49,6 +49,9 @@ export const checkIfEmbeddingsExist = async (
   console.log('data: ', data, ' Error: ', error)
 
   return true
+  // if (tableToCheck === DOCUMENTS_FOR_REACT_FLOW_TABLE) {
+  //   return true
+  // }
 
   // if (data && data.length > 0 && data[0].embedding) {
   //   return true
@@ -56,6 +59,8 @@ export const checkIfEmbeddingsExist = async (
 
   // return false
 }
+
+/** ReactFlow */
 
 /**
  * Get the React Code Flow JSON file from Supabase
@@ -102,4 +107,47 @@ export const loadReactFlowData = async (): Promise<boolean> => {
   }
 
   return false
+}
+
+/** Chart JS */
+
+export const loadChartJsData = async (): Promise<boolean> => {
+  // Make a request to the API to trigger data load into the DB
+  const response = await fetch('/api/chartjs-data-load', {
+    method: 'GET',
+  })
+
+  if (!response.status || response.status !== 200) {
+    return false
+  }
+
+  if (response.status === 200) {
+    console.log('Successfully loaded Chart.js data into the DB')
+    return true
+  }
+
+  return false
+}
+
+export const getChartJsJSONFile = async (): Promise<ApifyData[] | null> => {
+  // if (process.env.CHARTJS_SUPABASE_FILE) {
+  //   console.log('Checking Chart.js JSON file')
+  //   const response = await fetch(process.env.CHARTJS_SUPABASE_FILE, {
+  //     method: 'GET',
+  //   })
+
+  //   if (!response.status || response.status !== 200) {
+  //     return null
+  //   }
+
+  //   const json = await response.json()
+
+  //   if (!json) {
+  //     return null
+  //   }
+
+  //   return json
+  // }
+
+  return null
 }

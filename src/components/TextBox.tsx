@@ -2,8 +2,16 @@ import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useContext, useState } from 'react'
 
 import Dropdown from './Dropdown'
+import ChartOrDiagramSelection from './ChartOrDiagramSelection'
+import {
+  chartJsAverageNewYorkWeatherReport,
+  chartJsCancerRatesExampleReport,
+  chartJsNetflixFinancialExampleReport,
+  chartJsTeslaStockPricesExampleReport,
+} from '@/lib/chart-js.code'
+import { DiagramOrChartType } from '@/lib/utils'
 
-export const exampleTitlesAndDescriptions = [
+export const exampleFlowDiagramPrompts = [
   {
     title: 'House Buying Process',
     description:
@@ -26,19 +34,57 @@ export const exampleTitlesAndDescriptions = [
   },
 ]
 
+export const exampleChartDataPrompts = [
+  {
+    title: 'Average Temperature in NYC',
+    description: chartJsAverageNewYorkWeatherReport,
+  },
+  {
+    title: 'Netflix Sales Report',
+    description: chartJsNetflixFinancialExampleReport,
+  },
+  {
+    title: 'Tesla Stock Price',
+    description: chartJsTeslaStockPricesExampleReport,
+  },
+  {
+    title: 'Annual Cancer Rates',
+    description: chartJsCancerRatesExampleReport,
+  },
+]
+
+export const typeSelectionOptions = [
+  {
+    id: 1,
+    title: 'Flow Diagram',
+    description:
+      'A flow diagram is a diagram representing some kind of process or workflow.',
+    prompts: exampleFlowDiagramPrompts,
+  },
+  {
+    id: 2,
+    title: 'Chart',
+    description:
+      'A chart is a graphical representation of data, in which "the data is represented by symbols, such as bars in a bar chart, lines in a line chart, or slices in a pie chart".',
+    prompts: exampleChartDataPrompts,
+  },
+]
+
 export default function TextBox() {
-  const [title, setTitle] = useState<string>(
-    exampleTitlesAndDescriptions[2].title,
-  )
+  const [title, setTitle] = useState<string>(exampleFlowDiagramPrompts[2].title)
   const [description, setDescription] = useState<string>(
-    exampleTitlesAndDescriptions[2].description,
+    exampleFlowDiagramPrompts[2].description,
   )
   const [error, setError] = useState<string | null>('')
+
+  const [selectedType, setSelectedType] = useState(typeSelectionOptions[0])
 
   const context = useContext(DiagramContext)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const type = selectedType.title as DiagramOrChartType
     context.setLoading(true)
 
     console.log('--- title', title)
@@ -53,6 +99,7 @@ export default function TextBox() {
         body: JSON.stringify({
           title: title,
           description: description,
+          type: type,
         }),
       })
 
@@ -63,9 +110,16 @@ export default function TextBox() {
       console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
       const diagramResult = JSON.parse(diagramJson.result)
 
-      if (diagramResult && diagramResult.nodes && diagramResult.edges) {
+      if (
+        diagramResult &&
+        diagramResult.nodes &&
+        diagramResult.edges &&
+        type === 'Flow Diagram'
+      ) {
         context.setNodes(diagramResult.nodes)
         context.setEdges(diagramResult.edges)
+      } else if (diagramResult && diagramResult.data && type === 'Chart') {
+        context.setChartJsData(diagramResult)
       }
 
       context.setLoading(false)
@@ -97,14 +151,29 @@ export default function TextBox() {
     setDescription(description)
   }
 
+  const selectOption = (option: {
+    id: number
+    title: string
+    description: string
+    prompts: { title: string; description: string }[]
+  }) => {
+    console.log('Selecting option', option)
+    setSelectedType(option)
+    selectExample(option.prompts[2].title, option.prompts[2].description)
+    context.setType(option.title as DiagramOrChartType)
+    context.setTitle(option.prompts[2].title)
+    context.setDescription(option.prompts[2].description)
+  }
+
   return (
     <>
-      {/** Show a dropdown for example title and description values */}
-
-      <Dropdown
-        values={exampleTitlesAndDescriptions}
-        selectExample={selectExample}
+      <ChartOrDiagramSelection
+        options={typeSelectionOptions}
+        selectedOption={selectedType}
+        setSelectedOption={selectOption}
       />
+
+      <Dropdown values={selectedType.prompts} selectExample={selectExample} />
       <form className="relative" onSubmit={handleSubmit}>
         <div className="overflow-hidden rounded-lg shadow-lg focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
           <label htmlFor="title" className="sr-only">
@@ -142,8 +211,6 @@ export default function TextBox() {
         </div>
 
         <div className="absolute inset-x-px bottom-0">
-          {/* Actions: These are just examples to demonstrate the concept, replace/wire these up however makes sense for your project. */}
-
           <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
             <div className="flex">
               {/* <button

@@ -1,44 +1,60 @@
-import { MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE, supabase } from '@/lib/supabase'
 import {
+  MATCH_DOCUMENTS_FOR_CHARTJS_TABLE,
+  MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
+  supabase,
+} from '@/lib/supabase'
+import {
+  inputForChartJsContext,
+  inputForReactFlowContext,
   openAiModel,
+  promptForChartJsContext,
+  promptForChartJsExampleCode,
+  promptForChartJsResponse,
   promptForExampleCode,
   promptForReactFlowContext,
   promptForResponse,
   promptForUserMessage,
+  promptForUserMessageForChartJs,
 } from '@/lib/openai'
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+import { DiagramOrChartType } from '@/lib/utils'
 
 export const maxDuration = 200
 
 export async function POST(req: Request) {
   const json = await req.json()
   const { title: diagramTitle, description: diagramDescription } = json
-  const reactFlowNodesAndEdgesEmbedding = await openAiModel.embeddings.create({
-    input:
-      'Custom Nodes and Custom Edges and Dagre Tree and Horizontal Flow and Sub Flow and Elkjs Tree',
+  const type = json.type as DiagramOrChartType
+
+  const inputToUse =
+    type === 'Flow Diagram' ? inputForReactFlowContext : inputForChartJsContext
+  const matchFunctionToUse =
+    type === 'Flow Diagram'
+      ? MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
+      : MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
+
+  const inputEmbedding = await openAiModel.embeddings.create({
+    input: inputToUse,
     model: 'text-embedding-ada-002',
   })
 
-  if (!reactFlowNodesAndEdgesEmbedding) {
+  if (!inputEmbedding) {
     console.error(
       'Failed to create embeddings for the diagram description or type',
     )
   }
 
-  const diagramTypeEmbeddings = reactFlowNodesAndEdgesEmbedding.data.map(
+  const diagramTypeEmbeddings = inputEmbedding.data.map(
     (embedding) => embedding.embedding,
   )
 
   console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
 
-  const { error: matchError, data } = await supabase.rpc(
-    MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
-    {
-      query_embedding: diagramTypeEmbeddings[0],
-      match_count: 5,
-    },
-  )
+  const { error: matchError, data } = await supabase.rpc(matchFunctionToUse, {
+    query_embedding: diagramTypeEmbeddings[0],
+    match_count: 5,
+  })
 
   if (matchError) {
     throw new Error(matchError.message)
@@ -65,22 +81,32 @@ export async function POST(req: Request) {
 
   const assistantMessage1: ChatCompletionMessageParam = {
     role: 'assistant',
-    content: promptForReactFlowContext(contextText),
+    content:
+      type === 'Flow Diagram'
+        ? promptForReactFlowContext(contextText)
+        : promptForChartJsContext(contextText),
   }
 
   const userMessage2: ChatCompletionMessageParam = {
     role: 'user',
-    content: promptForResponse,
+    content:
+      type === 'Flow Diagram' ? promptForResponse : promptForChartJsResponse,
   }
 
   const assistantMessage3: ChatCompletionMessageParam = {
     role: 'assistant',
-    content: promptForExampleCode,
+    content:
+      type === 'Flow Diagram'
+        ? promptForExampleCode
+        : promptForChartJsExampleCode,
   }
 
   const userMessage: ChatCompletionMessageParam = {
     role: 'user',
-    content: promptForUserMessage(diagramTitle, diagramDescription),
+    content:
+      type === 'Flow Diagram'
+        ? promptForUserMessage(diagramTitle, diagramDescription)
+        : promptForUserMessageForChartJs(diagramTitle, diagramDescription),
   }
 
   const res = await openAiModel.chat.completions.create({

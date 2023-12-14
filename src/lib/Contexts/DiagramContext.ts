@@ -1,26 +1,35 @@
 import { createContext } from 'react'
 import { Edge, Node } from 'reactflow'
+import { DiagramOrChartType } from '../utils'
 
 export const DiagramContext = createContext<{
-  nodes: Node[]
-  setNodes: (nodes: Node[]) => void
-  edges: Edge[]
-  setEdges: (edges: Edge[]) => void
-  title: string
+  chartJsData: any
   description: string
+  edges: Edge[]
   loading: boolean
-  setLoading: (loading: boolean) => void
-  setTitle: (title: string) => void
+  nodes: Node[]
+  setChartJsData: (chartJsData: any) => void
   setDescription: (description: string) => void
+  setEdges: (edges: Edge[]) => void
+  setLoading: (loading: boolean) => void
+  setNodes: (nodes: Node[]) => void
+  setTitle: (title: string) => void
+  setType: (type: DiagramOrChartType) => void
+  title: string
+  type: DiagramOrChartType
 }>({
-  nodes: [],
-  setNodes: () => {},
-  edges: [],
-  setEdges: () => {},
-  title: '',
+  chartJsData: {},
   description: '',
+  edges: [],
   loading: false,
-  setLoading: () => {},
-  setTitle: () => {},
+  nodes: [],
+  setChartJsData: () => {},
   setDescription: () => {},
+  setEdges: () => {},
+  setLoading: () => {},
+  setNodes: () => {},
+  setTitle: () => {},
+  setType: () => {},
+  title: '',
+  type: 'Flow Diagram',
 })
