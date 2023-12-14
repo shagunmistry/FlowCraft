@@ -138,7 +138,7 @@ export const promptForDiagramTitle = (diagramTitle: string) => {
 }
 
 /** React Flow */
-export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. If needed, you can summarize the description and title in your own words to make the diagram more user-friendly and UNDERSTANDABLE. BE AS DESCRIPTIVE AS POSSBILE IN THE EDGES AND NODES AND LABELS USED. Use your knowledge based on the context of the description to generate the diagram. 
+export const promptForDiagram = `Given the following diagram description and title, your task is to generate an explainable Diagram Code Flow based on the description and title. The diagram MUST be user-friendly and UNDERSTANDABLE. BE AS DESCRIPTIVE AS POSSBILE IN THE EDGES AND NODES AND LABELS USED. Use your knowledge based on the context of the description to generate the diagram. 
 
 \n
 The nodes are used to denote an entity or object, also referred to as a vertex. Each vertex could be used for representing any type of data, including locations, people, concepts, objects, or any other type of element, depending on the application.
