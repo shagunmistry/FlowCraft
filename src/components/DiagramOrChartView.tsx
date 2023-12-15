@@ -11,6 +11,7 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   ConnectionLineType,
+  updateEdge,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -21,12 +22,16 @@ import { ArrowDownIcon } from '@heroicons/react/20/solid'
 import DownloadButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
-
-const connectionLineStyle = { stroke: '#00FF00' }
+import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
+import NodesEdgesDataTable from './ReactFlow/NodesEdgesDataTable'
 
 const defaultEdgeOptions = {
   animated: true,
   type: ConnectionLineType.SimpleBezier,
+}
+
+const nodeTypes = {
+  customNode: CustomInputBoxNode,
 }
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
@@ -159,26 +164,24 @@ const initialEdges = [
   },
 ]
 
-export default function ChartView() {
-  // const [nodes, setNodes] = useState<Node[]>(initialNodes)
-  // const [edges, setEdges] = useState<Edge[]>(initialEdges)
-
+export default function DiagramOrChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const [chartCreated, setChartCreated] = useState<boolean>(false)
 
-  const [chartJsData, setChartJsData] = useState<any>()
-
   const context = useContext(DiagramContext)
 
   useEffect(() => {
     if (context.type === 'Flow Diagram') {
-      if (!context.nodes || !context.edges) return
+      console.log('we are in the flow diagram')
+      console.log('Edges: ', context.edges)
+      console.log('Nodes: ', context.nodes)
+      if (!context.nodes && !context.edges) return
       if (context.nodes.length === 0 || context.edges.length === 0) return
 
-      console.log('context.nodes', context.nodes)
-      console.log('context.edges', context.edges)
+      console.log('context.nodes --> ', context.nodes)
+      console.log('context.edges -->', context.edges)
 
       setNodes(context.nodes)
       setEdges(context.edges)
@@ -207,8 +210,66 @@ export default function ChartView() {
   ])
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
+    (params: any) => {
+      console.log('onConnect params', params)
+      setEdges((eds) => addEdge(params, eds))
+    },
+    [setEdges],
+  )
+
+  const onEdgeUpdate = useCallback(
+    (oldEdge: any, newConnection: any) =>
+      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
     [],
+  )
+
+  const addNode = useCallback(() => {
+    const copyOfSecondNode = nodes[1]
+    setNodes((ns) => [
+      ...ns,
+      {
+        ...copyOfSecondNode,
+        id: `${ns.length + 1}`,
+        data: {
+          ...copyOfSecondNode.data,
+          label: `Node ${ns.length + 1}`,
+        },
+        position: {
+          x: 100,
+          y: 200,
+        },
+      },
+    ])
+  }, [nodes])
+
+  const updateNodeLabel = useCallback(
+    (nodeId: string, newLabel: string) => {
+      setNodes((ns) => {
+        const nodeIndex = ns.findIndex((n) => n.id === nodeId)
+        const node = ns[nodeIndex]
+        const newNode = {
+          ...node,
+          data: {
+            ...node.data,
+            label: newLabel,
+          },
+        }
+        ns[nodeIndex] = newNode
+        return ns
+      })
+    },
+    [nodes],
+  )
+
+  const deleteNode = useCallback(
+    (nodeId: string) => {
+      setNodes((ns) => {
+        const nodeIndex = ns.findIndex((n) => n.id === nodeId)
+        ns.splice(nodeIndex, 1)
+        return ns
+      })
+    },
+    [nodes],
   )
 
   return (
@@ -235,26 +296,29 @@ export default function ChartView() {
         ) : (
           <>
             {context.type === 'Flow Diagram' ? (
-              <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                connectionLineStyle={connectionLineStyle}
-                connectionLineType={ConnectionLineType.SmoothStep}
-                snapToGrid={true}
-                snapGrid={[25, 25]}
-                defaultViewport={defaultViewport}
-                fitView
-                attributionPosition="bottom-left"
-                defaultEdgeOptions={defaultEdgeOptions}
-              >
-                <Controls />
-                <Background color="#aaa" gap={16} />
-                <MiniMap />
-                <DownloadButton />
-              </ReactFlow>
+              <>
+                <ReactFlow
+                  nodes={nodes}
+                  edges={edges}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={onEdgesChange}
+                  onEdgeUpdate={onEdgeUpdate}
+                  onConnect={onConnect}
+                  connectionLineType={ConnectionLineType.SimpleBezier}
+                  snapToGrid={true}
+                  snapGrid={[25, 25]}
+                  defaultViewport={defaultViewport}
+                  fitView
+                  attributionPosition="bottom-left"
+                  defaultEdgeOptions={defaultEdgeOptions}
+                  nodeTypes={nodeTypes}
+                >
+                  <Controls />
+                  <Background color="#aaa" gap={16} />
+                  <MiniMap />
+                  <DownloadButton />
+                </ReactFlow>
+              </>
             ) : (
               <div className="flex items-center justify-center">
                 <canvas id="myChart" className="h-max"></canvas>
@@ -263,6 +327,19 @@ export default function ChartView() {
           </>
         )}
       </div>
+      {context.type === 'Flow Diagram' ? (
+        <>
+          <NodesEdgesDataTable
+            nodes={nodes}
+            edges={edges}
+            setNodes={setNodes}
+            deleteNode={deleteNode}
+            onNodesChange={onNodesChange}
+            addNode={addNode}
+            updateNodeLabel={updateNodeLabel}
+          />
+        </>
+      ) : null}
     </>
   )
 }

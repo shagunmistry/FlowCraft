@@ -5,8 +5,9 @@ import {
   getChartJsJSONFile,
   getReactCodeFlowJSONFile,
 } from '@/lib/supabase'
-import ChartView from '@/components/ChartView'
+import DiagramOrChartView from '@/components/DiagramOrChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
+import PricingTiers from '@/components/PricingTiers'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
@@ -94,7 +95,8 @@ export default async function Home() {
         </div>
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <ChartView />
+        <DiagramOrChartView />
+        <PricingTiers />
       </div>
     </div>
   )

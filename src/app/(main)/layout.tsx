@@ -55,7 +55,7 @@ export default function MainLayout({
       </main>
       <footer className="bg-pink-50 py-10 pb-40 sm:py-16 sm:pb-32 lg:hidden">
         <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4">
-          <EditorSection />
+          {/* <EditorSection /> */}
           <h2 className="mt-8 flex items-center font-mono text-sm font-medium leading-7 text-pink-900">
             <span className="ml-2.5">Hosted by</span>
           </h2>
