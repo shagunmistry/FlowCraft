@@ -7,7 +7,7 @@ import {
 } from '@/lib/supabase'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
-import PricingTiers from '@/components/PricingTiers'
+import PricingTier from '@/components/PricingTier'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
@@ -55,10 +55,10 @@ export default async function Home() {
   await getEmbeddings()
 
   return (
-    <div className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700 py-24 sm:py-32">
+    <div className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <p className="text-semibold mt-4 text-xl text-indigo-700">
+          <p className="text-semibold text-xl text-indigo-700">
             FlowCraft
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-indigo-700 sm:text-4xl">
@@ -88,7 +88,7 @@ export default async function Home() {
                 button to give us your thoughts.
               </p>
               <p className="mt-8 text-sm font-semibold">
-                Editing features coming soon!
+                More coming soon!
               </p>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default async function Home() {
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <DiagramOrChartView />
-        <PricingTiers />
+        <PricingTier />
       </div>
     </div>
   )

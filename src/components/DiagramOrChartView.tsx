@@ -23,7 +23,7 @@ import DownloadButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
-import NodesEdgesDataTable from './ReactFlow/NodesEdgesDataTable'
+import EditableTableForDiagram from './ReactFlow/EditableTableForDiagram'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -329,7 +329,7 @@ export default function DiagramOrChartView() {
       </div>
       {context.type === 'Flow Diagram' ? (
         <>
-          <NodesEdgesDataTable
+          <EditableTableForDiagram
             nodes={nodes}
             edges={edges}
             setNodes={setNodes}

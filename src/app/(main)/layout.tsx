@@ -16,8 +16,6 @@ export default function MainLayout({
 }: {
   children: React.ReactNode
 }) {
-  let hosts = ['Shagun Mistry']
-
   const [title, setTitle] = useState<string>(exampleFlowDiagramPrompts[2].title)
   const [description, setDescription] = useState<string>(
     exampleFlowDiagramPrompts[2].description,
@@ -53,24 +51,17 @@ export default function MainLayout({
       <main>
         <div className="relative">{children}</div>
       </main>
-      <footer className="bg-pink-50 py-10 pb-40 sm:py-16 sm:pb-32 lg:hidden">
+      <footer>
         <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4">
-          {/* <EditorSection /> */}
-          <h2 className="mt-8 flex items-center font-mono text-sm font-medium leading-7 text-pink-900">
-            <span className="ml-2.5">Hosted by</span>
+          <h2 className="flex items-center font-mono text-sm font-medium leading-7 text-pink-900">
+            <span className="ml-2.5">Created by</span>
+            <a
+              href="https://twitter.com/mistry_shagun"
+              className="ml-1 text-pink-500 hover:text-pink-600"
+            >
+              @ShagunMistry
+            </a>
           </h2>
-          <div className="mt-2 flex gap-6 text-sm font-bold leading-7 text-pink-900">
-            {hosts.map((host, hostIndex) => (
-              <Fragment key={host}>
-                {hostIndex !== 0 && (
-                  <span aria-hidden="true" className="text-pink-400">
-                    /
-                  </span>
-                )}
-                {host}
-              </Fragment>
-            ))}
-          </div>
         </div>
       </footer>
 
