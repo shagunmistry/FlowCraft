@@ -1,13 +1,39 @@
 'use client'
-import { ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid'
-import Image from 'next/image'
+import { StarIcon } from '@heroicons/react/20/solid'
+import Image, { StaticImageData } from 'next/image'
 
-import FlowCraftLogo from '@/images/FlowCraftLogo.png'
 import ReactFlow, { Controls, MiniMap } from 'reactflow'
 import { ReactFlowExamples } from '@/lib/react-flow.code'
-import FlowCraftTeacher from '@/images/FlowCraft_ForTeachers_Pic.png'
 
-export default function Example() {
+export default function ForTeachers({
+  headline,
+  subheadline,
+  ratedBy,
+  imageSrc,
+  imageAlt,
+  imageDescription,
+  imageDescriptionSubtext,
+  contentArea,
+  ctaHeader,
+  ctaSubHeader,
+  nodes,
+  edges,
+  diagramTitle,
+}: {
+  headline: string
+  subheadline: string
+  ratedBy: string
+  imageSrc: StaticImageData
+  imageAlt: string
+  imageDescription: string
+  imageDescriptionSubtext: string
+  contentArea: { headline: string; subheadline: string }[]
+  ctaHeader: string
+  ctaSubHeader: string
+  nodes: any[]
+  edges: any[]
+  diagramTitle: string
+}) {
   const squareSvgs = () => {
     return (
       <>
@@ -49,13 +75,9 @@ export default function Example() {
               <div className="mt-20">
                 <div className="mt-6 sm:max-w-xl">
                   <h1 className="text-4xl font-bold tracking-tight text-pink-900 sm:text-5xl">
-                    Engage Students, Explain Concepts, and Elevate Learning
+                    {headline}
                   </h1>
-                  <p className="mt-6 text-xl text-gray-500">
-                    Teachers, say goodbye to static slides and hello to
-                    interactive diagrams & charts that bring your lessons to
-                    life.
-                  </p>
+                  <p className="mt-6 text-xl text-gray-500">{subheadline}</p>
                 </div>
                 <form
                   action="#"
@@ -98,7 +120,7 @@ export default function Example() {
                       </span>{' '}
                       by{' '}
                       <span className="font-medium text-pink-500">
-                        Teachers and Educators
+                        {ratedBy}
                       </span>
                     </div>
                   </div>
@@ -123,18 +145,34 @@ export default function Example() {
               </div>
               <div className="relative -mr-40 pl-6 shadow-lg sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-full lg:max-w-none lg:pl-12">
                 <h1 className="animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-black text-2xl font-bold text-rose-400">
-                  "How does the mitochondria produce energy?"
+                  "{diagramTitle}"
                 </h1>
                 <ReactFlow
-                  nodes={ReactFlowExamples.forTeachersMitochondria.nodes}
-                  edges={ReactFlowExamples.forTeachersMitochondria.edges}
+                  nodes={nodes}
+                  edges={edges}
                   fitView={true}
-                  className="overflow-hidden rounded-lg bg-black shadow-lg lg:h-full lg:w-full"
+                  className="transform overflow-hidden rounded-lg bg-black text-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:scale-110 lg:h-full lg:w-full"
                   attributionPosition="top-right"
+                  contentEditable={true}
                 >
                   <Controls />
                   <MiniMap />
                 </ReactFlow>
+                {/** Show tips on how to use the diagram */}
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex items-center gap-x-2">
+                    <div className="h-2 w-2 rounded-full bg-rose-500" />
+                    <div className="text-sm font-medium text-gray-500">
+                      You will be able to edit this diagram after you sign up!
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-x-2">
+                    <div className="h-2 w-2 rounded-full bg-rose-500" />
+                    <div className="text-sm font-medium text-gray-500">
+                      Scroll to zoom in and out {'🔎'}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -163,8 +201,8 @@ export default function Example() {
                 <div className="relative overflow-hidden rounded-2xl pb-10 pt-64 shadow-xl">
                   <Image
                     className="absolute inset-0 h-full w-full object-cover"
-                    src={FlowCraftTeacher}
-                    alt="FlowCraft Teacher"
+                    src={imageSrc}
+                    alt={imageAlt}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-pink-600 via-pink-600 opacity-90" />
                   <div className="relative px-8">
@@ -178,17 +216,12 @@ export default function Example() {
                         >
                           <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
                         </svg>
-                        <p className="relative">
-                          FlowCraft diagrams have become my secret weapon for
-                          simple and effective diagrams. I can tailor visuals to
-                          different learning styles, and it's like each student
-                          finally clicks!
-                        </p>
+                        <p className="relative">{imageDescription}</p>
                       </div>
 
                       <footer className="mt-4">
                         <p className="text-base font-semibold text-pink-200">
-                          Mrs. Thompson, 6th Grade Science Teacher
+                          {imageDescriptionSubtext}
                         </p>
                       </footer>
                     </blockquote>
@@ -199,48 +232,16 @@ export default function Example() {
 
             <div className="relative mx-auto max-w-md px-6 sm:max-w-3xl lg:px-0">
               {/* Content area */}
-              <div className="pt-12 sm:pt-16 lg:pt-20">
-                <h2 className="text-3xl font-bold tracking-tight text-pink-900 sm:text-4xl">
-                  Visually Explain Even the Toughest Topics
-                </h2>
-                <div className="mt-6 space-y-6 text-gray-500">
-                  <p className="text-base leading-7">
-                    Our FlowCraft AI-Assisted diagrams transform complex
-                    concepts into clear, eye-catching visuals that ignite
-                    understanding and leave your students saying "Aha!" not
-                    "Huh?".
-                  </p>
+              {contentArea.map((item) => (
+                <div key={item.headline} className="pt-12 sm:pt-16 lg:pt-20">
+                  <h2 className="text-3xl font-bold tracking-tight text-pink-900 sm:text-4xl">
+                    {item.headline}
+                  </h2>
+                  <div className="mt-6 space-y-6 text-gray-500">
+                    <p className="text-base leading-7">{item.subheadline}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="pt-12 sm:pt-16 lg:pt-20">
-                <h2 className="text-3xl font-bold tracking-tight text-pink-900 sm:text-4xl">
-                  Boost Engagement and Retention with Interactive Visuals
-                </h2>
-                <div className="mt-6 space-y-6 text-gray-500">
-                  <p className="text-base leading-7">
-                    Passive lectures are a thing of the past. Our interactive
-                    FlowCraft Diagrams, keep students glued to their screens and
-                    actively participate in their learning journey. Say hello to
-                    soaring engagement and knowledge retention that sticks!
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-12 sm:pt-16 lg:pt-20">
-                <h2 className="text-3xl font-bold tracking-tight text-pink-900 sm:text-4xl">
-                  More Time to Inspire, Less Time Juggling Tools
-                </h2>
-                <div className="mt-6 space-y-6 text-gray-500">
-                  <p className="text-base leading-7">
-                    Stop wasting precious hours crafting visuals! Our platform
-                    allows you to create professional-quality diagrams & charts
-                    in minutes, freeing up your time to focus on what truly
-                    matters: inspiring your students and making learning
-                    unforgettable.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -286,12 +287,10 @@ export default function Example() {
               <div className="relative">
                 <div className="sm:text-center">
                   <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                    Get notified when we&rsquo;re launching.
+                    {ctaHeader}
                   </h2>
                   <p className="mx-auto mt-6 max-w-2xl text-lg text-pink-100">
-                    We&rsquo;re working hard to finish the development of this
-                    site. Sign up to receive updates and we&rsquo;ll let you
-                    know when we&rsquo;re ready.
+                    {ctaSubHeader}
                   </p>
                 </div>
                 <form

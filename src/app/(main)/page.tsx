@@ -58,9 +58,7 @@ export default async function Home() {
     <div className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <p className="text-semibold text-xl text-indigo-700">
-            FlowCraft
-          </p>
+          <p className="text-semibold text-xl text-indigo-700">FlowCraft</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-indigo-700 sm:text-4xl">
             Text to Diagrams: Your ideas, visualized.
           </h1>
@@ -87,16 +85,19 @@ export default async function Home() {
                 feedback on how we can improve. Please click on the Feedback
                 button to give us your thoughts.
               </p>
-              <p className="mt-8 text-sm font-semibold">
-                More coming soon!
-              </p>
+              <p className="mt-8 text-sm font-semibold">More coming soon!</p>
             </div>
           </div>
         </div>
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <DiagramOrChartView />
-        <PricingTier />
+        {/** Only show when not in production */}
+        {process.env.NODE_ENV !== 'production' && (
+          <div className="mt-10">
+            <PricingTier />
+          </div>
+        )}
       </div>
     </div>
   )

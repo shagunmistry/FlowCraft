@@ -9,10 +9,10 @@ import Link from 'next/link'
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'For Teachers', href: '/teachers' },
-  { name: 'For Students', href: '/students' },
-  { name: 'For Healthcare', href: '/healthcare' },
-  { name: 'For Engineers', href: '/engineers' },
+  { name: 'For Teachers', href: '/demos/teachers' },
+  { name: 'For Students', href: '/demos/students' },
+  { name: 'For Healthcare', href: '/demos/healthcare' },
+  { name: 'For Engineers', href: '/demos/engineers' },
 ]
 
 export default function Navbar() {
@@ -26,7 +26,7 @@ export default function Navbar() {
       >
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">FlowCraft</span>
             <Image
               className="h-8 w-auto"
               src={FlowCraftLogo}

@@ -106,7 +106,7 @@ export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
           ))}
         </div>
         <p className="mt-8 text-center text-base text-gray-400">
-          &copy; 2020 Your Company, Inc. All rights reserved.
+          &copy; 2023 FlowCraft. All rights reserved.
         </p>
       </div>
     </footer>
