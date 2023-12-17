@@ -10,6 +10,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { exampleFlowDiagramPrompts } from '@/components/TextBox'
 import { DiagramOrChartType } from '@/lib/utils'
 import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
+import Navbar from '@/components/Navbar'
 
 export default function MainLayout({
   children,
@@ -49,6 +50,7 @@ export default function MainLayout({
       }}
     >
       <main>
+        <Navbar />
         <div className="relative">{children}</div>
       </main>
       <footer>

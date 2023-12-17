@@ -197,6 +197,174 @@ export const ReactFlowExamples = {
         },
       ]`,
   },
+  forTeachersMitochondria: {
+    nodes: [
+      {
+        id: 'mitochondria',
+        data: {
+          label: 'Mitochondria',
+        },
+        position: {
+          x: 250,
+          y: -50,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 250,
+          y: -50,
+        },
+        dragging: false,
+      },
+      {
+        id: 'cellPhysiology',
+        data: {
+          label: 'Cell Physiology',
+        },
+        position: {
+          x: 100,
+          y: 100,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 100,
+          y: 100,
+        },
+        dragging: false,
+      },
+      {
+        id: 'pathology',
+        data: {
+          label: 'Pathology',
+        },
+        position: {
+          x: 400,
+          y: 75,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 400,
+          y: 75,
+        },
+        dragging: false,
+      },
+      {
+        id: 'atpSynthesis',
+        data: {
+          label: 'ATP Synthesis',
+        },
+        position: {
+          x: -25,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: -25,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: 'caHomeostasis',
+        data: {
+          label: 'Ca2+ Homeostasis',
+        },
+        position: {
+          x: 175,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 175,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: 'metabolicPathways',
+        data: {
+          label: 'Metabolic Pathways',
+        },
+        position: {
+          x: 375,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 375,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: 'radicalProduction',
+        data: {
+          label: 'Radical Production',
+        },
+        position: {
+          x: 550,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: true,
+        positionAbsolute: {
+          x: 550,
+          y: 250,
+        },
+        dragging: false,
+      },
+    ],
+    edges: [
+      {
+        id: 'e1',
+        source: 'mitochondria',
+        target: 'cellPhysiology',
+        label: 'Impacts',
+      },
+      {
+        id: 'e2',
+        source: 'mitochondria',
+        target: 'pathology',
+        label: 'Impacts',
+      },
+      {
+        id: 'e3',
+        source: 'cellPhysiology',
+        target: 'atpSynthesis',
+        label: 'Involved in',
+      },
+      {
+        id: 'e4',
+        source: 'cellPhysiology',
+        target: 'caHomeostasis',
+        label: 'Involved in',
+      },
+      {
+        id: 'e5',
+        source: 'pathology',
+        target: 'metabolicPathways',
+        label: 'Involved in',
+      },
+      {
+        id: 'e6',
+        source: 'pathology',
+        target: 'radicalProduction',
+        label: 'Involved in',
+      },
+    ],
+  },
 }
 
 export const customNodeCodeExample = `

@@ -284,7 +284,7 @@ export default function DiagramOrChartView() {
         </div>
       </div>
 
-      <div className="mt-14 h-screen rounded-xl bg-pink-50 shadow-lg">
+      <div className="mt-14 h-screen rounded-xl bg-black shadow-lg">
         {context.loading ? (
           <>
             <div className="text-md flex items-center justify-center text-center text-pink-500">
@@ -312,9 +312,13 @@ export default function DiagramOrChartView() {
                   attributionPosition="bottom-left"
                   defaultEdgeOptions={defaultEdgeOptions}
                   nodeTypes={nodeTypes}
+                  onClick={() => {
+                    console.log('Nodes: ', nodes)
+                    console.log('Edges: ', edges)
+                  }}
                 >
                   <Controls />
-                  <Background color="#aaa" gap={16} />
+                  {/* <Background color="#000000" gap={16} /> */}
                   <MiniMap />
                   <DownloadButton />
                 </ReactFlow>
@@ -327,7 +331,7 @@ export default function DiagramOrChartView() {
           </>
         )}
       </div>
-      {context.type === 'Flow Diagram' ? (
+      {context.type === 'Flow Diagram' && !context.loading ? (
         <>
           <EditableTableForDiagram
             nodes={nodes}
