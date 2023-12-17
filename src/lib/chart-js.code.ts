@@ -301,7 +301,12 @@ export const exampleChartJsDataForTesla = {
       display: true,
       text: 'Tesla Stock Price - Financial Highlights',
     },
-    plugins: {},
+    plugins: {
+      title: {
+        display: true,
+        text: 'Tesla Stock Price - Financial Highlights',
+      },
+    },
     scales: {
       x: {
         axis: 'x',

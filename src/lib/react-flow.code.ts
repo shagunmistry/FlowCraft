@@ -365,6 +365,252 @@ export const ReactFlowExamples = {
       },
     ],
   },
+  forEngineersAutopilot: {
+    nodes: [
+      {
+        id: '1',
+        data: {
+          label: 'Direct short-term behavioral adaptations',
+        },
+        position: {
+          x: 0,
+          y: 75,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 0,
+          y: 75,
+        },
+        dragging: false,
+      },
+      {
+        id: '2',
+        data: {
+          label: 'Indirect long-term behavioral adaptations',
+        },
+        position: {
+          x: 350,
+          y: 75,
+        },
+        width: 150,
+        height: 58,
+        selected: true,
+        dragging: false,
+        positionAbsolute: {
+          x: 350,
+          y: 75,
+        },
+      },
+      {
+        id: '3',
+        data: {
+          label: 'Changes in travel behavior',
+        },
+        position: {
+          x: 700,
+          y: 75,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 700,
+          y: 75,
+        },
+        dragging: false,
+      },
+      {
+        id: '4',
+        data: {
+          label: 'Increased situational awareness',
+        },
+        position: {
+          x: -75,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: -75,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '5',
+        data: {
+          label: 'Decreased mental and physical workload',
+        },
+        position: {
+          x: 100,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 100,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '6',
+        data: {
+          label: 'Decrease in aggressive driving',
+        },
+        position: {
+          x: 275,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 275,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '7',
+        data: {
+          label: 'Overreliance on Autopilot',
+        },
+        position: {
+          x: 450,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 450,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '8',
+        data: {
+          label: 'More long-distance trips',
+        },
+        position: {
+          x: 800,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 800,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '9',
+        data: {
+          label: 'Route choice with FSD Beta',
+        },
+        position: {
+          x: 625,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 625,
+          y: 225,
+        },
+        dragging: false,
+      },
+    ],
+    edges: [
+      {
+        id: 'e1-4',
+        source: '1',
+        target: '4',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e1-5',
+        source: '1',
+        target: '5',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e2-6',
+        source: '2',
+        target: '6',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e2-7',
+        source: '2',
+        target: '7',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e3-8',
+        source: '3',
+        target: '8',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e3-9',
+        source: '3',
+        target: '9',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+    ],
+  },
 }
 
 export const customNodeCodeExample = `

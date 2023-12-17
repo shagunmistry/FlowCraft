@@ -12,6 +12,7 @@ import ReactFlow, {
   useEdgesState,
   ConnectionLineType,
   updateEdge,
+  MarkerType,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -125,42 +126,82 @@ const initialEdges = [
   {
     id: '1-2',
     source: '1',
+    markerEnd: { type: MarkerType.Arrow },
     target: '2',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '2-3',
     source: '2',
+    markerEnd: { type: MarkerType.Arrow },
     target: '3',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '3-4',
     source: '3',
+    markerEnd: { type: MarkerType.Arrow },
     target: '4',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '3-5',
     source: '3',
+    markerEnd: { type: MarkerType.Arrow },
     target: '5',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '4-6',
     source: '4',
+    markerEnd: { type: MarkerType.Arrow },
     target: '6',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '5-6',
     source: '5',
+    markerEnd: { type: MarkerType.Arrow },
     target: '6',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '6-7',
     source: '6',
+    markerEnd: { type: MarkerType.Arrow },
     target: '7',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
   {
     id: '7-8',
     source: '7',
+    markerEnd: { type: MarkerType.Arrow },
     target: '8',
+    style: {
+      stroke: '#FF69B4',
+      strokeWidth: 2,
+    },
   },
 ]
 
@@ -183,8 +224,19 @@ export default function DiagramOrChartView() {
       console.log('context.nodes --> ', context.nodes)
       console.log('context.edges -->', context.edges)
 
+      const edgesWithMarkerAndStyle = context.edges.map((edge) => {
+        return {
+          ...edge,
+          markerEnd: { type: MarkerType.Arrow },
+          style: {
+            stroke: '#FF69B4',
+            strokeWidth: 2,
+          },
+        }
+      })
+
       setNodes(context.nodes)
-      setEdges(context.edges)
+      setEdges(edgesWithMarkerAndStyle)
     } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
