@@ -199,6 +199,888 @@ export const ReactFlowExamples = {
   },
 }
 
+export const landingPageCodeExamples: any = {
+  teachers: {
+    nodes: [
+      {
+        id: 'mitochondria',
+        data: {
+          label: 'Mitochondria',
+        },
+        position: {
+          x: 250,
+          y: -50,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 250,
+          y: -50,
+        },
+        dragging: false,
+      },
+      {
+        id: 'cellPhysiology',
+        data: {
+          label: 'Cell Physiology',
+        },
+        position: {
+          x: 100,
+          y: 100,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 100,
+          y: 100,
+        },
+        dragging: false,
+      },
+      {
+        id: 'pathology',
+        data: {
+          label: 'Pathology',
+        },
+        position: {
+          x: 400,
+          y: 75,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 400,
+          y: 75,
+        },
+        dragging: false,
+      },
+      {
+        id: 'atpSynthesis',
+        data: {
+          label: 'ATP Synthesis',
+        },
+        position: {
+          x: -25,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: -25,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: 'caHomeostasis',
+        data: {
+          label: 'Ca2+ Homeostasis',
+        },
+        position: {
+          x: 175,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 175,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: 'metabolicPathways',
+        data: {
+          label: 'Metabolic Pathways',
+        },
+        position: {
+          x: 375,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 375,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: 'radicalProduction',
+        data: {
+          label: 'Radical Production',
+        },
+        position: {
+          x: 550,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+        selected: true,
+        positionAbsolute: {
+          x: 550,
+          y: 250,
+        },
+        dragging: false,
+      },
+    ],
+    edges: [
+      {
+        id: 'e1',
+        source: 'mitochondria',
+        target: 'cellPhysiology',
+        label: 'Impacts',
+      },
+      {
+        id: 'e2',
+        source: 'mitochondria',
+        target: 'pathology',
+        label: 'Impacts',
+      },
+      {
+        id: 'e3',
+        source: 'cellPhysiology',
+        target: 'atpSynthesis',
+        label: 'Involved in',
+      },
+      {
+        id: 'e4',
+        source: 'cellPhysiology',
+        target: 'caHomeostasis',
+        label: 'Involved in',
+      },
+      {
+        id: 'e5',
+        source: 'pathology',
+        target: 'metabolicPathways',
+        label: 'Involved in',
+      },
+      {
+        id: 'e6',
+        source: 'pathology',
+        target: 'radicalProduction',
+        label: 'Involved in',
+      },
+    ],
+  },
+  engineers: {
+    nodes: [
+      {
+        id: '1',
+        data: {
+          label: 'Direct short-term behavioral adaptations',
+        },
+        position: {
+          x: 0,
+          y: 75,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 0,
+          y: 75,
+        },
+        dragging: false,
+      },
+      {
+        id: '2',
+        data: {
+          label: 'Indirect long-term behavioral adaptations',
+        },
+        position: {
+          x: 350,
+          y: 75,
+        },
+        width: 150,
+        height: 58,
+        selected: true,
+        dragging: false,
+        positionAbsolute: {
+          x: 350,
+          y: 75,
+        },
+      },
+      {
+        id: '3',
+        data: {
+          label: 'Changes in travel behavior',
+        },
+        position: {
+          x: 700,
+          y: 75,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 700,
+          y: 75,
+        },
+        dragging: false,
+      },
+      {
+        id: '4',
+        data: {
+          label: 'Increased situational awareness',
+        },
+        position: {
+          x: -75,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: -75,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '5',
+        data: {
+          label: 'Decreased mental and physical workload',
+        },
+        position: {
+          x: 100,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 100,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '6',
+        data: {
+          label: 'Decrease in aggressive driving',
+        },
+        position: {
+          x: 275,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 275,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '7',
+        data: {
+          label: 'Overreliance on Autopilot',
+        },
+        position: {
+          x: 450,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 450,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '8',
+        data: {
+          label: 'More long-distance trips',
+        },
+        position: {
+          x: 800,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 800,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '9',
+        data: {
+          label: 'Route choice with FSD Beta',
+        },
+        position: {
+          x: 625,
+          y: 225,
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 625,
+          y: 225,
+        },
+        dragging: false,
+      },
+    ],
+    edges: [
+      {
+        id: 'e1-4',
+        source: '1',
+        target: '4',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e1-5',
+        source: '1',
+        target: '5',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e2-6',
+        source: '2',
+        target: '6',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e2-7',
+        source: '2',
+        target: '7',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e3-8',
+        source: '3',
+        target: '8',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: 'e3-9',
+        source: '3',
+        target: '9',
+        animated: true,
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+    ],
+  },
+  students: {
+    nodes: [
+      {
+        id: '1',
+        data: {
+          label: 'British East India Company',
+        },
+        position: {
+          x: 250,
+          y: 50,
+        },
+        width: 150,
+        height: 58,
+      },
+      {
+        id: '2',
+        data: {
+          label: 'Financial problems',
+        },
+        position: {
+          x: 100,
+          y: 150,
+        },
+        width: 150,
+        height: 40,
+      },
+      {
+        id: '3',
+        data: {
+          label: "Parliament's authority over colonies",
+        },
+        position: {
+          x: 400,
+          y: 150,
+        },
+        width: 150,
+        height: 58,
+      },
+      {
+        id: '4',
+        data: {
+          label: 'Boston Tea Party',
+        },
+        position: {
+          x: 250,
+          y: 250,
+        },
+        width: 150,
+        height: 40,
+      },
+      {
+        id: '5',
+        data: {
+          label: 'American Revolution',
+        },
+        position: {
+          x: 100,
+          y: 350,
+        },
+        width: 150,
+        height: 40,
+      },
+      {
+        id: '6',
+        data: {
+          label: 'War of Independence',
+        },
+        position: {
+          x: 400,
+          y: 350,
+        },
+        width: 150,
+        height: 40,
+      },
+      {
+        id: '7',
+        data: {
+          label: 'End of British colonialization',
+        },
+        position: {
+          x: 250,
+          y: 450,
+        },
+        width: 150,
+        height: 58,
+      },
+      {
+        id: '8',
+        data: {
+          label: 'Emergence of the United States',
+        },
+        position: {
+          x: 250,
+          y: 550,
+        },
+        width: 150,
+        height: 58,
+      },
+    ],
+    edges: [
+      {
+        id: '1-2',
+        source: '1',
+        target: '2',
+        label: 'leads to',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '1-3',
+        source: '1',
+        target: '3',
+        label: 'leads to',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '2-4',
+        source: '2',
+        target: '4',
+        label: 'results in',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '3-4',
+        source: '3',
+        target: '4',
+        label: 'results in',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '4-5',
+        source: '4',
+        target: '5',
+        label: 'leads to',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '4-6',
+        source: '4',
+        target: '6',
+        label: 'leads to',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '5-7',
+        source: '5',
+        target: '7',
+        label: 'results in',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '6-7',
+        source: '6',
+        target: '7',
+        label: 'results in',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+      {
+        id: '7-8',
+        source: '7',
+        target: '8',
+        label: 'leads to',
+        markerEnd: {
+          type: 'arrow',
+        },
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+      },
+    ],
+  },
+  healthcare: {
+    nodes: [
+      {
+        id: '1',
+        position: {
+          x: 50,
+          y: 50,
+        },
+        data: {
+          label: 'Cardiac Arrest',
+        },
+        width: 150,
+        height: 40,
+      },
+      {
+        id: '2',
+        position: {
+          x: 50,
+          y: 225,
+        },
+        data: {
+          label:
+            'Symptoms (Fatigue, Dizziness, Shortness of breath, Nausea, Chest pain, Heart palpitations, Loss of consciousness)',
+        },
+        width: 150,
+        height: 112,
+        selected: false,
+        positionAbsolute: {
+          x: 50,
+          y: 225,
+        },
+        dragging: false,
+      },
+      {
+        id: '3',
+        position: {
+          x: 250,
+          y: 275,
+        },
+        data: {
+          label:
+            'Causes(Arrhythmia, Enlarged heart, Coronary artery disease, Blood loss, Valvular heart disease, Lack of oxygen, High levels of potassium and magnesium)',
+        },
+        width: 150,
+        height: 166,
+        selected: false,
+        positionAbsolute: {
+          x: 250,
+          y: 275,
+        },
+        dragging: false,
+      },
+      {
+        id: '4',
+        position: {
+          x: 450,
+          y: 250,
+        },
+        data: {
+          label:
+            'Risk Factors (Alcohol or drug abuse, Family history of heart disease or cardiac arrest, Heart disease, High blood pressure, High cholesterol, Low potassium or magnesium, Obesity, Smoking)',
+        },
+        width: 150,
+        height: 202,
+        selected: false,
+        positionAbsolute: {
+          x: 450,
+          y: 250,
+        },
+        dragging: false,
+      },
+      {
+        id: '5',
+        position: {
+          x: 550,
+          y: 125,
+        },
+        data: {
+          label: 'Difference between cardiac arrest and a heart attack',
+        },
+        width: 150,
+        height: 76,
+        selected: false,
+        positionAbsolute: {
+          x: 550,
+          y: 125,
+        },
+        dragging: false,
+      },
+      {
+        id: '6',
+        position: {
+          x: 525,
+          y: -150,
+        },
+        data: {
+          label: 'Treatment (CPR, Defibrillator)',
+        },
+        width: 150,
+        height: 58,
+        selected: false,
+        positionAbsolute: {
+          x: 525,
+          y: -150,
+        },
+        dragging: false,
+      },
+      {
+        id: '7',
+        position: {
+          x: 575,
+          y: 0,
+        },
+        data: {
+          label: 'Recovery Process',
+        },
+        width: 150,
+        height: 40,
+        selected: false,
+        positionAbsolute: {
+          x: 575,
+          y: 0,
+        },
+        dragging: false,
+      },
+      {
+        id: '8',
+        position: {
+          x: 325,
+          y: -250,
+        },
+        data: {
+          label:
+            'Prevention (Eating heart-healthy meals, Losing weight, Exercising, Quitting smoking and drug use, Reducing alcohol intake)',
+        },
+        width: 150,
+        height: 148,
+        selected: false,
+        positionAbsolute: {
+          x: 325,
+          y: -250,
+        },
+        dragging: false,
+      },
+    ],
+    edges: [
+      {
+        id: 'e1-2',
+        source: '1',
+        target: '2',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'leads to',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+      {
+        id: 'e2-3',
+        source: '1',
+        target: '3',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'caused by',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+      {
+        id: 'e3-4',
+        source: '1',
+        target: '4',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'risk factors',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+      {
+        id: 'e4-5',
+        source: '1',
+        target: '5',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'distinguished from',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+      {
+        id: 'e5-6',
+        source: '1',
+        target: '6',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'treated by',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+      {
+        id: 'e6-7',
+        source: '1',
+        target: '7',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'followed by',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+      {
+        id: 'e7-8',
+        source: '1',
+        target: '8',
+        animated: true,
+        style: {
+          stroke: '#FF69B4',
+          strokeWidth: 2,
+        },
+        label: 'prevented by',
+        markerEnd: {
+          type: 'arrow',
+        },
+      },
+    ],
+  },
+}
+
 export const customNodeCodeExample = `
 const nodes = ${ReactFlowExamples.customNodes.nodesCode}
 

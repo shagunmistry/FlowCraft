@@ -10,6 +10,7 @@ import {
   chartJsTeslaStockPricesExampleReport,
 } from '@/lib/chart-js.code'
 import { DiagramOrChartType } from '@/lib/utils'
+import { track } from '@vercel/analytics'
 
 export const exampleFlowDiagramPrompts = [
   {
@@ -94,6 +95,15 @@ export default function TextBox() {
 
     try {
       setError(null)
+
+      // Submit analytics event
+      if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+        track('create', {
+          type: type,
+          title: title,
+        })
+      }
+
       const diagram = await fetch('/api/generate-diagram', {
         method: 'POST',
         body: JSON.stringify({
@@ -192,7 +202,7 @@ export default function TextBox() {
             Diagram Description
           </label>
           <textarea
-            rows={10}
+            rows={5}
             name="description"
             id="description"
             className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"

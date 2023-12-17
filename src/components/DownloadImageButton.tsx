@@ -7,6 +7,7 @@ import {
 } from 'reactflow'
 import { toPng } from 'html-to-image'
 import { downloadImage } from '@/lib/utils'
+import { track } from '@vercel/analytics'
 
 const imageWidth = 1024
 const imageHeight = 768
@@ -17,6 +18,13 @@ function DownloadButton() {
     // we calculate a transform for the nodes so that all nodes are visible
     // we then overwrite the transform of the `.react-flow__viewport` element
     // with the style option of the html-to-image library
+
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+      track('download', {
+        type: 'image',
+      })
+    }
+
     const nodesBounds = getRectOfNodes(getNodes())
     const transform = getTransformForBounds(
       nodesBounds,
