@@ -237,6 +237,7 @@ export default function DiagramOrChartView() {
 
       setNodes(context.nodes)
       setEdges(edgesWithMarkerAndStyle)
+      // Zoom to fit the diagram
     } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
