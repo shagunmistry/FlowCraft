@@ -11,6 +11,7 @@ import {
 } from '@/lib/chart-js.code'
 import { DiagramOrChartType } from '@/lib/utils'
 import { track } from '@vercel/analytics'
+import { ChartBarIcon, PencilIcon } from '@heroicons/react/20/solid'
 
 export const exampleFlowDiagramPrompts = [
   {
@@ -56,18 +57,19 @@ export const exampleChartDataPrompts = [
 
 export const typeSelectionOptions = [
   {
-    id: 1,
+    id: 'TLDraw',
     title: 'Flow Diagram',
-    description:
-      'A flow diagram is a diagram representing some kind of process or workflow.',
+    description: 'a diagram representing some kind of process or workflow.',
     prompts: exampleFlowDiagramPrompts,
+    icon: PencilIcon,
   },
   {
-    id: 2,
+    id: 'Chart',
     title: 'Chart',
     description:
       'A chart is a graphical representation of data, in which "the data is represented by symbols, such as bars in a bar chart, lines in a line chart, or slices in a pie chart".',
     prompts: exampleChartDataPrompts,
+    icon: ChartBarIcon,
   },
 ]
 
@@ -78,18 +80,18 @@ export default function TextBox() {
   )
   const [error, setError] = useState<string | null>('')
 
-  const [selectedType, setSelectedType] = useState(typeSelectionOptions[0])
+  const [selectedType, setSelectedType] = useState<any>(typeSelectionOptions[0])
 
   const context = useContext(DiagramContext)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const type = selectedType.title as DiagramOrChartType
+    const type = selectedType.id as DiagramOrChartType
     context.setLoading(true)
 
     console.log('--- title', title)
-    console.log('---- description', description)
+    console.log('---- type', type)
     context.setTitle(title)
     context.setDescription(description)
 
@@ -117,19 +119,27 @@ export default function TextBox() {
 
       const diagramJson = await diagram.json()
 
-      console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
+      console.log('Diagram JSON 2: ', diagramJson)
+
+      const whatToParse = diagramJson.result
+        ? diagramJson.result
+        : diagramJson.records
+
+      console.log('Diagram JSON: ', JSON.parse(whatToParse))
       const diagramResult = JSON.parse(diagramJson.result)
 
       if (
         diagramResult &&
         diagramResult.nodes &&
         diagramResult.edges &&
-        type === 'Flow Diagram'
+        type === 'TLDraw'
       ) {
         context.setNodes(diagramResult.nodes)
         context.setEdges(diagramResult.edges)
       } else if (diagramResult && diagramResult.data && type === 'Chart') {
         context.setChartJsData(diagramResult)
+      } else if (diagramResult && diagramResult.records && type === 'TLDraw') {
+        context.setTlDrawRecords(diagramResult.records)
       }
 
       context.setLoading(false)
@@ -162,7 +172,7 @@ export default function TextBox() {
   }
 
   const selectOption = (option: {
-    id: number
+    id: string
     title: string
     description: string
     prompts: { title: string; description: string }[]
@@ -170,7 +180,7 @@ export default function TextBox() {
     console.log('Selecting option', option)
     setSelectedType(option)
     selectExample(option.prompts[2].title, option.prompts[2].description)
-    context.setType(option.title as DiagramOrChartType)
+    context.setType(option.id as DiagramOrChartType)
     context.setTitle(option.prompts[2].title)
     context.setDescription(option.prompts[2].description)
   }

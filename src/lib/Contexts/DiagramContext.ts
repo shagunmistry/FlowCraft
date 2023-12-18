@@ -14,8 +14,10 @@ export const DiagramContext = createContext<{
   setLoading: (loading: boolean) => void
   setNodes: (nodes: Node[]) => void
   setTitle: (title: string) => void
+  setTlDrawRecords: (tlDrawRecords: any[]) => void
   setType: (type: DiagramOrChartType) => void
   title: string
+  tlDrawRecords: any[]
   type: DiagramOrChartType
 }>({
   chartJsData: {},
@@ -29,7 +31,9 @@ export const DiagramContext = createContext<{
   setLoading: () => {},
   setNodes: () => {},
   setTitle: () => {},
+  setTlDrawRecords: () => {},
   setType: () => {},
   title: '',
-  type: 'Flow Diagram',
+  tlDrawRecords: [],
+  type: 'TLDraw',
 })

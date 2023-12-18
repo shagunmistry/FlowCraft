@@ -8,6 +8,7 @@ import {
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import PricingTier from '@/components/PricingTier'
+import Whiteboard from '@/components/Whiteboard/Whiteboard'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
@@ -92,6 +93,7 @@ export default async function Home() {
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <DiagramOrChartView />
+        {/* <Whiteboard /> */}
         {/** Only show when not in production */}
         {process.env.NODE_ENV !== 'production' && (
           <div className="mt-10">

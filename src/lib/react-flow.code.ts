@@ -1,3 +1,5 @@
+import { MarkerType, Node } from 'reactflow'
+
 export const ReactFlowExamples = {
   customNodes: {
     nodesCode: `[
@@ -103,7 +105,7 @@ export const ReactFlowExamples = {
           type: 'bidirectional',
           sourceHandle: 'right',
           targetHandle: 'left',
-          markerEnd: { type: MarkerType.ArrowClosed },
+          markerEnd: { type: 'arrow'Closed },
         },
         {
           id: 'edge-bi-2',
@@ -1119,98 +1121,87 @@ ${differentEdgeTypesCodeExample}
 \`\`\
 `
 
-// \`\`\`javascript
-// const nodes = [
-//   {
-//     id: 'A',
-//     position: { x: 20, y: 20 },
-//     data: { label: 'A' },
-//   },
-//   {
-//     id: 'B',
-//     position: { x: 100, y: 200 },
-//     data: { label: 'B' },
-//   },
-//   {
-//     id: 'C',
-//     position: { x: 300, y: 20 },
-//     data: { label: 'C' },
-//   },
-//   {
-//     id: 'D',
-//     position: { x: 300, y: 170 },
-//     data: { label: 'D' },
-//   },
-//   {
-//     id: 'E',
-//     position: { x: 250, y: 300 },
-//     data: { label: 'E' },
-//   },
-//   {
-//     id: 'F',
-//     position: { x: 250, y: 450 },
-//     data: { label: 'F' },
-//   },
-//   {
-//     id: 'G',
-//     position: { x: 20, y: 450 },
-//     data: { label: 'G' },
-//   },
-// ];
-
-// const edges = [
-//   {
-//     id: 'A->B',
-//     source: 'A',
-//     target: 'B',
-//     markerEnd: {
-//       type: MarkerType.Arrow,
-//     },
-//     label: 'default arrow',
-//   },
-//   {
-//     id: 'C->D',
-//     source: 'C',
-//     target: 'D',
-//     markerEnd: {
-//       type: MarkerType.ArrowClosed,
-//     },
-//     label: 'default closed arrow',
-//   },
-//   {
-//     id: 'D->E',
-//     source: 'D',
-//     target: 'E',
-//     markerEnd: {
-//       type: MarkerType.ArrowClosed,
-//     },
-//     markerStart: {
-//       type: MarkerType.ArrowClosed,
-//       orient: 'auto-start-reverse',
-//     },
-//     label: 'marker start and marker end',
-//   },
-//   {
-//     id: 'E->F',
-//     source: 'E',
-//     target: 'F',
-//     markerEnd: 'logo',
-//     label: 'custom marker',
-//   },
-//   {
-//     id: 'B->G',
-//     source: 'B',
-//     target: 'G',
-//     markerEnd: {
-//       type: MarkerType.ArrowClosed,
-//       width: 20,
-//       height: 20,
-//       color: '#FF0072',
-//     },
-//     label: 'marker size and color',
-//     style: {
-//       strokeWidth: 2,
-//       stroke: '#FF0072',
-//     },
-//   },
-// ];
+export const initialNodes: Node[] = [
+  {
+    id: '1',
+    data: {
+      label: 'Start',
+    },
+    position: {
+      x: 100,
+      y: 100,
+    },
+    type: 'input',
+  },
+  {
+    id: '2',
+    data: {
+      label: 'Fold the Paper in Half',
+    },
+    position: {
+      x: 300,
+      y: 100,
+    },
+  },
+  {
+    id: '3',
+    data: {
+      label: 'Unfold the Paper',
+    },
+    position: {
+      x: 300,
+      y: 200,
+    },
+  },
+  {
+    id: '4',
+    data: {
+      label: 'Fold the Top Corners to the Center',
+    },
+    position: {
+      x: 500,
+      y: 100,
+    },
+  },
+  {
+    id: '5',
+    data: {
+      label: 'Fold the Top Edges to the Center',
+    },
+    position: {
+      x: 500,
+      y: 200,
+    },
+  },
+  {
+    id: '6',
+    data: {
+      label: 'Fold the Plane in Half',
+    },
+    position: {
+      x: 700,
+      y: 100,
+    },
+  },
+  {
+    id: '7',
+    data: {
+      label: 'Fold the Wings Down',
+    },
+    position: {
+      x: 900,
+      y: 100,
+    },
+  },
+  {
+    id: '8',
+    data: {
+      label: 'Finish',
+    },
+    position: {
+      x: 1100,
+      y: 100,
+    },
+    type: 'output',
+  },
+]

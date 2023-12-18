@@ -25,6 +25,9 @@ import DownloadButton from './DownloadImageButton'
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
 import EditableTableForDiagram from './ReactFlow/EditableTableForDiagram'
+import Whiteboard from './Whiteboard/Whiteboard'
+import { initialNodes } from '@/lib/react-flow.code'
+import hey from '@/components/Whiteboard/hey.json'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -36,91 +39,6 @@ const nodeTypes = {
 }
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
-
-const initialNodes: Node[] = [
-  {
-    id: '1',
-    data: {
-      label: 'Start',
-    },
-    position: {
-      x: 100,
-      y: 100,
-    },
-    type: 'input',
-  },
-  {
-    id: '2',
-    data: {
-      label: 'Fold the Paper in Half',
-    },
-    position: {
-      x: 300,
-      y: 100,
-    },
-  },
-  {
-    id: '3',
-    data: {
-      label: 'Unfold the Paper',
-    },
-    position: {
-      x: 300,
-      y: 200,
-    },
-  },
-  {
-    id: '4',
-    data: {
-      label: 'Fold the Top Corners to the Center',
-    },
-    position: {
-      x: 500,
-      y: 100,
-    },
-  },
-  {
-    id: '5',
-    data: {
-      label: 'Fold the Top Edges to the Center',
-    },
-    position: {
-      x: 500,
-      y: 200,
-    },
-  },
-  {
-    id: '6',
-    data: {
-      label: 'Fold the Plane in Half',
-    },
-    position: {
-      x: 700,
-      y: 100,
-    },
-  },
-  {
-    id: '7',
-    data: {
-      label: 'Fold the Wings Down',
-    },
-    position: {
-      x: 900,
-      y: 100,
-    },
-  },
-  {
-    id: '8',
-    data: {
-      label: 'Finish',
-    },
-    position: {
-      x: 1100,
-      y: 100,
-    },
-    type: 'output',
-  },
-]
 
 const initialEdges = [
   {
@@ -209,13 +127,17 @@ export default function DiagramOrChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
+  const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
+    JSON.stringify(hey),
+  )
+
   const [chartCreated, setChartCreated] = useState<boolean>(false)
 
   const context = useContext(DiagramContext)
 
   useEffect(() => {
     if (context.type === 'Flow Diagram') {
-      console.log('we are in the flow diagram')
+      console.log('we are in the TLDraw')
       console.log('Edges: ', context.edges)
       console.log('Nodes: ', context.nodes)
       if (!context.nodes && !context.edges) return
@@ -252,6 +174,13 @@ export default function DiagramOrChartView() {
       })
 
       setChartCreated(true)
+    } else if (context.type === 'TLDraw') {
+      console.log('context.tlDrawRecords: ', context.tlDrawRecords)
+      if (!context.tlDrawRecords || context.tlDrawRecords.length === 0) {
+        return
+      }
+      hey.records = context.tlDrawRecords
+      setTlDrawInputJson(JSON.stringify(hey))
     }
   }, [
     context.nodes,
@@ -375,15 +304,19 @@ export default function DiagramOrChartView() {
                   <DownloadButton />
                 </ReactFlow>
               </>
-            ) : (
+            ) : context.type === 'Chart' ? (
               <div className="flex items-center justify-center">
                 <canvas id="myChart" className="h-max"></canvas>
               </div>
+            ) : context.type === 'TLDraw' ? (
+              <Whiteboard inputJson={tlDrawInputJson} />
+            ) : (
+              'Please select an option'
             )}
           </>
         )}
       </div>
-      {context.type === 'Flow Diagram' && !context.loading ? (
+      {context.type === 'TLDraw' && !context.loading ? (
         <>
           <EditableTableForDiagram
             nodes={nodes}

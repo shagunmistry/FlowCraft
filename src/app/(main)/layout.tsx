@@ -22,9 +22,12 @@ export default function MainLayout({
     exampleFlowDiagramPrompts[2].description,
   )
 
-  const [type, setType] = useState<DiagramOrChartType>('Flow Diagram')
+  const [type, setType] = useState<DiagramOrChartType>('TLDraw')
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
+
+  const [tlDrawRecords, setTlDrawRecords] = useState<any>([])
+
   const [loading, _setLoading] = useState<boolean>(false)
   const [chartJsData, setChartJsData] = useState<any>(
     exampleChartJsDataForTesla,
@@ -44,8 +47,10 @@ export default function MainLayout({
         setLoading: _setLoading,
         setNodes: _setNodes,
         setTitle: setTitle,
+        setTlDrawRecords: setTlDrawRecords,
         setType: setType,
         title: title,
+        tlDrawRecords: tlDrawRecords,
         type: type,
       }}
     >
