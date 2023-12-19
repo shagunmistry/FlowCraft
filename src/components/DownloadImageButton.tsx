@@ -8,6 +8,7 @@ import {
 import { toPng } from 'html-to-image'
 import { downloadImage } from '@/lib/utils'
 import { track } from '@vercel/analytics'
+import { ArrowDownCircleIcon } from '@heroicons/react/24/outline'
 
 const imageWidth = 1024
 const imageHeight = 768
@@ -53,9 +54,10 @@ function DownloadButton() {
   return (
     <Panel position="top-right">
       <button
-        className="ml-5 rounded bg-pink-500 px-4 py-2 font-bold text-white hover:bg-pink-700"
+        className="inline-flex items-center gap-x-1.5 rounded-xl bg-pink-500 px-2.5 px-4 py-1.5 py-2 text-sm font-bold font-semibold text-white text-white shadow-sm hover:bg-indigo-500 hover:bg-pink-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         onClick={onClick}
       >
+        <ArrowDownCircleIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
         Download Image
       </button>
     </Panel>

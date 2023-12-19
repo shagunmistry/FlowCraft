@@ -97,6 +97,15 @@ export default function TextBox() {
     context.setTitle(title)
     context.setDescription(description)
 
+    if (type === 'Chart' && !description) {
+      setError(
+        'Please enter the data for your chart in the description field. 🥺',
+      )
+      setOpenErrorDialog(true)
+      context.setLoading(false)
+      return
+    }
+
     try {
       setError(null)
 

@@ -1,15 +1,10 @@
 'use client'
-import Image from 'next/image'
 import Link from 'next/link'
 
-import FlowCraftLogo from '@/images/FlowCraftLogo.png'
 import { EditorSection } from './EditorSection'
 import { TinyWaveFormIcon } from './TinyWaveFormIcon'
-import { useState } from 'react'
 
 export default function ChartDescriptionInput() {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <div>
       <EditorSection />

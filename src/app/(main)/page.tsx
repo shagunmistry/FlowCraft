@@ -8,7 +8,8 @@ import {
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import PricingTier from '@/components/PricingTier'
-import StepsToDiagram from '@/components/StepsToDiagram'
+import { useContext } from 'react'
+import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
@@ -68,7 +69,6 @@ export default async function Home() {
           </p>
           <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 text-gray-700 text-white lg:max-w-none lg:grid-cols-2">
             <ChartDescriptionInput />
-            {/* <StepsToDiagram /> */}
           </div>
         </div>
       </div>

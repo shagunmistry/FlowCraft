@@ -13,6 +13,8 @@ import ReactFlow, {
   ConnectionLineType,
   updateEdge,
   MarkerType,
+  BackgroundVariant,
+  EdgeTypes,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -24,7 +26,8 @@ import DownloadButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
-import EditableTableForDiagram from './ReactFlow/EditableTableForDiagram'
+import EditDiagramButton from './EditDiagramButton'
+// import CustomEdge from './ReactFlow/CustomEdge'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -34,6 +37,10 @@ const defaultEdgeOptions = {
 const nodeTypes = {
   customNode: CustomInputBoxNode,
 }
+
+// const edgeTypes: EdgeTypes = {
+//   custom: CustomEdge,
+// }
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 
@@ -132,6 +139,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '2-3',
@@ -142,6 +150,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '3-4',
@@ -152,6 +161,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '3-5',
@@ -162,6 +172,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '4-6',
@@ -172,6 +183,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '5-6',
@@ -182,6 +194,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '6-7',
@@ -192,6 +205,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
   {
     id: '7-8',
@@ -202,6 +216,7 @@ const initialEdges = [
       stroke: '#FF69B4',
       strokeWidth: 2,
     },
+    // type: 'custom',
   },
 ]
 
@@ -227,6 +242,7 @@ export default function DiagramOrChartView() {
       const edgesWithMarkerAndStyle = context.edges.map((edge) => {
         return {
           ...edge,
+          // // type: 'custom',
           markerEnd: { type: MarkerType.Arrow },
           style: {
             stroke: '#FF69B4',
@@ -235,7 +251,20 @@ export default function DiagramOrChartView() {
         }
       })
 
-      setNodes(context.nodes)
+      const nodesWithStyle = context.nodes.map((node) => {
+        return {
+          ...node,
+          style: {
+            background: '#FF69B4',
+            color: '#fff',
+            border: '1px solid #FF69B4',
+            width: 180,
+            borderRadius: 10,
+          },
+        }
+      })
+
+      setNodes(nodesWithStyle)
       setEdges(edgesWithMarkerAndStyle)
       // Zoom to fit the diagram
     } else if (context.type === 'Chart') {
@@ -331,7 +360,7 @@ export default function DiagramOrChartView() {
         <h1 className="text-2xl font-bold leading-7 text-indigo-900 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
-        <div className="animate-bounce font-bold text-white">
+        <div className="-mt-96 animate-bounce font-bold text-white">
           Scroll Down
           <ArrowDownIcon className="h-10 w-10" />
         </div>
@@ -369,11 +398,26 @@ export default function DiagramOrChartView() {
                     console.log('Nodes: ', nodes)
                     console.log('Edges: ', edges)
                   }}
+                  // edgeTypes={edgeTypes}
                 >
                   <Controls />
-                  {/* <Background color="#000000" gap={16} /> */}
+                  <Background
+                    color="#808080"
+                    gap={40}
+                    variant={BackgroundVariant.Lines}
+                  />
                   <MiniMap />
+
                   <DownloadButton />
+                  <EditDiagramButton
+                    nodes={nodes}
+                    edges={edges}
+                    setNodes={setNodes}
+                    deleteNode={deleteNode}
+                    onNodesChange={onNodesChange}
+                    addNode={addNode}
+                    updateNodeLabel={updateNodeLabel}
+                  />
                 </ReactFlow>
               </>
             ) : (
@@ -384,19 +428,6 @@ export default function DiagramOrChartView() {
           </>
         )}
       </div>
-      {context.type === 'Flow Diagram' && !context.loading ? (
-        <>
-          <EditableTableForDiagram
-            nodes={nodes}
-            edges={edges}
-            setNodes={setNodes}
-            deleteNode={deleteNode}
-            onNodesChange={onNodesChange}
-            addNode={addNode}
-            updateNodeLabel={updateNodeLabel}
-          />
-        </>
-      ) : null}
     </>
   )
 }
