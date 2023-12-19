@@ -255,14 +255,20 @@ export default function TextBox() {
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
                   <span className="text-xl font-medium font-semibold">
-                    Description
+                    {context.type === 'Chart'
+                      ? 'Chart Data'
+                      : 'Diagram Details'}
                   </span>
                   <textarea
                     rows={5}
                     name="description"
                     id="description"
                     className="mt-2 block w-96 resize-none rounded-lg border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="Enter the data for your chart here"
+                    placeholder={
+                      context.type === 'Chart'
+                        ? 'Enter Chart Data'
+                        : 'Enter Diagram details here (optional)'
+                    }
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />

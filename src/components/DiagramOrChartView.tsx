@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { createRef, useCallback, useContext, useEffect, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -15,6 +15,7 @@ import ReactFlow, {
   MarkerType,
   BackgroundVariant,
   EdgeTypes,
+  useReactFlow,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -42,6 +43,17 @@ const nodeTypes = {
 //   custom: CustomEdge,
 // }
 
+const nodeStyle = {
+  style: {
+    background: '#FFD1DC',
+    color: '#00000',
+    border: '1px solid #FF69B4',
+    width: 180,
+    borderRadius: 10,
+    fontSize: 20,
+  },
+}
+
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 
 const initialNodes: Node[] = [
@@ -55,6 +67,7 @@ const initialNodes: Node[] = [
       y: 100,
     },
     type: 'input',
+    ...nodeStyle,
   },
   {
     id: '2',
@@ -65,6 +78,7 @@ const initialNodes: Node[] = [
       x: 300,
       y: 100,
     },
+    ...nodeStyle,
   },
   {
     id: '3',
@@ -75,6 +89,7 @@ const initialNodes: Node[] = [
       x: 300,
       y: 200,
     },
+    ...nodeStyle,
   },
   {
     id: '4',
@@ -83,8 +98,9 @@ const initialNodes: Node[] = [
     },
     position: {
       x: 500,
-      y: 100,
+      y: 50,
     },
+    ...nodeStyle,
   },
   {
     id: '5',
@@ -95,6 +111,7 @@ const initialNodes: Node[] = [
       x: 500,
       y: 200,
     },
+    ...nodeStyle,
   },
   {
     id: '6',
@@ -105,6 +122,7 @@ const initialNodes: Node[] = [
       x: 700,
       y: 100,
     },
+    ...nodeStyle,
   },
   {
     id: '7',
@@ -115,6 +133,7 @@ const initialNodes: Node[] = [
       x: 900,
       y: 100,
     },
+    ...nodeStyle,
   },
   {
     id: '8',
@@ -126,6 +145,7 @@ const initialNodes: Node[] = [
       y: 100,
     },
     type: 'output',
+    ...nodeStyle,
   },
 ]
 
@@ -133,7 +153,7 @@ const initialEdges = [
   {
     id: '1-2',
     source: '1',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '2',
     style: {
       stroke: '#FF69B4',
@@ -144,7 +164,7 @@ const initialEdges = [
   {
     id: '2-3',
     source: '2',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '3',
     style: {
       stroke: '#FF69B4',
@@ -155,7 +175,7 @@ const initialEdges = [
   {
     id: '3-4',
     source: '3',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '4',
     style: {
       stroke: '#FF69B4',
@@ -166,7 +186,7 @@ const initialEdges = [
   {
     id: '3-5',
     source: '3',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '5',
     style: {
       stroke: '#FF69B4',
@@ -177,7 +197,7 @@ const initialEdges = [
   {
     id: '4-6',
     source: '4',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '6',
     style: {
       stroke: '#FF69B4',
@@ -188,7 +208,7 @@ const initialEdges = [
   {
     id: '5-6',
     source: '5',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '6',
     style: {
       stroke: '#FF69B4',
@@ -199,7 +219,7 @@ const initialEdges = [
   {
     id: '6-7',
     source: '6',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '7',
     style: {
       stroke: '#FF69B4',
@@ -210,7 +230,7 @@ const initialEdges = [
   {
     id: '7-8',
     source: '7',
-    markerEnd: { type: MarkerType.Arrow },
+    markerEnd: { type: MarkerType.ArrowClosed },
     target: '8',
     style: {
       stroke: '#FF69B4',
@@ -243,7 +263,7 @@ export default function DiagramOrChartView() {
         return {
           ...edge,
           // // type: 'custom',
-          markerEnd: { type: MarkerType.Arrow },
+          markerEnd: { type: MarkerType.ArrowClosed },
           style: {
             stroke: '#FF69B4',
             strokeWidth: 2,
@@ -255,18 +275,25 @@ export default function DiagramOrChartView() {
         return {
           ...node,
           style: {
-            background: '#FF69B4',
-            color: '#fff',
+            background: '#FFD1DC',
+            color: '#00000',
             border: '1px solid #FF69B4',
             width: 180,
             borderRadius: 10,
+            fontSize: 20,
           },
         }
       })
 
       setNodes(nodesWithStyle)
       setEdges(edgesWithMarkerAndStyle)
-      // Zoom to fit the diagram
+
+      const fitButton = document.getElementsByClassName(
+        '.react-flow__controls-fitview',
+      )[0] as HTMLButtonElement
+      if (fitButton) {
+        fitButton.click()
+      }
     } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
