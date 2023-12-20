@@ -27,9 +27,15 @@ const CustomEdge: FC<EdgeProps> = ({
 
   return (
     <>
-      <BaseEdge id={id} path={edgePath} />
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        style={{
+          stroke: '#ffcc00',
+          strokeWidth: 3,
+        }}
+      />
       <EdgeLabelRenderer>
-        {console.log(data)}
         {data && data.label && (
           <div
             style={{
@@ -38,8 +44,9 @@ const CustomEdge: FC<EdgeProps> = ({
               background: '#ffcc00',
               padding: 10,
               borderRadius: 5,
-              fontSize: 12,
+              fontSize: 15,
               fontWeight: 700,
+              border: 'none',
             }}
             className="nodrag nopan"
           >

@@ -16,6 +16,7 @@ import ReactFlow, {
   BackgroundVariant,
   EdgeTypes,
   useReactFlow,
+  Edge,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -28,7 +29,9 @@ import DownloadButton from './DownloadImageButton'
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
 import EditDiagramButton from './EditDiagramButton'
-// import CustomEdge from './ReactFlow/CustomEdge'
+import CustomEdge from './ReactFlow/CustomEdge'
+import SuccessDialog from './SuccessDialog'
+import { nodeStyle } from '@/lib/react-flow.code'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -39,19 +42,8 @@ const nodeTypes = {
   customNode: CustomInputBoxNode,
 }
 
-// const edgeTypes: EdgeTypes = {
-//   custom: CustomEdge,
-// }
-
-const nodeStyle = {
-  style: {
-    background: '#FFD1DC',
-    color: '#00000',
-    border: '1px solid #FF69B4',
-    width: 180,
-    borderRadius: 10,
-    fontSize: 20,
-  },
+const edgeTypes: EdgeTypes = {
+  custom: CustomEdge,
 }
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
@@ -63,10 +55,18 @@ const initialNodes: Node[] = [
       label: 'Start',
     },
     position: {
-      x: 100,
-      y: 100,
+      x: 300,
+      y: -150,
     },
     type: 'input',
+    width: 180,
+    height: 52,
+    selected: true,
+    positionAbsolute: {
+      x: 300,
+      y: -150,
+    },
+    dragging: false,
     ...nodeStyle,
   },
   {
@@ -76,8 +76,10 @@ const initialNodes: Node[] = [
     },
     position: {
       x: 300,
-      y: 100,
+      y: 0,
     },
+    width: 180,
+    height: 82,
     ...nodeStyle,
   },
   {
@@ -89,6 +91,8 @@ const initialNodes: Node[] = [
       x: 300,
       y: 200,
     },
+    width: 180,
+    height: 52,
     ...nodeStyle,
   },
   {
@@ -100,6 +104,8 @@ const initialNodes: Node[] = [
       x: 500,
       y: 50,
     },
+    width: 180,
+    height: 112,
     ...nodeStyle,
   },
   {
@@ -111,6 +117,8 @@ const initialNodes: Node[] = [
       x: 500,
       y: 200,
     },
+    width: 180,
+    height: 112,
     ...nodeStyle,
   },
   {
@@ -119,9 +127,17 @@ const initialNodes: Node[] = [
       label: 'Fold the Plane in Half',
     },
     position: {
-      x: 700,
-      y: 100,
+      x: 850,
+      y: 50,
     },
+    width: 180,
+    height: 82,
+    selected: false,
+    positionAbsolute: {
+      x: 850,
+      y: 50,
+    },
+    dragging: false,
     ...nodeStyle,
   },
   {
@@ -130,9 +146,17 @@ const initialNodes: Node[] = [
       label: 'Fold the Wings Down',
     },
     position: {
-      x: 900,
-      y: 100,
+      x: 850,
+      y: 225,
     },
+    width: 180,
+    height: 82,
+    selected: false,
+    positionAbsolute: {
+      x: 850,
+      y: 225,
+    },
+    dragging: false,
     ...nodeStyle,
   },
   {
@@ -145,6 +169,8 @@ const initialNodes: Node[] = [
       y: 100,
     },
     type: 'output',
+    width: 180,
+    height: 52,
     ...nodeStyle,
   },
 ]
@@ -153,90 +179,60 @@ const initialEdges = [
   {
     id: '1-2',
     source: '1',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '2',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
+    data: {
+      label: 'Get some paper',
     },
-    // type: 'custom',
+    type: 'custom',
   },
   {
     id: '2-3',
     source: '2',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '3',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
+    label: 'Step 2',
+    type: 'custom',
+    data: {
+      label: 'Make sure it is aligned',
     },
-    // type: 'custom',
   },
   {
     id: '3-4',
     source: '3',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '4',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-    // type: 'custom',
+    type: 'custom',
   },
   {
     id: '3-5',
     source: '3',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '5',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-    // type: 'custom',
+    type: 'custom',
   },
   {
     id: '4-6',
     source: '4',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '6',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-    // type: 'custom',
+    type: 'custom',
   },
   {
     id: '5-6',
     source: '5',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '6',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-    // type: 'custom',
+    type: 'custom',
   },
   {
     id: '6-7',
     source: '6',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '7',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
+    type: 'custom',
+    data: {
+      label: 'You are almost done!',
     },
-    // type: 'custom',
   },
   {
     id: '7-8',
     source: '7',
-    markerEnd: { type: MarkerType.ArrowClosed },
     target: '8',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-    // type: 'custom',
+    type: 'custom',
   },
 ]
 
@@ -245,6 +241,8 @@ export default function DiagramOrChartView() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const [chartCreated, setChartCreated] = useState<boolean>(false)
+
+  const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
 
   const context = useContext(DiagramContext)
 
@@ -259,34 +257,26 @@ export default function DiagramOrChartView() {
       console.log('context.nodes --> ', context.nodes)
       console.log('context.edges -->', context.edges)
 
-      const edgesWithMarkerAndStyle = context.edges.map((edge) => {
+      const edgesWithMarkerAndStyle = context.edges.map((edge: Edge) => {
+        console.log('Individual edge: ', edge)
         return {
           ...edge,
-          // // type: 'custom',
-          markerEnd: { type: MarkerType.ArrowClosed },
-          style: {
-            stroke: '#FF69B4',
-            strokeWidth: 2,
+          type: 'custom',
+          data: {
+            label: edge.label ? edge.label : '',
           },
         }
       })
 
-      const nodesWithStyle = context.nodes.map((node) => {
+      const nodesWithStyle = context.nodes.map((node: Node) => {
         return {
           ...node,
-          style: {
-            background: '#FFD1DC',
-            color: '#00000',
-            border: '1px solid #FF69B4',
-            width: 180,
-            borderRadius: 10,
-            fontSize: 20,
-          },
+          ...nodeStyle,
         }
       })
 
       setNodes(nodesWithStyle)
-      setEdges(edgesWithMarkerAndStyle)
+      setEdges(edgesWithMarkerAndStyle as any)
 
       const fitButton = document.getElementsByClassName(
         '.react-flow__controls-fitview',
@@ -294,6 +284,8 @@ export default function DiagramOrChartView() {
       if (fitButton) {
         fitButton.click()
       }
+
+      setSuccessDialogOpen(true)
     } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
@@ -421,11 +413,7 @@ export default function DiagramOrChartView() {
                   attributionPosition="bottom-left"
                   defaultEdgeOptions={defaultEdgeOptions}
                   nodeTypes={nodeTypes}
-                  onClick={() => {
-                    console.log('Nodes: ', nodes)
-                    console.log('Edges: ', edges)
-                  }}
-                  // edgeTypes={edgeTypes}
+                  edgeTypes={edgeTypes}
                 >
                   <Controls />
                   <Background
@@ -448,13 +436,20 @@ export default function DiagramOrChartView() {
                 </ReactFlow>
               </>
             ) : (
-              <div className="flex items-center justify-center">
+              <div className="flex h-screen items-center justify-center rounded-xl bg-white p-10 shadow-lg">
                 <canvas id="myChart" className="h-max"></canvas>
               </div>
             )}
           </>
         )}
       </div>
+      <SuccessDialog
+        buttonText="View Diagram"
+        header="Success!"
+        message={`Yayy! Your ${context.type} has been generated!`}
+        open={successDialogOpen}
+        setOpen={setSuccessDialogOpen}
+      />
     </>
   )
 }

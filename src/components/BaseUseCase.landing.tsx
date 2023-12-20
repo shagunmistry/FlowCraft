@@ -2,10 +2,13 @@
 import { StarIcon } from '@heroicons/react/20/solid'
 import Image, { StaticImageData } from 'next/image'
 
-import ReactFlow, { Controls, MiniMap } from 'reactflow'
-import { ReactFlowExamples } from '@/lib/react-flow.code'
+import ReactFlow, { Controls, EdgeTypes, MiniMap } from 'reactflow'
+import CustomEdge from './ReactFlow/CustomEdge'
 
-export default function ForTeachers({
+const edgeTypes: EdgeTypes = {
+  custom: CustomEdge,
+}
+export default function BaseUseCaseLanding({
   headline,
   subheadline,
   ratedBy,
@@ -154,6 +157,7 @@ export default function ForTeachers({
                   className="transform overflow-hidden rounded-lg bg-black text-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:scale-110 lg:h-full lg:w-full"
                   attributionPosition="top-right"
                   contentEditable={true}
+                  edgeTypes={edgeTypes}
                 >
                   <Controls />
                   <MiniMap />
@@ -313,7 +317,7 @@ export default function ForTeachers({
                       type="submit"
                       className="block w-full rounded-md border border-transparent bg-pink-900 px-5 py-3 text-base font-medium text-white shadow hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pink-500 sm:px-10"
                     >
-                      Notify me
+                      Get Started
                     </button>
                   </div>
                 </form>

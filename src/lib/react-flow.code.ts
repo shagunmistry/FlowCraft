@@ -1,3 +1,14 @@
+export const nodeStyle = {
+  style: {
+    background: '#FFD1DC',
+    color: '#00000',
+    border: '1px solid #FF69B4',
+    width: 180,
+    borderRadius: 10,
+    fontSize: 20,
+  },
+}
+
 export const ReactFlowExamples = {
   customNodes: {
     nodesCode: `[
@@ -219,6 +230,7 @@ export const landingPageCodeExamples: any = {
           y: -50,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: 'cellPhysiology',
@@ -237,6 +249,7 @@ export const landingPageCodeExamples: any = {
           y: 100,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: 'pathology',
@@ -255,6 +268,7 @@ export const landingPageCodeExamples: any = {
           y: 75,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: 'atpSynthesis',
@@ -273,6 +287,7 @@ export const landingPageCodeExamples: any = {
           y: 250,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: 'caHomeostasis',
@@ -291,6 +306,7 @@ export const landingPageCodeExamples: any = {
           y: 250,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: 'metabolicPathways',
@@ -309,6 +325,7 @@ export const landingPageCodeExamples: any = {
           y: 250,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: 'radicalProduction',
@@ -327,6 +344,7 @@ export const landingPageCodeExamples: any = {
           y: 250,
         },
         dragging: false,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -334,37 +352,43 @@ export const landingPageCodeExamples: any = {
         id: 'e1',
         source: 'mitochondria',
         target: 'cellPhysiology',
-        label: 'Impacts',
+        data: { label: 'Impacts' },
+        type: 'custom',
       },
       {
         id: 'e2',
         source: 'mitochondria',
         target: 'pathology',
-        label: 'Impacts',
+        data: { label: 'Impacts' },
+        type: 'custom',
       },
       {
         id: 'e3',
         source: 'cellPhysiology',
         target: 'atpSynthesis',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
       {
         id: 'e4',
         source: 'cellPhysiology',
         target: 'caHomeostasis',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
       {
         id: 'e5',
         source: 'pathology',
         target: 'metabolicPathways',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
       {
         id: 'e6',
         source: 'pathology',
         target: 'radicalProduction',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
     ],
   },
@@ -387,6 +411,7 @@ export const landingPageCodeExamples: any = {
           y: 75,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '2',
@@ -405,6 +430,7 @@ export const landingPageCodeExamples: any = {
           x: 350,
           y: 75,
         },
+        ...nodeStyle,
       },
       {
         id: '3',
@@ -423,6 +449,7 @@ export const landingPageCodeExamples: any = {
           y: 75,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '4',
@@ -441,6 +468,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '5',
@@ -459,6 +487,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '6',
@@ -477,6 +506,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '7',
@@ -495,6 +525,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '8',
@@ -513,6 +544,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '9',
@@ -531,6 +563,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -539,78 +572,42 @@ export const landingPageCodeExamples: any = {
         source: '1',
         target: '4',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e1-5',
         source: '1',
         target: '5',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e2-6',
         source: '2',
         target: '6',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e2-7',
         source: '2',
         target: '7',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e3-8',
         source: '3',
         target: '8',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e3-9',
         source: '3',
         target: '9',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
     ],
   },
@@ -627,6 +624,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
       {
         id: '2',
@@ -639,6 +637,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '3',
@@ -651,6 +650,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
       {
         id: '4',
@@ -663,6 +663,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '5',
@@ -675,6 +676,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '6',
@@ -687,6 +689,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '7',
@@ -699,6 +702,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
       {
         id: '8',
@@ -711,6 +715,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -718,118 +723,64 @@ export const landingPageCodeExamples: any = {
         id: '1-2',
         source: '1',
         target: '2',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '1-3',
         source: '1',
         target: '3',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '2-4',
         source: '2',
         target: '4',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '3-4',
         source: '3',
         target: '4',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '4-5',
         source: '4',
         target: '5',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '4-6',
         source: '4',
         target: '6',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '5-7',
         source: '5',
         target: '7',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '6-7',
         source: '6',
         target: '7',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '7-8',
         source: '7',
         target: '8',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
     ],
   },
@@ -846,6 +797,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '2',
@@ -865,6 +817,7 @@ export const landingPageCodeExamples: any = {
           y: 225,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '3',
@@ -884,6 +837,7 @@ export const landingPageCodeExamples: any = {
           y: 275,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '4',
@@ -903,6 +857,7 @@ export const landingPageCodeExamples: any = {
           y: 250,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '5',
@@ -921,6 +876,7 @@ export const landingPageCodeExamples: any = {
           y: 125,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '6',
@@ -939,6 +895,7 @@ export const landingPageCodeExamples: any = {
           y: -150,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '7',
@@ -957,6 +914,7 @@ export const landingPageCodeExamples: any = {
           y: 0,
         },
         dragging: false,
+        ...nodeStyle,
       },
       {
         id: '8',
@@ -976,6 +934,7 @@ export const landingPageCodeExamples: any = {
           y: -250,
         },
         dragging: false,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -984,98 +943,56 @@ export const landingPageCodeExamples: any = {
         source: '1',
         target: '2',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'leads to' },
       },
       {
         id: 'e2-3',
         source: '1',
         target: '3',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'caused by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'caused by' },
       },
       {
         id: 'e3-4',
         source: '1',
         target: '4',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'risk factors',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'risk factors' },
       },
       {
         id: 'e4-5',
         source: '1',
         target: '5',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'distinguished from',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'distinguished from' },
       },
       {
         id: 'e5-6',
         source: '1',
         target: '6',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'treated by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'treated by' },
       },
       {
         id: 'e6-7',
         source: '1',
         target: '7',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'followed by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'followed by' },
       },
       {
         id: 'e7-8',
         source: '1',
         target: '8',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'prevented by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'prevented by' },
       },
     ],
   },
@@ -1118,99 +1035,3 @@ Example Three:
 ${differentEdgeTypesCodeExample}
 \`\`\
 `
-
-// \`\`\`javascript
-// const nodes = [
-//   {
-//     id: 'A',
-//     position: { x: 20, y: 20 },
-//     data: { label: 'A' },
-//   },
-//   {
-//     id: 'B',
-//     position: { x: 100, y: 200 },
-//     data: { label: 'B' },
-//   },
-//   {
-//     id: 'C',
-//     position: { x: 300, y: 20 },
-//     data: { label: 'C' },
-//   },
-//   {
-//     id: 'D',
-//     position: { x: 300, y: 170 },
-//     data: { label: 'D' },
-//   },
-//   {
-//     id: 'E',
-//     position: { x: 250, y: 300 },
-//     data: { label: 'E' },
-//   },
-//   {
-//     id: 'F',
-//     position: { x: 250, y: 450 },
-//     data: { label: 'F' },
-//   },
-//   {
-//     id: 'G',
-//     position: { x: 20, y: 450 },
-//     data: { label: 'G' },
-//   },
-// ];
-
-// const edges = [
-//   {
-//     id: 'A->B',
-//     source: 'A',
-//     target: 'B',
-//     markerEnd: {
-//       type: MarkerType.Arrow,
-//     },
-//     label: 'default arrow',
-//   },
-//   {
-//     id: 'C->D',
-//     source: 'C',
-//     target: 'D',
-//     markerEnd: {
-//       type: MarkerType.ArrowClosed,
-//     },
-//     label: 'default closed arrow',
-//   },
-//   {
-//     id: 'D->E',
-//     source: 'D',
-//     target: 'E',
-//     markerEnd: {
-//       type: MarkerType.ArrowClosed,
-//     },
-//     markerStart: {
-//       type: MarkerType.ArrowClosed,
-//       orient: 'auto-start-reverse',
-//     },
-//     label: 'marker start and marker end',
-//   },
-//   {
-//     id: 'E->F',
-//     source: 'E',
-//     target: 'F',
-//     markerEnd: 'logo',
-//     label: 'custom marker',
-//   },
-//   {
-//     id: 'B->G',
-//     source: 'B',
-//     target: 'G',
-//     markerEnd: {
-//       type: MarkerType.ArrowClosed,
-//       width: 20,
-//       height: 20,
-//       color: '#FF0072',
-//     },
-//     label: 'marker size and color',
-//     style: {
-//       strokeWidth: 2,
-//       stroke: '#FF0072',
-//     },
-//   },
-// ];
