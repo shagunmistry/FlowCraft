@@ -446,7 +446,11 @@ export default function DiagramOrChartView() {
       <SuccessDialog
         buttonText="View Diagram"
         header="Success!"
-        message={`Yayy! Your ${context.type} has been generated!`}
+        message={`Yayy! Your ${context.type} has been generated! ${
+          context.type === 'Flow Diagram'
+            ? 'Try clicking on the labels to move them around!'
+            : ''
+        }'`}
         open={successDialogOpen}
         setOpen={setSuccessDialogOpen}
       />
