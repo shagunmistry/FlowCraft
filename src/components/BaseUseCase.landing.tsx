@@ -160,8 +160,9 @@ export default function BaseUseCaseLanding({
                   fitView={true}
                   className="transform overflow-hidden rounded-lg bg-black text-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:scale-110 lg:h-full lg:w-full"
                   attributionPosition="top-right"
-                  contentEditable={true}
+                  contentEditable={false}
                   edgeTypes={edgeTypes}
+                  draggable
                 >
                   <Controls />
                   <MiniMap />

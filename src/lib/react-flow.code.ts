@@ -229,7 +229,7 @@ export const landingPageCodeExamples: any = {
           x: 250,
           y: -50,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -248,7 +248,7 @@ export const landingPageCodeExamples: any = {
           x: 100,
           y: 100,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -267,7 +267,7 @@ export const landingPageCodeExamples: any = {
           x: 400,
           y: 75,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -286,7 +286,7 @@ export const landingPageCodeExamples: any = {
           x: -25,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -305,7 +305,7 @@ export const landingPageCodeExamples: any = {
           x: 175,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -324,7 +324,7 @@ export const landingPageCodeExamples: any = {
           x: 375,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -343,7 +343,7 @@ export const landingPageCodeExamples: any = {
           x: 550,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
     ],
@@ -410,7 +410,7 @@ export const landingPageCodeExamples: any = {
           x: 0,
           y: 75,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -425,7 +425,7 @@ export const landingPageCodeExamples: any = {
         width: 150,
         height: 58,
         selected: true,
-        dragging: false,
+        dragging: true,
         positionAbsolute: {
           x: 350,
           y: 75,
@@ -448,7 +448,7 @@ export const landingPageCodeExamples: any = {
           x: 700,
           y: 75,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -467,7 +467,7 @@ export const landingPageCodeExamples: any = {
           x: -75,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -486,7 +486,7 @@ export const landingPageCodeExamples: any = {
           x: 100,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -505,7 +505,7 @@ export const landingPageCodeExamples: any = {
           x: 275,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -524,7 +524,7 @@ export const landingPageCodeExamples: any = {
           x: 450,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -543,7 +543,7 @@ export const landingPageCodeExamples: any = {
           x: 800,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -562,7 +562,7 @@ export const landingPageCodeExamples: any = {
           x: 625,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
     ],
@@ -816,7 +816,7 @@ export const landingPageCodeExamples: any = {
           x: 50,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -836,7 +836,7 @@ export const landingPageCodeExamples: any = {
           x: 250,
           y: 275,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -856,7 +856,7 @@ export const landingPageCodeExamples: any = {
           x: 450,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -875,7 +875,7 @@ export const landingPageCodeExamples: any = {
           x: 550,
           y: 125,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -894,7 +894,7 @@ export const landingPageCodeExamples: any = {
           x: 525,
           y: -150,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -913,7 +913,7 @@ export const landingPageCodeExamples: any = {
           x: 575,
           y: 0,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
       {
@@ -933,7 +933,7 @@ export const landingPageCodeExamples: any = {
           x: 325,
           y: -250,
         },
-        dragging: false,
+        dragging: true,
         ...nodeStyle,
       },
     ],
