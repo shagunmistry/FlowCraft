@@ -107,14 +107,14 @@ export default function PricingTier() {
                       ))}
                     </ul>
                   </div>
-                  <button
+                  <a
                     // href={tier.href}
+                    href="/"
                     aria-describedby={tier.id}
                     className="mt-8 block rounded-md bg-indigo-600 px-3.5 py-2 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
-                    disabled
                   >
-                    Get started today (coming soon!)
-                  </button>
+                    Get started today
+                  </a>
                 </div>
               ))}
               {/* <div className="flex flex-col items-start gap-x-8 gap-y-6 rounded-xl bg-indigo-600 p-8 shadow-xl ring-1 ring-indigo-900/10 sm:gap-y-10 sm:p-10 lg:col-span-2 lg:flex-row lg:items-center">

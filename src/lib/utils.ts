@@ -19,3 +19,23 @@ export function downloadImage(dataUrl: string) {
   a.setAttribute('href', dataUrl)
   a.click()
 }
+
+export function extractParsableJSON(inputString: string): string | null {
+  // Remove any backticks at the beginning and end of the string
+  const trimmedString = inputString.trim()
+  const cleanedString =
+    trimmedString.startsWith('`') && trimmedString.endsWith('`')
+      ? trimmedString.slice(3, -3)
+      : trimmedString
+
+  try {
+    // Attempt to parse the string as JSON
+    const parsedJSON = JSON.parse(cleanedString)
+    // If parsed successfully, return the stringified JSON
+    return JSON.stringify(parsedJSON)
+  } catch (error) {
+    // If parsing fails, return null
+    console.error('Error parsing JSON:', error)
+    return null
+  }
+}

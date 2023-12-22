@@ -2,7 +2,7 @@ import { RadioGroup } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { cn } from '@/lib/utils'
 
-export default function ChartOrDiagramSelection({
+export default function TypeSelection({
   options,
   setSelectedOption,
   selectedOption,
@@ -23,10 +23,6 @@ export default function ChartOrDiagramSelection({
   return (
     <div className="mb-7">
       <RadioGroup value={selectedOption} onChange={setSelectedOption}>
-        <RadioGroup.Label className="text-base text-xl font-semibold text-indigo-700">
-          Select a chart or diagram type
-        </RadioGroup.Label>
-
         <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
           {options.map((option) => (
             <RadioGroup.Option

@@ -2,37 +2,38 @@ import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useContext, useState } from 'react'
 
 import Dropdown from './Dropdown'
-import ChartOrDiagramSelection from './ChartOrDiagramSelection'
+import TypeSelection from './TypeSelection'
 import {
   chartJsAverageNewYorkWeatherReport,
   chartJsCancerRatesExampleReport,
   chartJsNetflixFinancialExampleReport,
   chartJsTeslaStockPricesExampleReport,
 } from '@/lib/chart-js.code'
-import { DiagramOrChartType } from '@/lib/utils'
+import { DiagramOrChartType, cn, extractParsableJSON } from '@/lib/utils'
 import { track } from '@vercel/analytics'
-import { ChartBarIcon, PencilIcon } from '@heroicons/react/20/solid'
+import {
+  ChartBarIcon,
+  PencilIcon,
+  ComputerDesktopIcon,
+} from '@heroicons/react/20/solid'
+import ErrorDialog from './ErrorDialog'
 
 export const exampleFlowDiagramPrompts = [
   {
-    title: 'House Buying Process',
-    description:
-      'The house buying process is the process by which a person buys a house. The process can be broken down into 5 steps: 1. Find a house 2. Make an offer 3. Get a mortgage 4. Close on the house 5. Move in',
+    title: 'What is the house buying process?',
+    description: '',
   },
   {
-    title: 'Paneer Tikka Masala Recipe',
-    description:
-      'Paneer Tikka Masala is a popular Indian dish. It is made by marinating paneer in a mixture of spices and then cooking it in a tomato-based sauce. The dish is typically served with rice or naan.',
+    title: 'How do you make a peanut butter and jelly sandwich?',
+    description: '',
   },
   {
     title: 'How to Make a Paper Airplane',
-    description:
-      'Paper airplanes are a fun and easy way to pass the time. They can be made in many different shapes, sizes, and colors. This article will teach you how to make a paper airplane that flies far and fast!',
+    description: '',
   },
   {
-    title: 'Patient Triaging Process',
-    description:
-      'The patient triaging process is a system that helps healthcare providers determine the order in which patients should be seen. It is used to prioritize patients based on their medical needs and the severity of their condition.',
+    title: 'Explain the Patient Triaging Process from a Patient Perspective',
+    description: '',
   },
 ]
 
@@ -57,36 +58,51 @@ export const exampleChartDataPrompts = [
 
 export const typeSelectionOptions = [
   {
-    id: 'TLDraw',
+    id: 'Flow Diagram' as DiagramOrChartType,
     title: 'Flow Diagram',
     description: 'a diagram representing some kind of process or workflow.',
     prompts: exampleFlowDiagramPrompts,
     icon: PencilIcon,
   },
   {
-    id: 'Chart',
+    id: 'Chart' as DiagramOrChartType,
     title: 'Chart',
     description:
       'A chart is a graphical representation of data, in which "the data is represented by symbols, such as bars in a bar chart, lines in a line chart, or slices in a pie chart".',
     prompts: exampleChartDataPrompts,
     icon: ChartBarIcon,
   },
+  {
+    id: 'TLDraw' as DiagramOrChartType,
+    title: 'Whiteboard',
+    description:
+      'TLDraw is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
+    prompts: exampleFlowDiagramPrompts,
+    icon: ComputerDesktopIcon,
+  },
 ]
 
-export default function TextBox() {
-  const [title, setTitle] = useState<string>(exampleFlowDiagramPrompts[2].title)
-  const [description, setDescription] = useState<string>(
-    exampleFlowDiagramPrompts[2].description,
+export function StepLine() {
+  return (
+    <div
+      className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-indigo-600"
+      aria-hidden="true"
+    />
   )
+}
+
+export default function TextBox() {
+  const [openErrorDialog, setOpenErrorDialog] = useState(false)
+
+  const [title, setTitle] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
   const [error, setError] = useState<string | null>('')
 
   const [selectedType, setSelectedType] = useState<any>(typeSelectionOptions[0])
 
   const context = useContext(DiagramContext)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const handleSubmit = async () => {
     const type = selectedType.id as DiagramOrChartType
     context.setLoading(true)
 
@@ -94,6 +110,15 @@ export default function TextBox() {
     console.log('---- type', type)
     context.setTitle(title)
     context.setDescription(description)
+
+    // if (type === 'Chart' && !description) {
+    //   setError(
+    //     'Please enter the data for your chart in the description field. 🥺',
+    //   )
+    //   setOpenErrorDialog(true)
+    //   context.setLoading(false)
+    //   return
+    // }
 
     try {
       setError(null)
@@ -125,14 +150,23 @@ export default function TextBox() {
         ? diagramJson.result
         : diagramJson.records
 
-      console.log('Diagram JSON: ', JSON.parse(whatToParse))
+      const parseableJson = extractParsableJSON(whatToParse)
+
+      if (parseableJson === null) {
+        setError('There was an error generating the diagram, please try again')
+        setOpenErrorDialog(true)
+        context.setLoading(false)
+        return
+      }
+
+      console.log('Diagram JSON: ', JSON.parse(parseableJson))
       const diagramResult = JSON.parse(diagramJson.result)
 
       if (
         diagramResult &&
         diagramResult.nodes &&
         diagramResult.edges &&
-        type === 'TLDraw'
+        type === 'Flow Diagram'
       ) {
         context.setNodes(diagramResult.nodes)
         context.setEdges(diagramResult.edges)
@@ -179,7 +213,7 @@ export default function TextBox() {
   }) => {
     console.log('Selecting option', option)
     setSelectedType(option)
-    selectExample(option.prompts[2].title, option.prompts[2].description)
+    // selectExample(option.prompts[2].title, option.prompts[2].description)
     context.setType(option.id as DiagramOrChartType)
     context.setTitle(option.prompts[2].title)
     context.setDescription(option.prompts[2].description)
@@ -187,87 +221,127 @@ export default function TextBox() {
 
   return (
     <>
-      <ChartOrDiagramSelection
-        options={typeSelectionOptions}
-        selectedOption={selectedType}
-        setSelectedOption={selectOption}
-      />
-
-      <Dropdown values={selectedType.prompts} selectExample={selectExample} />
-      <form className="relative" onSubmit={handleSubmit}>
-        <div className="overflow-hidden rounded-lg shadow-lg focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
-          <label htmlFor="title" className="sr-only">
-            Diagram Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            className="block w-full border-0 border-b-2 border-pink-200 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-            placeholder="Diagram Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <label htmlFor="description" className="sr-only">
-            Diagram Description
-          </label>
-          <textarea
-            rows={5}
-            name="description"
-            id="description"
-            className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-            placeholder="Write a description about what you want to diagram"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-
-          {/* Spacer element to match the height of the toolbar */}
-          <div aria-hidden="true">
-            <div className="py-2">
-              <div className="h-9" />
-            </div>
-            <div className="h-px" />
-          </div>
-        </div>
-
-        <div className="absolute inset-x-px bottom-0">
-          <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
-            <div className="flex">
-              {/* <button
-              type="button"
-              className="group -my-2 -ml-2 inline-flex items-center rounded-full px-3 py-2 text-left text-gray-400"
-            >
-              <PaperClipIcon
-                className="-ml-1 mr-2 h-5 w-5 group-hover:text-gray-500"
-                aria-hidden="true"
-              />
-              <span className="text-sm italic text-gray-500 group-hover:text-gray-600">
-                Attach a file
-              </span>
-            </button> */}
-            </div>
-            <div className="flex-shrink-0">
-              <button
-                type="submit"
-                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Create
-              </button>
-            </div>
-          </div>
-        </div>
-        {error && (
-          <div className="absolute inset-x-px">
-            <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
-              <div className="flex">
-                <span className="text-sm italic text-red-500 group-hover:text-red-600">
-                  {error}
+      <nav aria-label="Progress">
+        <ol role="list" className="overflow-hidden">
+          <li key="1" className="relative mt-2">
+            <>
+              <StepLine />
+              <div className="group relative flex items-start">
+                <span className="flex h-9 items-center">
+                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <p className="text-lg font-semibold text-white">1</p>
+                  </span>
+                </span>
+                <span className="ml-4 flex min-w-0 flex-col">
+                  <span className="text-xl font-medium font-semibold">
+                    Choose a Type
+                  </span>
+                  <span className="text-md text-white">
+                    <TypeSelection
+                      options={typeSelectionOptions}
+                      selectedOption={selectedType}
+                      setSelectedOption={selectOption}
+                    />
+                  </span>
                 </span>
               </div>
-            </div>
-          </div>
-        )}
-      </form>
+            </>
+          </li>
+          <li key="2" className="relative mt-2">
+            <>
+              <StepLine />
+
+              <div className="group relative flex items-start">
+                <span className="flex h-9 items-center">
+                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <p className="text-lg font-semibold text-white">2</p>
+                  </span>
+                </span>
+                <span className="ml-4 flex min-w-0 flex-col">
+                  <span className="text-xl font-medium font-semibold">
+                    Brief title that describes your vision
+                  </span>
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    className="mt-2 block w-96 rounded-lg border-0 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Briefly describe what you want to see"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </span>
+              </div>
+            </>
+          </li>
+          <li key="3" className="relative mt-2">
+            <>
+              <StepLine />
+
+              <div className="group relative flex items-start">
+                <span className="flex h-9 items-center">
+                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <p className="text-lg font-semibold text-white">3</p>
+                  </span>
+                </span>
+                <span className="ml-4 flex min-w-0 flex-col">
+                  <span className="text-xl font-medium font-semibold">
+                    {context.type === 'Chart'
+                      ? 'Chart Data'
+                      : 'Diagram Details'}
+                  </span>
+                  <textarea
+                    rows={5}
+                    name="description"
+                    id="description"
+                    className="mt-2 block w-96 resize-none rounded-lg border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder={
+                      context.type === 'Chart'
+                        ? 'Enter Chart Data'
+                        : 'Enter Diagram details here (optional)'
+                    }
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </span>
+              </div>
+            </>
+          </li>
+          <li key="4" className="relative mt-2">
+            <>
+              <div className="group relative flex items-start">
+                <span className="flex h-9 items-center">
+                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <p className="text-lg font-semibold text-white">4</p>
+                  </span>
+                </span>
+                <span className="ml-4 flex min-w-0 flex-col">
+                  <span className="text-xl font-medium font-semibold">
+                    Generate
+                  </span>
+                  <button
+                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    onClick={handleSubmit}
+                  >
+                    Create
+                  </button>
+                </span>
+              </div>
+            </>
+          </li>
+        </ol>
+      </nav>
+
+      <div className="mt-2">
+        <Dropdown values={selectedType.prompts} selectExample={selectExample} />
+      </div>
+
+      <ErrorDialog
+        title="Error Generating Diagram"
+        message={error || ''}
+        setOpen={setOpenErrorDialog}
+        open={openErrorDialog}
+      />
     </>
   )
 }

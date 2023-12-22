@@ -1,4 +1,15 @@
-import { MarkerType, Node } from 'reactflow'
+import { Node } from "reactflow"
+
+export const nodeStyle = {
+  style: {
+    background: '#FFD1DC',
+    color: '#00000',
+    border: '1px solid #FF69B4',
+    width: 180,
+    borderRadius: 10,
+    fontSize: 20,
+  },
+}
 
 export const ReactFlowExamples = {
   customNodes: {
@@ -220,7 +231,8 @@ export const landingPageCodeExamples: any = {
           x: 250,
           y: -50,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: 'cellPhysiology',
@@ -238,7 +250,8 @@ export const landingPageCodeExamples: any = {
           x: 100,
           y: 100,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: 'pathology',
@@ -256,7 +269,8 @@ export const landingPageCodeExamples: any = {
           x: 400,
           y: 75,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: 'atpSynthesis',
@@ -274,7 +288,8 @@ export const landingPageCodeExamples: any = {
           x: -25,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: 'caHomeostasis',
@@ -292,7 +307,8 @@ export const landingPageCodeExamples: any = {
           x: 175,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: 'metabolicPathways',
@@ -310,7 +326,8 @@ export const landingPageCodeExamples: any = {
           x: 375,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: 'radicalProduction',
@@ -328,7 +345,8 @@ export const landingPageCodeExamples: any = {
           x: 550,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -336,37 +354,43 @@ export const landingPageCodeExamples: any = {
         id: 'e1',
         source: 'mitochondria',
         target: 'cellPhysiology',
-        label: 'Impacts',
+        data: { label: 'Impacts' },
+        type: 'custom',
       },
       {
         id: 'e2',
         source: 'mitochondria',
         target: 'pathology',
-        label: 'Impacts',
+        data: { label: 'Impacts' },
+        type: 'custom',
       },
       {
         id: 'e3',
         source: 'cellPhysiology',
         target: 'atpSynthesis',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
       {
         id: 'e4',
         source: 'cellPhysiology',
         target: 'caHomeostasis',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
       {
         id: 'e5',
         source: 'pathology',
         target: 'metabolicPathways',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
       {
         id: 'e6',
         source: 'pathology',
         target: 'radicalProduction',
-        label: 'Involved in',
+        data: { label: 'Involved in' },
+        type: 'custom',
       },
     ],
   },
@@ -388,7 +412,8 @@ export const landingPageCodeExamples: any = {
           x: 0,
           y: 75,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '2',
@@ -402,11 +427,12 @@ export const landingPageCodeExamples: any = {
         width: 150,
         height: 58,
         selected: true,
-        dragging: false,
+        dragging: true,
         positionAbsolute: {
           x: 350,
           y: 75,
         },
+        ...nodeStyle,
       },
       {
         id: '3',
@@ -424,7 +450,8 @@ export const landingPageCodeExamples: any = {
           x: 700,
           y: 75,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '4',
@@ -442,7 +469,8 @@ export const landingPageCodeExamples: any = {
           x: -75,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '5',
@@ -460,7 +488,8 @@ export const landingPageCodeExamples: any = {
           x: 100,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '6',
@@ -478,7 +507,8 @@ export const landingPageCodeExamples: any = {
           x: 275,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '7',
@@ -496,7 +526,8 @@ export const landingPageCodeExamples: any = {
           x: 450,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '8',
@@ -514,7 +545,8 @@ export const landingPageCodeExamples: any = {
           x: 800,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '9',
@@ -532,7 +564,8 @@ export const landingPageCodeExamples: any = {
           x: 625,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -541,78 +574,42 @@ export const landingPageCodeExamples: any = {
         source: '1',
         target: '4',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e1-5',
         source: '1',
         target: '5',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e2-6',
         source: '2',
         target: '6',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e2-7',
         source: '2',
         target: '7',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e3-8',
         source: '3',
         target: '8',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
       {
         id: 'e3-9',
         source: '3',
         target: '9',
         animated: true,
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        type: 'custom',
       },
     ],
   },
@@ -629,6 +626,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
       {
         id: '2',
@@ -641,6 +639,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '3',
@@ -653,6 +652,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
       {
         id: '4',
@@ -665,6 +665,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '5',
@@ -677,6 +678,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '6',
@@ -689,6 +691,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '7',
@@ -701,6 +704,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
       {
         id: '8',
@@ -713,6 +717,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 58,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -720,118 +725,64 @@ export const landingPageCodeExamples: any = {
         id: '1-2',
         source: '1',
         target: '2',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '1-3',
         source: '1',
         target: '3',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '2-4',
         source: '2',
         target: '4',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '3-4',
         source: '3',
         target: '4',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '4-5',
         source: '4',
         target: '5',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '4-6',
         source: '4',
         target: '6',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
       {
         id: '5-7',
         source: '5',
         target: '7',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '6-7',
         source: '6',
         target: '7',
-        label: 'results in',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'results in' },
+        type: 'custom',
       },
       {
         id: '7-8',
         source: '7',
         target: '8',
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
+        data: { label: 'leads to' },
+        type: 'custom',
       },
     ],
   },
@@ -848,6 +799,7 @@ export const landingPageCodeExamples: any = {
         },
         width: 150,
         height: 40,
+        ...nodeStyle,
       },
       {
         id: '2',
@@ -866,7 +818,8 @@ export const landingPageCodeExamples: any = {
           x: 50,
           y: 225,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '3',
@@ -885,7 +838,8 @@ export const landingPageCodeExamples: any = {
           x: 250,
           y: 275,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '4',
@@ -904,7 +858,8 @@ export const landingPageCodeExamples: any = {
           x: 450,
           y: 250,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '5',
@@ -922,7 +877,8 @@ export const landingPageCodeExamples: any = {
           x: 550,
           y: 125,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '6',
@@ -940,7 +896,8 @@ export const landingPageCodeExamples: any = {
           x: 525,
           y: -150,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '7',
@@ -958,7 +915,8 @@ export const landingPageCodeExamples: any = {
           x: 575,
           y: 0,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
       {
         id: '8',
@@ -977,7 +935,8 @@ export const landingPageCodeExamples: any = {
           x: 325,
           y: -250,
         },
-        dragging: false,
+        dragging: true,
+        ...nodeStyle,
       },
     ],
     edges: [
@@ -986,98 +945,56 @@ export const landingPageCodeExamples: any = {
         source: '1',
         target: '2',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'leads to',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'leads to' },
       },
       {
         id: 'e2-3',
         source: '1',
         target: '3',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'caused by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'caused by' },
       },
       {
         id: 'e3-4',
         source: '1',
         target: '4',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'risk factors',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'risk factors' },
       },
       {
         id: 'e4-5',
         source: '1',
         target: '5',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'distinguished from',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'distinguished from' },
       },
       {
         id: 'e5-6',
         source: '1',
         target: '6',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'treated by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'treated by' },
       },
       {
         id: 'e6-7',
         source: '1',
         target: '7',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'followed by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'followed by' },
       },
       {
         id: 'e7-8',
         source: '1',
         target: '8',
         animated: true,
-        style: {
-          stroke: '#FF69B4',
-          strokeWidth: 2,
-        },
-        label: 'prevented by',
-        markerEnd: {
-          type: 'arrow',
-        },
+        type: 'custom',
+        data: { label: 'prevented by' },
       },
     ],
   },
@@ -1128,10 +1045,19 @@ export const initialNodes: Node[] = [
       label: 'Start',
     },
     position: {
-      x: 100,
-      y: 100,
+      x: 300,
+      y: -150,
     },
     type: 'input',
+    width: 180,
+    height: 52,
+    selected: true,
+    positionAbsolute: {
+      x: 300,
+      y: -150,
+    },
+    dragging: false,
+    ...nodeStyle,
   },
   {
     id: '2',
@@ -1140,8 +1066,11 @@ export const initialNodes: Node[] = [
     },
     position: {
       x: 300,
-      y: 100,
+      y: 0,
     },
+    width: 180,
+    height: 82,
+    ...nodeStyle,
   },
   {
     id: '3',
@@ -1152,6 +1081,9 @@ export const initialNodes: Node[] = [
       x: 300,
       y: 200,
     },
+    width: 180,
+    height: 52,
+    ...nodeStyle,
   },
   {
     id: '4',
@@ -1160,8 +1092,11 @@ export const initialNodes: Node[] = [
     },
     position: {
       x: 500,
-      y: 100,
+      y: 50,
     },
+    width: 180,
+    height: 112,
+    ...nodeStyle,
   },
   {
     id: '5',
@@ -1172,6 +1107,9 @@ export const initialNodes: Node[] = [
       x: 500,
       y: 200,
     },
+    width: 180,
+    height: 112,
+    ...nodeStyle,
   },
   {
     id: '6',
@@ -1179,9 +1117,18 @@ export const initialNodes: Node[] = [
       label: 'Fold the Plane in Half',
     },
     position: {
-      x: 700,
-      y: 100,
+      x: 850,
+      y: 50,
     },
+    width: 180,
+    height: 82,
+    selected: false,
+    positionAbsolute: {
+      x: 850,
+      y: 50,
+    },
+    dragging: false,
+    ...nodeStyle,
   },
   {
     id: '7',
@@ -1189,9 +1136,18 @@ export const initialNodes: Node[] = [
       label: 'Fold the Wings Down',
     },
     position: {
-      x: 900,
-      y: 100,
+      x: 850,
+      y: 225,
     },
+    width: 180,
+    height: 82,
+    selected: false,
+    positionAbsolute: {
+      x: 850,
+      y: 225,
+    },
+    dragging: false,
+    ...nodeStyle,
   },
   {
     id: '8',
@@ -1203,5 +1159,69 @@ export const initialNodes: Node[] = [
       y: 100,
     },
     type: 'output',
+    width: 180,
+    height: 52,
+    ...nodeStyle,
+  },
+]
+
+export const initialEdges = [
+  {
+    id: '1-2',
+    source: '1',
+    target: '2',
+    data: {
+      label: 'Get some paper',
+    },
+    type: 'custom',
+  },
+  {
+    id: '2-3',
+    source: '2',
+    target: '3',
+    label: 'Step 2',
+    type: 'custom',
+    data: {
+      label: 'Make sure it is aligned',
+    },
+  },
+  {
+    id: '3-4',
+    source: '3',
+    target: '4',
+    type: 'custom',
+  },
+  {
+    id: '3-5',
+    source: '3',
+    target: '5',
+    type: 'custom',
+  },
+  {
+    id: '4-6',
+    source: '4',
+    target: '6',
+    type: 'custom',
+  },
+  {
+    id: '5-6',
+    source: '5',
+    target: '6',
+    type: 'custom',
+  },
+  {
+    id: '6-7',
+    source: '6',
+    target: '7',
+    type: 'custom',
+    data: {
+      label: 'You are almost done!',
+    },
+  },
+  {
+    id: '7-8',
+    source: '7',
+    target: '8',
+    type: 'custom',
   },
 ]

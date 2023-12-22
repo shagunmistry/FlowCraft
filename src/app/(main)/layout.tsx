@@ -1,8 +1,7 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
-import { EditorSection } from '@/components/EditorSection'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { Edge, Node } from 'reactflow'
 
@@ -11,6 +10,7 @@ import { exampleFlowDiagramPrompts } from '@/components/TextBox'
 import { DiagramOrChartType } from '@/lib/utils'
 import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
 import Navbar from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 
 export default function MainLayout({
   children,
@@ -22,11 +22,305 @@ export default function MainLayout({
     exampleFlowDiagramPrompts[2].description,
   )
 
-  const [type, setType] = useState<DiagramOrChartType>('TLDraw')
+  const [type, setType] = useState<DiagramOrChartType>('Flow Diagram')
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
 
-  const [tlDrawRecords, setTlDrawRecords] = useState<any>([])
+  const [tlDrawRecords, setTlDrawRecords] = useState<any>([
+    {
+      x: 200,
+      y: 100,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:1',
+      type: 'geo',
+      props: {
+        w: 500,
+        h: 100,
+        geo: 'rectangle',
+        color: 'light-green',
+        labelColor: 'black',
+        fill: 'none',
+        dash: 'draw',
+        size: 'm',
+        font: 'draw',
+        text: 'Idea Generation',
+        align: 'middle',
+        verticalAlign: 'middle',
+        url: '',
+      },
+      index: 'a1',
+      typeName: 'shape',
+    },
+    {
+      x: 200,
+      y: 300,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:2',
+      type: 'geo',
+      props: {
+        w: 500,
+        h: 100,
+        geo: 'rectangle',
+        color: 'light-blue',
+        labelColor: 'black',
+        fill: 'none',
+        dash: 'draw',
+        size: 'm',
+        font: 'draw',
+        text: 'Market Research',
+        align: 'middle',
+        verticalAlign: 'middle',
+        url: '',
+      },
+      index: 'a2',
+      typeName: 'shape',
+    },
+    {
+      x: 200,
+      y: 500,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:3',
+      type: 'geo',
+      props: {
+        w: 500,
+        h: 100,
+        geo: 'rectangle',
+        color: 'light-violet',
+        labelColor: 'black',
+        fill: 'none',
+        dash: 'draw',
+        size: 'm',
+        font: 'draw',
+        text: 'Planning and Design',
+        align: 'middle',
+        verticalAlign: 'middle',
+        url: '',
+      },
+      index: 'a3',
+      typeName: 'shape',
+    },
+    {
+      x: 200,
+      y: 700,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:4',
+      type: 'geo',
+      props: {
+        w: 500,
+        h: 100,
+        geo: 'rectangle',
+        color: 'yellow',
+        labelColor: 'black',
+        fill: 'none',
+        dash: 'draw',
+        size: 'm',
+        font: 'draw',
+        text: 'Development',
+        align: 'middle',
+        verticalAlign: 'middle',
+        url: '',
+      },
+      index: 'a4',
+      typeName: 'shape',
+    },
+    {
+      x: 200,
+      y: 900,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:5',
+      type: 'geo',
+      props: {
+        w: 500,
+        h: 100,
+        geo: 'rectangle',
+        color: 'light-red',
+        labelColor: 'black',
+        fill: 'none',
+        dash: 'draw',
+        size: 'm',
+        font: 'draw',
+        text: 'Testing and Deployment',
+        align: 'middle',
+        verticalAlign: 'middle',
+        url: '',
+      },
+      index: 'a5',
+      typeName: 'shape',
+    },
+    {
+      x: 450,
+      y: 200,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:1-2',
+      type: 'arrow',
+      index: 'a6',
+      props: {
+        dash: 'draw',
+        size: 'm',
+        fill: 'none',
+        color: 'black',
+        labelColor: 'black',
+        bend: 0,
+        start: {
+          type: 'binding',
+          boundShapeId: 'shape:1',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 1,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        end: {
+          type: 'binding',
+          boundShapeId: 'shape:2',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 0,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        arrowheadStart: 'none',
+        arrowheadEnd: 'arrow',
+        text: '',
+        font: 'draw',
+      },
+      typeName: 'shape',
+    },
+    {
+      x: 450,
+      y: 400,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:2-3',
+      type: 'arrow',
+      index: 'a7',
+      props: {
+        dash: 'draw',
+        size: 'm',
+        fill: 'none',
+        color: 'black',
+        labelColor: 'black',
+        bend: 0,
+        start: {
+          type: 'binding',
+          boundShapeId: 'shape:2',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 1,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        end: {
+          type: 'binding',
+          boundShapeId: 'shape:3',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 0,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        arrowheadStart: 'none',
+        arrowheadEnd: 'arrow',
+        text: '',
+        font: 'draw',
+      },
+      typeName: 'shape',
+    },
+    {
+      x: 450,
+      y: 600,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:3-4',
+      type: 'arrow',
+      index: 'a8',
+      props: {
+        dash: 'draw',
+        size: 'm',
+        fill: 'none',
+        color: 'black',
+        labelColor: 'black',
+        bend: 0,
+        start: {
+          type: 'binding',
+          boundShapeId: 'shape:3',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 1,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        end: {
+          type: 'binding',
+          boundShapeId: 'shape:4',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 0,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        arrowheadStart: 'none',
+        arrowheadEnd: 'arrow',
+        text: '',
+        font: 'draw',
+      },
+      typeName: 'shape',
+    },
+    {
+      x: 450,
+      y: 800,
+      rotation: 0,
+      opacity: 1,
+      id: 'shape:4-5',
+      type: 'arrow',
+      index: 'a9',
+      props: {
+        dash: 'draw',
+        size: 'm',
+        fill: 'none',
+        color: 'black',
+        labelColor: 'black',
+        bend: 0,
+        start: {
+          type: 'binding',
+          boundShapeId: 'shape:4',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 1,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        end: {
+          type: 'binding',
+          boundShapeId: 'shape:5',
+          normalizedAnchor: {
+            x: 0.5,
+            y: 0,
+          },
+          isPrecise: true,
+          isExact: false,
+        },
+        arrowheadStart: 'none',
+        arrowheadEnd: 'arrow',
+        text: '',
+        font: 'draw',
+      },
+      typeName: 'shape',
+    },
+  ])
 
   const [loading, _setLoading] = useState<boolean>(false)
   const [chartJsData, setChartJsData] = useState<any>(
@@ -58,19 +352,7 @@ export default function MainLayout({
         <Navbar />
         <div className="relative">{children}</div>
       </main>
-      <footer>
-        <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4">
-          <h2 className="flex items-center font-mono text-sm font-medium leading-7 text-pink-900">
-            <span className="ml-2.5">Created by</span>
-            <a
-              href="https://twitter.com/mistry_shagun"
-              className="ml-1 text-pink-500 hover:text-pink-600"
-            >
-              @ShagunMistry
-            </a>
-          </h2>
-        </div>
-      </footer>
+      <Footer />
 
       <Analytics />
     </DiagramContext.Provider>

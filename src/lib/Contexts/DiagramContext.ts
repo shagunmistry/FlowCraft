@@ -35,5 +35,5 @@ export const DiagramContext = createContext<{
   setType: () => {},
   title: '',
   tlDrawRecords: [],
-  type: 'TLDraw',
+  type: 'Flow Diagram' as DiagramOrChartType,
 })

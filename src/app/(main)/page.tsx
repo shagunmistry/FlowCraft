@@ -8,7 +8,6 @@ import {
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import PricingTier from '@/components/PricingTier'
-import Whiteboard from '@/components/Whiteboard/Whiteboard'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
@@ -68,33 +67,11 @@ export default async function Home() {
           </p>
           <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 text-gray-700 text-white lg:max-w-none lg:grid-cols-2">
             <ChartDescriptionInput />
-            <div>
-              <p>
-                We use the power of AI to help you create beautiful diagrams.
-              </p>
-              <p className="mt-8">
-                Stop struggling with complex diagramming tools and let AI do the
-                work for you. Our intuitive platform takes your plain text
-                descriptions and transforms them into professional diagrams in
-                just minutes. No diagramming expertise required! Simply type in
-                your ideas, and our AI engine will translate them into clear,
-                visually appealing diagrams that communicate your concepts with
-                ease.
-              </p>
-              <p className="mt-8">
-                As this is still a work in progress, we would love to hear your
-                feedback on how we can improve. Please click on the Feedback
-                button to give us your thoughts.
-              </p>
-              <p className="mt-8 text-sm font-semibold">More coming soon!</p>
-            </div>
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <DiagramOrChartView />
-        {/* <Whiteboard /> */}
-        {/** Only show when not in production */}
         {process.env.NODE_ENV !== 'production' && (
           <div className="mt-10">
             <PricingTier />
@@ -104,5 +81,3 @@ export default async function Home() {
     </div>
   )
 }
-
-// export const revalidate = 10

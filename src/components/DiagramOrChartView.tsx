@@ -12,7 +12,9 @@ import ReactFlow, {
   useEdgesState,
   ConnectionLineType,
   updateEdge,
-  MarkerType,
+  BackgroundVariant,
+  EdgeTypes,
+  Edge,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -24,10 +26,13 @@ import DownloadButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
-import EditableTableForDiagram from './ReactFlow/EditableTableForDiagram'
+import { initialEdges, initialNodes } from '@/lib/react-flow.code'
+import EditDiagramButton from './EditDiagramButton'
+import CustomEdge from './ReactFlow/CustomEdge'
+import SuccessDialog from './SuccessDialog'
+import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
-import { initialNodes } from '@/lib/react-flow.code'
-import hey from '@/components/Whiteboard/hey.json'
+import { scenarios } from '@/components/Whiteboard/scenarios'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -38,104 +43,28 @@ const nodeTypes = {
   customNode: CustomInputBoxNode,
 }
 
-const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
+const edgeTypes: EdgeTypes = {
+  custom: CustomEdge,
+}
 
-const initialEdges = [
-  {
-    id: '1-2',
-    source: '1',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '2',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '2-3',
-    source: '2',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '3',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '3-4',
-    source: '3',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '4',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '3-5',
-    source: '3',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '5',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '4-6',
-    source: '4',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '6',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '5-6',
-    source: '5',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '6',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '6-7',
-    source: '6',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '7',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-  {
-    id: '7-8',
-    source: '7',
-    markerEnd: { type: MarkerType.Arrow },
-    target: '8',
-    style: {
-      stroke: '#FF69B4',
-      strokeWidth: 2,
-    },
-  },
-]
+const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 
 export default function DiagramOrChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
-    JSON.stringify(hey),
+    JSON.stringify(scenarios.house_buying_process),
   )
 
   const [chartCreated, setChartCreated] = useState<boolean>(false)
 
+  const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
+
   const context = useContext(DiagramContext)
 
   useEffect(() => {
+    console.log('context.type: ', context.type)
     if (context.type === 'Flow Diagram') {
       console.log('we are in the TLDraw')
       console.log('Edges: ', context.edges)
@@ -146,19 +75,35 @@ export default function DiagramOrChartView() {
       console.log('context.nodes --> ', context.nodes)
       console.log('context.edges -->', context.edges)
 
-      const edgesWithMarkerAndStyle = context.edges.map((edge) => {
+      const edgesWithMarkerAndStyle = context.edges.map((edge: Edge) => {
+        console.log('Individual edge: ', edge)
         return {
           ...edge,
-          markerEnd: { type: MarkerType.Arrow },
-          style: {
-            stroke: '#FF69B4',
-            strokeWidth: 2,
+          type: 'custom',
+          data: {
+            label: edge.label ? edge.label : '',
           },
         }
       })
 
-      setNodes(context.nodes)
-      setEdges(edgesWithMarkerAndStyle)
+      const nodesWithStyle = context.nodes.map((node: Node) => {
+        return {
+          ...node,
+          ...nodeStyle,
+        }
+      })
+
+      setNodes(nodesWithStyle)
+      setEdges(edgesWithMarkerAndStyle as any)
+
+      const fitButton = document.getElementsByClassName(
+        '.react-flow__controls-fitview',
+      )[0] as HTMLButtonElement
+      if (fitButton) {
+        fitButton.click()
+      }
+
+      setSuccessDialogOpen(true)
     } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
@@ -179,8 +124,28 @@ export default function DiagramOrChartView() {
       if (!context.tlDrawRecords || context.tlDrawRecords.length === 0) {
         return
       }
-      hey.records = context.tlDrawRecords
-      setTlDrawInputJson(JSON.stringify(hey))
+
+      const recordsWithNecessaryFields = context.tlDrawRecords.map(
+        (record: any) => {
+          return {
+            ...record,
+            parentId: 'page:page',
+            isLocked: false,
+            meta: {},
+            opacity: 1,
+            props: {
+              ...record.props,
+              [record.type === 'geo' ? 'url' : 'font']:
+                record.type === 'geo' ? '' : 'draw',
+              [record.type === 'geo' ? 'growY' : 'dash']:
+                record.type === 'geo' ? 0 : 'draw',
+            },
+          }
+        },
+      )
+
+      scenarios.house_buying_process.records = recordsWithNecessaryFields
+      setTlDrawInputJson(JSON.stringify(scenarios.house_buying_process))
     }
   }, [
     context.nodes,
@@ -259,7 +224,7 @@ export default function DiagramOrChartView() {
         <h1 className="text-2xl font-bold leading-7 text-indigo-900 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
-        <div className="animate-bounce font-bold text-white">
+        <div className="-mt-96 animate-bounce font-bold text-white">
           Scroll Down
           <ArrowDownIcon className="h-10 w-10" />
         </div>
@@ -276,7 +241,7 @@ export default function DiagramOrChartView() {
           </>
         ) : (
           <>
-            {context.type === 'Flow Diagram' ? (
+            {context.type === 'Flow Diagram' && (
               <>
                 <ReactFlow
                   nodes={nodes}
@@ -293,42 +258,51 @@ export default function DiagramOrChartView() {
                   attributionPosition="bottom-left"
                   defaultEdgeOptions={defaultEdgeOptions}
                   nodeTypes={nodeTypes}
-                  onClick={() => {
-                    console.log('Nodes: ', nodes)
-                    console.log('Edges: ', edges)
-                  }}
+                  edgeTypes={edgeTypes}
                 >
                   <Controls />
-                  {/* <Background color="#000000" gap={16} /> */}
+                  <Background
+                    color="#808080"
+                    gap={40}
+                    variant={BackgroundVariant.Lines}
+                  />
                   <MiniMap />
+
                   <DownloadButton />
+                  <EditDiagramButton
+                    nodes={nodes}
+                    edges={edges}
+                    setNodes={setNodes}
+                    deleteNode={deleteNode}
+                    onNodesChange={onNodesChange}
+                    addNode={addNode}
+                    updateNodeLabel={updateNodeLabel}
+                  />
                 </ReactFlow>
               </>
-            ) : context.type === 'Chart' ? (
-              <div className="flex items-center justify-center">
+            )}
+            {context.type === 'Chart' && (
+              <div className="flex h-screen items-center justify-center rounded-xl bg-white p-10 shadow-lg">
                 <canvas id="myChart" className="h-max"></canvas>
               </div>
-            ) : context.type === 'TLDraw' ? (
+            )}
+            {context.type === 'TLDraw' && (
               <Whiteboard inputJson={tlDrawInputJson} />
-            ) : (
-              'Please select an option'
             )}
           </>
         )}
       </div>
-      {context.type === 'TLDraw' && !context.loading ? (
-        <>
-          <EditableTableForDiagram
-            nodes={nodes}
-            edges={edges}
-            setNodes={setNodes}
-            deleteNode={deleteNode}
-            onNodesChange={onNodesChange}
-            addNode={addNode}
-            updateNodeLabel={updateNodeLabel}
-          />
-        </>
-      ) : null}
+      <SuccessDialog
+        buttonText="View Diagram"
+        header="Success!"
+        message={`Yayy! Your ${context.type} has been generated! ${
+          context.type === 'Flow Diagram'
+            ? 'Try clicking on the labels to move them around!'
+            : ''
+        }'`}
+        open={successDialogOpen}
+        setOpen={setSuccessDialogOpen}
+      />
     </>
   )
 }

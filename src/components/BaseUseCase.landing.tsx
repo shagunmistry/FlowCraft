@@ -2,10 +2,13 @@
 import { StarIcon } from '@heroicons/react/20/solid'
 import Image, { StaticImageData } from 'next/image'
 
-import ReactFlow, { Controls, MiniMap } from 'reactflow'
-import { ReactFlowExamples } from '@/lib/react-flow.code'
+import ReactFlow, { Controls, EdgeTypes, MiniMap } from 'reactflow'
+import CustomEdge from './ReactFlow/CustomEdge'
 
-export default function ForTeachers({
+const edgeTypes: EdgeTypes = {
+  custom: CustomEdge,
+}
+export default function BaseUseCaseLanding({
   headline,
   subheadline,
   ratedBy,
@@ -83,24 +86,28 @@ export default function ForTeachers({
                   action="#"
                   className="mt-12 sm:flex sm:w-full sm:max-w-lg"
                 >
-                  <div className="min-w-0 flex-1">
-                    <label htmlFor="hero-email" className="sr-only">
-                      Email address
-                    </label>
-                    <input
-                      id="hero-email"
-                      type="email"
-                      className="block w-full rounded-md border border-gray-300 px-5 py-3 text-base text-pink-900 placeholder-gray-500 shadow-sm focus:border-pink-500 focus:ring-pink-500"
-                      placeholder="Enter your email"
-                    />
-                  </div>
+                  {process.env.NODE_ENV !== 'production' ? (
+                    <div className="min-w-0 flex-1">
+                      <label htmlFor="hero-email" className="sr-only">
+                        Email address
+                      </label>
+
+                      <input
+                        id="hero-email"
+                        type="email"
+                        className="block w-full rounded-md border border-gray-300 px-5 py-3 text-base text-pink-900 placeholder-gray-500 shadow-sm focus:border-pink-500 focus:ring-pink-500"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                  ) : null}
                   <div className="mt-4 sm:ml-3 sm:mt-0">
-                    <button
-                      type="submit"
+                    <a
+                      // type="submit"
+                      href="/"
                       className="block w-full rounded-md border border-transparent bg-pink-500 px-5 py-3 text-base font-medium text-white shadow hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 sm:px-10"
                     >
                       Get Started
-                    </button>
+                    </a>
                   </div>
                 </form>
                 <div className="mt-6">
@@ -153,7 +160,9 @@ export default function ForTeachers({
                   fitView={true}
                   className="transform overflow-hidden rounded-lg bg-black text-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:scale-110 lg:h-full lg:w-full"
                   attributionPosition="top-right"
-                  contentEditable={true}
+                  contentEditable={false}
+                  edgeTypes={edgeTypes}
+                  draggable
                 >
                   <Controls />
                   <MiniMap />
@@ -297,24 +306,27 @@ export default function ForTeachers({
                   action="#"
                   className="mt-12 sm:mx-auto sm:flex sm:max-w-lg"
                 >
-                  <div className="min-w-0 flex-1">
-                    <label htmlFor="cta-email" className="sr-only">
-                      Email address
-                    </label>
-                    <input
-                      id="cta-email"
-                      type="email"
-                      className="block w-full rounded-md border border-transparent px-5 py-3 text-base text-pink-900 placeholder-gray-500 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pink-500"
-                      placeholder="Enter your email"
-                    />
-                  </div>
+                  {process.env.NODE_ENV !== 'production' ? (
+                    <div className="min-w-0 flex-1">
+                      <label htmlFor="cta-email" className="sr-only">
+                        Email address
+                      </label>
+                      <input
+                        id="cta-email"
+                        type="email"
+                        className="block w-full rounded-md border border-transparent px-5 py-3 text-base text-pink-900 placeholder-gray-500 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pink-500"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                  ) : null}
                   <div className="mt-4 sm:ml-3 sm:mt-0">
-                    <button
-                      type="submit"
+                    <a
+                      // type="submit"
+                      href="/"
                       className="block w-full rounded-md border border-transparent bg-pink-900 px-5 py-3 text-base font-medium text-white shadow hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pink-500 sm:px-10"
                     >
-                      Notify me
-                    </button>
+                      Get Started
+                    </a>
                   </div>
                 </form>
               </div>

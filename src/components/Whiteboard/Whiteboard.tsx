@@ -4,21 +4,13 @@ import dynamic from 'next/dynamic'
 
 import {
   Editor,
-  TLStore,
-  TLStoreWithStatus,
-  createShapeId,
   createTLStore,
   defaultShapeUtils,
   parseTldrawJsonFile,
-  useEditor,
 } from '@tldraw/tldraw'
 
 import '@tldraw/tldraw/tldraw.css'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { scenarios } from './scenarios'
-import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-
-// const jsonString = JSON.stringify(scenarios.hey)
+import { useEffect, useMemo, useRef } from 'react'
 
 const Tldraw = dynamic(async () => (await import('@tldraw/tldraw')).Tldraw, {
   ssr: false,
@@ -35,9 +27,12 @@ export default function ({ inputJson }: { inputJson: string }) {
       json: inputJson,
       schema: createTLStore({ shapeUtils: defaultShapeUtils }).schema,
     })
+
     if (!parsed.ok) {
       throw new Error(`File parse error: ${JSON.stringify(parsed.error)}`)
     }
+
+    console.log('editorRef.current: ', editorRef.current)
 
     if (editorRef.current) {
       editorRef.current.zoomToFit()
@@ -54,20 +49,19 @@ export default function ({ inputJson }: { inputJson: string }) {
 
   const handleClick = () => {
     console.log('Editor: ', editorRef.current?.store.getSnapshot())
+    console.log('Records: ', editorRef.current?.store.allRecords())
   }
 
   return (
     <div className="mt-12 h-screen w-full rounded-xl">
-      <button
-        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-        onClick={handleClick}
-      >
-        Save
-      </button>
       <Tldraw
         store={inputStore}
         onMount={(editor) => {
+          console.log('Editor has mounted')
           editorRef.current = editor
+
+          // Zoom to fit the diagram
+          editor?.zoomToFit({ duration: 200 })
         }}
       />
     </div>

@@ -8,7 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const navigation = [
-  { name: 'Home', href: '/' },
+  { name: 'Start Here', href: '/' },
   { name: 'For Teachers', href: '/demos/teachers' },
   { name: 'For Students', href: '/demos/students' },
   { name: 'For Healthcare', href: '/demos/healthcare' },
@@ -28,7 +28,7 @@ export default function Navbar() {
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">FlowCraft</span>
             <Image
-              className="h-8 w-auto"
+              className="h-14 w-auto transform rounded-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl"
               src={FlowCraftLogo}
               alt="FlowCraft Logo"
             />
@@ -49,13 +49,14 @@ export default function Navbar() {
             <Link
               key={item.name}
               href={item.href}
-              className="rounded-lg bg-black px-3 py-2 text-sm font-semibold leading-6 text-white hover:text-pink-600"
+              className="transform rounded-lg bg-black px-3 py-2 text-sm font-semibold leading-6 text-white transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gray-50 hover:text-pink-600 hover:shadow-xl"
             >
               {item.name}
             </Link>
           ))}
         </div>
       </nav>
+
       <Dialog
         as="div"
         className="lg:hidden"
@@ -68,7 +69,7 @@ export default function Navbar() {
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">FlowCraft</span>
               <Image
-                className="h-8 w-auto"
+                className="h-14 w-auto transform rounded-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl"
                 src={FlowCraftLogo}
                 alt="FlowCraft Logo"
               />
