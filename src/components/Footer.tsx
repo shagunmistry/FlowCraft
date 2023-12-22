@@ -30,7 +30,7 @@ const footerNavigation = {
 
 export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
   return (
-    <footer className="mt-24 bg-gradient-to-r from-indigo-500 to-indigo-800 sm:mt-12">
+    <footer className="bg-gradient-to-r from-indigo-500 to-indigo-800">
       <div className="mx-auto max-w-md overflow-hidden px-6 py-12 sm:max-w-3xl lg:max-w-7xl lg:px-8">
         <nav
           className="-mx-5 -my-2 flex flex-wrap justify-center"

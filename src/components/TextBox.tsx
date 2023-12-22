@@ -2,15 +2,20 @@ import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useContext, useState } from 'react'
 
 import Dropdown from './Dropdown'
-import ChartOrDiagramSelection from './ChartOrDiagramSelection'
+import TypeSelection from './TypeSelection'
 import {
   chartJsAverageNewYorkWeatherReport,
   chartJsCancerRatesExampleReport,
   chartJsNetflixFinancialExampleReport,
   chartJsTeslaStockPricesExampleReport,
 } from '@/lib/chart-js.code'
-import { DiagramOrChartType, cn } from '@/lib/utils'
+import { DiagramOrChartType, cn, extractParsableJSON } from '@/lib/utils'
 import { track } from '@vercel/analytics'
+import {
+  ChartBarIcon,
+  PencilIcon,
+  ComputerDesktopIcon,
+} from '@heroicons/react/20/solid'
 import ErrorDialog from './ErrorDialog'
 
 export const exampleFlowDiagramPrompts = [
@@ -53,18 +58,27 @@ export const exampleChartDataPrompts = [
 
 export const typeSelectionOptions = [
   {
-    id: 1,
+    id: 'Flow Diagram' as DiagramOrChartType,
     title: 'Flow Diagram',
-    description:
-      'A flow diagram is a diagram representing some kind of process or workflow.',
+    description: 'a diagram representing some kind of process or workflow.',
     prompts: exampleFlowDiagramPrompts,
+    icon: PencilIcon,
   },
   {
-    id: 2,
+    id: 'Chart' as DiagramOrChartType,
     title: 'Chart',
     description:
       'A chart is a graphical representation of data, in which "the data is represented by symbols, such as bars in a bar chart, lines in a line chart, or slices in a pie chart".',
     prompts: exampleChartDataPrompts,
+    icon: ChartBarIcon,
+  },
+  {
+    id: 'TLDraw' as DiagramOrChartType,
+    title: 'Whiteboard',
+    description:
+      'TLDraw is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
+    prompts: exampleFlowDiagramPrompts,
+    icon: ComputerDesktopIcon,
   },
 ]
 
@@ -84,16 +98,16 @@ export default function TextBox() {
   const [description, setDescription] = useState<string>('')
   const [error, setError] = useState<string | null>('')
 
-  const [selectedType, setSelectedType] = useState(typeSelectionOptions[0])
+  const [selectedType, setSelectedType] = useState<any>(typeSelectionOptions[0])
 
   const context = useContext(DiagramContext)
 
   const handleSubmit = async () => {
-    const type = selectedType.title as DiagramOrChartType
+    const type = selectedType.id as DiagramOrChartType
     context.setLoading(true)
 
     console.log('--- title', title)
-    console.log('---- description', description)
+    console.log('---- type', type)
     context.setTitle(title)
     context.setDescription(description)
 
@@ -130,7 +144,22 @@ export default function TextBox() {
 
       const diagramJson = await diagram.json()
 
-      console.log('Diagram JSON: ', JSON.parse(diagramJson.result))
+      console.log('Diagram JSON 2: ', diagramJson)
+
+      const whatToParse = diagramJson.result
+        ? diagramJson.result
+        : diagramJson.records
+
+      const parseableJson = extractParsableJSON(whatToParse)
+
+      if (parseableJson === null) {
+        setError('There was an error generating the diagram, please try again')
+        setOpenErrorDialog(true)
+        context.setLoading(false)
+        return
+      }
+
+      console.log('Diagram JSON: ', JSON.parse(parseableJson))
       const diagramResult = JSON.parse(diagramJson.result)
 
       if (
@@ -143,6 +172,8 @@ export default function TextBox() {
         context.setEdges(diagramResult.edges)
       } else if (diagramResult && diagramResult.data && type === 'Chart') {
         context.setChartJsData(diagramResult)
+      } else if (diagramResult && diagramResult.records && type === 'TLDraw') {
+        context.setTlDrawRecords(diagramResult.records)
       }
 
       context.setLoading(false)
@@ -175,7 +206,7 @@ export default function TextBox() {
   }
 
   const selectOption = (option: {
-    id: number
+    id: string
     title: string
     description: string
     prompts: { title: string; description: string }[]
@@ -183,7 +214,7 @@ export default function TextBox() {
     console.log('Selecting option', option)
     setSelectedType(option)
     // selectExample(option.prompts[2].title, option.prompts[2].description)
-    context.setType(option.title as DiagramOrChartType)
+    context.setType(option.id as DiagramOrChartType)
     context.setTitle(option.prompts[2].title)
     context.setDescription(option.prompts[2].description)
   }
@@ -206,7 +237,7 @@ export default function TextBox() {
                     Choose a Type
                   </span>
                   <span className="text-md text-white">
-                    <ChartOrDiagramSelection
+                    <TypeSelection
                       options={typeSelectionOptions}
                       selectedOption={selectedType}
                       setSelectedOption={selectOption}
@@ -228,14 +259,14 @@ export default function TextBox() {
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
                   <span className="text-xl font-medium font-semibold">
-                    Diagram Title
+                    Brief title that describes your vision
                   </span>
                   <input
                     type="text"
                     name="title"
                     id="title"
                     className="mt-2 block w-96 rounded-lg border-0 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="Diagram Title"
+                    placeholder="Briefly describe what you want to see"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />

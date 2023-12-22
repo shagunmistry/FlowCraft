@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { createRef, useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -12,10 +12,8 @@ import ReactFlow, {
   useEdgesState,
   ConnectionLineType,
   updateEdge,
-  MarkerType,
   BackgroundVariant,
   EdgeTypes,
-  useReactFlow,
   Edge,
 } from 'reactflow'
 
@@ -28,10 +26,13 @@ import DownloadButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
+import { initialEdges, initialNodes } from '@/lib/react-flow.code'
 import EditDiagramButton from './EditDiagramButton'
 import CustomEdge from './ReactFlow/CustomEdge'
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
+import Whiteboard from './Whiteboard/Whiteboard'
+import { scenarios } from '@/components/Whiteboard/scenarios'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -48,197 +49,13 @@ const edgeTypes: EdgeTypes = {
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 
-const initialNodes: Node[] = [
-  {
-    id: '1',
-    data: {
-      label: 'Start',
-    },
-    position: {
-      x: 300,
-      y: -150,
-    },
-    type: 'input',
-    width: 180,
-    height: 52,
-    selected: true,
-    positionAbsolute: {
-      x: 300,
-      y: -150,
-    },
-    dragging: false,
-    ...nodeStyle,
-  },
-  {
-    id: '2',
-    data: {
-      label: 'Fold the Paper in Half',
-    },
-    position: {
-      x: 300,
-      y: 0,
-    },
-    width: 180,
-    height: 82,
-    ...nodeStyle,
-  },
-  {
-    id: '3',
-    data: {
-      label: 'Unfold the Paper',
-    },
-    position: {
-      x: 300,
-      y: 200,
-    },
-    width: 180,
-    height: 52,
-    ...nodeStyle,
-  },
-  {
-    id: '4',
-    data: {
-      label: 'Fold the Top Corners to the Center',
-    },
-    position: {
-      x: 500,
-      y: 50,
-    },
-    width: 180,
-    height: 112,
-    ...nodeStyle,
-  },
-  {
-    id: '5',
-    data: {
-      label: 'Fold the Top Edges to the Center',
-    },
-    position: {
-      x: 500,
-      y: 200,
-    },
-    width: 180,
-    height: 112,
-    ...nodeStyle,
-  },
-  {
-    id: '6',
-    data: {
-      label: 'Fold the Plane in Half',
-    },
-    position: {
-      x: 850,
-      y: 50,
-    },
-    width: 180,
-    height: 82,
-    selected: false,
-    positionAbsolute: {
-      x: 850,
-      y: 50,
-    },
-    dragging: false,
-    ...nodeStyle,
-  },
-  {
-    id: '7',
-    data: {
-      label: 'Fold the Wings Down',
-    },
-    position: {
-      x: 850,
-      y: 225,
-    },
-    width: 180,
-    height: 82,
-    selected: false,
-    positionAbsolute: {
-      x: 850,
-      y: 225,
-    },
-    dragging: false,
-    ...nodeStyle,
-  },
-  {
-    id: '8',
-    data: {
-      label: 'Finish',
-    },
-    position: {
-      x: 1100,
-      y: 100,
-    },
-    type: 'output',
-    width: 180,
-    height: 52,
-    ...nodeStyle,
-  },
-]
-
-const initialEdges = [
-  {
-    id: '1-2',
-    source: '1',
-    target: '2',
-    data: {
-      label: 'Get some paper',
-    },
-    type: 'custom',
-  },
-  {
-    id: '2-3',
-    source: '2',
-    target: '3',
-    label: 'Step 2',
-    type: 'custom',
-    data: {
-      label: 'Make sure it is aligned',
-    },
-  },
-  {
-    id: '3-4',
-    source: '3',
-    target: '4',
-    type: 'custom',
-  },
-  {
-    id: '3-5',
-    source: '3',
-    target: '5',
-    type: 'custom',
-  },
-  {
-    id: '4-6',
-    source: '4',
-    target: '6',
-    type: 'custom',
-  },
-  {
-    id: '5-6',
-    source: '5',
-    target: '6',
-    type: 'custom',
-  },
-  {
-    id: '6-7',
-    source: '6',
-    target: '7',
-    type: 'custom',
-    data: {
-      label: 'You are almost done!',
-    },
-  },
-  {
-    id: '7-8',
-    source: '7',
-    target: '8',
-    type: 'custom',
-  },
-]
-
 export default function DiagramOrChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+
+  const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
+    JSON.stringify(scenarios.house_buying_process),
+  )
 
   const [chartCreated, setChartCreated] = useState<boolean>(false)
 
@@ -247,8 +64,9 @@ export default function DiagramOrChartView() {
   const context = useContext(DiagramContext)
 
   useEffect(() => {
+    console.log('context.type: ', context.type)
     if (context.type === 'Flow Diagram') {
-      console.log('we are in the flow diagram')
+      console.log('we are in the TLDraw')
       console.log('Edges: ', context.edges)
       console.log('Nodes: ', context.nodes)
       if (!context.nodes && !context.edges) return
@@ -301,6 +119,33 @@ export default function DiagramOrChartView() {
       })
 
       setChartCreated(true)
+    } else if (context.type === 'TLDraw') {
+      console.log('context.tlDrawRecords: ', context.tlDrawRecords)
+      if (!context.tlDrawRecords || context.tlDrawRecords.length === 0) {
+        return
+      }
+
+      const recordsWithNecessaryFields = context.tlDrawRecords.map(
+        (record: any) => {
+          return {
+            ...record,
+            parentId: 'page:page',
+            isLocked: false,
+            meta: {},
+            opacity: 1,
+            props: {
+              ...record.props,
+              [record.type === 'geo' ? 'url' : 'font']:
+                record.type === 'geo' ? '' : 'draw',
+              [record.type === 'geo' ? 'growY' : 'dash']:
+                record.type === 'geo' ? 0 : 'draw',
+            },
+          }
+        },
+      )
+
+      scenarios.house_buying_process.records = recordsWithNecessaryFields
+      setTlDrawInputJson(JSON.stringify(scenarios.house_buying_process))
     }
   }, [
     context.nodes,
@@ -396,7 +241,7 @@ export default function DiagramOrChartView() {
           </>
         ) : (
           <>
-            {context.type === 'Flow Diagram' ? (
+            {context.type === 'Flow Diagram' && (
               <>
                 <ReactFlow
                   nodes={nodes}
@@ -435,10 +280,14 @@ export default function DiagramOrChartView() {
                   />
                 </ReactFlow>
               </>
-            ) : (
+            )}
+            {context.type === 'Chart' && (
               <div className="flex h-screen items-center justify-center rounded-xl bg-white p-10 shadow-lg">
                 <canvas id="myChart" className="h-max"></canvas>
               </div>
+            )}
+            {context.type === 'TLDraw' && (
+              <Whiteboard inputJson={tlDrawInputJson} />
             )}
           </>
         )}

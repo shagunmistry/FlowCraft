@@ -1,5 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
-import { ApifyData } from './openai'
+import {
+  ApifyData,
+  inputForChartJsContext,
+  inputForReactFlowContext,
+  openAiModel,
+} from './openai'
+import GPT3Tokenizer from 'gpt3-tokenizer'
 
 const privateKey = process.env.SUPABASE_PRIVATE_KEY || 'secret-key'
 const supabase_url = process.env.SUPABASE_URL || 'http://localhost:8000'
@@ -150,4 +156,64 @@ export const getChartJsJSONFile = async (): Promise<ApifyData[] | null> => {
   // }
 
   return null
+}
+
+export const getEmbeddingForContext = async (
+  type: string,
+  contextText: string,
+) => {
+  const inputToUse =
+    type === 'TLDraw'
+      ? inputForReactFlowContext
+      : type === 'Chart'
+        ? inputForChartJsContext
+        : ''
+  const matchFunctionToUse =
+    type === 'TLDraw'
+      ? MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
+      : MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
+
+  let inputEmbedding = null
+
+  inputEmbedding = await openAiModel.embeddings.create({
+    input: inputToUse,
+    model: 'text-embedding-ada-002',
+  })
+
+  if (!inputEmbedding) {
+    console.error(
+      'Failed to create embeddings for the diagram description or type',
+    )
+  }
+
+  const diagramTypeEmbeddings =
+    inputEmbedding?.data.map((embedding) => embedding.embedding) ?? []
+
+  console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
+
+  const { error: matchError, data } = await supabase.rpc(matchFunctionToUse, {
+    query_embedding: diagramTypeEmbeddings[0],
+    match_count: 5,
+  })
+
+  if (matchError) {
+    throw new Error(matchError.message)
+  }
+
+  const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
+  let tokenCount = 0
+
+  for (let i = 0; i < 2; i++) {
+    const pageSection = data[i]
+    const content = pageSection.content
+    const encoded = tokenizer.encode(content)
+    tokenCount += encoded.text.length
+
+    if (tokenCount >= 1500) {
+      break
+    }
+
+    contextText += `${content.trim()}\n---\n`
+  }
+  return contextText
 }

@@ -1,3 +1,5 @@
+import { Node } from "reactflow"
+
 export const nodeStyle = {
   style: {
     background: '#FFD1DC',
@@ -114,7 +116,7 @@ export const ReactFlowExamples = {
           type: 'bidirectional',
           sourceHandle: 'right',
           targetHandle: 'left',
-          markerEnd: { type: MarkerType.ArrowClosed },
+          markerEnd: { type: 'arrow'Closed },
         },
         {
           id: 'edge-bi-2',
@@ -1035,3 +1037,191 @@ Example Three:
 ${differentEdgeTypesCodeExample}
 \`\`\
 `
+
+export const initialNodes: Node[] = [
+  {
+    id: '1',
+    data: {
+      label: 'Start',
+    },
+    position: {
+      x: 300,
+      y: -150,
+    },
+    type: 'input',
+    width: 180,
+    height: 52,
+    selected: true,
+    positionAbsolute: {
+      x: 300,
+      y: -150,
+    },
+    dragging: false,
+    ...nodeStyle,
+  },
+  {
+    id: '2',
+    data: {
+      label: 'Fold the Paper in Half',
+    },
+    position: {
+      x: 300,
+      y: 0,
+    },
+    width: 180,
+    height: 82,
+    ...nodeStyle,
+  },
+  {
+    id: '3',
+    data: {
+      label: 'Unfold the Paper',
+    },
+    position: {
+      x: 300,
+      y: 200,
+    },
+    width: 180,
+    height: 52,
+    ...nodeStyle,
+  },
+  {
+    id: '4',
+    data: {
+      label: 'Fold the Top Corners to the Center',
+    },
+    position: {
+      x: 500,
+      y: 50,
+    },
+    width: 180,
+    height: 112,
+    ...nodeStyle,
+  },
+  {
+    id: '5',
+    data: {
+      label: 'Fold the Top Edges to the Center',
+    },
+    position: {
+      x: 500,
+      y: 200,
+    },
+    width: 180,
+    height: 112,
+    ...nodeStyle,
+  },
+  {
+    id: '6',
+    data: {
+      label: 'Fold the Plane in Half',
+    },
+    position: {
+      x: 850,
+      y: 50,
+    },
+    width: 180,
+    height: 82,
+    selected: false,
+    positionAbsolute: {
+      x: 850,
+      y: 50,
+    },
+    dragging: false,
+    ...nodeStyle,
+  },
+  {
+    id: '7',
+    data: {
+      label: 'Fold the Wings Down',
+    },
+    position: {
+      x: 850,
+      y: 225,
+    },
+    width: 180,
+    height: 82,
+    selected: false,
+    positionAbsolute: {
+      x: 850,
+      y: 225,
+    },
+    dragging: false,
+    ...nodeStyle,
+  },
+  {
+    id: '8',
+    data: {
+      label: 'Finish',
+    },
+    position: {
+      x: 1100,
+      y: 100,
+    },
+    type: 'output',
+    width: 180,
+    height: 52,
+    ...nodeStyle,
+  },
+]
+
+export const initialEdges = [
+  {
+    id: '1-2',
+    source: '1',
+    target: '2',
+    data: {
+      label: 'Get some paper',
+    },
+    type: 'custom',
+  },
+  {
+    id: '2-3',
+    source: '2',
+    target: '3',
+    label: 'Step 2',
+    type: 'custom',
+    data: {
+      label: 'Make sure it is aligned',
+    },
+  },
+  {
+    id: '3-4',
+    source: '3',
+    target: '4',
+    type: 'custom',
+  },
+  {
+    id: '3-5',
+    source: '3',
+    target: '5',
+    type: 'custom',
+  },
+  {
+    id: '4-6',
+    source: '4',
+    target: '6',
+    type: 'custom',
+  },
+  {
+    id: '5-6',
+    source: '5',
+    target: '6',
+    type: 'custom',
+  },
+  {
+    id: '6-7',
+    source: '6',
+    target: '7',
+    type: 'custom',
+    data: {
+      label: 'You are almost done!',
+    },
+  },
+  {
+    id: '7-8',
+    source: '7',
+    target: '8',
+    type: 'custom',
+  },
+]

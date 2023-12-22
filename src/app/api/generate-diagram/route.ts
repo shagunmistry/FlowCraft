@@ -1,6 +1,7 @@
 import {
   MATCH_DOCUMENTS_FOR_CHARTJS_TABLE,
   MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
+  getEmbeddingForContext,
   supabase,
 } from '@/lib/supabase'
 import {
@@ -16,6 +17,7 @@ import {
   promptForUserMessage,
   promptForUserMessageForChartJs,
 } from '@/lib/openai'
+import * as tldrawInputs from '@/lib/openai.tldraw'
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { DiagramOrChartType } from '@/lib/utils'
@@ -27,54 +29,9 @@ export async function POST(req: Request) {
   const { title: diagramTitle, description: diagramDescription } = json
   const type = json.type as DiagramOrChartType
 
-  const inputToUse =
-    type === 'Flow Diagram' ? inputForReactFlowContext : inputForChartJsContext
-  const matchFunctionToUse =
-    type === 'Flow Diagram'
-      ? MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
-      : MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
-
-  const inputEmbedding = await openAiModel.embeddings.create({
-    input: inputToUse,
-    model: 'text-embedding-ada-002',
-  })
-
-  if (!inputEmbedding) {
-    console.error(
-      'Failed to create embeddings for the diagram description or type',
-    )
-  }
-
-  const diagramTypeEmbeddings = inputEmbedding.data.map(
-    (embedding) => embedding.embedding,
-  )
-
-  console.log('Diagram Type Embeddings: ', diagramTypeEmbeddings[0])
-
-  const { error: matchError, data } = await supabase.rpc(matchFunctionToUse, {
-    query_embedding: diagramTypeEmbeddings[0],
-    match_count: 5,
-  })
-
-  if (matchError) {
-    throw new Error(matchError.message)
-  }
-
-  const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
-  let tokenCount = 0
   let contextText = ''
-
-  for (let i = 0; i < 2; i++) {
-    const pageSection = data[i]
-    const content = pageSection.content
-    const encoded = tokenizer.encode(content)
-    tokenCount += encoded.text.length
-
-    if (tokenCount >= 1500) {
-      break
-    }
-
-    contextText += `${content.trim()}\n---\n`
+  if (type !== 'TLDraw') {
+    contextText = await getEmbeddingForContext(type, contextText)
   }
 
   console.log('Context Text: ', contextText)
@@ -84,13 +41,21 @@ export async function POST(req: Request) {
     content:
       type === 'Flow Diagram'
         ? promptForReactFlowContext(contextText)
-        : promptForChartJsContext(contextText),
+        : type === 'Chart'
+          ? promptForChartJsContext(contextText)
+          : '',
   }
 
   const userMessage2: ChatCompletionMessageParam = {
     role: 'user',
     content:
-      type === 'Flow Diagram' ? promptForResponse : promptForChartJsResponse,
+      type === 'Flow Diagram'
+        ? promptForResponse
+        : type === 'Chart'
+          ? promptForChartJsResponse
+          : type === 'TLDraw'
+            ? tldrawInputs.promptForResponse
+            : '',
   }
 
   const assistantMessage3: ChatCompletionMessageParam = {
@@ -98,7 +63,11 @@ export async function POST(req: Request) {
     content:
       type === 'Flow Diagram'
         ? promptForExampleCode
-        : promptForChartJsExampleCode,
+        : type === 'Chart'
+          ? promptForChartJsExampleCode
+          : type === 'TLDraw'
+            ? tldrawInputs.promptForExampleCode
+            : '',
   }
 
   const userMessage: ChatCompletionMessageParam = {
@@ -106,13 +75,21 @@ export async function POST(req: Request) {
     content:
       type === 'Flow Diagram'
         ? promptForUserMessage(diagramTitle, diagramDescription)
-        : promptForUserMessageForChartJs(diagramTitle, diagramDescription),
+        : type === 'Chart'
+          ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
+          : type === 'TLDraw'
+            ? tldrawInputs.promptForUserMessageForTlDraw(
+                diagramTitle,
+                diagramDescription,
+              )
+            : '',
   }
 
   const res = await openAiModel.chat.completions.create({
     model: 'gpt-4',
     messages: [assistantMessage1, assistantMessage3, userMessage2, userMessage],
-    temperature: 0.7,
+    temperature: 0.8,
+    max_tokens: 2300,
   })
 
   if (res?.choices?.[0]?.message) {
@@ -129,6 +106,8 @@ export async function POST(req: Request) {
         ? uppercasejsonMatch[1]
         : null
 
+    console.log('2. Response from OpenAI: ', result)
+
     if (result) {
       return new Response(
         JSON.stringify({
@@ -141,6 +120,8 @@ export async function POST(req: Request) {
         },
       )
     }
+
+    console.log('3. Response from OpenAI: ', res.choices[0].message.content)
 
     return new Response(
       JSON.stringify({

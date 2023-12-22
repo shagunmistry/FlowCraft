@@ -2,15 +2,20 @@ import { RadioGroup } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { cn } from '@/lib/utils'
 
-export default function ChartOrDiagramSelection({
+export default function TypeSelection({
   options,
   setSelectedOption,
   selectedOption,
 }: {
   options: {
-    id: number
-    title: string
-    description: string
+    id: string;
+    title: string;
+    description: string;
+    prompts: {
+        title: string;
+        description: string;
+    }[];
+    icon: any
   }[]
   setSelectedOption: (option: any) => void
   selectedOption: any
@@ -40,6 +45,7 @@ export default function ChartOrDiagramSelection({
                         as="span"
                         className="block text-sm font-medium text-gray-900"
                       >
+                        <option.icon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
                         {option.title}
                       </RadioGroup.Label>
                     </span>
