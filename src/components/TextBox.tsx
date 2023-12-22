@@ -215,8 +215,6 @@ export default function TextBox() {
     setSelectedType(option)
     // selectExample(option.prompts[2].title, option.prompts[2].description)
     context.setType(option.id as DiagramOrChartType)
-    context.setTitle(option.prompts[2].title)
-    context.setDescription(option.prompts[2].description)
   }
 
   return (
