@@ -17,7 +17,7 @@ export default function MainLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [title, setTitle] = useState<string>(exampleFlowDiagramPrompts[2].title)
+  const [title, setTitle] = useState<string>('Sample Process')
   const [description, setDescription] = useState<string>(
     exampleFlowDiagramPrompts[2].description,
   )
