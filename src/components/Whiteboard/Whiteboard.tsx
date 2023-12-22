@@ -69,7 +69,6 @@ export default function ({ inputJson }: { inputJson: string }) {
         onMount={(editor) => {
           editorRef.current = editor
         }}
-        hideUi
       />
     </div>
   )
