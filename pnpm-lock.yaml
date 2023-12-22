@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@tldraw/tldraw': 2.0.0-alpha.19
+
 dependencies:
   '@headlessui/react':
     specifier: ^1.7.17
