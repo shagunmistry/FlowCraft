@@ -218,6 +218,25 @@ export default function DiagramOrChartView() {
     [nodes],
   )
 
+  const updateEdgeLabel = useCallback(
+    (id: string, newValue: string) => {
+      setEdges((es) => {
+        const edgeIndex = es.findIndex((e) => e.id === id)
+        const edge = es[edgeIndex]
+        const newEdge = {
+          ...edge,
+          data: {
+            ...edge.data,
+            label: newValue,
+          },
+        }
+        es[edgeIndex] = newEdge
+        return es
+      })
+    },
+    [edges],
+  )
+
   return (
     <>
       <div className="mr-5 mt-7 flex items-center justify-between">
@@ -272,11 +291,10 @@ export default function DiagramOrChartView() {
                   <EditDiagramButton
                     nodes={nodes}
                     edges={edges}
-                    setNodes={setNodes}
                     deleteNode={deleteNode}
-                    onNodesChange={onNodesChange}
                     addNode={addNode}
                     updateNodeLabel={updateNodeLabel}
+                    updateEdgeLabel={updateEdgeLabel}
                   />
                 </ReactFlow>
               </>

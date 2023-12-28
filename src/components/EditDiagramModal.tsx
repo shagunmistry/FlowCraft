@@ -11,25 +11,25 @@ export default function EditDiagramModal({
   setOpen,
   nodes,
   edges,
-  setNodes,
-  onNodesChange,
   addNode,
   updateNodeLabel,
   deleteNode,
+  updateEdgeLabel,
 }: {
   open: boolean
   setOpen: (open: boolean) => void
   nodes: Node[]
   edges: Edge[]
-  setNodes: (ndoes: Node[]) => void
-  onNodesChange: any
   addNode: (node: Node) => void
   updateNodeLabel: (nodeId: string, label: string) => void
   deleteNode: (nodeId: string) => void
+  updateEdgeLabel: (id: string, newValue: string) => void
 }) {
   const cancelButtonRef = useRef(null)
 
   const context = useContext(DiagramContext)
+
+  console.log('Edges: ', edges)
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -84,6 +84,9 @@ export default function EditDiagramModal({
                             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                               <div className="inline-block min-w-full py-2 align-middle">
                                 <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                  <h2 className="text-lg font-bold text-gray-900">
+                                    Objects
+                                  </h2>
                                   <table className="min-w-full divide-y divide-pink-200">
                                     <tbody className="divide-y divide-gray-200 bg-white">
                                       {nodes &&
@@ -100,7 +103,6 @@ export default function EditDiagramModal({
                                                     onChange={(event) => {
                                                       node.data.label =
                                                         event.target.value
-                                                      // setNodesState([...nodesState])
                                                       updateNodeLabel(
                                                         node.id,
                                                         event.target.value,
@@ -108,21 +110,7 @@ export default function EditDiagramModal({
                                                     }}
                                                     className="mt-1 block w-full rounded-md border border-indigo-300 px-3 py-2 text-lg text-indigo-700 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                   />
-                                                  <button
-                                                    className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-base text-sm font-semibold ring-1 ring-inset ring-green-300 hover:bg-green-300 hover:text-white"
-                                                    onClick={() => {
-                                                      context.setLoading(true)
-                                                      context.setNodes([])
-                                                      setTimeout(() => {
-                                                        context.setNodes(nodes)
-                                                        context.setLoading(
-                                                          false,
-                                                        )
-                                                      }, 200)
-                                                    }}
-                                                  >
-                                                    Update
-                                                  </button>
+
                                                   <button
                                                     className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-base text-sm font-semibold text-white ring-1 ring-inset ring-green-300 hover:bg-green-300 hover:text-white"
                                                     onClick={() => {
@@ -172,6 +160,50 @@ export default function EditDiagramModal({
                                       </tr>
                                     </tbody>
                                   </table>
+
+                                  <h2 className="mt-10 text-lg font-bold text-gray-900">
+                                    Connections
+                                  </h2>
+                                  <table className="min-w-full divide-y divide-pink-200">
+                                    <tbody className="divide-y divide-gray-200 bg-white">
+                                      {edges &&
+                                        edges.map((edge: any) => {
+                                          return (
+                                            <tr key={edge.id}>
+                                              <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                <div className="flex shrink-0 items-center gap-x-6">
+                                                  <input
+                                                    type="text"
+                                                    defaultValue={
+                                                      edge.data
+                                                        ? edge.data.label
+                                                        : ''
+                                                    }
+                                                    placeholder={
+                                                      !edge.data
+                                                        ? 'Enter a label'
+                                                        : ''
+                                                    }
+                                                    onChange={(event) => {
+                                                      if (!edge.data) {
+                                                        edge.data = {}
+                                                      }
+                                                      edge.data.label =
+                                                        event.target.value
+                                                      updateEdgeLabel(
+                                                        edge.id,
+                                                        event.target.value,
+                                                      )
+                                                    }}
+                                                    className="mt-1 block w-full rounded-md border border-indigo-300 px-3 py-2 text-lg text-indigo-700 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                  />
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          )
+                                        })}
+                                    </tbody>
+                                  </table>
                                 </div>
                               </div>
                             </div>
@@ -185,7 +217,17 @@ export default function EditDiagramModal({
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      context.setLoading(true)
+                      context.setEdges([])
+                      context.setNodes([])
+                      setTimeout(() => {
+                        context.setNodes(nodes)
+                        context.setEdges(edges)
+                        context.setLoading(false)
+                      }, 200)
+                      setOpen(false)
+                    }}
                     ref={cancelButtonRef}
                   >
                     Close

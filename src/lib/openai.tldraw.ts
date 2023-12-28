@@ -38,7 +38,7 @@ export const promptForUserMessageForTlDraw = (
 
 export const promptForResponse = `The response MUST ONLY be in JSON that includes valid TLDRAW Records array. Remember to position the edges and nodes so that it is in a readable view. The response will be validated and if it is not valid, you will be asked to try again.
 
-shape ID must start with \"shape:\"","path":["shape(id = arrow:1)","(type = arrow)","id"]}}
+shape ID must start with \"shape:\" and then the shape id number. For example, \"shape:1\". You can not use "arrow" or any other shape id.
 
 for "dash" property, allowed properties are \"draw\" or \"solid\" or \"dashed\" or \"dotted\". NOT "none"
 

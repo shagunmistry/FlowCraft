@@ -1,5 +1,5 @@
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { Edge, Node, Panel } from 'reactflow'
+import { Edge, Node, Panel, updateEdge } from 'reactflow'
 import EditDiagramModal from './EditDiagramModal'
 import { useState } from 'react'
 import { track } from '@vercel/analytics'
@@ -7,19 +7,17 @@ import { track } from '@vercel/analytics'
 export default function EditDiagramButton({
   nodes,
   edges,
-  setNodes,
-  onNodesChange,
   addNode,
   updateNodeLabel,
   deleteNode,
+  updateEdgeLabel,
 }: {
   nodes: Node[]
   edges: Edge[]
-  setNodes: (ndoes: Node[]) => void
-  onNodesChange: any
   addNode: (node: Node) => void
   updateNodeLabel: (nodeId: string, label: string) => void
   deleteNode: (nodeId: string) => void
+  updateEdgeLabel: (id: string, newValue: string) => void
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const handleEditButtonClick = () => {
@@ -36,17 +34,16 @@ export default function EditDiagramButton({
         onClick={handleEditButtonClick}
       >
         <PencilIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-        Edit Labels
+        Edit Your Diagram
       </button>
       <EditDiagramModal
         open={isModalOpen}
         setOpen={setIsModalOpen}
         nodes={nodes}
         edges={edges}
-        setNodes={setNodes}
-        onNodesChange={onNodesChange}
         addNode={addNode}
         updateNodeLabel={updateNodeLabel}
+        updateEdgeLabel={updateEdgeLabel}
         deleteNode={deleteNode}
       />
     </Panel>
