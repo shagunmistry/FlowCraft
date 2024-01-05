@@ -1048,7 +1048,7 @@ export const initialNodes: Node[] = [
       x: 300,
       y: -150,
     },
-    type: 'input',
+    type: 'customNode',
     width: 180,
     height: 52,
     selected: true,

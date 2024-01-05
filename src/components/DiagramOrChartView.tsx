@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -33,6 +33,8 @@ import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
+import ContextMenu from './ReactFlow/CustomContextMenu'
+import CustomNode from './ReactFlow/CustomNode'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -40,7 +42,7 @@ const defaultEdgeOptions = {
 }
 
 const nodeTypes = {
-  customNode: CustomInputBoxNode,
+  customNode: CustomNode,
 }
 
 const edgeTypes: EdgeTypes = {
@@ -52,6 +54,9 @@ const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 export default function DiagramOrChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  const [menu, setMenu] = useState<any>(true)
+
+  const ref = useRef<any>(null)
 
   const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
     JSON.stringify(scenarios.house_buying_process),
@@ -237,6 +242,32 @@ export default function DiagramOrChartView() {
     [edges],
   )
 
+  const onNodeContextMenu = useCallback(
+    (event: any, node: any) => {
+      // Prevent native context menu from showing
+      event.preventDefault()
+
+      if (ref && ref.current) {
+        // Calculate position of the context menu. We want to make sure it
+        // doesn't get positioned off-screen.
+
+        const pane = ref.current.getBoundingClientRect()
+        setMenu({
+          id: node.id,
+          top: event.clientY < pane.height - 200 && event.clientY,
+          left: event.clientX < pane.width - 200 && event.clientX,
+          right:
+            event.clientX >= pane.width - 200 && pane.width - event.clientX,
+          bottom:
+            event.clientY >= pane.height - 200 && pane.height - event.clientY,
+        })
+      }
+    },
+    [setMenu],
+  )
+
+  const onPaneClick = useCallback(() => setMenu(null), [setMenu])
+
   return (
     <>
       <div className="mr-5 mt-7 flex items-center justify-between">
@@ -263,6 +294,7 @@ export default function DiagramOrChartView() {
             {context.type === 'Flow Diagram' && (
               <>
                 <ReactFlow
+                  ref={ref}
                   nodes={nodes}
                   edges={edges}
                   onNodesChange={onNodesChange}
@@ -278,6 +310,8 @@ export default function DiagramOrChartView() {
                   defaultEdgeOptions={defaultEdgeOptions}
                   nodeTypes={nodeTypes}
                   edgeTypes={edgeTypes}
+                  onPaneClick={onPaneClick}
+                  // onNodeContextMenu={onNodeContextMenu}
                 >
                   <Controls />
                   <Background
@@ -296,6 +330,7 @@ export default function DiagramOrChartView() {
                     updateNodeLabel={updateNodeLabel}
                     updateEdgeLabel={updateEdgeLabel}
                   />
+                  {/* {menu && <ContextMenu onClick={onPaneClick} {...menu} />} */}
                 </ReactFlow>
               </>
             )}
