@@ -71,6 +71,10 @@ export default function ({ inputJson }: { inputJson: string }) {
 
           // Zoom to fit the diagram
           editor?.zoomToFit({ duration: 200 })
+          editor?.user.updateUserPreferences({
+            isDarkMode: true,
+            isSnapMode: true,
+          })
         }}
       />
       <ErrorDialog
