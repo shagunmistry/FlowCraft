@@ -22,75 +22,45 @@ For example, given point A at (10,500) and point B at (-5,100):
 
 # Commands
 
-You have several commands that are available to you:
+You have one command that are available to you:
 
 \`\`\`
-const finiteAvailableCommands = [
+const commands = [
 	{
-		name: 'POINTER_DOWN',
-		description: 'Begin pointing (clicking) with the pointer at its current position on the page.',
-		parameters: [],
-	},
-	{
-		name: "LABEL",
-		description: "Add a label to a shape.",
-		parameters: [],
-	},
-	{
-		name: 'POINTER_UP',
-		description: 'Stop pointing (clicking) the pointer at its current position on the page.',
-		parameters: [],
-	},
-	{
-		name: 'POINTER_MOVE',
-		description: 'Move the pointer to a new position on the page.',
+		name: "CREATE",
+		description: "Create a new shape on the canvas.",
 		parameters: [
 			{
-				name: 'x',
-				type: 'number',
-				description: 'The x coordinate of the new pointer position.',
+				name: "shape",
+				type: "string",
+				description: "The type of shape to create. One of 'box', 'circle', 'ellipse', 'star'."
 			},
 			{
-				name: 'y',
-				type: 'number',
-				description: 'The y coordinate of the new pointer position.',
+				name: "x",
+				type: "number",
+				description: "The x coordinate of the shape's center."
 			},
-		],
-	},
-	{
-		name: 'KEY_DOWN',
-		description: 'Begin holding a key.',
-		parameters: [
 			{
-				name: 'key',
-				type: 'string',
-				enum: ['alt', 'shift', 'control'],
-				description: 'The key to press',
+				name: "y",
+				type: "number",
+				description: "The y coordinate of the shape's center."
 			},
-		],
-	},
-	{
-		name: 'KEY_UP',
-		description: 'Release a key.',
-		parameters: [
 			{
-				name: 'key',
-				type: 'string',
-				enum: ['alt', 'shift', 'control'],
-				description: 'The key to release',
+				name: "width",
+				type: "number",
+				description: "The width of the shape."
 			},
-		],
-	},
-	{
-		name: 'TOOL',
-		description: 'Switch to the provided tool.',
-		parameters: [
 			{
-				name: 'tool',
-				type: 'string',
-				enum: ['select', 'draw', 'box', 'star', 'ellipse', 'arrow'],
+				name: "height",
+				type: "number",
+				description: "The height of the shape."
 			},
-		],
+			{
+				name: "label",
+				type: "string",
+				description: "The label to set for the current shape."
+			}
+		]
 	},
 ]
 \`\`\`
@@ -100,19 +70,15 @@ const finiteAvailableCommands = [
 To call a command, use the name of the command and the command's parameters separated by spaces, and terminated by a semicolon.
 
 \`\`\`
-TOOL draw;
+CREATE shape rectangle x:100 y:50 label:Product Landing Page
 \`\`\`
 
 \`\`\`
-POINTER_MOVE 100 200;
+CREATE shape arrow start:shape1 endX:250 endY:50
 \`\`\`
 
 \`\`\`
-POINTER_DOWN;
-\`\`\`
-
-\`\`\`
-POINTER_UP;
+CREATE shape rectangle x:250 y:50 label:Free Trial Signup
 \`\`\`
 
 ## Sequences
@@ -120,157 +86,14 @@ POINTER_UP;
 A sequence of commands looks like this:
 
 \`\`\`sequence
-TOOL draw;
-POINTER_MOVE 100 200;
-POINTER_DOWN;
-POINTER_MOVE 200 400;
-POINTER_UP;
+CREATE shape rectangle x:100 y:80 width: 150 height: 60 label: Sign Up Form;
+CREATE shape circle x:300 y:80 width: 60 height: 60 label: Submit;
+CREATE shape arrow x: 175 y: 110 endX: 275 endY: 80; 
 \`\`\`
 
 ## Viewport
 
 The user's viewport represents which part of the user's current page is visible to the user. It is a bounding box of coordinates formatted as \`center (x, y) size (width, height)\`.
-
-### Tools
-
-## Select tool
-
-The "select" tool can be used to select. To select a shape, select the select tool (\`TOOL select;\`), then move your pointer to the center of the shape (e.g. \`POINTER_MOVE 50 50;\`), then click the shape (\`POINTER DOWN; POINTER UP;\`).
-
-You can deselect a shape by moving your cursor to an empty space on the canvas and clicking the empty space.
-
-You can drag a selected shape to a new position by selecting the shape, then pointing the center of the selected shape and moving your cursor to the shape's new center.
-
-For example, the following sequence would select a shape with a center 100,200 and drag it so that its new center is 200,500.
-
-\`\`\`sequence
-TOOL select;
-
-// Click the shape to select it
-POINTER_MOVE 100 200;
-POINTER_DOWN;
-POINTER_UP;
-
-// Click and drag the shape to its new position
-POINTER_DOWN;
-POINTER_MOVE 200 500;
-POINTER UP;
-
-// Click on an empty place on the canvas to deselect the shape
-POINTER_MOVE 500 500;
-POINTER DOWN;
-POINTER UP;
-\`\`\`
-
-## Draw tool
-
-The "draw" tool can be used to draw organic polylines. To create a shape with this tool, select the draw tool (\`TOOL draw;\`), then move the pointer to the line's first position (e.g. \`POINTER_MOVE 0 0;\`), then begin pointing (\`POINTER_DOWN;\`), then move the pointer to each point in order that should belong to the line (e.g. \`POINTER_MOVE 100 0; POINTER_MOVE 0 100; POINTER MOVE 100 100;\`), and finally stop pointing (\`POINTER_UP;\`).
-
-For example, the following sequence will draw the letter "L" with its top left corner at the page coordinate (0,0).
-
-\`\`\`sequence
-TOOL draw;
-POINTER_MOVE 0 0;
-POINTER_DOWN;
-POINTER_MOVE 0 100;
-POINTER_MOVE 100 100;
-POINTER UP;
-\`\`\`
-
-For example, the following sequence will draw the letter "E" its top left corner at the page coordinate (0,0).
-
-\`\`\`sequence
-TOOL draw;
-POINTER_MOVE 0 0;
-POINTER_DOWN;
-POINTER_MOVE 0 100;
-POINTER UP;
-POINTER MOVE 0 0;
-POINTER_MOVE 100 0;
-POINTER UP;
-POINTER MOVE 0 50;
-POINTER_MOVE 100 50;
-POINTER UP;
-POINTER MOVE 0 100;
-POINTER_MOVE 100 100;
-POINTER UP;
-\`\`\`
-
-For example, the following sequence will draw a "Z" shape with its top left corner at the page coordinate (0,0).
-
-\`\`\`sequence
-TOOL draw;
-POINTER_MOVE 0 0;
-POINTER_DOWN;
-POINTER_MOVE 100 0;
-POINTER_MOVE 0 100;
-POINTER_MOVE 100 100;
-POINTER UP;
-\`\`\`
-
-You can use the draw tool to create dots by clicking without moving the pointer. For example, the following sequence would create a dotted lower-case letter i.
-
-\`\`\`sequence
-TOOL draw;
-
-// draw the dot
-POINTER_MOVE 0 0;
-POINTER_DOWN;
-POINTER_UP;
-
-// draw the stem
-POINTER_MOVE 0 10;
-POINTER_DOWN;
-POINTER_MOVE 0 100;
-POINTER UP;
-\`\`\`
-
-You ARE able to write text with the draw tool. Use a simplified structure for the letter. Remember to draw all of the recognizable letter parts.
-
-## Box, ellipse, star tools
-
-The "box" and "ellipse" tools can be used to draw rectangles and ellipses/circles. To create a shape with these tools, select the tool, then move the pointer to the shape's top left corner, then begin pointing, then move the pointer to the shaoe's bottom right corner, then stop pointing.
-
-For example, the following sequence would create a box with its top left corner at the page coordinate (0,0) and a size of (100,100):
-
-\`\`\`sequence
-TOOL box;
-POINTER_MOVE 0 0;
-POINTER_DOWN;
-POINTER_MOVE 100 100;
-POINTER_UP;
-\`\`\`
-
-As a second example, the following sequence would create a box with its CENTER at the page coordinate (0,0) and a size of (100,100):
-
-TOOL box;
-
-\`\`\`sequence
-// Start at a point equal to (centerX-(width/2),centerY-(height/2))
-POINTER_MOVE -50 -50;
-POINTER_DOWN;
-// Drag to at a point equal to (centerX+(width/2),centerY+(height/2))
-POINTER_MOVE 50 50;
-POINTER_UP;
-\`\`\`
-
-As a third example, the following sequence would create a lowercase letter i using the box and ellipse tool.
-
-\`\`\`sequence
-// draw the dot
-TOOL ellipse;
-POINTER_MOVE 0 0;
-POINTER_DOWN;
-POINTER_MOVE 10 10;
-POINTER_UP;
-
-// draw the stem
-TOOL box;
-POINTER_MOVE 0 20;
-POINTER_DOWN;
-POINTER_MOVE 10 100;
-POINTER_UP;
-\`\`\`
 
 ---
 
@@ -283,17 +106,23 @@ You will be scored depending on how well you are able to execute the user's requ
 ## Example
 
 User:
-My current viewport is (0,0,1080,720). Please draw a box in the center of the viewport.
+My current viewport is (0,0,1080,720). Please draw a diagram of the typical user flow for an e-commerce website.
 
 Assistant:
-I will draw a box in the center of the viewport. The center of the viewport is (0+(1080/2),0+(720/2)) = (540,360). The box will be 100x100, so I will first select the box tool, then move my cursor to (540-(100/2),360-(100/2)) = (490,310), then begin pointing, then move my cursor to (540+(100/2),360+(100/2)) = (590,410), then stop pointing.
+Here is my understanding:
+
+1. Website Visit: A rectangle representing a website visit.
+2. Add to Cart: An ellipse indicating the "Add to Cart" action.
+3. Arrow 1: An arrow connecting the two, showing the flow.
+4. Checkout: A rectangle for the checkout process.
+5. Arrow 2: Another arrow representing the step toward checkout.
 
 \`\`\`sequence
-TOOL box;
-POINTER_MOVE 490 310;
-POINTER_DOWN;
-POINTER_MOVE 590 410;
-POINTER_UP;
+CREATE shape rectangle x:80 y:60 width: 180 height: 50 label: Website Visit;
+CREATE shape ellipse x: 320 y: 60 width: 100 height: 50 label: Add to Cart;
+CREATE shape arrow x: 180 y: 85 endX: 290 endY: 60;
+CREATE shape rectangle x: 280 y: 140 width: 140 height: 50 label: Checkout;
+CREATE shape arrow x: 350 y: 115 endX: 350 endY: 140;
 \`\`\`
 
 ---

@@ -9,102 +9,39 @@ import {
 
 const commands = [
   {
-    keyword: 'POINTER_DOWN',
-    description:
-      'Begin pointing (clicking) with the pointer at its current position on the page.',
-    parameters: [],
-  },
-  {
-    keyword: 'POINTER_UP',
-    description:
-      'Stop pointing (clicking) the pointer at its current position on the page.',
-    parameters: [],
-  },
-  {
-    keyword: 'POINTER_MOVE',
-    description: 'Move the pointer to a new position on the page.',
+    keyword: 'CREATE',
+    description: 'Create a new shape on the canvas.',
     parameters: [
+      {
+        name: 'shape',
+        type: 'string',
+        enum: ['rectangle', 'ellipse', 'arrow', 'text'], // Limit to desired shapes
+        description: 'The type of shape to create.',
+      },
       {
         name: 'x',
         type: 'number',
-        description: 'The x coordinate of the new pointer position.',
+        description: 'The x coordinate of the shape.',
       },
       {
         name: 'y',
         type: 'number',
-        description: 'The y coordinate of the new pointer position.',
+        description: 'The y coordinate of the shape.',
       },
-    ],
-  },
-  {
-    keyword: 'POINTER_DRAG',
-    description: 'Drag the pointer between two positions on the page.',
-    parameters: [
       {
-        name: 'x1',
+        name: 'width',
         type: 'number',
-        description: 'The x coordinate of the first pointer position.',
+        description: 'The width of the shape. (Optional for certain shapes)',
       },
       {
-        name: 'y1',
+        name: 'height',
         type: 'number',
-        description: 'The y coordinate of the first pointer position.',
+        description: 'The height of the shape. (Optional for certain shapes)',
       },
-      {
-        name: 'x2',
-        type: 'number',
-        description: 'The x coordinate of the secomd pointer position.',
-      },
-      {
-        name: 'y2',
-        type: 'number',
-        description: 'The y coordinate of the second pointer position.',
-      },
-    ],
-  },
-  {
-    keyword: 'KEY_DOWN',
-    description: 'Begin holding a key.',
-    parameters: [
-      {
-        name: 'key',
-        type: 'string',
-        enum: ['alt', 'shift', 'control'],
-        description: 'The key to press',
-      },
-    ],
-  },
-  {
-    keyword: 'KEY_UP',
-    description: 'Release a key.',
-    parameters: [
-      {
-        name: 'key',
-        type: 'string',
-        enum: ['alt', 'shift', 'control'],
-        description: 'The key to release',
-      },
-    ],
-  },
-  {
-    keyword: 'TOOL',
-    description: 'Switch to the provided tool.',
-    parameters: [
-      {
-        name: 'tool',
-        type: 'string',
-        enum: ['select', 'draw', 'box', 'ellipse', 'arrow'],
-      },
-    ],
-  },
-  {
-    keyword: 'LABEL',
-    description: 'Set the label for the current tool.',
-    parameters: [
       {
         name: 'label',
         type: 'string',
-        description: 'The label to set for the current tool.',
+        description: 'The text label for the shape.',
       },
     ],
   },
@@ -268,41 +205,53 @@ export class EditorDriverApi {
     console.log([name, ...params].join(' '))
 
     switch (name) {
-      case 'POINTER_DOWN': {
-        pointerDown(this.editor)
-        break
-      }
-      case 'POINTER_UP': {
-        pointerUp(this.editor)
-        break
-      }
-      case 'POINTER_MOVE': {
-        const [x, y] = params as [number, number, string]
-        await pointerMoveTo(this.editor, { x, y })
-        break
-      }
-      case 'POINTER_DRAG': {
-        const [x1, y1, x2, y2, _modifiers] = params as [
+      // case 'POINTER_DOWN': {
+      //   pointerDown(this.editor)
+      //   break
+      // }
+      // case 'POINTER_UP': {
+      //   pointerUp(this.editor)
+      //   break
+      // }
+      // case 'POINTER_MOVE': {
+      //   const [x, y] = params as [number, number, string]
+      //   await pointerMoveTo(this.editor, { x, y })
+      //   break
+      // }
+      // case 'POINTER_DRAG': {
+      //   const [x1, y1, x2, y2, _modifiers] = params as [
+      //     number,
+      //     number,
+      //     number,
+      //     number,
+      //     string,
+      //   ]
+      //   pointerMove(this.editor, { x: x1, y: y1 })
+      //   pointerDown(this.editor)
+      //   await pointerMoveTo(this.editor, { x: x2, y: y2 })
+      //   pointerUp(this.editor)
+      //   break
+      // }
+      // case 'TOOL': {
+      //   const [tool] = params as [string]
+      //   selectTool(this.editor, { tool })
+      // }
+      // case 'LABEL': {
+      //   const [label] = params as [string]
+      //   // Add label on the current tool
+      //   console.log('Adding label: ', label)
+      // }
+      case 'CREATE': {
+        const [shape, x, y, width, height, label] = params as [
+          string,
           number,
           number,
           number,
           number,
           string,
         ]
-        pointerMove(this.editor, { x: x1, y: y1 })
-        pointerDown(this.editor)
-        await pointerMoveTo(this.editor, { x: x2, y: y2 })
-        pointerUp(this.editor)
+        console.log('Creating shape: ', shape, x, y, width, height, label)
         break
-      }
-      case 'TOOL': {
-        const [tool] = params as [string]
-        selectTool(this.editor, { tool })
-      }
-      case 'LABEL': {
-        const [label] = params as [string]
-        // Add label on the current tool
-        console.log('Adding label: ', label)
       }
     }
 

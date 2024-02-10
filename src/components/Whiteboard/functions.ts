@@ -263,3 +263,55 @@ export function selectTool(
     }
   }
 }
+
+export type CommandParameters = {
+  shape: string
+  x: number
+  y: number
+  width?: number
+  height?: number
+  label?: string
+}
+
+export async function createShape(
+  editor: Editor,
+  parameters: CommandParameters,
+) {
+  // Assuming 'Command' is a type reflecting your CREATE command structure
+
+  const { shape, x, y, width, height, label } = parameters
+
+  switch (shape) {
+    case 'rectangle':
+      await click(editor, { x, y }) // Simulate a click to start drawing
+      if (width && height) {
+        await pointerMove(editor, { x: x + width, y }) // Drag to the right
+        await pointerMove(editor, { x: x + width, y: y + height }) // Drag down
+        await pointerMove(editor, { x, y: y + height }) // Drag left
+        await pointerMove(editor, { x, y }) // Drag up
+      }
+      await doubleClick(editor, { x, y }) // Finish drawing a rectangle
+      break
+
+    case 'ellipse':
+      await click(editor, { x, y }) // Start drawing an ellipse
+      if (width && height) {
+        await pointerMove(editor, { x: x + width, y }) // Drag to the right
+        await pointerMove(editor, { x: x + width, y: y + height }) // Drag down
+        await pointerMove(editor, { x, y: y + height }) // Drag left
+        await pointerMove(editor, { x, y }) // Drag up
+      }
+      break
+
+    // case 'arrow':
+    //   await click(editor, { x, y }) // Start point of the arrow
+    //   await pointerMove(editor, { x: x + width, y: y + height }) // Set arrow's second point
+
+    //   await doubleClick(editor, { ...endpoint }) // Set arrow's second point
+    //   break
+
+    // case 'text':
+    //   await placeText(editor, { text: label, x, y })
+    //   break
+  }
+}
