@@ -4,6 +4,9 @@ import {
   getBezierPath,
   EdgeLabelRenderer,
   BaseEdge,
+  getSimpleBezierPath,
+  getSmoothStepPath,
+  getStraightPath,
 } from 'reactflow'
 
 const CustomEdge: FC<EdgeProps> = ({
@@ -16,7 +19,7 @@ const CustomEdge: FC<EdgeProps> = ({
   targetPosition,
   data,
 }) => {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -31,9 +34,10 @@ const CustomEdge: FC<EdgeProps> = ({
         id={id}
         path={edgePath}
         style={{
-          stroke: '#ffcc00',
-          strokeWidth: 3,
+          stroke: '#f4f4f4',
+          strokeWidth: 5,
         }}
+        interactionWidth={10}
       />
       <EdgeLabelRenderer>
         {data && data.label && (
@@ -41,7 +45,7 @@ const CustomEdge: FC<EdgeProps> = ({
             style={{
               position: 'absolute',
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-              background: '#ffcc00',
+              background: '#f4f4f4',
               padding: 10,
               borderRadius: 5,
               fontSize: 15,

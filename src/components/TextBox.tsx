@@ -1,5 +1,5 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
 import Dropdown from './Dropdown'
 import TypeSelection from './TypeSelection'
@@ -9,7 +9,7 @@ import {
   chartJsNetflixFinancialExampleReport,
   chartJsTeslaStockPricesExampleReport,
 } from '@/lib/chart-js.code'
-import { DiagramOrChartType, cn, extractParsableJSON } from '@/lib/utils'
+import { DiagramOrChartType, extractParsableJSON } from '@/lib/utils'
 import { track } from '@vercel/analytics'
 import {
   ChartBarIcon,
@@ -17,6 +17,9 @@ import {
   ComputerDesktopIcon,
 } from '@heroicons/react/20/solid'
 import ErrorDialog from './ErrorDialog'
+import { useAssistant } from './Whiteboard/UserPrompt'
+import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
+import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
 export const exampleFlowDiagramPrompts = [
   {
@@ -92,33 +95,29 @@ export function StepLine() {
 }
 
 export default function TextBox() {
+  const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
+
+  const controls = useAssistant(assistant)
+
   const [openErrorDialog, setOpenErrorDialog] = useState(false)
 
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [error, setError] = useState<string | null>('')
 
-  const [selectedType, setSelectedType] = useState<any>(typeSelectionOptions[0])
+  const [selectedType, setSelectedType] = useState<any>(typeSelectionOptions[2])
 
   const context = useContext(DiagramContext)
+  const whiteboardContext = useContext(WhiteboardContext)
 
   const handleSubmit = async () => {
     const type = selectedType.id as DiagramOrChartType
-    context.setLoading(true)
+    // context.setLoading(true)
 
     console.log('--- title', title)
     console.log('---- type', type)
     context.setTitle(title)
     context.setDescription(description)
-
-    // if (type === 'Chart' && !description) {
-    //   setError(
-    //     'Please enter the data for your chart in the description field. 🥺',
-    //   )
-    //   setOpenErrorDialog(true)
-    //   context.setLoading(false)
-    //   return
-    // }
 
     try {
       setError(null)
@@ -130,53 +129,58 @@ export default function TextBox() {
           title: title,
         })
       }
+      console.log('Controls: ', controls)
+      console.log('Title: ', title)
+      console.log('Starting assistant')
+      const res = await controls?.start(title)
+      console.log('Response from OpenAI: ', res)
 
-      const diagram = await fetch('/api/generate-diagram', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          type: type,
-        }),
-      })
+      // const diagram = await fetch('/api/generate-diagram', {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     title: title,
+      //     description: description,
+      //     type: type,
+      //   }),
+      // })
 
-      console.log('Diagram Response: ', diagram)
+      // console.log('Diagram Response: ', diagram)
 
-      const diagramJson = await diagram.json()
+      // const diagramJson = await diagram.json()
 
-      console.log('Diagram JSON 2: ', diagramJson)
+      // console.log('Diagram JSON 2: ', diagramJson)
 
-      const whatToParse = diagramJson.result
-        ? diagramJson.result
-        : diagramJson.records
+      // const whatToParse = diagramJson.result
+      //   ? diagramJson.result
+      //   : diagramJson.records
 
-      const parseableJson = extractParsableJSON(whatToParse)
+      // const parseableJson = extractParsableJSON(whatToParse)
 
-      if (parseableJson === null) {
-        setError('There was an error generating the diagram, please try again')
-        setOpenErrorDialog(true)
-        context.setLoading(false)
-        return
-      }
+      // if (parseableJson === null) {
+      //   setError('There was an error generating the diagram, please try again')
+      //   setOpenErrorDialog(true)
+      //   context.setLoading(false)
+      //   return
+      // }
 
-      console.log('Diagram JSON: ', JSON.parse(parseableJson))
-      const diagramResult = JSON.parse(diagramJson.result)
+      // console.log('Diagram JSON: ', JSON.parse(parseableJson))
+      // const diagramResult = JSON.parse(diagramJson.result)
 
-      if (
-        diagramResult &&
-        diagramResult.nodes &&
-        diagramResult.edges &&
-        type === 'Flow Diagram'
-      ) {
-        context.setNodes(diagramResult.nodes)
-        context.setEdges(diagramResult.edges)
-      } else if (diagramResult && diagramResult.data && type === 'Chart') {
-        context.setChartJsData(diagramResult)
-      } else if (diagramResult && diagramResult.records && type === 'TLDraw') {
-        context.setTlDrawRecords(diagramResult.records)
-      }
+      // if (
+      //   diagramResult &&
+      //   diagramResult.nodes &&
+      //   diagramResult.edges &&
+      //   type === 'Flow Diagram'
+      // ) {
+      //   context.setNodes(diagramResult.nodes)
+      //   context.setEdges(diagramResult.edges)
+      // } else if (diagramResult && diagramResult.data && type === 'Chart') {
+      //   context.setChartJsData(diagramResult)
+      // } else if (diagramResult && diagramResult.records && type === 'TLDraw') {
+      //   context.setTlDrawRecords(diagramResult.records)
+      // }
 
-      context.setLoading(false)
+      // context.setLoading(false)
     } catch (e) {
       console.log('Error generating diagram: ', e)
       context.setLoading(false)

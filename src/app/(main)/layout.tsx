@@ -11,6 +11,7 @@ import { DiagramOrChartType } from '@/lib/utils'
 import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
 import Navbar from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
 export default function MainLayout({
   children,
@@ -22,7 +23,7 @@ export default function MainLayout({
     exampleFlowDiagramPrompts[2].description,
   )
 
-  const [type, setType] = useState<DiagramOrChartType>('Flow Diagram')
+  const [type, setType] = useState<DiagramOrChartType>('TLDraw')
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
 
@@ -327,34 +328,49 @@ export default function MainLayout({
     exampleChartJsDataForTesla,
   )
 
+  const [whiteboardInput, setWhiteboardInput] = useState<string>('')
+  const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
+  const [controls, setControls] = useState<any>(null)
+
   return (
-    <DiagramContext.Provider
+    <WhiteboardContext.Provider
       value={{
-        chartJsData: chartJsData,
-        description: description,
-        edges: edges,
-        loading: loading,
-        nodes: nodes,
-        setChartJsData: setChartJsData,
-        setDescription: setDescription,
-        setEdges: _setEdges,
-        setLoading: _setLoading,
-        setNodes: _setNodes,
-        setTitle: setTitle,
-        setTlDrawRecords: setTlDrawRecords,
-        setType: setType,
-        title: title,
-        tlDrawRecords: tlDrawRecords,
-        type: type,
+        input: whiteboardInput,
+        setInput: setWhiteboardInput,
+        editorRef: whiteboardEditorRef,
+        setEditorRef: setWhiteboardEditorRef,
+        controls: controls,
+        setControls: setControls,
       }}
     >
-      <main>
-        <Navbar />
-        <div className="relative">{children}</div>
-      </main>
-      <Footer />
+      <DiagramContext.Provider
+        value={{
+          chartJsData: chartJsData,
+          description: description,
+          edges: edges,
+          loading: loading,
+          nodes: nodes,
+          setChartJsData: setChartJsData,
+          setDescription: setDescription,
+          setEdges: _setEdges,
+          setLoading: _setLoading,
+          setNodes: _setNodes,
+          setTitle: setTitle,
+          setTlDrawRecords: setTlDrawRecords,
+          setType: setType,
+          title: title,
+          tlDrawRecords: tlDrawRecords,
+          type: type,
+        }}
+      >
+        <main>
+          <Navbar />
+          <div className="relative">{children}</div>
+        </main>
+        <Footer />
 
-      <Analytics />
-    </DiagramContext.Provider>
+        <Analytics />
+      </DiagramContext.Provider>
+    </WhiteboardContext.Provider>
   )
 }

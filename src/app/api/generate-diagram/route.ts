@@ -86,7 +86,7 @@ export async function POST(req: Request) {
   }
 
   const res = await openAiModel.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-4-0125-preview',
     messages: [assistantMessage1, assistantMessage3, userMessage2, userMessage],
     temperature: 0.8,
     max_tokens: 2300,

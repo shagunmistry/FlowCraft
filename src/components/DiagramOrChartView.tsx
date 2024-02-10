@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -33,10 +33,11 @@ import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
+import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 
 const defaultEdgeOptions = {
   animated: true,
-  type: ConnectionLineType.SimpleBezier,
+  type: ConnectionLineType.Step,
 }
 
 const nodeTypes = {
@@ -52,6 +53,8 @@ const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 export default function DiagramOrChartView() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+
+  const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
 
   const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
     JSON.stringify(scenarios.house_buying_process),
@@ -249,7 +252,7 @@ export default function DiagramOrChartView() {
         </div>
       </div>
 
-      <div className="mt-14 h-screen rounded-xl bg-black shadow-lg">
+      <div className="ml-auto mr-auto mt-14 h-screen w-5/6 rounded-xl bg-black shadow-lg">
         {context.loading ? (
           <>
             <div className="text-md flex items-center justify-center text-center text-pink-500">

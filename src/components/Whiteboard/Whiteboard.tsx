@@ -10,47 +10,59 @@ import {
 } from '@tldraw/tldraw'
 
 import '@tldraw/tldraw/tldraw.css'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import SuccessDialog from '../SuccessDialog'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ErrorDialog from '../ErrorDialog'
+import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
+import { useAssistant } from './UserPrompt'
+import { CompletionCommandsAssistant } from './CompletionCommandsAssistant'
 
 const Tldraw = dynamic(async () => (await import('@tldraw/tldraw')).Tldraw, {
   ssr: false,
 })
+
+// const components: TLEditorComponents = {
+//   InFrontOfTheCanvas: () => {
+//     const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
+//     return <UserPrompt assistant={assistant} />
+//   },
+// }
 
 export default function ({ inputJson }: { inputJson: string }) {
   const [openErrorDialog, setOpenErrorDialog] = useState<boolean>(false)
 
   const editorRef = useRef<Editor | null>(null)
 
-  const inputStore = useMemo(() => {
-    try {
-      console.log('We are in useMemo', JSON.parse(inputJson).records)
-      const parsed = parseTldrawJsonFile({
-        json: inputJson,
-        schema: createTLStore({ shapeUtils: defaultShapeUtils }).schema,
-      })
+  const whiteboardContext = useContext(WhiteboardContext)
+  const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
 
-      if (!parsed.ok) {
-        throw new Error(`File parse error: ${JSON.stringify(parsed.error)}`)
-      }
+  // const inputStore = useMemo(() => {
+  //   try {
+  //     console.log('We are in useMemo', JSON.parse(inputJson).records)
+  //     const parsed = parseTldrawJsonFile({
+  //       json: inputJson,
+  //       schema: createTLStore({ shapeUtils: defaultShapeUtils }).schema,
+  //     })
 
-      console.log('editorRef.current: ', editorRef.current)
+  //     if (!parsed.ok) {
+  //       throw new Error(`File parse error: ${JSON.stringify(parsed.error)}`)
+  //     }
 
-      if (editorRef.current) {
-        editorRef.current.zoomToFit()
-      }
+  //     console.log('editorRef.current: ', editorRef.current)
 
-      console.log('parsed.value: ', parsed.value)
+  //     if (editorRef.current) {
+  //       editorRef.current.zoomToFit()
+  //     }
 
-      return parsed.value
-    } catch (e) {
-      setOpenErrorDialog(true)
+  //     console.log('parsed.value: ', parsed.value)
 
-      console.log('Error: ', e)
-      return createTLStore({ shapeUtils: defaultShapeUtils })
-    }
-  }, [inputJson])
+  //     return parsed.value
+  //   } catch (e) {
+  //     setOpenErrorDialog(true)
+
+  //     console.log('Error: ', e)
+  //     return createTLStore({ shapeUtils: defaultShapeUtils })
+  //   }
+  // }, [inputJson])
 
   useEffect(() => {
     editorRef.current?.zoomToFit()
@@ -61,13 +73,28 @@ export default function ({ inputJson }: { inputJson: string }) {
     console.log('Records: ', editorRef.current?.store.allRecords())
   }
 
+  const handleClear = () => {
+    if (editorRef.current) {
+      const ids = Array.from(
+        editorRef.current.getCurrentPageShapeIds().values(),
+      )
+      editorRef.current.deleteShapes(ids)
+    }
+  }
+
   return (
     <div className="mt-12 h-screen w-full rounded-xl">
+      <button className="bg-blue-500 p-2 text-white" onClick={handleClear}>
+        Clear
+      </button>
       <Tldraw
-        store={inputStore}
+        autoFocus={false}
+        // store={inputStore}
         onMount={(editor) => {
           console.log('Editor has mounted')
           editorRef.current = editor
+
+          whiteboardContext.setEditorRef(editor)
 
           // Zoom to fit the diagram
           editor?.zoomToFit({ duration: 200 })
@@ -77,6 +104,7 @@ export default function ({ inputJson }: { inputJson: string }) {
             isSnapMode: true,
           })
         }}
+        // components={components}
       />
       <ErrorDialog
         title="Error Generating Diagram"
