@@ -102,12 +102,15 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
         if (stream.aborted) return
 
         console.log('-- Processing snapshot --')
-        api.processSnapshot(snapshot, true)
+        // api.processSnapshot(snapshot, true)
       })
 
       stream.on('finalContent', (snapshot) => {
         if (stream.aborted) return
+
+        console.log('-- Processing final snapshot --', snapshot)
         // Tell the driver API to complete
+        api.processSnapshot(snapshot, true)
         api.complete()
 
         console.log('Adding assistant message to the editor')

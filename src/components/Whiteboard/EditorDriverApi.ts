@@ -7,6 +7,25 @@ import {
   selectTool,
 } from './functions'
 
+type ShapeType = 'rectangle' | 'ellipse' | 'arrow' | 'circle' | 'square'
+type ActionType = 'CREATE'
+
+type CreateShapeParameters = {
+  shape: 'rectangle' | 'ellipse' | 'arrow' | 'circle' | 'square'
+  x: number
+  y: number
+  width?: number // Optional for text and arrows
+  height?: number // Optional for text and arrows
+  label?: string // Optional for arrows
+  endX?: number // For arrows
+  endY?: number // For arrows
+}
+
+type QueuedCommand = {
+  command: CapturedCommand
+  parameters: CreateShapeParameters | any[] // Adjust for other commands
+}
+
 const commands = [
   {
     keyword: 'CREATE',
@@ -43,13 +62,36 @@ const commands = [
         type: 'string',
         description: 'The text label for the shape.',
       },
+      {
+        name: 'x2',
+        type: 'number',
+        description: 'The x coordinate of the end point of the arrow.',
+        required: false,
+      },
+      {
+        name: 'y2',
+        type: 'number',
+        description: 'The y coordinate of the end point of the arrow.',
+        required: false,
+      },
     ],
   },
 ] as const
 
+type NestedParameter = string | CapturedCommand
+
+// type CapturedCommand = {
+//   action: 'CREATE' // Adjust for other commands
+//   parameters: {
+//     [key: string]: NestedParameter
+//   }
+// }
+
 type CapturedCommand = {
-  command: (typeof commands)[number]
-  parameters: string[]
+  action: ActionType
+  parameters: {
+    [key: string]: any // Replace "any" with actual parameter types
+  }
 }
 
 export class EditorDriverApi {
@@ -57,204 +99,292 @@ export class EditorDriverApi {
     editor.updateInstanceState({ isToolLocked: true })
   }
 
+  private commandQueue: CapturedCommand[] = []
+
   isInSequence = false
 
   cursor = 0
 
   snapshot = ''
 
-  // addChunk(chunk: string) {
-  //   this.snapshot += chunk
-  //   this.processSnapshot(this.snapshot)
-  // }
-
   processSnapshot(snapshot: string, replaceSnapshot = false) {
     if (replaceSnapshot) {
       this.snapshot = snapshot
     }
-    console.log('Snapshot length: ', snapshot.length)
-    console.log('Processing snapshot: ', snapshot)
-    // When we hit START, we should begin capturing commands
-    // when we hit END, we should stop capturing commands
-    // When we hit a ;, we should ignore everything until we hit a command
 
-    // We want to ignore any comments
-    // We want to ignore any other content outside of the START and STOP.
+    console.log('Processing snapshot:', snapshot)
 
-    const capturedCommands: CapturedCommand[] = []
+    // Preprocess input for consistent parsing
+    const processedInput = snapshot
+      .replace(/[\r\n]+/g, ' ') // Replace newlines with spaces
+      .replace(/;/g, ' ;') // Separate semicolons with spaces
+      .replace(/ +/g, ' ') // Normalize multiple spaces
+      .trim() // Remove leading/trailing whitespace
 
-    let state = { name: 'not-capturing' } as
-      | {
-          name: 'command'
-          command: CapturedCommand
-        }
-      | {
-          name: 'not-capturing'
-        }
-      | {
-          name: 'capturing'
-        }
-
-    let input = snapshot
-    // regex to replace all newlines with spaces
-    input = input.replace(/[\r\n]+/g, ' ')
-    // replace all semicolons with spaces
-    input = input.replace(/;/g, ' ;')
-    // replace all multiple spaces with a single space
-    input = input.replace(/ +/g, ' ')
-
-    for (const word of input.split(' ')) {
-      switch (state.name) {
-        case 'not-capturing': {
-          if (word === '```sequence') {
-            state = { name: 'capturing' }
-          }
-          break
-        }
-        case 'capturing': {
-          if (word === '```') {
-            state = { name: 'not-capturing' }
-          } else {
-            // Are we at a new keyword?
-            const newCommand = commands.find((c) => c.keyword === word)
-
-            if (newCommand) {
-              // we've hit a keyword
-              state = {
-                name: 'command',
-                command: { command: newCommand, parameters: [] },
-              }
-            }
-          }
-          break
-        }
-        case 'command': {
-          const expectedParameters = state.command.command.parameters
-          const capturedParameters = state.command.parameters
-          const isTerminator = word === ';'
-          if (capturedParameters.length === expectedParameters.length) {
-            // We have enough parameters, so the next word should be a ;
-            if (isTerminator) {
-              // we've hit the end of the command
-              if (this.cursor === capturedCommands.length) {
-                // execute the command
-                this.executeCommand(state.command)
-                this.cursor++
-              }
-              capturedCommands.push(state.command)
-            } else {
-              throw Error(
-                `Command ${state.command.command.keyword} was called with additional parameter: ${word}`,
-              )
-            }
-            state = { name: 'capturing' }
-          } else {
-            // expect a parameter
-            if (isTerminator) {
-              // we've hit the end of the command instead of a parameter
-              throw Error(
-                `Command ${
-                  state.command.command.keyword
-                } was completed with missing parameter: ${expectedParameters[
-                  capturedParameters.length
-                ]?.name}}`,
-              )
-            } else {
-              // we've hit the end of the command instead of a parameter
-              capturedParameters.push(word)
-            }
-          }
-        }
+    let currentSequence: string[] = []
+    for (const line of processedInput.split('\n')) {
+      if (line.startsWith('````SEQUENCE:')) {
+        // Start a new sequence
+        currentSequence = []
+      } else if (line.startsWith('````')) {
+        // End of a sequence
+        this.processSequence(currentSequence)
+        currentSequence = []
+      } else {
+        // Add line to the current sequence
+        currentSequence.push(line)
       }
+    }
+
+    // Process any remaining sequence at the end
+    if (currentSequence.length > 0) {
+      this.processSequence(currentSequence)
+    }
+  }
+
+  processSequence(sequence: string[]) {
+    let state = 'inactive' as
+      | 'sequence-start'
+      | 'action'
+      | 'create'
+      | 'sequence-end'
+      | 'in-label'
+      | 'inactive'
+    let currentCommand: CapturedCommand | undefined = undefined
+    const parsedCommands: CapturedCommand[] = []
+
+    for (const word of sequence.join(' ').split(' ')) {
+      console.log('Processing word:', word)
+      switch (state) {
+        case 'inactive':
+          if (word === '```SEQUENCE:START') {
+            state = 'sequence-start'
+          }
+          break
+        case 'action':
+          if (word === 'CREATE') {
+            state = 'create'
+            currentCommand = {
+              action: 'CREATE',
+              parameters: {} as { [key: string]: NestedParameter },
+            }
+          } else {
+            // Handle unexpected word after action declaration
+            throw new Error(`Unexpected word after action: ${word}`)
+          }
+          break
+        case 'in-label':
+          if (word === '"') {
+            state = 'create'
+          } else if (currentCommand) {
+            // Append word to label parameter
+            currentCommand.parameters.label += ` ${word}`
+          }
+          break
+        case 'create':
+          // Extract parameters using regular expressions or string manipulation
+          // Replace these examples with your preferred extraction method
+          console.log('Current word ----->', word)
+          console.log('Current command ----->', currentCommand)
+          // It should match "shape" or "shape:" followed by a shape type
+          const shapeMatch = word.match(/^(shape):(\w+)$/)
+
+          console.log('Shape match ----->', shapeMatch)
+
+          if (word === ';') {
+            state = 'inactive'
+            break
+          }
+
+          if (shapeMatch && currentCommand) {
+            currentCommand.parameters['shape'] = shapeMatch[2]
+          } else if (
+            /^(x|y|width|height|endX|endY):(\d+)$/.test(word) &&
+            currentCommand
+          ) {
+            // Extract number parameter (convert to number here)
+            const match = word.match(/^(x|y|width|height|endX|endY):(\d+)$/)!
+            const parameterName = match[1]
+            const parameterValue = Number(match[2])
+            currentCommand.parameters[parameterName] = parameterValue
+          } else if (word.includes('label:"') && currentCommand) {
+            // Extract label parameter
+            const match = word.match(/^label:"(.+?)"$/)!
+
+            // Handle ending quote in the same word
+            if (match && match[1].endsWith('"')) {
+              currentCommand.parameters['label'] = match[1].slice(0, -1)
+              state = 'create'
+            } else {
+              currentCommand.parameters['label'] = match[1]
+              // Set state to in-label to handle multi-word labels
+              state = 'in-label'
+            }
+          } else {
+            // Handle invalid parameter format
+            throw new Error(`Invalid parameter format: ${word}`)
+          }
+          break
+        case 'sequence-start':
+          if (word === 'action:CREATE') {
+            state = 'create'
+            currentCommand = {
+              action: 'CREATE',
+              parameters: {} as { [key: string]: NestedParameter },
+            }
+          }
+          break
+        default:
+          throw new Error(`Unexpected state: ${state}`)
+      }
+    }
+
+    // Validate and push the final parsed command
+    if (state === 'inactive' && currentCommand && !!currentCommand.action) {
+      const validatedParameters = this.validateParameters(
+        currentCommand.parameters,
+      )
+
+      console.log('Validated parameters:', validatedParameters)
+      parsedCommands.push({
+        action: currentCommand.action,
+        parameters: validatedParameters,
+      })
+    }
+
+    // Add parsed commands to the queue
+    this.commandQueue.push(...parsedCommands)
+  }
+
+  validateParameters(parameters: {
+    [key: string]: any
+  }): CreateShapeParameters {
+    // Validate required parameters for all shapes
+    const shape = parameters.shape as ShapeType
+    if (
+      !shape ||
+      !['rectangle', 'ellipse', 'arrow', 'circle'].includes(shape)
+    ) {
+      throw new Error('Invalid shape type')
+    }
+    const x = parameters.x as number
+    const y = parameters.y as number
+    if (typeof x !== 'number' || typeof y !== 'number') {
+      throw new Error('Invalid x or y coordinates')
+    }
+
+    // Validate optional width and height based on shape type
+    let width: number | undefined
+    let height: number | undefined
+    switch (shape) {
+      case 'rectangle':
+      case 'ellipse':
+        width = parameters.width as number | undefined
+        height = parameters.height as number | undefined
+        if (!width || !height) {
+          throw new Error(
+            'Width and height are required for rectangles and ellipses',
+          )
+        }
+        break
+      case 'arrow':
+      case 'circle':
+        width = parameters.width as number | undefined
+        height = parameters.height as number | undefined
+        break
+    }
+
+    // Validate label (optional for all shapes)
+    const label = parameters.label as string | undefined
+
+    // Validate endX and endY for arrows
+    const endX = parameters.endX as number | undefined
+    const endY = parameters.endY as number | undefined
+    if (shape === 'arrow' && (!endX || !endY)) {
+      throw new Error('endX and endY are required for arrows')
+    }
+
+    // Validate start shape reference for arrows (if applicable)
+    const startShapeRef = parameters.start as string | undefined
+    if (shape === 'arrow' && startShapeRef) {
+      throw new Error('Invalid start shape reference')
+    }
+
+    // Construct and return the validated CreateShapeParameters object
+    return {
+      shape,
+      x,
+      y,
+      width,
+      height,
+      label,
+      endX,
+      endY,
     }
   }
 
   complete() {
-    console.log('--- COMPLETED ---, now processing snapshot')
-    this.processSnapshot(this.snapshot)
-    console.log(this.snapshot)
-  }
-
-  queue: CapturedCommand[] = []
-
-  async executeCommand(command: CapturedCommand) {
-    this.queue.push(command)
-
-    if (this.queue.length === 1) {
-      return await this.executeNextInQueue()
-    }
-  }
-
-  async executeNextInQueue(): Promise<void> {
-    const command = this.queue.shift()
-    if (!command) return
-
-    const name = command.command.keyword
-    const params = command.parameters.map((p, i) => {
-      const paramInfo = command.command.parameters[i]
-      switch (paramInfo.type) {
-        case 'number': {
-          return eval(p)
-        }
-        case 'string': {
-          return p
-        }
-      }
+    console.log(
+      '--- COMPLETED ---, now processing the queue',
+      this.commandQueue.length,
+    )
+    // Print out the queue for debugging
+    this.commandQueue.forEach((command) => {
+      console.log(`Executing command: ${command.action}`, command.parameters)
     })
-
-    console.log([name, ...params].join(' '))
-
-    switch (name) {
-      // case 'POINTER_DOWN': {
-      //   pointerDown(this.editor)
-      //   break
-      // }
-      // case 'POINTER_UP': {
-      //   pointerUp(this.editor)
-      //   break
-      // }
-      // case 'POINTER_MOVE': {
-      //   const [x, y] = params as [number, number, string]
-      //   await pointerMoveTo(this.editor, { x, y })
-      //   break
-      // }
-      // case 'POINTER_DRAG': {
-      //   const [x1, y1, x2, y2, _modifiers] = params as [
-      //     number,
-      //     number,
-      //     number,
-      //     number,
-      //     string,
-      //   ]
-      //   pointerMove(this.editor, { x: x1, y: y1 })
-      //   pointerDown(this.editor)
-      //   await pointerMoveTo(this.editor, { x: x2, y: y2 })
-      //   pointerUp(this.editor)
-      //   break
-      // }
-      // case 'TOOL': {
-      //   const [tool] = params as [string]
-      //   selectTool(this.editor, { tool })
-      // }
-      // case 'LABEL': {
-      //   const [label] = params as [string]
-      //   // Add label on the current tool
-      //   console.log('Adding label: ', label)
-      // }
-      case 'CREATE': {
-        const [shape, x, y, width, height, label] = params as [
-          string,
-          number,
-          number,
-          number,
-          number,
-          string,
-        ]
-        console.log('Creating shape: ', shape, x, y, width, height, label)
-        break
-      }
-    }
-
-    return await this.executeNextInQueue()
   }
+
+  // complete() {
+  //   console.log('--- COMPLETED ---, now processing snapshot')
+  //   this.processSnapshot(this.snapshot)
+  //   console.log(this.snapshot)
+  // }
+
+  // queue: QueuedCommand[] = []
+
+  // async executeCommand(
+  //   command: CapturedCommand,
+  //   validatedParameters: CreateShapeParameters,
+  // ): Promise<void> {
+  //   // No need to store the command and parameters anymore
+  //   // as validatedParameters should hold everything needed.
+
+  //   // Extract parameters directly from validatedParameters
+  //   const { shape, x, y, width, height, label, endX, endY } =
+  //     validatedParameters
+
+  //   // Depending on the command keyword, call the appropriate execution logic
+  //   switch (command.command.keyword) {
+  //     case 'CREATE':
+  //       this.createShape(shape, x, y, width, height, label, endX, endY)
+  //       break
+  //     // Add cases for other commands (if applicable)
+  //     default:
+  //       throw new Error(`Unknown command: ${command.command.keyword}`)
+  //   }
+  // }
+
+  // async executeNextInQueue(): Promise<void> {
+  //   const { command, parameters } = this.queue.shift()!
+  //   if (!command) return
+
+  //   console.log('Executing command:', command.command.keyword, parameters)
+
+  //   switch (command.command.keyword) {
+  //     case 'CREATE': {
+  //       const [shape, x, y, width, height, label] = params as [
+  //         string,
+  //         number,
+  //         number,
+  //         number,
+  //         number,
+  //         string,
+  //       ]
+  //       console.log('Creating shape: ', shape, x, y, width, height, label)
+  //       break
+  //     }
+  //   }
+
+  //   return await this.executeNextInQueue()
+  // }
 }
