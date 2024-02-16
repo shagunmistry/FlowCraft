@@ -48,3 +48,28 @@ export function assert(
     throw new Error(message ?? 'Assertion error')
   }
 }
+
+export function getRandomId(): string {
+  return Math.random().toString(36).slice(2)
+}
+
+export const sampleProcess = `
+\`\`\`SEQUENCE:START
+// Diagram illustrating detailed heart function
+action:CREATE shape:ellipse x:200 y:100 width:300 height:150 label:"Evaporation (Water turns into vapor)" id:shape1;
+action:CREATE shape:arrow x:350 y:100 endX:550 endY:100 id:shape2 from:shape1;
+action:CREATE shape:rectangle x:650 y:100 width:300 height:150 label:"Condensation (Vapor forms clouds)" id:shape3;
+action:CREATE shape:arrow x:800 y:100 endX:1000 endY:100 id:shape4 from:shape3;
+action:CREATE shape:rectangle x:1100 y:100 width:300 height:150 label:"Precipitation (Clouds release rain)" id:shape5;
+\`\`\`SEQUENCE:END
+`
+
+/**
+ *
+ * @param originalString string in the format 'shape1'
+ * @returns
+ */
+export const getIdForTlDraw = (originalString: string): string => {
+  const number = originalString.match(/\d+/)
+  return `shape:${number}`
+}

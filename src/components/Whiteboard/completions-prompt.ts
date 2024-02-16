@@ -97,20 +97,23 @@ const command = [
 To call a command, use the name of the command and the command's parameters separated by spaces, and terminated by a semicolon.
 
 \`\`\`SEQUENCE:START
-action:CREATE shape:rectangle x:100 y:50 label:"Product Landing Page"
+action:CREATE shape:rectangle x:100 y:50 label:"Product Landing Page" id:shape1;
 \`\`\`SEQUENCE:END
 
 \`\`\`SEQUENCE:START
-action:CREATE shape:circle x:100 y:50 width:200 height:100 label:"Product Landing Page"
+action:CREATE shape:circle x:100 y:50 width:200 height:100 label:"Product Landing Page" id:shape1;
 \`\`\`SEQUENCE:END
 
 \`\`\`SEQUENCE:START
-action:CREATE shape:arrow x:100 y:50 endX:250 endY:50;
+action:CREATE shape:arrow x:100 y:50 endX:250 endY:50 from:shape1 to:shape2 id:arrow1;
 \`\`\`SEQUENCE:END
 
 \`\`\`SEQUENCE:START
-action:CREATE shape:rectangle x:100 y:50 width:200 height:100 label:"Product Landing Page";
+action:CREATE shape:rectangle x:100 y:50 width:200 height:100 label:"Product Landing Page" id:shape1;
 \`\`\`SEQUENCE:END
+
+
+id MUST start with "shape" only.
 
 ## Sequences
 
@@ -118,9 +121,9 @@ A sequence of commands looks like this:
 
 \`\`\`SEQUENCE:STARt
 // This is a comment
-action:CREATE shape rectangle x:100 y:50 width:200 height:100 label:"Product Landing Page";
-action:CREATE shape arrow start:shape1 endX:250 endY:50;
-action:CREATE shape rectangle x:250 y:50 width:200 height:100 label:"Free Trial Signup";
+action:CREATE shape rectangle x:100 y:50 width:200 height:100 label:"Product Landing Page" id:shape1;
+action:CREATE shape arrow start:shape1 endX:250 endY:50 id:arrow1;
+action:CREATE shape rectangle x:250 y:50 width:200 height:100 label:"Free Trial Signup" id:shape2;
 \`\`\`SEQUENCE:END
 
 ## End of a command
@@ -152,12 +155,16 @@ Here is my understanding:
 4. Checkout: A rectangle for the checkout process.
 5. Arrow 2: Another arrow representing the step toward checkout.
 
+id MUST start with "shape" only.
+For example: shape1, shape2, shape3, shape4, shape5, ...
+Not allowed: arrow1, ra1, etc. ONLY shape1, shape2, shape3, ...
+
 \`\`\`SEQUENCE:END
-action:CREATE shape:rectangle x:80 y:60 width:180 height:50 label:"Website Visit";
-action:CREATE shape:ellipse x:300 y:60 width:70 height:50 label:"Add to Cart";
-action:CREATE shape:arrow x:180 y:80 endX:300 endY:60;
-action:CREATE shape:rectangle x:300 y:60 width:180 height:50 label:"Checkout";
-action:CREATE shape:arrow x:180 y:80 endX:300 endY:60;
+action:CREATE shape:rectangle x:80 y:60 width:180 height:50 label:"Website Visit" id:shape1;
+action:CREATE shape:ellipse x:300 y:60 width:70 height:50 label:"Add to Cart" id:shape2;
+action:CREATE shape:arrow x:180 y:80 endX:300 endY:60 id:shape3 from:shape1 to:shape2;
+action:CREATE shape:rectangle x:300 y:60 width:180 height:50 label:"Checkout" id:shape4;
+action:CREATE shape:arrow x:180 y:80 endX:300 endY:60 id:shape5 from:shape2 to:shape4;
 \`\`\`SEQUENCE:END
 
 ---

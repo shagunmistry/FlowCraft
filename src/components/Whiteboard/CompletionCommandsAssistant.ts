@@ -6,7 +6,7 @@ import { ChatCompletionStream } from 'openai/lib/ChatCompletionStream.mjs'
 import OpenAI from 'openai'
 
 import { commandsPrompt } from './completions-prompt'
-import { assert } from '@/lib/utils'
+import { assert, sampleProcess } from '@/lib/utils'
 import { EditorDriverApi } from './EditorDriverApi'
 import { getUserMessage } from './getUserMessage'
 
@@ -98,6 +98,12 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
     const api = new EditorDriverApi(this.editor)
 
     return new Promise<void>((resolve, reject) => {
+      // Fake the response for now
+      // setTimeout(() => {
+      //   api.processSnapshot(sampleProcess, true)
+      //   api.complete()
+      //   resolve()
+      // }, 3000)
       stream.on('content', (_delta, snapshot) => {
         if (stream.aborted) return
 
@@ -114,10 +120,10 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
         api.complete()
 
         console.log('Adding assistant message to the editor')
-        this.messages.push({
-          role: 'assistant',
-          content: snapshot,
-        })
+        // this.messages.push({
+        //   role: 'assistant',
+        //   content: snapshot,
+        // })
         resolve()
       })
 

@@ -51,7 +51,7 @@ function getPointerEvent(editor: Editor) {
   } as const
 }
 
-async function waitFrame() {
+export async function waitFrame() {
   return new Promise((r) => requestAnimationFrame(r))
 }
 
