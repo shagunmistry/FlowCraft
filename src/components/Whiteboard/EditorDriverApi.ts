@@ -22,8 +22,8 @@ type CreateShapeParameters = {
   label?: string // Optional for arrows
   endX?: number // For arrows
   endY?: number // For arrows
-  from?: TLShapeId // For arrows
-  to?: TLShapeId // For arrows
+  startX?: number // For arrows
+  startY?: number // For arrows
   id?: TLShapeId
 }
 
@@ -244,7 +244,8 @@ export class EditorDriverApi {
                   state = 'in-label'
                 }
                 const label = word.split(':')[1]
-                currentCommand.parameters.label = label.replace('"', '')
+                // replace every " with an empty string
+                currentCommand.parameters.label = label.replace(/"/g, '')
               }
               if (word.includes('endX:')) {
                 currentCommand.parameters.endX = parseInt(word.split(':')[1])
@@ -252,15 +253,11 @@ export class EditorDriverApi {
               if (word.includes('endY:')) {
                 currentCommand.parameters.endY = parseInt(word.split(':')[1])
               }
-              if (word.includes('from:')) {
-                currentCommand.parameters.from = getIdForTlDraw(
-                  word.split(':')[1],
-                )
+              if (word.includes('startX:')) {
+                currentCommand.parameters.startX = parseInt(word.split(':')[1])
               }
-              if (word.includes('to:')) {
-                currentCommand.parameters.to = getIdForTlDraw(
-                  word.split(':')[1],
-                )
+              if (word.includes('startY:')) {
+                currentCommand.parameters.startY = parseInt(word.split(':')[1])
               }
               if (word.includes('id:')) {
                 currentCommand.parameters.id = getIdForTlDraw(
@@ -382,8 +379,19 @@ export class EditorDriverApi {
     parameters: CreateShapeParameters,
     isFromArrowQueue: boolean = false,
   ) {
-    const { shape, x, y, width, height, label, endX, endY, from, to, id } =
-      parameters
+    const {
+      shape,
+      x,
+      y,
+      width,
+      height,
+      label,
+      endX,
+      endY,
+      startX,
+      startY,
+      id,
+    } = parameters
 
     console.log('Creating shape:', parameters)
 
@@ -472,36 +480,29 @@ export class EditorDriverApi {
         if (isFromArrowQueue) {
           console.log('Creating arrow from queue:', parameters)
           this.editor.createShape({
-            id: id || (`shape:${getRandomId()}` as any),
-            type: 'arrow',
             x: x,
             y: y,
+            rotation: 0,
+            opacity: 1,
+            meta: {},
+            id: id || (`shape:${getRandomId()}` as any),
+            type: 'arrow',
             props: {
-              dash: 'draw',
+              dash: 'solid',
               size: 'm',
               fill: 'none',
               color: 'black',
               labelColor: 'black',
               bend: 0,
               start: {
-                type: 'binding',
-                boundShapeId: from || 'shape:1',
-                normalizedAnchor: {
-                  x: 0.5,
-                  y: 1,
-                },
-                isPrecise: true,
-                isExact: false,
+                type: 'point',
+                x: startX,
+                y: startY,
               },
               end: {
-                type: 'binding',
-                boundShapeId: to || 'shape:2',
-                normalizedAnchor: {
-                  x: 0.5,
-                  y: 0,
-                },
-                isPrecise: true,
-                isExact: false,
+                type: 'point',
+                x: endX,
+                y: endY,
               },
               arrowheadStart: 'none',
               arrowheadEnd: 'arrow',

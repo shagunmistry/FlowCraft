@@ -69,7 +69,7 @@ export default function DiagramOrChartView() {
   useEffect(() => {
     console.log('context.type: ', context.type)
     if (context.type === 'Flow Diagram') {
-      console.log('we are in the TLDraw')
+      console.log('we are in the Flow Diagram context!')
       console.log('Edges: ', context.edges)
       console.log('Nodes: ', context.nodes)
       if (!context.nodes && !context.edges) return

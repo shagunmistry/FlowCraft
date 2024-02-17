@@ -6,7 +6,7 @@ import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { Edge, Node } from 'reactflow'
 
 import { Analytics } from '@vercel/analytics/react'
-import { exampleFlowDiagramPrompts } from '@/components/TextBox'
+import { exampleFlowDiagramPrompts } from '@/components/DiagramInputsForm'
 import { DiagramOrChartType } from '@/lib/utils'
 import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
 import Navbar from '@/components/Navbar'
