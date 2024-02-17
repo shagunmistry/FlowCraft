@@ -113,6 +113,8 @@ export class EditorDriverApi {
 
   snapshot = ''
 
+  arrowShapesQueue: CapturedCommand[] = []
+
   processSnapshot(snapshot: string, replaceSnapshot = false) {
     if (replaceSnapshot) {
       this.snapshot = snapshot
@@ -124,6 +126,8 @@ export class EditorDriverApi {
       .replace(/;/g, ' ;') // Separate semicolons with spaces
       .replace(/ +/g, ' ') // Normalize multiple spaces
       .trim() // Remove leading/trailing whitespace
+
+    console.log('Processed input:', processedInput)
 
     let currentSequence: string[] = []
     for (const line of processedInput.split('\n')) {
@@ -160,6 +164,7 @@ export class EditorDriverApi {
     console.log('Processing sequence:', sequence)
 
     for (const word of sequence.join(' ').split(' ')) {
+      console.log('Processing word:', word, 'with state:', state)
       if (word === ';') {
         state = 'inactive'
       }
@@ -212,7 +217,7 @@ export class EditorDriverApi {
           break
         case 'in-label':
           if (currentCommand) {
-            currentCommand.parameters.label += word
+            currentCommand.parameters.label += ' ' + word.replace('"', '')
 
             if (word.endsWith('"')) {
               state = 'create'
@@ -235,8 +240,11 @@ export class EditorDriverApi {
                 currentCommand.parameters.height = parseInt(word.split(':')[1])
               }
               if (word.includes('label:')) {
-                currentCommand.parameters.label = word.split(':')[1]
-                state = 'in-label'
+                if (word.includes('"') && !word.endsWith('"')) {
+                  state = 'in-label'
+                }
+                const label = word.split(':')[1]
+                currentCommand.parameters.label = label.replace('"', '')
               }
               if (word.includes('endX:')) {
                 currentCommand.parameters.endX = parseInt(word.split(':')[1])
@@ -348,14 +356,21 @@ export class EditorDriverApi {
     this.commandQueue.forEach(async (command) => {
       await this.executeCommand(command)
     })
+
+    console.log(
+      '--- COMPLETED ---, now processing the arrow queue',
+      this.arrowShapesQueue.length,
+    )
+    this.arrowShapesQueue.forEach(async (command) => {
+      await this.executeCommand(command, true)
+    })
   }
 
-  async executeCommand(command: CapturedCommand) {
+  async executeCommand(command: CapturedCommand, isArrow: boolean = false) {
     switch (command.action) {
       case 'CREATE':
         const parameters = command.parameters as CreateShapeParameters
-        console.log('Creating shape:', parameters)
-        await this.createShape(parameters)
+        await this.createShape(parameters, isArrow)
         break
       default:
         console.log('Invalid action:', command.action)
@@ -363,7 +378,10 @@ export class EditorDriverApi {
     }
   }
 
-  async createShape(parameters: CreateShapeParameters) {
+  async createShape(
+    parameters: CreateShapeParameters,
+    isFromArrowQueue: boolean = false,
+  ) {
     const { shape, x, y, width, height, label, endX, endY, from, to, id } =
       parameters
 
@@ -451,54 +469,59 @@ export class EditorDriverApi {
         await waitFrame()
         break
       case 'arrow':
-        this.editor.createShape({
-          id: id || (`shape:${getRandomId()}` as any),
-          type: 'arrow',
-          x: x,
-          y: y,
-          props: {
-            dash: 'draw',
-            size: 'm',
-            fill: 'none',
-            color: 'black',
-            labelColor: 'black',
-            bend: 0,
-            start: {
-              type: 'binding',
-              boundShapeId: from || 'shape:1',
-              normalizedAnchor: {
-                x: 0.5,
-                y: 1,
+        if (isFromArrowQueue) {
+          console.log('Creating arrow from queue:', parameters)
+          this.editor.createShape({
+            id: id || (`shape:${getRandomId()}` as any),
+            type: 'arrow',
+            x: x,
+            y: y,
+            props: {
+              dash: 'draw',
+              size: 'm',
+              fill: 'none',
+              color: 'black',
+              labelColor: 'black',
+              bend: 0,
+              start: {
+                type: 'binding',
+                boundShapeId: from || 'shape:1',
+                normalizedAnchor: {
+                  x: 0.5,
+                  y: 1,
+                },
+                isPrecise: true,
+                isExact: false,
               },
-              isPrecise: true,
-              isExact: false,
-            },
-            end: {
-              type: 'binding',
-              boundShapeId: to || 'shape:2',
-              normalizedAnchor: {
-                x: 0.5,
-                y: 0,
+              end: {
+                type: 'binding',
+                boundShapeId: to || 'shape:2',
+                normalizedAnchor: {
+                  x: 0.5,
+                  y: 0,
+                },
+                isPrecise: true,
+                isExact: false,
               },
-              isPrecise: true,
-              isExact: false,
+              arrowheadStart: 'none',
+              arrowheadEnd: 'arrow',
+              text: '',
+              font: 'draw',
             },
-            arrowheadStart: 'none',
-            arrowheadEnd: 'arrow',
-            text: '',
-            font: 'draw',
-          },
-          typeName: 'shape',
-        })
-        await waitFrame()
+            typeName: 'shape',
+          })
+          await waitFrame()
+        } else {
+          this.arrowShapesQueue.push({ action: 'CREATE', parameters })
+        }
         break
       default:
         console.log('Invalid shape type:', shape)
         break
     }
 
-    await waitFrame()
-    // Delay few seconds to allow the shapes to be created
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // await waitFrame()
+    // // Delay few seconds to allow the shapes to be created
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 }

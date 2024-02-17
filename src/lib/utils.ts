@@ -56,11 +56,27 @@ export function getRandomId(): string {
 export const sampleProcess = `
 \`\`\`SEQUENCE:START
 // Diagram illustrating detailed heart function
-action:CREATE shape:ellipse x:200 y:100 width:300 height:150 label:"Evaporation (Water turns into vapor)" id:shape1;
-action:CREATE shape:arrow x:350 y:100 endX:550 endY:100 id:shape2 from:shape1;
-action:CREATE shape:rectangle x:650 y:100 width:300 height:150 label:"Condensation (Vapor forms clouds)" id:shape3;
-action:CREATE shape:arrow x:800 y:100 endX:1000 endY:100 id:shape4 from:shape3;
-action:CREATE shape:rectangle x:1100 y:100 width:300 height:150 label:"Precipitation (Clouds release rain)" id:shape5;
+action:CREATE shape:ellipse x:180 y:150 width:120 height:200 label:"Right Lung" id:shape1;
+action:CREATE shape:ellipse x:340 y:150 width:120 height:240 label:"Left Lung" id:shape2;
+action:CREATE shape:rectangle x:260 y:400 width:160 height:90 label:"Diaphragm" id:shape3;
+action:CREATE shape:arrow x:260 y:80 endX:260 endY:160 id:shape4 from:shape2 to:shape3;
+action:CREATE shape:circle x:260 y:90 width:40 height:40 label:"Trachea" id:shape5;
+action:CREATE shape:arrow x:200 y:150 endX:180 endY:200 id:shape6 from:shape5 to:shape1;
+action:CREATE shape:arrow x:320 y:150 endX:340 endY:200 id:shape7 from:shape5 to:shape2;
+// The trachea branches into two main bronchi (arrows from trachea to lungs)
+action:CREATE shape:rectangle x:180 y:300 width:60 height:30 label:"Bronchi" id:shape8;
+action:CREATE shape:rectangle x:340 y:300 width:60 height:30 label:"Bronchi" id:shape9;
+// Alveoli where gas exchange happens
+action:CREATE shape:circle x:100 y:320 width:30 height:30 label:"Alveoli" id:shape10;
+action:CREATE shape:circle x:260 y:320 width:30 height:30 label:"Alveoli" id:shape11;
+action:CREATE shape:arrow x:160 y:300 endX:100 endY:320 id:shape12 from:shape8 to:shape10;
+action:CREATE shape:arrow x:320 y:300 endX:260 endY:320 id:shape13 from:shape9 to:shape11;
+// Labels to explain the functioning
+action:CREATE shape:rectangle x:180 y:500 width:200 height:50 label:"Inhalation: Diaphragm contracts, pulling air in" id:shape14;
+action:CREATE shape:rectangle x:480 y:500 width:200 height:50 label:"Exhalation: Diaphragm relaxes, pushing air out" id:shape15;
+// Connecting Diaphragm movement to inhalation and exhalation
+action:CREATE shape:arrow x:260 y:420 endX:260 endY:490 id:shape16 from:shape3 to:shape14;
+action:CREATE shape:arrow x:400 y:420 endX:480 endY:490 id:shape17 from:shape3 to:shape15;
 \`\`\`SEQUENCE:END
 `
 

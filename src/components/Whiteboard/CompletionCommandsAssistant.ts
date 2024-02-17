@@ -99,46 +99,46 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
 
     return new Promise<void>((resolve, reject) => {
       // Fake the response for now
-      // setTimeout(() => {
-      //   api.processSnapshot(sampleProcess, true)
-      //   api.complete()
-      //   resolve()
-      // }, 3000)
-      stream.on('content', (_delta, snapshot) => {
-        if (stream.aborted) return
-
-        console.log('-- Processing snapshot --')
-        // api.processSnapshot(snapshot, true)
-      })
-
-      stream.on('finalContent', (snapshot) => {
-        if (stream.aborted) return
-
-        console.log('-- Processing final snapshot --', snapshot)
-        // Tell the driver API to complete
-        api.processSnapshot(snapshot, true)
+      setTimeout(() => {
+        api.processSnapshot(sampleProcess, true)
         api.complete()
-
-        console.log('Adding assistant message to the editor')
-        // this.messages.push({
-        //   role: 'assistant',
-        //   content: snapshot,
-        // })
         resolve()
-      })
+      }, 3000)
+      // stream.on('content', (_delta, snapshot) => {
+      //   if (stream.aborted) return
 
-      stream.on('abort', () => {
-        reject(new Error('Stream aborted'))
-      })
+      //   console.log('-- Processing snapshot --')
+      //   // api.processSnapshot(snapshot, true)
+      // })
 
-      stream.on('error', (err) => {
-        console.error(err)
-        reject(err)
-      })
+      // stream.on('finalContent', (snapshot) => {
+      //   if (stream.aborted) return
 
-      stream.on('end', () => {
-        resolve()
-      })
+      //   console.log('-- Processing final snapshot --', snapshot)
+      //   // Tell the driver API to complete
+      //   api.processSnapshot(snapshot, true)
+      //   api.complete()
+
+      //   console.log('Adding assistant message to the editor')
+      //   // this.messages.push({
+      //   //   role: 'assistant',
+      //   //   content: snapshot,
+      //   // })
+      //   resolve()
+      // })
+
+      // stream.on('abort', () => {
+      //   reject(new Error('Stream aborted'))
+      // })
+
+      // stream.on('error', (err) => {
+      //   console.error(err)
+      //   reject(err)
+      // })
+
+      // stream.on('end', () => {
+      //   resolve()
+      // })
     })
   }
 }
