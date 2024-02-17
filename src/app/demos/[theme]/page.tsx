@@ -5,6 +5,9 @@ import FlowCraftHealthcare from '@/images/FlowCraft_ForHealthcare_Pic.png'
 import FlowCraftStudent from '@/images/FlowCraft_ForStudents_Pic.png'
 import FlowCraftEngineer from '@/images/FlowCraft_ForEngineers_Pic.png'
 import { landingPageCodeExamples } from '@/lib/react-flow.code'
+import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase-auth/server'
+import { redirect } from 'next/navigation'
 
 const props: any = {
   teachers: {
@@ -127,8 +130,16 @@ const props: any = {
   },
 }
 
-export default function Page({ params }: { params: { theme: string } }) {
+export default async function Page({ params }: { params: { theme: string } }) {
   console.log('Theme: ', params.theme)
+
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data?.user) {
+    redirect('/')
+  }
 
   if (!props[params.theme]) {
     return (
