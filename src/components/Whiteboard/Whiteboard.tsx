@@ -2,17 +2,12 @@
 
 import dynamic from 'next/dynamic'
 
-import {
-  Editor,
-  createTLStore,
-  defaultShapeUtils,
-  parseTldrawJsonFile,
-} from '@tldraw/tldraw'
+import { Editor } from '@tldraw/tldraw'
 
 import '@tldraw/tldraw/tldraw.css'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import SuccessDialog from '../SuccessDialog'
+import { useContext, useEffect, useRef, useState } from 'react'
 import ErrorDialog from '../ErrorDialog'
+import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
 const Tldraw = dynamic(async () => (await import('@tldraw/tldraw')).Tldraw, {
   ssr: false,
@@ -23,34 +18,7 @@ export default function ({ inputJson }: { inputJson: string }) {
 
   const editorRef = useRef<Editor | null>(null)
 
-  const inputStore = useMemo(() => {
-    try {
-      console.log('We are in useMemo', JSON.parse(inputJson).records)
-      const parsed = parseTldrawJsonFile({
-        json: inputJson,
-        schema: createTLStore({ shapeUtils: defaultShapeUtils }).schema,
-      })
-
-      if (!parsed.ok) {
-        throw new Error(`File parse error: ${JSON.stringify(parsed.error)}`)
-      }
-
-      console.log('editorRef.current: ', editorRef.current)
-
-      if (editorRef.current) {
-        editorRef.current.zoomToFit()
-      }
-
-      console.log('parsed.value: ', parsed.value)
-
-      return parsed.value
-    } catch (e) {
-      setOpenErrorDialog(true)
-
-      console.log('Error: ', e)
-      return createTLStore({ shapeUtils: defaultShapeUtils })
-    }
-  }, [inputJson])
+  const whiteboardContext = useContext(WhiteboardContext)
 
   useEffect(() => {
     editorRef.current?.zoomToFit()
@@ -64,10 +32,12 @@ export default function ({ inputJson }: { inputJson: string }) {
   return (
     <div className="mt-12 h-screen w-full rounded-xl">
       <Tldraw
-        store={inputStore}
+        autoFocus={false}
         onMount={(editor) => {
           console.log('Editor has mounted')
           editorRef.current = editor
+
+          whiteboardContext.setEditorRef(editor)
 
           // Zoom to fit the diagram
           editor?.zoomToFit({ duration: 200 })

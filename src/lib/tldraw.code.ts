@@ -54,7 +54,6 @@ export const recordsExampleOne = [
     y: 695.2578872283998,
     rotation: 0,
     opacity: 1,
-
     id: 'shape:G3TCHm1so_9o_4dWHW5kk',
     type: 'arrow',
     index: 'a2G',

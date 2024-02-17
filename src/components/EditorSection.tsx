@@ -1,13 +1,13 @@
 'use client'
 
-import TextBox from './TextBox'
+import DiagramInputsForm from './DiagramInputsForm'
 
 export function EditorSection(
   props: React.ComponentPropsWithoutRef<'section'>,
 ) {
   return (
     <section {...props}>
-      <TextBox />
+      <DiagramInputsForm />
     </section>
   )
 }

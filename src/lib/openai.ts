@@ -263,6 +263,8 @@ export const promptForResponse = `The response MUST ONLY be in JSON that include
 export const promptForExampleCode = `Here is an example of a valid ReactFlow Node and Edge array:
 ${allCombinedCodeExample}
 \`\`\`
+
+NOTE: The X and Y positions for each node MUST be at least 100 apart from each other.
 `
 
 export const inputForReactFlowContext =
