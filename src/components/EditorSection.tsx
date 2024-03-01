@@ -1,13 +1,17 @@
 'use client'
 
+import { DiagramOrChartType } from '@/lib/utils'
 import DiagramInputsForm from './DiagramInputsForm'
 
-export function EditorSection(
-  props: React.ComponentPropsWithoutRef<'section'>,
-) {
+export function EditorSection({
+  type,
+  ...props
+}: {
+  type: DiagramOrChartType
+} & React.HTMLProps<HTMLElement>) {
   return (
     <section {...props}>
-      <DiagramInputsForm />
+      <DiagramInputsForm type={type} />
     </section>
   )
 }

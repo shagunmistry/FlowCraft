@@ -13,7 +13,7 @@ import Navbar from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
-export default function MainLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
@@ -23,7 +23,7 @@ export default function MainLayout({
     exampleFlowDiagramPrompts[2].description,
   )
 
-  const [type, setType] = useState<DiagramOrChartType>('Whiteboard')
+  const [type, setType] = useState<DiagramOrChartType | null>(null)
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
 
@@ -364,10 +364,9 @@ export default function MainLayout({
         }}
       >
         <main>
-          <Navbar />
           <div className="relative">{children}</div>
         </main>
-        <Footer />
+        <Footer className='no-action' />
 
         <Analytics />
       </DiagramContext.Provider>

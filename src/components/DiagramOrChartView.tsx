@@ -34,6 +34,7 @@ import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
+import { DiagramOrChartType } from '@/lib/utils'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -50,7 +51,23 @@ const edgeTypes: EdgeTypes = {
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
 
-export default function DiagramOrChartView() {
+const Loader = () => {
+  return (
+    <>
+      <div className="text-md flex items-center justify-center text-center text-pink-500">
+        Please be patient while we generate your diagram, it may take a couple
+        minutes.
+      </div>
+      <Lottie animationData={LottieAnimation} loop={true} />
+    </>
+  )
+}
+
+export default function DiagramOrChartView({
+  type,
+}: {
+  type: DiagramOrChartType
+}) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
@@ -122,7 +139,7 @@ export default function DiagramOrChartView() {
       })
 
       setChartCreated(true)
-    } else if (context.type === 'TLDraw') {
+    } else if (context.type === 'Whiteboard') {
       console.log('context.tlDrawRecords: ', context.tlDrawRecords)
       if (!context.tlDrawRecords || context.tlDrawRecords.length === 0) {
         return
@@ -240,6 +257,17 @@ export default function DiagramOrChartView() {
     [edges],
   )
 
+  if (type === 'Chart') {
+    if (context.loading) {
+      return <Loader />
+    }
+    return (
+      <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-black p-5 shadow-lg">
+        <canvas id="myChart"></canvas>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="mr-5 mt-7 flex items-center justify-between">
@@ -254,13 +282,7 @@ export default function DiagramOrChartView() {
 
       <div className="ml-auto mr-auto mt-14 h-screen w-5/6 rounded-xl bg-black shadow-lg">
         {context.loading ? (
-          <>
-            <div className="text-md flex items-center justify-center text-center text-pink-500">
-              Please be patient while we generate your diagram, it may take a
-              couple minutes.
-            </div>
-            <Lottie animationData={LottieAnimation} loop={true} />
-          </>
+          <Loader />
         ) : (
           <>
             {context.type === 'Flow Diagram' && (
@@ -302,12 +324,7 @@ export default function DiagramOrChartView() {
                 </ReactFlow>
               </>
             )}
-            {context.type === 'Chart' && (
-              <div className="flex h-screen items-center justify-center rounded-xl bg-white p-10 shadow-lg">
-                <canvas id="myChart" className="h-max"></canvas>
-              </div>
-            )}
-            {context.type === 'TLDraw' && (
+            {type === 'Whiteboard' && (
               <Whiteboard inputJson={tlDrawInputJson} />
             )}
           </>
@@ -316,8 +333,8 @@ export default function DiagramOrChartView() {
       <SuccessDialog
         buttonText="View Diagram"
         header="Success!"
-        message={`Yayy! Your ${context.type} has been generated! ${
-          context.type === 'Flow Diagram'
+        message={`Yayy! Your ${type} has been generated! ${
+          type === 'Flow Diagram'
             ? 'Try clicking on the labels to move them around!'
             : ''
         }'`}

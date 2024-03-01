@@ -1,9 +1,11 @@
 'use client'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { ChevronRightIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase-auth/client'
 
 const features = [
   {
@@ -35,6 +37,26 @@ const features = [
 ]
 
 export default function MainLanding() {
+  const [authenticated, setAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    const fetchAuthenticationStatus = async () => {
+      const { data, error } = await supabase.auth.getUser()
+      console.log('data: ', data)
+      if (error || !data?.user) {
+        setAuthenticated(false)
+      }
+
+      if (data?.user) {
+        setAuthenticated(true)
+      }
+    }
+
+    fetchAuthenticationStatus()
+  }, [])
+
   return (
     <div className="relative overflow-hidden">
       <Popover as="header" className="relative">
@@ -75,7 +97,7 @@ export default function MainLanding() {
 
       <main>
         <div className="bg-gradient-to-r from-indigo-400 via-pink-500 to-pink-700 pt-10 sm:pt-16 lg:overflow-hidden lg:pb-14 lg:pt-8">
-          <div className="mx-auto max-w-7xl lg:px-8">
+          <div className="relative mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-6 sm:max-w-2xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left">
                 <div className="lg:py-24">
@@ -98,7 +120,7 @@ export default function MainLanding() {
                     <span className="block text-gray-200">
                       Generate stunning
                     </span>
-                    <span className="block text-indigo-700">
+                    <span className="block text-yellow-300">
                       Diagrams, Charts, and Whiteboard Sketches in Seconds!
                     </span>
                   </h1>
@@ -107,9 +129,12 @@ export default function MainLanding() {
                     effortlessly. No design skills required.
                   </p>
                   <div className="mt-10 sm:mt-12">
-                    <button className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-indigo-600 hover:bg-indigo-50 sm:inline-flex sm:w-auto sm:items-center sm:px-6">
-                      Get Started Now!
-                    </button>
+                    <Link
+                      className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-yellow-300 px-8 py-3 font-medium text-gray-500 text-indigo-600 hover:bg-pink-300 sm:inline-flex sm:w-auto sm:items-center sm:px-6"
+                      href={authenticated ? '/dashboard' : '/login'}
+                    >
+                      {authenticated ? 'Go to Dashboard' : 'Get Started'}
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -125,7 +150,7 @@ export default function MainLanding() {
             </div>
           </div>
 
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-96 lg:mt-5 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
               <h2 className="text-base font-semibold leading-7 text-white">
                 Everything you need
@@ -138,9 +163,9 @@ export default function MainLanding() {
             <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 text-2xl leading-7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
               {features.map((feature) => (
                 <div key={feature.name} className="relative pl-9">
-                  <dt className="inline font-semibold text-yellow-200">
+                  <dt className="inline font-semibold text-yellow-300">
                     <feature.icon
-                      className="absolute left-1 top-1 h-5 w-5 text-yellow-500"
+                      className="absolute left-1 top-1 h-5 w-5 text-yellow-300"
                       aria-hidden="true"
                     />
                     {feature.name}

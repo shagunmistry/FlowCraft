@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   const type = json.type as DiagramOrChartType
 
   let contextText = ''
-  if (type !== 'TLDraw') {
+  if (type !== 'Whiteboard') {
     contextText = await getEmbeddingForContext(type, contextText)
   }
 
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
         ? promptForResponse
         : type === 'Chart'
           ? promptForChartJsResponse
-          : type === 'TLDraw'
+          : type === 'Whiteboard'
             ? tldrawInputs.promptForResponse
             : '',
   }
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         ? promptForExampleCode
         : type === 'Chart'
           ? promptForChartJsExampleCode
-          : type === 'TLDraw'
+          : type === 'Whiteboard'
             ? tldrawInputs.promptForExampleCode
             : '',
   }
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
         ? promptForUserMessage(diagramTitle, diagramDescription)
         : type === 'Chart'
           ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
-          : type === 'TLDraw'
+          : type === 'Whiteboard'
             ? tldrawInputs.promptForUserMessageForTlDraw(
                 diagramTitle,
                 diagramDescription,

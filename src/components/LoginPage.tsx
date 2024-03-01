@@ -1,31 +1,141 @@
+'use client'
+
+import Link from 'next/link'
+import FlowCraftLogo from '@/images/FlowCraftLogo.png'
+import Image from 'next/image'
+import ErrorAlert from './ErrorAlert'
+import { useState } from 'react'
+import SuccessAlert from './SuccessAlert'
+import { redirect, useRouter } from 'next/navigation'
+
 export default function LoginPage({
   login,
   signUp,
 }: {
-  login: (formData: FormData) => void
-  signUp: (formData: FormData) => void
+  login: (formData: FormData) => Promise<{ error: string }>
+  signUp: (
+    formData: FormData,
+  ) => Promise<
+    | { error: string; success?: undefined }
+    | { success: string; error?: undefined }
+  >
 }) {
+  const [showError, setShowError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
+
+  const _login = async () => {
+    const formData = new FormData()
+
+    const emailField = document.getElementById('email') as HTMLInputElement
+    const passwordField = document.getElementById(
+      'password',
+    ) as HTMLInputElement
+
+    if (!emailField || !passwordField) {
+      return
+    }
+
+    formData.append('email', emailField.value)
+    formData.append('password', passwordField.value)
+
+    const res = (await login(formData)) as any
+
+    console.log('res', res)
+
+    if (res === undefined) {
+      window.location.href = '/dashboard'
+    }
+
+    if (res && res.error) {
+      console.log('res.error', res.error)
+      setErrorMessage('Username or password is incorrect.')
+      setShowError(true)
+      // Clear the error message after 5 seconds
+      setTimeout(() => {
+        setShowError(false)
+        setErrorMessage('')
+      }, 5000)
+
+      const passwordField = document.getElementById(
+        'password',
+      ) as HTMLInputElement
+      if (passwordField) {
+        passwordField.value = ''
+        passwordField.focus()
+      }
+    }
+  }
+
+  const _signup = async () => {
+    const formData = new FormData()
+
+    // get the email and password from the form
+    const emailField = document.getElementById('email') as HTMLInputElement
+    const passwordField = document.getElementById(
+      'password',
+    ) as HTMLInputElement
+
+    if (!emailField || !passwordField) {
+      return
+    }
+
+    formData.append('email', emailField.value)
+    formData.append('password', passwordField.value)
+
+    const res = (await signUp(formData)) as any
+
+    console.log('Sign up res', res)
+
+    if (res.error) {
+      console.log('res.error', res.error)
+      setErrorMessage(res.error)
+      setShowError(true)
+      // Clear the error message after 5 seconds
+      setTimeout(() => {
+        setShowError(false)
+        setErrorMessage('')
+      }, 5000)
+    }
+
+    if (res.success) {
+      setSuccessMessage(res.success)
+      setShowSuccess(true)
+
+      emailField.value = ''
+      passwordField.value = ''
+
+      setTimeout(() => {
+        setShowSuccess(false)
+        setSuccessMessage('')
+      }, 5000)
+    }
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
+          <Link href="/">
+            <Image
+              className="mx-auto h-10 w-auto shadow-lg"
+              src={FlowCraftLogo}
+              alt="FlowCraft Logo"
+            />
+          </Link>
+          <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-pink-500">
+            Sign in to FlowCraft
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-            <form className="space-y-6" action="#" method="POST">
+          <div className="bg-pink-500 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+            <form className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6 text-white"
                 >
                   Email address
                 </label>
@@ -36,7 +146,7 @@ export default function LoginPage({
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-pink-500 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -44,7 +154,7 @@ export default function LoginPage({
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6 text-white"
                 >
                   Password
                 </label>
@@ -55,7 +165,7 @@ export default function LoginPage({
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-pink-400 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -66,51 +176,58 @@ export default function LoginPage({
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    className="h-4 w-4 rounded border-gray-300 text-white focus:ring-indigo-600"
                   />
                   <label
                     htmlFor="remember-me"
                     className="ml-3 block text-sm leading-6 text-gray-900"
                   >
-                    Remember me
+                    Remember me?
                   </label>
                 </div>
 
                 <div className="text-sm leading-6">
                   <a
                     href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    className="font-semibold text-white hover:text-indigo-500"
                   >
                     Forgot password?
                   </a>
                 </div>
               </div>
 
-              <div>
+              <div className="flex justify-between">
                 <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  type="button"
+                  className="ml-2 flex-1 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+                  onClick={_login}
                 >
-                  Sign in
+                  Login
                 </button>
               </div>
             </form>
+            <br />
+            <ErrorAlert message={errorMessage} show={showError} />
+            <SuccessAlert
+              message={successMessage}
+              show={showSuccess}
+              setShow={setShowSuccess}
+            />
+
+            <div className="flex justify-center">
+              <p className="text-sm text-white">
+                Don't have an account?{' '}
+                <button
+                  type="button"
+                  className="font-semibold text-white hover:text-indigo-500"
+                  onClick={_signup}
+                >
+                  Sign up
+                </button>
+              </p>
+            </div>
 
             <div>
-              <div className="relative mt-10">
-                <div
-                  className="absolute inset-0 flex items-center"
-                  aria-hidden="true"
-                >
-                  <div className="w-full border-t border-gray-200" />
-                </div>
-                <div className="relative flex justify-center text-sm font-medium leading-6">
-                  <span className="bg-white px-6 text-gray-900">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <a
                   href="#"
@@ -166,16 +283,6 @@ export default function LoginPage({
               </div>
             </div>
           </div>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{' '}
-            <a
-              href="#"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Start a 14 day free trial
-            </a>
-          </p>
         </div>
       </div>
     </>

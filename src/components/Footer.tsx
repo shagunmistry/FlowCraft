@@ -29,38 +29,41 @@ const footerNavigation = {
 }
 
 export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
+  const isNoAction = props.className?.includes('no-action')
   return (
-    <footer className="bg-gradient-to-r from-indigo-500 to-indigo-800">
+    <footer className="bg-gradient-to-r from-indigo-400 via-pink-500 to-pink-700">
       <div className="mx-auto max-w-md overflow-hidden px-6 py-12 sm:max-w-3xl lg:max-w-7xl lg:px-8">
-        <nav
-          className="-mx-5 -my-2 flex flex-wrap justify-center"
-          aria-label="Footer"
-        >
-          {footerNavigation.main.map((item) => (
-            <div key={item.name} className="px-5 py-2">
-              <a
-                href={item.href}
-                className="text-base text-pink-500 hover:text-pink-300"
-              >
-                {item.name}
-              </a>
-            </div>
-          ))}
-        </nav>
+        {isNoAction ? null : (
+          <nav
+            className="-mx-5 -my-2 flex flex-wrap justify-center"
+            aria-label="Footer"
+          >
+            {footerNavigation.main.map((item) => (
+              <div key={item.name} className="px-5 py-2">
+                <a
+                  href={item.href}
+                  className="text-base text-white hover:text-white"
+                >
+                  {item.name}
+                </a>
+              </div>
+            ))}
+          </nav>
+        )}
         <div className="mt-8 flex justify-center space-x-6">
           {footerNavigation.social.map((item) => (
             <a
               key={item.name}
               href={item.href}
-              className="text-pink-400 hover:text-pink-300"
+              className="text-white hover:text-white"
             >
               <span className="sr-only">{item.name}</span>
               <item.icon className="h-6 w-6" aria-hidden="true" />
             </a>
           ))}
         </div>
-        <p className="mt-8 text-center text-base text-pink-400">
-          &copy; 2023 FlowCraft. All rights reserved.
+        <p className="mt-8 text-center text-base text-white">
+          &copy; 2024 FlowCraft. All rights reserved.
         </p>
       </div>
     </footer>

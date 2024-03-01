@@ -21,6 +21,7 @@ export function useAssistant<T>(assistant: Assistant<T>) {
 
   useEffect(() => {
     if (!context.editorRef) return
+    console.log('Setting editor: ', context.editorRef)
     setEditor(context.editorRef)
   }, [context.editorRef])
 
@@ -50,6 +51,7 @@ export function useAssistant<T>(assistant: Assistant<T>) {
     }
 
     let isCancelled = false
+
     ;(async () => {
       const thread = await assistant.createThread(editor as Editor)
       if (isCancelled) return
@@ -71,7 +73,7 @@ export function useAssistant<T>(assistant: Assistant<T>) {
     async (input: string) => {
       console.log('UserPrompt Input Start: ', input)
       assert(thread)
-      console.log('Getting user message')
+      console.log('Getting user message: ', input, ' Thread: ', thread)
       const userMessage = thread.getUserMessage(input)
       console.log('User Message: ', userMessage)
       const result = await thread.sendMessage(userMessage)

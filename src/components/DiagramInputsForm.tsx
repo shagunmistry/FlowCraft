@@ -19,7 +19,6 @@ import {
 import ErrorDialog from './ErrorDialog'
 import { useAssistant } from './Whiteboard/UserPrompt'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
-import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
 export const exampleFlowDiagramPrompts = [
   {
@@ -76,10 +75,10 @@ export const typeSelectionOptions = [
     icon: ChartBarIcon,
   },
   {
-    id: 'TLDraw' as DiagramOrChartType,
+    id: 'Whiteboard' as DiagramOrChartType,
     title: 'Whiteboard',
     description:
-      'TLDraw is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
+      'Whiteboard is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
     prompts: exampleFlowDiagramPrompts,
     icon: ComputerDesktopIcon,
   },
@@ -94,7 +93,11 @@ export function StepLine() {
   )
 }
 
-export default function DiagramInputsForm() {
+export default function DiagramInputsForm({
+  type,
+}: {
+  type: DiagramOrChartType
+}) {
   const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
 
   const controls = useAssistant(assistant)
@@ -126,7 +129,9 @@ export default function DiagramInputsForm() {
         })
       }
 
-      if (type === 'TLDraw') {
+      console.log('Selected Type: ', type)
+
+      if (type === 'Whiteboard') {
         await controls?.start(title)
       } else {
         const diagram = await fetch('/api/generate-diagram', {
@@ -220,7 +225,7 @@ export default function DiagramInputsForm() {
     <>
       <nav aria-label="Progress">
         <ol role="list" className="overflow-hidden">
-          <li key="1" className="relative mt-2">
+          {/* <li key="1" className="relative mt-2">
             <>
               <StepLine />
               <div className="group relative flex items-start">
@@ -243,15 +248,15 @@ export default function DiagramInputsForm() {
                 </span>
               </div>
             </>
-          </li>
-          <li key="2" className="relative mt-2">
+          </li> */}
+          <li key="1" className="relative mt-2">
             <>
               <StepLine />
 
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">2</p>
+                    <p className="text-lg font-semibold text-white">1</p>
                   </span>
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
@@ -271,21 +276,19 @@ export default function DiagramInputsForm() {
               </div>
             </>
           </li>
-          <li key="3" className="relative mt-2">
+          <li key="2" className="relative mt-2">
             <>
               <StepLine />
 
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">3</p>
+                    <p className="text-lg font-semibold text-white">2</p>
                   </span>
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
                   <span className="text-xl font-medium font-semibold">
-                    {context.type === 'Chart'
-                      ? 'Chart Data'
-                      : 'Diagram Details'}
+                    {type === 'Chart' ? 'Chart Data' : 'Details (Optional)'}
                   </span>
                   <textarea
                     rows={5}
@@ -304,12 +307,12 @@ export default function DiagramInputsForm() {
               </div>
             </>
           </li>
-          <li key="4" className="relative mt-2">
+          <li key="3" className="relative mt-2">
             <>
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">4</p>
+                    <p className="text-lg font-semibold text-white">3</p>
                   </span>
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
