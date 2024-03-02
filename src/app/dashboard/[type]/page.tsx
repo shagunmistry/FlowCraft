@@ -27,7 +27,6 @@ export default function DynamicDiagramPage({
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await supabase.auth.getUser()
-      console.log('data: ', data)
       if (error || !data?.user) {
         return redirect('/login')
       }

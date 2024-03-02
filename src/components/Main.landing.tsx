@@ -44,7 +44,6 @@ export default function MainLanding() {
 
     const fetchAuthenticationStatus = async () => {
       const { data, error } = await supabase.auth.getUser()
-      console.log('data: ', data)
       if (error || !data?.user) {
         setAuthenticated(false)
       }

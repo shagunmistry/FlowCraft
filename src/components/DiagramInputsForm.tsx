@@ -1,7 +1,7 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
-import Dropdown from './Dropdown'
+import ExamplesDropdown from './Dropdown'
 import TypeSelection from './TypeSelection'
 import {
   chartJsAverageNewYorkWeatherReport,
@@ -110,8 +110,12 @@ export default function DiagramInputsForm({
 
   const context = useContext(DiagramContext)
 
+  useEffect(() => {
+    setSelectedType(typeSelectionOptions.find((option) => option.id === type))
+  }, [type])
+
   const handleSubmit = async () => {
-    const type = selectedType.id as DiagramOrChartType
+    const type = context.type
 
     console.log('--- title', title)
     console.log('---- type', type)
@@ -132,8 +136,11 @@ export default function DiagramInputsForm({
       console.log('Selected Type: ', type)
 
       if (type === 'Whiteboard') {
+        // context.setLoading(true)
         await controls?.start(title)
+        // context.setLoading(false)
       } else {
+        context.setLoading(true)
         const diagram = await fetch('/api/generate-diagram', {
           method: 'POST',
           body: JSON.stringify({
@@ -188,22 +195,6 @@ export default function DiagramInputsForm({
     }
   }
 
-  if (context.loading) {
-    return (
-      <>
-        <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
-          <p className="text-md text-center text-pink-900">
-            Please be patient while we generate your diagram, it may take a
-            couple minutes.
-          </p>
-          <div className="flex h-full items-center justify-center">
-            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
-          </div>
-        </div>
-      </>
-    )
-  }
-
   const selectExample = (title: string, description: string) => {
     setTitle(title)
     setDescription(description)
@@ -219,6 +210,22 @@ export default function DiagramInputsForm({
     setSelectedType(option)
     // selectExample(option.prompts[2].title, option.prompts[2].description)
     context.setType(option.id as DiagramOrChartType)
+  }
+
+  if (context.loading) {
+    return (
+      <>
+        <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
+          <p className="text-md text-center text-pink-900">
+            Please be patient while we generate your diagram, it may take a
+            couple minutes.
+          </p>
+          <div className="flex h-full items-center justify-center">
+            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (
@@ -297,7 +304,7 @@ export default function DiagramInputsForm({
                     className="mt-2 block w-96 resize-none rounded-lg border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder={
                       context.type === 'Chart'
-                        ? 'Enter Chart Data'
+                        ? 'Enter Chart Data. Data should be in CSV format with headers.'
                         : 'Enter Diagram details here (optional)'
                     }
                     value={description}
@@ -320,8 +327,9 @@ export default function DiagramInputsForm({
                     Generate
                   </span>
                   <button
-                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleSubmit}
+                    disabled={context.loading || !title}
                   >
                     Create
                   </button>
@@ -333,7 +341,10 @@ export default function DiagramInputsForm({
       </nav>
 
       <div className="mt-2">
-        <Dropdown values={selectedType.prompts} selectExample={selectExample} />
+        <ExamplesDropdown
+          values={selectedType.prompts}
+          selectExample={selectExample}
+        />
       </div>
 
       <ErrorDialog

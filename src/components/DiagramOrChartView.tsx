@@ -21,8 +21,7 @@ import 'reactflow/dist/style.css'
 import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 //@ts-ignore
-import { ArrowDownIcon } from '@heroicons/react/20/solid'
-import DownloadButton from './DownloadImageButton'
+import DownloadFlowDiagramButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
@@ -257,12 +256,28 @@ export default function DiagramOrChartView({
     [edges],
   )
 
+  const donwloadChart = () => {
+    const canvas = document.getElementById('myChart') as HTMLCanvasElement
+    const image = canvas.toDataURL('image/png', 1.0)
+    const link = document.createElement('a')
+    link.download = 'chart.png'
+    link.href = image
+    link.click()
+  }
+
   if (type === 'Chart') {
     if (context.loading) {
       return <Loader />
     }
     return (
-      <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-black p-5 shadow-lg">
+      <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-white p-5 shadow-lg">
+        {/** A button to download the chart */}
+        <button
+          className="rounded-md bg-indigo-700 p-2 text-white"
+          onClick={donwloadChart}
+        >
+          Download Chart
+        </button>
         <canvas id="myChart"></canvas>
       </div>
     )
@@ -270,17 +285,13 @@ export default function DiagramOrChartView({
 
   return (
     <>
-      <div className="mr-5 mt-7 flex items-center justify-between">
-        <h1 className="text-2xl font-bold leading-7 text-indigo-900 sm:truncate sm:text-3xl">
+      <div className="mr-5 mt-7">
+        <h1 className="text-center text-2xl font-bold text-indigo-900 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
-        <div className="-mt-96 animate-bounce font-bold text-white">
-          Scroll Down
-          <ArrowDownIcon className="h-10 w-10" />
-        </div>
       </div>
 
-      <div className="ml-auto mr-auto mt-14 h-screen w-5/6 rounded-xl bg-black shadow-lg">
+      <div className="ml-auto mr-auto mt-14 h-screen w-11/12 rounded-xl bg-black shadow-lg">
         {context.loading ? (
           <Loader />
         ) : (
@@ -312,7 +323,7 @@ export default function DiagramOrChartView({
                   />
                   <MiniMap />
 
-                  <DownloadButton />
+                  <DownloadFlowDiagramButton />
                   <EditDiagramButton
                     nodes={nodes}
                     edges={edges}

@@ -18,7 +18,7 @@ export default function MainLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [title, setTitle] = useState<string>('Sample Process')
+  const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>(
     exampleFlowDiagramPrompts[2].description,
   )
@@ -330,6 +330,7 @@ export default function MainLayout({
 
   const [whiteboardInput, setWhiteboardInput] = useState<string>('')
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
+  const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
   const [controls, setControls] = useState<any>(null)
 
   return (
@@ -341,6 +342,8 @@ export default function MainLayout({
         setEditorRef: setWhiteboardEditorRef,
         controls: controls,
         setControls: setControls,
+        loading: whiteBoardLoading,
+        setLoading: setWhiteBoardLoading,
       }}
     >
       <DiagramContext.Provider

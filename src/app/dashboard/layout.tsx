@@ -18,7 +18,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [title, setTitle] = useState<string>('Sample Process')
+  const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>(
     exampleFlowDiagramPrompts[2].description,
   )
@@ -330,6 +330,8 @@ export default function DashboardLayout({
 
   const [whiteboardInput, setWhiteboardInput] = useState<string>('')
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
+  const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
+
   const [controls, setControls] = useState<any>(null)
 
   return (
@@ -341,6 +343,8 @@ export default function DashboardLayout({
         setEditorRef: setWhiteboardEditorRef,
         controls: controls,
         setControls: setControls,
+        loading: whiteBoardLoading,
+        setLoading: setWhiteBoardLoading,
       }}
     >
       <DiagramContext.Provider
@@ -366,7 +370,7 @@ export default function DashboardLayout({
         <main>
           <div className="relative">{children}</div>
         </main>
-        <Footer className='no-action' />
+        <Footer className="no-action" />
 
         <Analytics />
       </DiagramContext.Provider>

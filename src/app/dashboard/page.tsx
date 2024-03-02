@@ -2,6 +2,7 @@ import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import PricingTier from '@/components/PricingTier'
 import { createClient } from '@/lib/supabase-auth/server'
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
@@ -48,7 +49,6 @@ export default async function Dashboard() {
   const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
-  console.log('data: ', data)
   if (error || !data?.user) {
     return redirect('/login')
   }
@@ -56,11 +56,10 @@ export default async function Dashboard() {
   const username = data.user.email?.split('@')[0] ?? ''
 
   return (
-    <div className="min-h-screen bg-gradient-to-r sm:py-12">
+    <div className="min-h-screen bg-gray-200 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="min-h-screen rounded-md p-4">
-            {/** A row, one side will say "What do you want to create today?" and other side will be the logout button */}
             <div className="flex justify-between">
               <h1 className="text-3xl font-bold leading-9 text-indigo-800">
                 What do you want to create today?
@@ -76,16 +75,18 @@ export default async function Dashboard() {
               {options.map((option) => (
                 <li
                   key={option.title}
-                  className="mt-4 flex transform justify-between gap-x-6 rounded-xl bg-gradient-to-r from-pink-500 via-pink-700 to-indigo-400 px-6 py-5 shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r hover:from-pink-500 hover:via-pink-600 hover:to-pink-700 hover:shadow-2xl"
+                  className="mt-4 flex transform justify-between gap-x-6 rounded-xl bg-gray-900 px-6 py-5 shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
                 >
                   <div className="flex min-w-0 gap-x-4">
-                    <img
+                    <Image
                       className="h-24 w-24 flex-none rounded-xl object-cover shadow-xl sm:h-48 sm:w-48"
                       src={option.source}
-                      alt=""
+                      alt={option.title}
+                      height={192}
+                      width={192}
                     />
                     <div className="min-w-0 flex-auto">
-                      <p className="mt-1 text-2xl font-semibold leading-6 text-indigo-700">
+                      <p className="mt-1 text-2xl font-semibold leading-6 text-pink-500">
                         {option.title}
                       </p>
                       <p className="mt-1 text-xl leading-5 text-white">
@@ -96,7 +97,7 @@ export default async function Dashboard() {
                   {/** Show a button to go to the page for the diagram */}
                   <Link
                     href={option.link}
-                    className="text-md flex h-24 w-24 items-center justify-center rounded-xl border border-transparent bg-indigo-700 px-4 py-2 font-medium leading-5 text-white shadow-xl hover:bg-pink-500"
+                    className="text-md flex h-24 w-24 items-center justify-center rounded-xl border border-transparent bg-indigo-700 px-4 py-2 font-medium leading-5 text-white shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-pink-500 hover:shadow-2xl"
                   >
                     Create
                   </Link>

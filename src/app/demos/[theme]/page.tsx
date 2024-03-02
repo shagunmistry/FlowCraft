@@ -133,8 +133,7 @@ const props: any = {
 export default async function Page({ params }: { params: { theme: string } }) {
   console.log('Theme: ', params.theme)
 
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore)
+  const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
   if (error || !data?.user) {

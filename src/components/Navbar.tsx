@@ -8,7 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const navigation = [
-  { name: 'Start Here', href: '/start' },
+  { name: 'Start Here', href: '/dashboard' },
   { name: 'For Teachers', href: '/demos/teachers' },
   { name: 'For Students', href: '/demos/students' },
   { name: 'For Healthcare', href: '/demos/healthcare' },

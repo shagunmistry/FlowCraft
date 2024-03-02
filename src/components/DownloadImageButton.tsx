@@ -13,7 +13,7 @@ import { ArrowDownCircleIcon } from '@heroicons/react/24/outline'
 const imageWidth = 1024
 const imageHeight = 768
 
-function DownloadButton() {
+function DownloadFlowDiagramButton() {
   const { getNodes } = useReactFlow()
   const onClick = () => {
     // we calculate a transform for the nodes so that all nodes are visible
@@ -64,4 +64,4 @@ function DownloadButton() {
   )
 }
 
-export default DownloadButton
+export default DownloadFlowDiagramButton
