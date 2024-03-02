@@ -31,7 +31,7 @@ export default function Navbar() {
               className="h-14 w-auto transform rounded-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl"
               src={FlowCraftLogo}
               alt="FlowCraft Logo"
-            />
+            />  
           </Link>
         </div>
         <div className="flex lg:hidden">
