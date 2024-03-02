@@ -21,6 +21,7 @@ export function useAssistant<T>(assistant: Assistant<T>) {
 
   useEffect(() => {
     if (!context.editorRef) return
+    console.log('Setting editor: ', context.editorRef)
     setEditor(context.editorRef)
   }, [context.editorRef])
 
@@ -50,6 +51,7 @@ export function useAssistant<T>(assistant: Assistant<T>) {
     }
 
     let isCancelled = false
+
     ;(async () => {
       const thread = await assistant.createThread(editor as Editor)
       if (isCancelled) return
@@ -71,12 +73,14 @@ export function useAssistant<T>(assistant: Assistant<T>) {
     async (input: string) => {
       console.log('UserPrompt Input Start: ', input)
       assert(thread)
-      console.log('Getting user message')
+      context.setLoading(true)
+      console.log('Getting user message: ', input, ' Thread: ', thread)
       const userMessage = thread.getUserMessage(input)
       console.log('User Message: ', userMessage)
       const result = await thread.sendMessage(userMessage)
       console.log('Result: ', result)
       await thread.handleAssistantResponse(result)
+      context.setLoading(false)
     },
     [thread],
   )
@@ -94,70 +98,6 @@ export function useAssistant<T>(assistant: Assistant<T>) {
   if (!thread || !isReady) return null
   return { start, restart, cancel }
 }
-
-// export function UserPrompt<T>({ assistant }: { assistant: Assistant<T> }) {
-//   const editor = useEditor()
-//   const controls = useAssistant(assistant)
-
-//   const [state, setState] = useState<'ready' | 'waiting'>('ready')
-//   const [text, setText] = useLocalStorageState(
-//     'prompt-input',
-//     'Create a box at the center of the viewport.',
-//   )
-
-//   const handleClearButtonClick = useCallback(() => {
-//     const ids = Array.from(editor.getCurrentPageShapeIds().values())
-//     editor.deleteShapes(ids)
-//   }, [editor])
-
-//   return (
-//     <div className="mt-27 relative rounded bg-white p-4 shadow">
-//       {state === 'waiting' && (
-//         <div
-//           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-//           onPointerMove={stopEventPropagation}
-//           onPointerDown={stopEventPropagation}
-//         >
-//           <DefaultSpinner />
-//         </div>
-//       )}
-//       <div
-//         className="mt-27 relative rounded bg-white p-4 shadow"
-//         onPointerDown={stopEventPropagation}
-//       >
-//         <textarea
-//           className="w-full rounded border p-2"
-//           value={text}
-//           onChange={(e) => setText(e.currentTarget.value)}
-//         />
-//         <div className="mt-4 flex justify-between">
-//           <div>
-//             <button
-//               className="rounded bg-blue-500 px-4 py-2 text-white"
-//               onClick={handleClearButtonClick}
-//             >
-//               Clear Canvas
-//             </button>
-//           </div>
-//           <div className="flex items-center">
-//             {controls ? (
-//               <UserPromptActions
-//                 controls={controls}
-//                 input={text}
-//                 state={state}
-//                 onChangeState={setState}
-//               />
-//             ) : (
-//               <div className="pr-3">
-//                 <Spinner />
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
 
 function UserPromptActions({
   controls,

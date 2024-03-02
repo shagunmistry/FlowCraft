@@ -18,7 +18,7 @@ export const DiagramContext = createContext<{
   setType: (type: DiagramOrChartType) => void
   title: string
   tlDrawRecords: any[]
-  type: DiagramOrChartType
+  type: DiagramOrChartType | null
 }>({
   chartJsData: {},
   description: '',
@@ -35,5 +35,5 @@ export const DiagramContext = createContext<{
   setType: () => {},
   title: '',
   tlDrawRecords: [],
-  type: 'TLDraw' as DiagramOrChartType,
+  type: 'Whiteboard' as DiagramOrChartType,
 })

@@ -8,7 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const navigation = [
-  { name: 'Start Here', href: '/' },
+  { name: 'Start Here', href: '/dashboard' },
   { name: 'For Teachers', href: '/demos/teachers' },
   { name: 'For Students', href: '/demos/students' },
   { name: 'For Healthcare', href: '/demos/healthcare' },
@@ -19,7 +19,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700">
+    <header className="bg-gradient-to-r from-indigo-400 via-pink-500 to-pink-700">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"

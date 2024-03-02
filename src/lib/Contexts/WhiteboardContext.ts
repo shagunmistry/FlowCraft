@@ -8,6 +8,8 @@ export const WhiteboardContext = createContext<{
   setEditorRef: (editorRef: Editor) => void
   controls: any
   setControls: (controls: any) => void
+  loading: boolean
+  setLoading: (loading: boolean) => void
 }>({
   input: '',
   setInput: () => {},
@@ -15,4 +17,6 @@ export const WhiteboardContext = createContext<{
   setEditorRef: () => {},
   controls: null,
   setControls: () => {},
+  loading: false,
+  setLoading: () => {},
 })

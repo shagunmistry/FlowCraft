@@ -1,7 +1,7 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
-import Dropdown from './Dropdown'
+import ExamplesDropdown from './Dropdown'
 import TypeSelection from './TypeSelection'
 import {
   chartJsAverageNewYorkWeatherReport,
@@ -19,7 +19,6 @@ import {
 import ErrorDialog from './ErrorDialog'
 import { useAssistant } from './Whiteboard/UserPrompt'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
-import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
 export const exampleFlowDiagramPrompts = [
   {
@@ -76,10 +75,10 @@ export const typeSelectionOptions = [
     icon: ChartBarIcon,
   },
   {
-    id: 'TLDraw' as DiagramOrChartType,
+    id: 'Whiteboard' as DiagramOrChartType,
     title: 'Whiteboard',
     description:
-      'TLDraw is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
+      'Whiteboard is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
     prompts: exampleFlowDiagramPrompts,
     icon: ComputerDesktopIcon,
   },
@@ -94,7 +93,11 @@ export function StepLine() {
   )
 }
 
-export default function DiagramInputsForm() {
+export default function DiagramInputsForm({
+  type,
+}: {
+  type: DiagramOrChartType
+}) {
   const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
 
   const controls = useAssistant(assistant)
@@ -107,8 +110,12 @@ export default function DiagramInputsForm() {
 
   const context = useContext(DiagramContext)
 
+  useEffect(() => {
+    setSelectedType(typeSelectionOptions.find((option) => option.id === type))
+  }, [type])
+
   const handleSubmit = async () => {
-    const type = selectedType.id as DiagramOrChartType
+    const type = context.type
 
     console.log('--- title', title)
     console.log('---- type', type)
@@ -126,9 +133,14 @@ export default function DiagramInputsForm() {
         })
       }
 
-      if (type === 'TLDraw') {
+      console.log('Selected Type: ', type)
+
+      if (type === 'Whiteboard') {
+        // context.setLoading(true)
         await controls?.start(title)
+        // context.setLoading(false)
       } else {
+        context.setLoading(true)
         const diagram = await fetch('/api/generate-diagram', {
           method: 'POST',
           body: JSON.stringify({
@@ -183,22 +195,6 @@ export default function DiagramInputsForm() {
     }
   }
 
-  if (context.loading) {
-    return (
-      <>
-        <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
-          <p className="text-md text-center text-pink-900">
-            Please be patient while we generate your diagram, it may take a
-            couple minutes.
-          </p>
-          <div className="flex h-full items-center justify-center">
-            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
-          </div>
-        </div>
-      </>
-    )
-  }
-
   const selectExample = (title: string, description: string) => {
     setTitle(title)
     setDescription(description)
@@ -216,11 +212,27 @@ export default function DiagramInputsForm() {
     context.setType(option.id as DiagramOrChartType)
   }
 
+  if (context.loading) {
+    return (
+      <>
+        <div className="mt-14 h-96 w-full rounded-lg bg-pink-50 shadow-lg">
+          <p className="text-md text-center text-pink-900">
+            Please be patient while we generate your diagram, it may take a
+            couple minutes.
+          </p>
+          <div className="flex h-full items-center justify-center">
+            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-pink-500"></div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
       <nav aria-label="Progress">
         <ol role="list" className="overflow-hidden">
-          <li key="1" className="relative mt-2">
+          {/* <li key="1" className="relative mt-2">
             <>
               <StepLine />
               <div className="group relative flex items-start">
@@ -243,15 +255,15 @@ export default function DiagramInputsForm() {
                 </span>
               </div>
             </>
-          </li>
-          <li key="2" className="relative mt-2">
+          </li> */}
+          <li key="1" className="relative mt-2">
             <>
               <StepLine />
 
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">2</p>
+                    <p className="text-lg font-semibold text-white">1</p>
                   </span>
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
@@ -271,21 +283,19 @@ export default function DiagramInputsForm() {
               </div>
             </>
           </li>
-          <li key="3" className="relative mt-2">
+          <li key="2" className="relative mt-2">
             <>
               <StepLine />
 
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">3</p>
+                    <p className="text-lg font-semibold text-white">2</p>
                   </span>
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
                   <span className="text-xl font-medium font-semibold">
-                    {context.type === 'Chart'
-                      ? 'Chart Data'
-                      : 'Diagram Details'}
+                    {type === 'Chart' ? 'Chart Data' : 'Details (Optional)'}
                   </span>
                   <textarea
                     rows={5}
@@ -294,7 +304,7 @@ export default function DiagramInputsForm() {
                     className="mt-2 block w-96 resize-none rounded-lg border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder={
                       context.type === 'Chart'
-                        ? 'Enter Chart Data'
+                        ? 'Enter Chart Data. Data should be in CSV format with headers.'
                         : 'Enter Diagram details here (optional)'
                     }
                     value={description}
@@ -304,12 +314,12 @@ export default function DiagramInputsForm() {
               </div>
             </>
           </li>
-          <li key="4" className="relative mt-2">
+          <li key="3" className="relative mt-2">
             <>
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">4</p>
+                    <p className="text-lg font-semibold text-white">3</p>
                   </span>
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
@@ -317,8 +327,9 @@ export default function DiagramInputsForm() {
                     Generate
                   </span>
                   <button
-                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleSubmit}
+                    disabled={context.loading || !title}
                   >
                     Create
                   </button>
@@ -330,7 +341,10 @@ export default function DiagramInputsForm() {
       </nav>
 
       <div className="mt-2">
-        <Dropdown values={selectedType.prompts} selectExample={selectExample} />
+        <ExamplesDropdown
+          values={selectedType.prompts}
+          selectExample={selectExample}
+        />
       </div>
 
       <ErrorDialog

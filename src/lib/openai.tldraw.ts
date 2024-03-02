@@ -56,7 +56,7 @@ for "label" property, use different label texts based on the context.
 \`\`\`
 `
 
-export const promptForExampleCode = `Here is an example of a valid TLDraw Records array:
+export const promptForExampleCode = `Here is an example of a valid Whiteboard Records array:
 {
     "records": 
         ${JSON.stringify([...stack.records])}

@@ -163,13 +163,13 @@ export const getEmbeddingForContext = async (
   contextText: string,
 ) => {
   const inputToUse =
-    type === 'TLDraw'
+    type === 'Whiteboard'
       ? inputForReactFlowContext
       : type === 'Chart'
         ? inputForChartJsContext
         : ''
   const matchFunctionToUse =
-    type === 'TLDraw'
+    type === 'Whiteboard'
       ? MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
       : MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
 

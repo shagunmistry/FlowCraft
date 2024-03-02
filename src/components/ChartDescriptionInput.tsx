@@ -3,11 +3,16 @@ import Link from 'next/link'
 
 import { EditorSection } from './EditorSection'
 import { TinyWaveFormIcon } from './TinyWaveFormIcon'
+import { DiagramOrChartType } from '@/lib/utils'
 
-export default function ChartDescriptionInput() {
+export default function ChartDescriptionInput({
+  type
+}: {
+  type: DiagramOrChartType
+}) {
   return (
     <div>
-      <EditorSection />
+      <EditorSection type={type} />
       <section className="mt-10 lg:mt-12">
         <Link
           href="https://forms.gle/xPfF3KtEYMNg5M8D9"

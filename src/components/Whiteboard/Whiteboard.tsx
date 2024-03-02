@@ -8,6 +8,8 @@ import '@tldraw/tldraw/tldraw.css'
 import { useContext, useEffect, useRef, useState } from 'react'
 import ErrorDialog from '../ErrorDialog'
 import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
+import { Spinner } from '../Spinner'
+import Lottie from 'lottie-react'
 
 const Tldraw = dynamic(async () => (await import('@tldraw/tldraw')).Tldraw, {
   ssr: false,
@@ -27,6 +29,20 @@ export default function ({ inputJson }: { inputJson: string }) {
   const handleClick = () => {
     console.log('Editor: ', editorRef.current?.store.getSnapshot())
     console.log('Records: ', editorRef.current?.store.allRecords())
+  }
+
+  if (whiteboardContext.loading) {
+    return (
+      <div className="mt-12 h-screen w-full rounded-xl">
+        <p className="text-center text-2xl font-bold text-pink-500">
+          Please wait while we generate your diagram
+        </p>
+        <Lottie
+          animationData={require('../../lib/LoaderAnimation.json')}
+          loop={true}
+        />
+      </div>
+    )
   }
 
   return (
