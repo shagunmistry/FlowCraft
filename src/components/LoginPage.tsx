@@ -1,16 +1,19 @@
 'use client'
 
 import Link from 'next/link'
-import FlowCraftLogo from '@/images/FlowCraftLogo.png'
+import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import Image from 'next/image'
 import ErrorAlert from './ErrorAlert'
 import { useState } from 'react'
 import SuccessAlert from './SuccessAlert'
 import { redirect, useRouter } from 'next/navigation'
+import { Provider } from '@supabase/supabase-js'
 
 export default function LoginPage({
   login,
   signUp,
+  loginWithGithub,
+  loginWithGoogle,
 }: {
   login: (formData: FormData) => Promise<{ error: string }>
   signUp: (
@@ -18,6 +21,22 @@ export default function LoginPage({
   ) => Promise<
     | { error: string; success?: undefined }
     | { success: string; error?: undefined }
+  >
+  loginWithGithub: () => Promise<
+    | { error: string; success?: undefined; data?: undefined }
+    | {
+        success: string
+        data: { provider: Provider; url: string }
+        error?: undefined
+      }
+  >
+  loginWithGoogle: () => Promise<
+    | { error: string; success?: undefined; data?: undefined }
+    | {
+        success: string
+        data: { provider: Provider; url: string }
+        error?: undefined
+      }
   >
 }) {
   const [showError, setShowError] = useState(false)
@@ -113,15 +132,55 @@ export default function LoginPage({
     }
   }
 
+  const _loginWithGithub = async () => {
+    const res = await loginWithGithub()
+
+    if (res && res.error) {
+      console.log('res.error', res.error)
+      setErrorMessage('Error during login')
+      setShowError(true)
+      // Clear the error message after 5 seconds
+      setTimeout(() => {
+        setShowError(false)
+        setErrorMessage('')
+      }, 5000)
+    }
+
+    if (res && res.data) {
+      window.location.href = res.data.url
+    }
+  }
+
+  const _loginWithGoogle = async () => {
+    const res = await loginWithGoogle()
+
+    if (res && res.error) {
+      console.log('res.error', res.error)
+      setErrorMessage('Error during login')
+      setShowError(true)
+      // Clear the error message after 5 seconds
+      setTimeout(() => {
+        setShowError(false)
+        setErrorMessage('')
+      }, 5000)
+    }
+
+    if (res && res.data) {
+      window.location.href = res.data.url
+    }
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <Link href="/">
             <Image
-              className="mx-auto h-10 w-auto shadow-lg"
+              className="mx-auto rounded-lg shadow-2xl"
               src={FlowCraftLogo}
               alt="FlowCraft Logo"
+              height={200}
+              width={200}
             />
           </Link>
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-pink-500">
@@ -229,8 +288,9 @@ export default function LoginPage({
 
             <div>
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <a
-                  href="#"
+                <button
+                  type="button"
+                  onClick={_loginWithGoogle}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg
@@ -258,10 +318,11 @@ export default function LoginPage({
                   <span className="text-sm font-semibold leading-6">
                     Google
                   </span>
-                </a>
+                </button>
 
-                <a
-                  href="#"
+                <button
+                  type="button"
+                  onClick={_loginWithGithub}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg
@@ -279,7 +340,7 @@ export default function LoginPage({
                   <span className="text-sm font-semibold leading-6">
                     GitHub
                   </span>
-                </a>
+                </button>
               </div>
             </div>
           </div>

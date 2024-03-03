@@ -64,10 +64,9 @@ export default function DynamicDiagramPage({
   }
 
   return (
-    <div className="bg-gradient-to-r from-gray-200 via-pink-500 to-pink-700 sm:py-12">
+    <div className="bg-black sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          {/** Button to go back and choose a different type of diagram */}
           <div className="flex items-center justify-between">
             <Link
               href="/dashboard"

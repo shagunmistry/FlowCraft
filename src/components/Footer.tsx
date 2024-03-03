@@ -31,7 +31,7 @@ const footerNavigation = {
 export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
   const isNoAction = props.className?.includes('no-action')
   return (
-    <footer className="bg-gradient-to-r from-indigo-400 via-pink-500 to-pink-700">
+    <footer className="bg-black">
       <div className="mx-auto max-w-md overflow-hidden px-6 py-12 sm:max-w-3xl lg:max-w-7xl lg:px-8">
         {isNoAction ? null : (
           <nav

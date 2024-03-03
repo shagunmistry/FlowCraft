@@ -95,14 +95,14 @@ export default function MainLanding() {
       </Popover>
 
       <main>
-        <div className="bg-gradient-to-r from-indigo-400 via-pink-500 to-pink-700 pt-10 sm:pt-16 lg:overflow-hidden lg:pb-14 lg:pt-8">
+        <div className="bg-black pt-10 sm:pt-16 lg:overflow-hidden lg:pb-14 lg:pt-8">
           <div className="relative mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-6 sm:max-w-2xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left">
                 <div className="lg:py-24">
                   <div className="hidden sm:mb-5 sm:flex sm:justify-center lg:justify-start">
-                    <a
-                      href="#"
+                    <Link
+                      href="/login"
                       className="flex items-center rounded-full bg-black p-1 pr-2 text-white hover:text-gray-200 sm:text-base lg:text-sm xl:text-base"
                     >
                       <span className="rounded-full bg-pink-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
@@ -113,7 +113,7 @@ export default function MainLanding() {
                         className="ml-2 h-5 w-5 text-gray-500"
                         aria-hidden="true"
                       />
-                    </a>
+                    </Link>
                   </div>
                   <h1 className="text-2xl font-bold tracking-tight text-white sm:text-5xl lg:mt-6 xl:text-6xl">
                     <span className="block text-gray-200">
@@ -129,7 +129,7 @@ export default function MainLanding() {
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <Link
-                      className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-yellow-300 px-8 py-3 font-medium text-gray-500 text-indigo-600 hover:bg-pink-300 sm:inline-flex sm:w-auto sm:items-center sm:px-6"
+                      className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-pink-500 px-8 py-3 font-medium text-gray-500 text-indigo-600 text-white hover:bg-indigo-500 sm:inline-flex sm:w-auto sm:items-center sm:px-6"
                       href={authenticated ? '/dashboard' : '/login'}
                     >
                       {authenticated ? 'Go to Dashboard' : 'Get Started'}

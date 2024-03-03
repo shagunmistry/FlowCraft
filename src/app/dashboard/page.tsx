@@ -1,11 +1,7 @@
-import ChartDescriptionInput from '@/components/ChartDescriptionInput'
-import DiagramOrChartView from '@/components/DiagramOrChartView'
-import PricingTier from '@/components/PricingTier'
 import { createClient } from '@/lib/supabase-auth/server'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { useEffect } from 'react'
 
 interface Option {
   title: string
@@ -56,7 +52,7 @@ export default async function Dashboard() {
   const username = data.user.email?.split('@')[0] ?? ''
 
   return (
-    <div className="min-h-screen bg-gray-200 sm:py-12">
+    <div className="min-h-screen bg-black sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="min-h-screen rounded-md p-4">
@@ -75,7 +71,7 @@ export default async function Dashboard() {
               {options.map((option) => (
                 <li
                   key={option.title}
-                  className="mt-4 flex transform justify-between gap-x-6 rounded-xl bg-gray-900 px-6 py-5 shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
+                  className="mt-4 flex transform justify-between gap-x-6 rounded-xl bg-gray-700 px-6 py-5 shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
                 >
                   <div className="flex min-w-0 gap-x-4">
                     <Image
