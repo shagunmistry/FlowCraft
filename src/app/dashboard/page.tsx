@@ -57,7 +57,7 @@ export default async function Dashboard() {
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="min-h-screen rounded-md p-4">
             <div className="flex justify-between">
-              <h1 className="text-3xl font-bold leading-9 text-indigo-800">
+              <h1 className="text-3xl font-bold leading-9 text-indigo-500">
                 What do you want to create today?
               </h1>
               <Link
