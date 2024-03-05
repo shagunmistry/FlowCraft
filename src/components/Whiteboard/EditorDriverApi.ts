@@ -360,6 +360,7 @@ export class EditorDriverApi {
     )
     this.arrowShapesQueue.forEach(async (command) => {
       await this.executeCommand(command, true)
+      this.editor.zoomToFit({ duration: 200 })
     })
   }
 
