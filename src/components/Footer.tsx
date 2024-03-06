@@ -1,5 +1,7 @@
 'use client'
 
+import FeedbackButton from './FeedbackButton'
+
 const footerNavigation = {
   main: [{ name: 'Get Started', href: '/' }],
   social: [
@@ -62,6 +64,7 @@ export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
             </a>
           ))}
         </div>
+        <FeedbackButton />
         <p className="mt-8 text-center text-base text-white">
           &copy; 2024 FlowCraft. All rights reserved.
         </p>
