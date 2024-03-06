@@ -1,11 +1,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  console.log('Middleware: ', request.url.toString())
+export async function middleware(req: NextRequest) {
+  console.log('Middleware: ', req.url.toString())
   let response = NextResponse.next({
     request: {
-      headers: request.headers,
+      headers: req.headers,
     },
   })
 
@@ -15,17 +15,17 @@ export async function middleware(request: NextRequest) {
     {
       cookies: {
         get(name: string) {
-          return request.cookies.get(name)?.value
+          return req.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
+          req.cookies.set({
             name,
             value,
             ...options,
           })
           response = NextResponse.next({
             request: {
-              headers: request.headers,
+              headers: req.headers,
             },
           })
           response.cookies.set({
@@ -35,14 +35,14 @@ export async function middleware(request: NextRequest) {
           })
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
+          req.cookies.set({
             name,
             value: '',
             ...options,
           })
           response = NextResponse.next({
             request: {
-              headers: request.headers,
+              headers: req.headers,
             },
           })
           response.cookies.set({
@@ -57,7 +57,56 @@ export async function middleware(request: NextRequest) {
 
   await supabase.auth.getUser()
 
-  return response
+  const url = req.nextUrl
+
+  // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
+  let hostname = req.headers
+    .get('host')!
+    .replace('.localhost:3000', `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+
+  // special case for Vercel preview deployment URLs
+  if (
+    hostname.includes('---') &&
+    hostname.endsWith(`.${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`)
+  ) {
+    hostname = `${hostname.split('---')[0]}.${
+      process.env.NEXT_PUBLIC_ROOT_DOMAIN
+    }`
+  }
+
+  const searchParams = req.nextUrl.searchParams.toString()
+  // Get the pathname of the request (e.g. /, /about, /blog/first-post)
+  const path = `${url.pathname}${
+    searchParams.length > 0 ? `?${searchParams}` : ''
+  }`
+
+  // rewrites for app pages
+  if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
+    const isUserSignedIn = await supabase.auth.getSession()
+    if (!isUserSignedIn && path !== '/login') {
+      return NextResponse.redirect(new URL('/login', req.url))
+    } else if (isUserSignedIn && path == '/login') {
+      return NextResponse.redirect(new URL('/', req.url))
+    }
+    return NextResponse.rewrite(
+      new URL(`/app${path === '/' ? '' : path}`, req.url),
+    )
+  }
+
+  // rewrite root application to `/home` folder
+  if (
+    hostname === 'localhost:3000' ||
+    hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
+  ) {
+    return NextResponse.rewrite(
+      new URL(`/home${path === '/' ? '' : path}`, req.url),
+    )
+  }
+
+  // rewrite everything else to `/[domain]/[slug] dynamic route
+  return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url))
+
+  // return response
 }
 
 export const config = {

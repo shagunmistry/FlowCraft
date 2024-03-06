@@ -1,6 +1,7 @@
 import { type Metadata } from 'next'
 
 import '@/styles/tailwind.css'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
   title: {
@@ -32,6 +33,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-full">
         <div className="w-full">{children}</div>
+        <Analytics />
       </body>
     </html>
   )

@@ -10,6 +10,7 @@ import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 import PricingTier from '@/components/PricingTier'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const allowedTypes = ['whiteboard', 'chart', 'flow-diagram']
 
@@ -28,11 +29,15 @@ export default function DynamicDiagramPage({
     const fetchUser = async () => {
       const { data, error } = await supabase.auth.getUser()
       if (error || !data?.user) {
-        return redirect('/login')
+        window.location.href = '/login'
       }
 
-      const username = data.user.email?.split('@')[0] ?? ''
-      setUsername(username)
+      if (data && data.user) {
+        const username = data.user.email?.split('@')[0] ?? ''
+        setUsername(username)
+      } else {
+        window.location.href = '/login'
+      }
     }
 
     fetchUser()
