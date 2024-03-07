@@ -29,8 +29,6 @@ export default function EditDiagramModal({
 
   const context = useContext(DiagramContext)
 
-  console.log('Edges: ', edges)
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
