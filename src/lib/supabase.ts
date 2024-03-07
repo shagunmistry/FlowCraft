@@ -115,8 +115,6 @@ export const loadReactFlowData = async (): Promise<boolean> => {
   return false
 }
 
-/** Chart JS */
-
 export const loadChartJsData = async (): Promise<boolean> => {
   // Make a request to the API to trigger data load into the DB
   const response = await fetch('/api/chartjs-data-load', {
@@ -216,4 +214,14 @@ export const getEmbeddingForContext = async (
     contextText += `${content.trim()}\n---\n`
   }
   return contextText
+}
+
+export const createPost = async (post: any) => {
+  const { data, error } = await supabase.from('posts').insert([post])
+
+  if (error) {
+    throw error
+  }
+
+  return data
 }
