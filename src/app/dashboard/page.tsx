@@ -49,8 +49,6 @@ export default async function Dashboard() {
     return redirect('/login')
   }
 
-  const username = data.user.email?.split('@')[0] ?? ''
-
   return (
     <div className="min-h-screen bg-black sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">

@@ -1,14 +1,28 @@
 'use client'
-import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
+import { Fragment, useState } from 'react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import Image from 'next/image'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 const navigation = [
   { name: 'Start Here', href: '/dashboard' },
+  { name: 'For Teachers', href: '/demos/teachers' },
+  { name: 'For Students', href: '/demos/students' },
+  { name: 'For Healthcare', href: '/demos/healthcare' },
+  { name: 'For Engineers', href: '/demos/engineers' },
+  { name: 'Blog', href: '/blogs' },
+]
+
+const mainNavigation = [
+  { name: 'Start Here', href: '/dashboard' },
+  { name: 'Blog', href: '/blogs' },
+]
+
+const useCasesNavigation = [
   { name: 'For Teachers', href: '/demos/teachers' },
   { name: 'For Students', href: '/demos/students' },
   { name: 'For Healthcare', href: '/demos/healthcare' },
@@ -31,7 +45,7 @@ export default function Navbar() {
               className="h-14 w-auto transform rounded-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl"
               src={FlowCraftLogo}
               alt="FlowCraft Logo"
-            />  
+            />
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -45,15 +59,51 @@ export default function Navbar() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="transform rounded-lg bg-black px-3 py-2 text-sm font-semibold leading-6 text-white transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gray-50 hover:text-pink-600 hover:shadow-xl"
+          <div className="space-x-4">
+            {mainNavigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="rounded-lg bg-indigo-500 px-3 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-900"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+          <Menu as="div" className="relative">
+            <Menu.Button className="rounded-lg px-3 font-semibold text-white transition duration-150 ease-in-out hover:text-indigo-500">
+              Use Cases
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
             >
-              {item.name}
-            </Link>
-          ))}
+              <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                {useCasesNavigation.map((item) => (
+                  <Menu.Item key={item.name}>
+                    {({ active }) => (
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          active
+                            ? 'bg-gray-100 text-gray-900'
+                            : 'text-gray-700',
+                          'block px-4 py-2 text-sm',
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu.Items>
+            </Transition>
+          </Menu>
         </div>
       </nav>
 
@@ -64,7 +114,7 @@ export default function Navbar() {
         onClose={setMobileMenuOpen}
       >
         <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-indigo-700 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-700 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">FlowCraft</span>
@@ -90,20 +140,12 @@ export default function Navbar() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg bg-black px-3 py-2 text-base font-semibold leading-7 text-pink-700 hover:bg-gray-50 hover:text-gray-900"
+                    className="-mx-3 block rounded-lg bg-white px-3 py-2 text-base font-semibold leading-7 text-pink-700 hover:bg-gray-50 hover:text-gray-900"
                   >
                     {item.name}
                   </Link>
                 ))}
               </div>
-              {/* <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </a>
-              </div> */}
             </div>
           </div>
         </Dialog.Panel>

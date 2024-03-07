@@ -1,6 +1,14 @@
-const withMDX = require('@next/mdx')({
-  extension: /\.mdx?$/,
+import remarkGfm from 'remark-gfm'
+import createMDX from '@next/mdx'
+
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
 })
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -14,10 +22,10 @@ const nextConfig = {
     OPENAI_FUNCTIONS_ASSISTANT_ID: process.env.OPENAI_FUNCTIONS_ASSISTANT_ID,
     NEXT_PUBLIC_SUPABASE_URL: process.env.SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.SUPABASE_PRIVATE_KEY,
+    NEXT_PUBLIC_BLOG_ADMIN_ID: process.env.BLOG_ADMIN_ID,
   },
   images: {
     domains: ['firebasestorage.googleapis.com'],
   },
 }
-
-module.exports = withMDX(nextConfig)
+export default withMDX(nextConfig)
