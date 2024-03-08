@@ -1,7 +1,14 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+  use,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -34,6 +41,7 @@ import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 import { DiagramOrChartType } from '@/lib/utils'
+import ReactFlowLayoutButton from './ReactFlowLayoutButton'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -86,13 +94,8 @@ export default function DiagramOrChartView({
     console.log('context.type: ', context.type)
     if (context.type === 'Flow Diagram') {
       console.log('we are in the Flow Diagram context!')
-      console.log('Edges: ', context.edges)
-      console.log('Nodes: ', context.nodes)
       if (!context.nodes && !context.edges) return
       if (context.nodes.length === 0 || context.edges.length === 0) return
-
-      console.log('context.nodes --> ', context.nodes)
-      console.log('context.edges -->', context.edges)
 
       const edgesWithMarkerAndStyle = context.edges.map((edge: Edge) => {
         console.log('Individual edge: ', edge)
@@ -122,7 +125,8 @@ export default function DiagramOrChartView({
         fitButton.click()
       }
 
-      setSuccessDialogOpen(true)
+      console.log('Setting success dialog open to true', nodesWithStyle.length)
+      setSuccessDialogOpen(true && !context.loading)
     } else if (context.type === 'Chart') {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
@@ -286,7 +290,7 @@ export default function DiagramOrChartView({
   return (
     <>
       <div className="mr-5 mt-7">
-        <h1 className="text-center text-2xl font-bold text-indigo-900 sm:truncate sm:text-3xl">
+        <h1 className="text-center text-2xl font-bold text-pink-500 sm:truncate sm:text-3xl">
           {context.title}
         </h1>
       </div>
@@ -321,7 +325,7 @@ export default function DiagramOrChartView({
                     gap={40}
                     variant={BackgroundVariant.Lines}
                   />
-                  <MiniMap />
+                  <MiniMap className="w-1/4" />
 
                   <DownloadFlowDiagramButton />
                   <EditDiagramButton
@@ -331,6 +335,12 @@ export default function DiagramOrChartView({
                     addNode={addNode}
                     updateNodeLabel={updateNodeLabel}
                     updateEdgeLabel={updateEdgeLabel}
+                  />
+                  <ReactFlowLayoutButton
+                    nodes={nodes}
+                    edges={edges}
+                    setNodes={context.setNodes}
+                    setLoading={context.setLoading}
                   />
                 </ReactFlow>
               </>
