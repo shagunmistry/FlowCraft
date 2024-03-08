@@ -1,13 +1,13 @@
-import { Node } from "reactflow"
+import { Node } from 'reactflow'
 
 export const nodeStyle = {
   style: {
-    background: '#FFD1DC',
-    color: '#00000',
-    border: '1px solid #FF69B4',
-    width: 180,
-    borderRadius: 10,
-    fontSize: 20,
+    // background: '#FFD1DC',
+    // color: '#00000',
+    // border: '1px solid #FF69B4',
+    // width: 180,
+    // borderRadius: 10,
+    // fontSize: 20,
   },
 }
 
@@ -1071,6 +1071,7 @@ export const initialNodes: Node[] = [
     width: 180,
     height: 82,
     ...nodeStyle,
+    type: 'customNode',
   },
   {
     id: '3',
@@ -1084,6 +1085,7 @@ export const initialNodes: Node[] = [
     width: 180,
     height: 52,
     ...nodeStyle,
+    type: 'customNode',
   },
   {
     id: '4',
@@ -1097,6 +1099,7 @@ export const initialNodes: Node[] = [
     width: 180,
     height: 112,
     ...nodeStyle,
+    type: 'customNode',
   },
   {
     id: '5',
@@ -1110,6 +1113,7 @@ export const initialNodes: Node[] = [
     width: 180,
     height: 112,
     ...nodeStyle,
+    type: 'customNode',
   },
   {
     id: '6',
@@ -1129,6 +1133,7 @@ export const initialNodes: Node[] = [
     },
     dragging: false,
     ...nodeStyle,
+    type: 'customNode',
   },
   {
     id: '7',
@@ -1148,6 +1153,7 @@ export const initialNodes: Node[] = [
     },
     dragging: false,
     ...nodeStyle,
+    type: 'customNode',
   },
   {
     id: '8',
@@ -1170,58 +1176,54 @@ export const initialEdges = [
     id: '1-2',
     source: '1',
     target: '2',
+    type: 'floating',
     data: {
-      label: 'Get some paper',
+      label: 'Step 1: Get some paper',
     },
-    type: 'custom',
   },
   {
     id: '2-3',
     source: '2',
     target: '3',
-    label: 'Step 2',
-    type: 'custom',
-    data: {
-      label: 'Make sure it is aligned',
-    },
+    type: 'floating',
   },
   {
     id: '3-4',
     source: '3',
     target: '4',
-    type: 'custom',
+    type: 'floating',
   },
   {
     id: '3-5',
     source: '3',
     target: '5',
-    type: 'custom',
+    type: 'floating',
   },
   {
     id: '4-6',
     source: '4',
     target: '6',
-    type: 'custom',
+    type: 'floating',
   },
   {
     id: '5-6',
     source: '5',
     target: '6',
-    type: 'custom',
+    type: 'floating',
   },
   {
     id: '6-7',
     source: '6',
     target: '7',
-    type: 'custom',
-    data: {
-      label: 'You are almost done!',
-    },
+    type: 'floating',
   },
   {
     id: '7-8',
     source: '7',
     target: '8',
-    type: 'custom',
+    type: 'floating',
+    data: {
+      label: 'Step 8: Enjoy your paper airplane!',
+    },
   },
 ]

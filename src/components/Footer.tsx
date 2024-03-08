@@ -42,7 +42,6 @@ export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
       className={
         isGradient ? 'bg-gradient-to-b from-black to-indigo-900' : 'bg-black'
       }
-      {...props}
     >
       <div className="mx-auto max-w-md overflow-hidden px-6 py-12 sm:max-w-3xl lg:max-w-7xl lg:px-8">
         {isNoAction ? null : (

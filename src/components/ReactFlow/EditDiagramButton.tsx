@@ -1,6 +1,6 @@
 import { PencilIcon } from '@heroicons/react/24/outline'
 import { Edge, Node, Panel, updateEdge } from 'reactflow'
-import EditDiagramModal from './EditDiagramModal'
+import EditDiagramModal from '../EditDiagramModal'
 import { useState } from 'react'
 import { track } from '@vercel/analytics'
 
@@ -34,7 +34,7 @@ export default function EditDiagramButton({
         onClick={handleEditButtonClick}
       >
         <PencilIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-        Edit Your Diagram
+        Edit
       </button>
       <EditDiagramModal
         open={isModalOpen}

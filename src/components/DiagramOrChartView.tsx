@@ -22,6 +22,7 @@ import ReactFlow, {
   BackgroundVariant,
   EdgeTypes,
   Edge,
+  MarkerType,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -33,7 +34,7 @@ import DownloadFlowDiagramButton from './DownloadImageButton'
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
 import { initialEdges, initialNodes } from '@/lib/react-flow.code'
-import EditDiagramButton from './EditDiagramButton'
+import EditDiagramButton from './ReactFlow/EditDiagramButton'
 import CustomEdge from './ReactFlow/CustomEdge'
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
@@ -41,7 +42,10 @@ import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 import { DiagramOrChartType } from '@/lib/utils'
-import ReactFlowLayoutButton from './ReactFlowLayoutButton'
+import { autoArrangeNodesAndEdges } from '@/lib/react-flow.util'
+import SimpleFloatingEdge from './ReactFlow/SimpleFloatingEdge'
+import ReactFlowHelperButton from './ReactFlow/ReactFlowHelperButton'
+import DiagramSettingsBar from './ReactFlow/DiagramSettingsBar'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -53,7 +57,8 @@ const nodeTypes = {
 }
 
 const edgeTypes: EdgeTypes = {
-  custom: CustomEdge,
+  // custom: CustomEdge,
+  floating: SimpleFloatingEdge,
 }
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
@@ -101,7 +106,7 @@ export default function DiagramOrChartView({
         console.log('Individual edge: ', edge)
         return {
           ...edge,
-          type: 'custom',
+          type: 'floating',
           data: {
             label: edge.label ? edge.label : '',
           },
@@ -112,11 +117,16 @@ export default function DiagramOrChartView({
         return {
           ...node,
           ...nodeStyle,
+          type: 'customNode',
         }
       })
 
+      // const { nodes: arrangedNodes, edges: arrangedEdges } =
+      //   autoArrangeNodesAndEdges(nodesWithStyle, edgesWithMarkerAndStyle)
+      // console.log('arrangedNodes', arrangedNodes)
+
       setNodes(nodesWithStyle)
-      setEdges(edgesWithMarkerAndStyle as any)
+      setEdges(edgesWithMarkerAndStyle as Edge[])
 
       const fitButton = document.getElementsByClassName(
         '.react-flow__controls-fitview',
@@ -180,8 +190,34 @@ export default function DiagramOrChartView({
 
   const onConnect = useCallback(
     (params: any) => {
-      console.log('onConnect params', params)
-      setEdges((eds) => addEdge(params, eds))
+      console.log('Connecting: ', params)
+      setEdges((eds) => {
+        context.setEdges(
+          eds.map((edge) => {
+            if (
+              edge.source === params.source &&
+              edge.target === params.target
+            ) {
+              return {
+                ...edge,
+                data: {
+                  ...edge.data,
+                  label: params.label,
+                },
+              }
+            }
+            return edge
+          }),
+        )
+        return addEdge(
+          {
+            ...params,
+            type: 'floating',
+            markerEnd: { type: MarkerType.Arrow },
+          },
+          eds,
+        )
+      })
     },
     [setEdges],
   )
@@ -289,13 +325,11 @@ export default function DiagramOrChartView({
 
   return (
     <>
-      <div className="mr-5 mt-7">
-        <h1 className="text-center text-2xl font-bold text-pink-500 sm:truncate sm:text-3xl">
-          {context.title}
-        </h1>
+      <div className="mt-4">
+        <DiagramSettingsBar />
       </div>
 
-      <div className="ml-auto mr-auto mt-14 h-screen w-11/12 rounded-xl bg-black shadow-lg">
+      <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
         {context.loading ? (
           <Loader />
         ) : (
@@ -318,6 +352,7 @@ export default function DiagramOrChartView({
                   defaultEdgeOptions={defaultEdgeOptions}
                   nodeTypes={nodeTypes}
                   edgeTypes={edgeTypes}
+                  className="react-flow__container"
                 >
                   <Controls />
                   <Background
@@ -325,7 +360,6 @@ export default function DiagramOrChartView({
                     gap={40}
                     variant={BackgroundVariant.Lines}
                   />
-                  <MiniMap className="w-1/4" />
 
                   <DownloadFlowDiagramButton />
                   <EditDiagramButton
@@ -336,12 +370,7 @@ export default function DiagramOrChartView({
                     updateNodeLabel={updateNodeLabel}
                     updateEdgeLabel={updateEdgeLabel}
                   />
-                  <ReactFlowLayoutButton
-                    nodes={nodes}
-                    edges={edges}
-                    setNodes={context.setNodes}
-                    setLoading={context.setLoading}
-                  />
+                  <ReactFlowHelperButton />
                 </ReactFlow>
               </>
             )}
@@ -356,7 +385,7 @@ export default function DiagramOrChartView({
         header="Success!"
         message={`Yayy! Your ${type} has been generated! ${
           type === 'Flow Diagram'
-            ? 'Try clicking on the labels to move them around!'
+            ? 'Scroll down and try clicking on the labels to move them around!'
             : ''
         }'`}
         open={successDialogOpen}
