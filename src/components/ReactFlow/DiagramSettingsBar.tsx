@@ -7,6 +7,8 @@ import Image from 'next/image'
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 
+import { motion } from 'framer-motion'
+
 const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
@@ -31,11 +33,11 @@ export default function DiagramSettingsBar() {
   return (
     <Disclosure
       as="header"
-      className="mx-auto mb-4 w-11/12 rounded-tl-lg rounded-tr-lg bg-gray-800 shadow-lg shadow-indigo-500"
+      className="mx-auto mb-4 w-11/12 rounded-lg bg-indigo-700"
     >
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-5xl px-2 sm:px-4 lg:divide-y lg:divide-gray-700 lg:px-8">
+          <div className="mx-auto max-w-5xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
             <div className="relative flex h-16 justify-between">
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
@@ -69,15 +71,6 @@ export default function DiagramSettingsBar() {
                 </Disclosure.Button>
               </div>
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                <button
-                  type="button"
-                  className="relative flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-4 flex-shrink-0">
                   <div>
@@ -122,24 +115,77 @@ export default function DiagramSettingsBar() {
               </div>
             </div>
             <nav
-              className="hidden lg:flex lg:space-x-8 lg:py-2"
+              className="hidden lg:flex lg:space-x-4 lg:py-2"
               aria-label="Global"
             >
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    item.current
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'inline-flex items-center rounded-md px-3 py-2 text-sm font-medium',
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
+              <button className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
+                File
+              </button>
+              <Menu as="div" className="relative ml-4 flex-shrink-0">
+                <div>
+                  <Menu.Button className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
+                    <span className="absolute -inset-1.5" />
+                    Edit
+                  </Menu.Button>
+                </div>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
                 >
-                  {item.name}
-                </a>
-              ))}
+                  <Menu.Items className="absolute right-0 z-10 mt-2 w-max origin-top-right rounded-md bg-white py-1 shadow-lg">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={cn(
+                            active ? 'bg-indigo-400' : '',
+                            'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                          )}
+                        >
+                          Edit Connection Labels
+                        </motion.button>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={cn(
+                            active ? 'bg-indigo-400' : '',
+                            'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                          )}
+                        >
+                          Edit Arrow Labels
+                        </motion.button>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={cn(
+                            active ? 'bg-red-200' : '',
+                            'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                          )}
+                        >
+                          Clear Diagram
+                        </motion.button>
+                      )}
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
+              <button className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
+                Help
+              </button>
             </nav>
           </div>
 
@@ -179,14 +225,6 @@ export default function DiagramSettingsBar() {
                     {user.email}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
               </div>
               <div className="mt-3 space-y-1 px-2">
                 {userNavigation.map((item) => (

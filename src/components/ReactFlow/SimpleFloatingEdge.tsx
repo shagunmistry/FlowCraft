@@ -60,7 +60,7 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }: any) {
             style={{
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             }}
-            className="absolute rounded bg-yellow-300 p-2 text-xs font-semibold hover:bg-black"
+            className="absolute rounded bg-yellow-300 p-2 text-xs font-semibold hover:bg-black shadow-md shadow-yellow-300"
           >
             {data.label}
           </div>
