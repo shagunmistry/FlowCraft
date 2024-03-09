@@ -1,19 +1,18 @@
+
 'use client'
-
-import { useState } from 'react'
-
-import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { Edge, Node } from 'reactflow'
-
 import { Analytics } from '@vercel/analytics/react'
-import { exampleFlowDiagramPrompts } from '@/components/DiagramInputsForm'
-import { DiagramOrChartType } from '@/lib/utils'
-import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
 import Navbar from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
-import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 
-export default function DashboardLayout({
+import { Footer } from '@/components/Footer'
+import { useState } from 'react'
+import { DiagramOrChartType } from '@/lib/utils'
+import { Edge, Node } from 'reactflow'
+import { exampleFlowDiagramPrompts } from '@/components/DiagramInputsForm'
+import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
+import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
+import { DiagramContext } from '@/lib/Contexts/DiagramContext'
+
+export default function SharedDiagramsLayout({
   children,
 }: {
   children: React.ReactNode
@@ -335,45 +334,47 @@ export default function DashboardLayout({
   const [controls, setControls] = useState<any>(null)
 
   return (
-    <WhiteboardContext.Provider
-      value={{
-        input: whiteboardInput,
-        setInput: setWhiteboardInput,
-        editorRef: whiteboardEditorRef,
-        setEditorRef: setWhiteboardEditorRef,
-        controls: controls,
-        setControls: setControls,
-        loading: whiteBoardLoading,
-        setLoading: setWhiteBoardLoading,
-      }}
-    >
-      <DiagramContext.Provider
+    <>
+      <WhiteboardContext.Provider
         value={{
-          chartJsData: chartJsData,
-          description: description,
-          edges: edges,
-          loading: loading,
-          nodes: nodes,
-          setChartJsData: setChartJsData,
-          setDescription: setDescription,
-          setEdges: _setEdges,
-          setLoading: _setLoading,
-          setNodes: _setNodes,
-          setTitle: setTitle,
-          setTlDrawRecords: setTlDrawRecords,
-          setType: setType,
-          title: title,
-          tlDrawRecords: tlDrawRecords,
-          type: type,
+          input: whiteboardInput,
+          setInput: setWhiteboardInput,
+          editorRef: whiteboardEditorRef,
+          setEditorRef: setWhiteboardEditorRef,
+          controls: controls,
+          setControls: setControls,
+          loading: whiteBoardLoading,
+          setLoading: setWhiteBoardLoading,
         }}
       >
-        <main>
-          <div className="relative">{children}</div>
-        </main>
-        <Footer className="no-action" />
-
-        <Analytics />
-      </DiagramContext.Provider>
-    </WhiteboardContext.Provider>
+        <DiagramContext.Provider
+          value={{
+            chartJsData: chartJsData,
+            description: description,
+            edges: edges,
+            loading: loading,
+            nodes: nodes,
+            setChartJsData: setChartJsData,
+            setDescription: setDescription,
+            setEdges: _setEdges,
+            setLoading: _setLoading,
+            setNodes: _setNodes,
+            setTitle: setTitle,
+            setTlDrawRecords: setTlDrawRecords,
+            setType: setType,
+            title: title,
+            tlDrawRecords: tlDrawRecords,
+            type: type,
+          }}
+        >
+          <main>
+            <Navbar />
+            <div className="relative">{children}</div>
+          </main>
+          <Footer />
+          <Analytics />
+        </DiagramContext.Provider>
+      </WhiteboardContext.Provider>
+    </>
   )
 }

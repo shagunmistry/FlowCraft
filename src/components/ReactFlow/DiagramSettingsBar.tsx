@@ -12,6 +12,11 @@ import { Edge, Node } from 'reactflow'
 import EditNodesDiagramModal from '../EditNodesDiagramModal'
 import EditEdgesOnDiagramModal from './Modals/EditEdgesOnDiagramModal'
 import ReactFlowHelper from './ReactFlowHelper'
+import {
+  ArrowDownTrayIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/20/solid'
+import GridToggle from './GridToggle'
 
 const user = {
   name: 'Tom Cook',
@@ -40,7 +45,8 @@ export default function DiagramSettingsBar({
   updateEdgeLabel,
   deleteEdge,
   clearReactFlowDiagram,
-  downloadReactFlowDiagramAsPng,
+  createShareableLink,
+  toggleGrid,
 }: {
   nodes: Node[]
   edges: Edge[]
@@ -50,7 +56,8 @@ export default function DiagramSettingsBar({
   updateEdgeLabel: (id: string, newValue: string) => void
   deleteEdge: (id: string) => void
   clearReactFlowDiagram: () => void
-  downloadReactFlowDiagramAsPng: () => void
+  createShareableLink: () => void
+  toggleGrid: (enabled: boolean) => void
 }) {
   const context = useContext(DiagramContext)
 
@@ -84,7 +91,9 @@ export default function DiagramSettingsBar({
                     <label htmlFor="search" className="sr-only">
                       Title
                     </label>
-                    <div className="relative">{context.title}</div>
+                    <p className="sm:text-md text-wrap relative text-center text-xl font-semibold text-white">
+                      {context.title}
+                    </p>
                   </div>
                 </div>
                 <div className="relative z-10 flex items-center lg:hidden">
@@ -173,9 +182,24 @@ export default function DiagramSettingsBar({
                               active ? 'bg-indigo-400' : '',
                               'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
                             )}
-                            onClick={() => downloadReactFlowDiagramAsPng()}
+                            onClick={() => createShareableLink()}
                           >
-                            Download Diagram
+                            Share
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-indigo-400' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => setIsHelpModalOpen(true)}
+                          >
+                            Help
                           </motion.button>
                         )}
                       </Menu.Item>
@@ -247,11 +271,9 @@ export default function DiagramSettingsBar({
                     </Menu.Items>
                   </Transition>
                 </Menu>
-                <button
-                  className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-gray-300 text-white transition-all duration-200 ease-in-out hover:bg-gray-700 hover:text-white hover:shadow-lg"
-                  onClick={() => setIsHelpModalOpen(true)}
-                >
-                  Help
+
+                <button className="block w-16 rounded-md px-3 py-2 text-sm font-medium text-white transition-all duration-200 ease-in-out">
+                  <GridToggle onChange={toggleGrid} />
                 </button>
               </nav>
             </div>

@@ -1,20 +1,12 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import {
-  use,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
   Node,
   addEdge,
-  MiniMap,
   useNodesState,
   useEdgesState,
   ConnectionLineType,
@@ -23,6 +15,8 @@ import ReactFlow, {
   EdgeTypes,
   Edge,
   MarkerType,
+  getRectOfNodes,
+  getTransformForBounds,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -32,19 +26,17 @@ import LottieAnimation from '@/lib/LoaderAnimation.json'
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
 import { initialEdges, initialNodes } from '@/lib/react-flow.code'
-import EditDiagramButton from './ReactFlow/EditDiagramButton'
-import CustomEdge from './ReactFlow/CustomEdge'
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 import { DiagramOrChartType, downloadImage } from '@/lib/utils'
-import { autoArrangeNodesAndEdges } from '@/lib/react-flow.util'
 import SimpleFloatingEdge from './ReactFlow/SimpleFloatingEdge'
-import ReactFlowHelperButton from './ReactFlow/ReactFlowHelperButton'
 import DiagramSettingsBar from './ReactFlow/DiagramSettingsBar'
 import { toPng } from 'html-to-image'
+import ShareableLinksModal from './ShareableLinkModal'
+import SimpleNotification from './SimpleNotification'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -81,8 +73,11 @@ export default function DiagramOrChartView({
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  const [toggleReactFlowGird, setToggleReactFlowGird] = useState<boolean>(true)
 
-  const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
+  const [openShareableLinkModal, setOpenShareableLinkModal] =
+    useState<boolean>(false)
+  const [shareableLink, setShareableLink] = useState<string>('')
 
   const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
     JSON.stringify(scenarios.house_buying_process),
@@ -91,6 +86,12 @@ export default function DiagramOrChartView({
   const [chartCreated, setChartCreated] = useState<boolean>(false)
 
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
+
+  const [notification, setNotification] = useState<{
+    message: string
+    title: string
+    type: 'success' | 'error' | 'warning' | 'info'
+  }>()
 
   const context = useContext(DiagramContext)
 
@@ -339,31 +340,71 @@ export default function DiagramOrChartView({
     )
   }
 
-  const downloadReactFlowDiagramAsPng = async () => {
-    const className = '.react-flow__container'
-    const node = document.querySelector(className) as HTMLElement
-    if (!node) {
+  const createShareableLink = async () => {
+    const type = context.type
+    let data = {
+      type: '',
+      diagramData: {},
+      title: context.title,
+      description: context.description,
+    }
+    if (type === 'Flow Diagram') {
+      data.type = 'Flow Diagram'
+      data.diagramData = { nodes, edges }
+    } else if (type === 'Whiteboard') {
+      data.type = 'Whiteboard'
+      data.diagramData = { tlDrawRecords: JSON.parse(tlDrawInputJson).records }
+    }
+
+    const response = await fetch('/api/generate-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (response && response.status !== 200) {
+      console.error('Error creating shareable link')
+      setNotification({
+        message: 'Error creating shareable link',
+        title: 'Error',
+        type: 'error',
+      })
       return
     }
 
-    // Set width and height to highest 1080p resolution
-    node.style.width = '1920px'
-    node.style.height = '1080px'
+    const responseJson = await response.json()
+    console.log('responseJson', responseJson)
 
-    // Set zoom of react flow to 1
-    const fitButton = document.getElementsByClassName(
-      '.react-flow__controls-fitview',
-    )[0] as HTMLButtonElement
-    if (fitButton) {
-      fitButton.click()
+    if (!responseJson.result) {
+      setNotification({
+        message:
+          'There was an error creating the shareable link, please try again later!',
+        title: 'Error',
+        type: 'error',
+      })
+      return
     }
 
-    const image = await toPng(node)
-    downloadImage(image)
+    setShareableLink(responseJson.result.link)
+    setOpenShareableLinkModal(true)
+  }
+
+  const toggleGrid = (enabled: boolean) => {
+    setToggleReactFlowGird(enabled)
   }
 
   return (
     <>
+      {notification && (
+        <SimpleNotification
+          message={notification?.message}
+          title={notification?.title}
+          type={notification?.type}
+        />
+      )}
+
       <div className="mt-4">
         {context.type === 'Flow Diagram' && (
           <DiagramSettingsBar
@@ -375,7 +416,8 @@ export default function DiagramOrChartView({
             updateEdgeLabel={updateEdgeLabel}
             deleteEdge={deleteEdge}
             clearReactFlowDiagram={clearReactFlowDiagram}
-            downloadReactFlowDiagramAsPng={downloadReactFlowDiagramAsPng}
+            createShareableLink={createShareableLink}
+            toggleGrid={toggleGrid}
           />
         )}
       </div>
@@ -395,7 +437,7 @@ export default function DiagramOrChartView({
                   onEdgeUpdate={onEdgeUpdate}
                   onConnect={onConnect}
                   connectionLineType={ConnectionLineType.SimpleBezier}
-                  snapToGrid={true}
+                  snapToGrid={false}
                   snapGrid={[25, 25]}
                   defaultViewport={defaultViewport}
                   fitView
@@ -406,11 +448,13 @@ export default function DiagramOrChartView({
                   className="react-flow__container"
                 >
                   <Controls />
-                  <Background
-                    color="#808080"
-                    gap={40}
-                    variant={BackgroundVariant.Cross}
-                  />
+                  {toggleReactFlowGird && (
+                    <Background
+                      color="#808080"
+                      gap={40}
+                      variant={BackgroundVariant.Cross}
+                    />
+                  )}
                 </ReactFlow>
               </>
             )}
@@ -430,6 +474,11 @@ export default function DiagramOrChartView({
         }'`}
         open={successDialogOpen}
         setOpen={setSuccessDialogOpen}
+      />
+      <ShareableLinksModal
+        isOpen={openShareableLinkModal}
+        onClose={() => setOpenShareableLinkModal(false)}
+        shareableLink={shareableLink}
       />
     </>
   )

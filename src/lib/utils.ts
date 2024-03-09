@@ -89,3 +89,17 @@ export const getIdForTlDraw = (originalString: string): string => {
   const number = originalString.match(/\d+/)
   return `shape:${number}`
 }
+
+export const generateInviteCode = (length: number) => {
+  let inviteCode = ''
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+  for (let i = 0; i < length; i++) {
+    inviteCode += characters.charAt(
+      Math.floor(Math.random() * characters.length),
+    )
+  }
+
+  return inviteCode
+}

@@ -141,7 +141,7 @@ function CustomInputBoxNode(props: any) {
               autoFocus
             />
           ) : (
-            <motion.label className="input-box-node__input text-balance h-full w-full border-none bg-transparent p-2 text-white transition-all duration-300">
+            <motion.label className="input-box-node__input text-balance h-full w-full border-none bg-transparent p-4 text-white transition-all duration-300">
               {label}
             </motion.label>
           )}
