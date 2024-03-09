@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 
 import userGuide from './UserHelper.mdx'
+import Link from 'next/link'
 
 export default function ReactFlowHelper({
   open,
@@ -54,9 +55,9 @@ export default function ReactFlowHelper({
                     </Dialog.Title>
                     <div className="prose mt-2 max-h-96 overflow-y-auto">
                       <div className="prose max-w-none lg:prose-lg">
-                        <h2 className="mb-2 text-lg font-semibold">
+                        <h3 className="mb-2 text-lg font-semibold">
                           Editing a Step
-                        </h2>
+                        </h3>
                         <p className="mb-4">
                           To edit a step, simply hover over it. A pencil icon
                           will appear. Click on this icon to start editing the
@@ -64,18 +65,18 @@ export default function ReactFlowHelper({
                           step to save your changes.
                         </p>
 
-                        <h2 className="mb-2 text-lg font-semibold">
+                        <h3 className="mb-2 text-lg font-semibold">
                           Moving a Step
-                        </h2>
+                        </h3>
                         <p className="mb-4">
                           To move a step, click and hold anywhere on the step
                           except the pencil icon. Drag the step to its new
                           position and release the mouse button to drop it.
                         </p>
 
-                        <h2 className="mb-2 text-lg font-semibold">
+                        <h3 className="mb-2 text-lg font-semibold">
                           Connecting Steps
-                        </h2>
+                        </h3>
                         <p className="mb-4">
                           To connect two steps, hover over the first step. Small
                           circles will appear on its edges. Click and hold on a
@@ -83,18 +84,18 @@ export default function ReactFlowHelper({
                           the mouse button to create a connection.
                         </p>
 
-                        <h2 className="mb-2 text-lg font-semibold">
+                        <h3 className="mb-2 text-lg font-semibold">
                           Deleting a Step or Connection
-                        </h2>
+                        </h3>
                         <p className="mb-4">
                           To delete a step or connection, first select it by
                           clicking on it. Then, press the `Delete` key on your
                           keyboard.
                         </p>
 
-                        <h2 className="mb-2 text-lg font-semibold">
+                        <h3 className="mb-2 text-lg font-semibold">
                           Navigating the Diagram
-                        </h2>
+                        </h3>
                         <p className="mb-4">
                           You can move around the diagram by clicking and
                           dragging anywhere on the background. Use the scroll
@@ -104,14 +105,23 @@ export default function ReactFlowHelper({
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6">
+                <div className="mt-5 grid grid-cols-2 gap-4 sm:mt-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:scale-105 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     onClick={() => setOpen(false)}
                   >
                     Go back
                   </button>
+                  <Link
+                    href="https://forms.gle/xPfF3KtEYMNg5M8D9"
+                    passHref
+                    target="_blank"
+                    type="button"
+                    className="inline-flex justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:scale-105 hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                  >
+                    Give Feedback
+                  </Link>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

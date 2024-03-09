@@ -24,7 +24,7 @@ export default function ReactFlowHelperButton() {
           aria-hidden="true"
         />
       </button>
-      <ReactFlowHelper open={isModalOpen} setOpen={setIsModalOpen} />
+      
     </Panel>
   )
 }

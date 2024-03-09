@@ -1,12 +1,13 @@
 'use client'
 import { Fragment, useContext, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { PencilIcon } from '@heroicons/react/24/outline'
 import { Edge, Node } from 'reactflow'
-import { TrashIcon } from '@heroicons/react/20/solid'
+import { TrashIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 
-export default function EditDiagramModal({
+import { motion } from 'framer-motion'
+
+export default function EditNodesDiagramModal({
   open,
   setOpen,
   nodes,
@@ -50,7 +51,7 @@ export default function EditDiagramModal({
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -62,18 +63,20 @@ export default function EditDiagramModal({
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div>
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <PencilIcon
-                      className="h-6 w-6 text-green-600"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="mt-3 text-center sm:mt-5">
+                  <div className="mt-3 sm:mt-5">
                     <Dialog.Title
                       as="h3"
-                      className="text-base font-semibold leading-6 text-gray-900"
+                      className="flex items-center justify-between text-base font-semibold leading-6 text-gray-900"
                     >
                       Edit Your Diagram
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="rounded-full p-1 hover:bg-gray-200"
+                        onClick={() => setOpen(false)}
+                      >
+                        <XMarkIcon className="h-5 w-5 text-gray-500" />
+                      </motion.button>
                     </Dialog.Title>
                     <div className="mt-2">
                       <div className="mx-auto max-w-5xl px-6 lg:px-8">
@@ -83,8 +86,13 @@ export default function EditDiagramModal({
                               <div className="inline-block min-w-full py-2 align-middle">
                                 <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                   <h2 className="text-lg font-bold text-gray-900">
-                                    Objects
+                                    Nodes
                                   </h2>
+                                  <p className="mt-2 text-sm text-gray-500">
+                                    Nodes represent the purple elements in your
+                                    diagram. They are the main building blocks
+                                    of your diagram.
+                                  </p>
                                   <table className="min-w-full divide-y divide-pink-200">
                                     <tbody className="divide-y divide-gray-200 bg-white">
                                       {nodes &&
@@ -109,8 +117,14 @@ export default function EditDiagramModal({
                                                     className="mt-1 block w-full rounded-md border border-indigo-300 px-3 py-2 text-lg text-indigo-700 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                   />
 
-                                                  <button
-                                                    className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-base text-sm font-semibold text-white ring-1 ring-inset ring-green-300 hover:bg-green-300 hover:text-white"
+                                                  <motion.button
+                                                    whileTap={{ scale: 0.9 }}
+                                                    className="text-red-500 hover:text-gray-700"
+                                                    whileHover={{
+                                                      scale: 1.1,
+                                                      rotate: 90,
+                                                      borderRadius: '100%',
+                                                    }}
                                                     onClick={() => {
                                                       context.setLoading(true)
                                                       context.setNodes([])
@@ -123,7 +137,7 @@ export default function EditDiagramModal({
                                                     }}
                                                   >
                                                     <TrashIcon className="h-5 w-5" />
-                                                  </button>
+                                                  </motion.button>
                                                 </div>
                                               </td>
                                             </tr>
@@ -132,7 +146,9 @@ export default function EditDiagramModal({
                                       <tr>
                                         <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                           <div className="flex shrink-0 items-center gap-x-6">
-                                            <button
+                                            <motion.button
+                                              whileHover={{ scale: 1.1 }}
+                                              whileTap={{ scale: 0.9 }}
                                               className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-base text-sm font-semibold text-white ring-1 ring-inset ring-green-300 hover:bg-indigo-900 hover:text-white"
                                               onClick={() => {
                                                 addNode({
@@ -152,54 +168,10 @@ export default function EditDiagramModal({
                                               }}
                                             >
                                               Add Item
-                                            </button>
+                                            </motion.button>
                                           </div>
                                         </td>
                                       </tr>
-                                    </tbody>
-                                  </table>
-
-                                  <h2 className="mt-10 text-lg font-bold text-gray-900">
-                                    Connections
-                                  </h2>
-                                  <table className="min-w-full divide-y divide-pink-200">
-                                    <tbody className="divide-y divide-gray-200 bg-white">
-                                      {edges &&
-                                        edges.map((edge: any) => {
-                                          return (
-                                            <tr key={edge.id}>
-                                              <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                                <div className="flex shrink-0 items-center gap-x-6">
-                                                  <input
-                                                    type="text"
-                                                    defaultValue={
-                                                      edge.data
-                                                        ? edge.data.label
-                                                        : ''
-                                                    }
-                                                    placeholder={
-                                                      !edge.data
-                                                        ? 'Enter a label'
-                                                        : ''
-                                                    }
-                                                    onChange={(event) => {
-                                                      if (!edge.data) {
-                                                        edge.data = {}
-                                                      }
-                                                      edge.data.label =
-                                                        event.target.value
-                                                      updateEdgeLabel(
-                                                        edge.id,
-                                                        event.target.value,
-                                                      )
-                                                    }}
-                                                    className="mt-1 block w-full rounded-md border border-indigo-300 px-3 py-2 text-lg text-indigo-700 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                  />
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          )
-                                        })}
                                     </tbody>
                                   </table>
                                 </div>

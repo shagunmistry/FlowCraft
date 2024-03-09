@@ -28,8 +28,6 @@ import ReactFlow, {
 import 'reactflow/dist/style.css'
 import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
-//@ts-ignore
-import DownloadFlowDiagramButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
@@ -41,11 +39,12 @@ import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
-import { DiagramOrChartType } from '@/lib/utils'
+import { DiagramOrChartType, downloadImage } from '@/lib/utils'
 import { autoArrangeNodesAndEdges } from '@/lib/react-flow.util'
 import SimpleFloatingEdge from './ReactFlow/SimpleFloatingEdge'
 import ReactFlowHelperButton from './ReactFlow/ReactFlowHelperButton'
 import DiagramSettingsBar from './ReactFlow/DiagramSettingsBar'
+import { toPng } from 'html-to-image'
 
 const defaultEdgeOptions = {
   animated: true,
@@ -277,6 +276,18 @@ export default function DiagramOrChartView({
     [nodes],
   )
 
+  const deleteEdge = useCallback(
+    (edgeId: string) => {
+      context.setEdges(edges.filter((e) => e.id !== edgeId))
+      setEdges((es) => {
+        const edgeIndex = es.findIndex((e) => e.id === edgeId)
+        es.splice(edgeIndex, 1)
+        return es
+      })
+    },
+    [edges],
+  )
+
   const updateEdgeLabel = useCallback(
     (id: string, newValue: string) => {
       setEdges((es) => {
@@ -305,6 +316,11 @@ export default function DiagramOrChartView({
     link.click()
   }
 
+  const clearReactFlowDiagram = () => {
+    setNodes([])
+    setEdges([])
+  }
+
   if (type === 'Chart') {
     if (context.loading) {
       return <Loader />
@@ -323,10 +339,45 @@ export default function DiagramOrChartView({
     )
   }
 
+  const downloadReactFlowDiagramAsPng = async () => {
+    const className = '.react-flow__container'
+    const node = document.querySelector(className) as HTMLElement
+    if (!node) {
+      return
+    }
+
+    // Set width and height to highest 1080p resolution
+    node.style.width = '1920px'
+    node.style.height = '1080px'
+
+    // Set zoom of react flow to 1
+    const fitButton = document.getElementsByClassName(
+      '.react-flow__controls-fitview',
+    )[0] as HTMLButtonElement
+    if (fitButton) {
+      fitButton.click()
+    }
+
+    const image = await toPng(node)
+    downloadImage(image)
+  }
+
   return (
     <>
       <div className="mt-4">
-        <DiagramSettingsBar />
+        {context.type === 'Flow Diagram' && (
+          <DiagramSettingsBar
+            nodes={nodes}
+            edges={edges}
+            deleteNode={deleteNode}
+            addNode={addNode}
+            updateNodeLabel={updateNodeLabel}
+            updateEdgeLabel={updateEdgeLabel}
+            deleteEdge={deleteEdge}
+            clearReactFlowDiagram={clearReactFlowDiagram}
+            downloadReactFlowDiagramAsPng={downloadReactFlowDiagramAsPng}
+          />
+        )}
       </div>
 
       <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
@@ -358,19 +409,8 @@ export default function DiagramOrChartView({
                   <Background
                     color="#808080"
                     gap={40}
-                    variant={BackgroundVariant.Lines}
+                    variant={BackgroundVariant.Cross}
                   />
-
-                  <DownloadFlowDiagramButton />
-                  <EditDiagramButton
-                    nodes={nodes}
-                    edges={edges}
-                    deleteNode={deleteNode}
-                    addNode={addNode}
-                    updateNodeLabel={updateNodeLabel}
-                    updateEdgeLabel={updateEdgeLabel}
-                  />
-                  <ReactFlowHelperButton />
                 </ReactFlow>
               </>
             )}
