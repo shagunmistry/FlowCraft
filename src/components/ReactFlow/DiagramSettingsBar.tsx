@@ -108,8 +108,7 @@ export default function DiagramSettingsBar({
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                  {/* Profile dropdown */}
+                {/* <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                   <Menu as="div" className="relative ml-4 flex-shrink-0">
                     <div>
                       <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -150,7 +149,7 @@ export default function DiagramSettingsBar({
                       </Menu.Items>
                     </Transition>
                   </Menu>
-                </div>
+                </div> */}
               </div>
               <nav
                 className="hidden lg:flex lg:space-x-4 lg:py-2"
@@ -284,24 +283,124 @@ export default function DiagramSettingsBar({
               aria-label="Global"
             >
               <div className="space-y-1 px-2 pb-3 pt-2">
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className={cn(
-                      item.current
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block rounded-md px-3 py-2 text-base font-medium',
-                    )}
-                    aria-current={item.current ? 'page' : undefined}
+                <Menu as="div" className="relative">
+                  <div>
+                    <Menu.Button className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                      File
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
                   >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
+                    <Menu.Items className="absolute left-0 z-10 mt-2 w-max origin-top-right rounded-md bg-white py-1 shadow-lg">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-indigo-400' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => createShareableLink()}
+                          >
+                            Share
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-indigo-400' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => setIsHelpModalOpen(true)}
+                          >
+                            Help
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                <Menu as="div" className="relative">
+                  <div>
+                    <Menu.Button className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                      Edit
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute left-0 z-10 mt-2 w-max origin-top-right rounded-md bg-white py-1 shadow-lg">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-indigo-400' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => setIsEditNodeModalOpen(true)}
+                          >
+                            Edit Node Labels
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-indigo-400' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => setIsEditEdgeModalOpen(true)}
+                          >
+                            Edit Arrows
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-red-200' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => clearReactFlowDiagram()}
+                          >
+                            Clear Diagram
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                <button className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                  <GridToggle onChange={toggleGrid} />
+                </button>
               </div>
-              <div className="border-t border-gray-700 pb-3 pt-4">
+              {/* <div className="border-t border-gray-700 pb-3 pt-4">
                 <div className="flex items-center px-4">
                   <div className="flex-shrink-0">
                     <img
@@ -331,7 +430,7 @@ export default function DiagramSettingsBar({
                     </Disclosure.Button>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </Disclosure.Panel>
           </>
         )}

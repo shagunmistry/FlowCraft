@@ -8,12 +8,14 @@ interface ShareableLinksModalProps {
   isOpen: boolean
   onClose: () => void
   shareableLink: string
+  inviteCode: string
 }
 
 export default function ShareableLinksModal({
   isOpen,
   onClose,
   shareableLink,
+  inviteCode,
 }: ShareableLinksModalProps) {
   const [isCopied, setIsCopied] = useState(false)
 
@@ -60,11 +62,15 @@ export default function ShareableLinksModal({
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Your diagram is now shareable! Here's the link:
+                        Your diagram is now shareable! Copy the link and the
+                        invite code to share it with others.
                       </p>
                       <div className="mt-3">
                         <p className="text-sm font-semibold text-indigo-600">
-                          {shareableLink}
+                          Link: {shareableLink}
+                        </p>
+                        <p className="text-sm font-semibold text-indigo-600">
+                          Invite Code: {inviteCode}
                         </p>
                       </div>
                     </div>

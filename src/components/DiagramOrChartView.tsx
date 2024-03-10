@@ -32,27 +32,16 @@ import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 import { DiagramOrChartType, downloadImage } from '@/lib/utils'
-import SimpleFloatingEdge from './ReactFlow/SimpleFloatingEdge'
 import DiagramSettingsBar from './ReactFlow/DiagramSettingsBar'
 import { toPng } from 'html-to-image'
 import ShareableLinksModal from './ShareableLinkModal'
 import SimpleNotification from './SimpleNotification'
-
-const defaultEdgeOptions = {
-  animated: true,
-  type: ConnectionLineType.Step,
-}
-
-const nodeTypes = {
-  customNode: CustomInputBoxNode,
-}
-
-const edgeTypes: EdgeTypes = {
-  // custom: CustomEdge,
-  floating: SimpleFloatingEdge,
-}
-
-const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
+import {
+  defaultEdgeOptions,
+  defaultViewport,
+  edgeTypes,
+  nodeTypes,
+} from '@/lib/react-flow.util'
 
 const Loader = () => {
   return (
@@ -77,7 +66,13 @@ export default function DiagramOrChartView({
 
   const [openShareableLinkModal, setOpenShareableLinkModal] =
     useState<boolean>(false)
-  const [shareableLink, setShareableLink] = useState<string>('')
+  const [shareableLink, setShareableLink] = useState<{
+    link: string
+    inviteCode: string
+  }>({
+    link: '',
+    inviteCode: '',
+  })
 
   const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
     JSON.stringify(scenarios.house_buying_process),
@@ -387,7 +382,10 @@ export default function DiagramOrChartView({
       return
     }
 
-    setShareableLink(responseJson.result.link)
+    setShareableLink({
+      link: responseJson.result.link,
+      inviteCode: responseJson.result.inviteCode,
+    })
     setOpenShareableLinkModal(true)
   }
 
@@ -478,7 +476,8 @@ export default function DiagramOrChartView({
       <ShareableLinksModal
         isOpen={openShareableLinkModal}
         onClose={() => setOpenShareableLinkModal(false)}
-        shareableLink={shareableLink}
+        shareableLink={shareableLink?.link}
+        inviteCode={shareableLink?.inviteCode}
       />
     </>
   )

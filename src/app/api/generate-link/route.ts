@@ -76,6 +76,7 @@ export async function POST(req: Request) {
     JSON.stringify({
       result: {
         link: subUrlLinkToShare,
+        inviteCode,
       },
     }),
     {
