@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase-auth/server'
+import { PlayIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -65,36 +66,49 @@ export default async function Dashboard() {
                 Logout
               </Link>
             </div>
-            <ul role="list">
+            <ul
+              role="list"
+              className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
+            >
               {options.map((option) => (
                 <li
                   key={option.title}
-                  className="mt-4 flex transform justify-between gap-x-6 rounded-xl bg-gray-700 px-6 py-5 shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
+                  className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg bg-white text-center transition duration-300 ease-in-out hover:scale-105"
                 >
-                  <div className="flex min-w-0 gap-x-4">
+                  <div className="flex flex-1 flex-col p-8">
                     <Image
-                      className="h-24 w-24 flex-none rounded-xl object-cover shadow-xl sm:h-48 sm:w-48"
+                      className="mx-auto h-32 w-32 flex-shrink-0 rounded-full object-cover shadow-lg"
                       src={option.source}
+                      height={128}
+                      width={128}
                       alt={option.title}
-                      height={192}
-                      width={192}
                     />
-                    <div className="min-w-0 flex-auto">
-                      <p className="mt-1 text-2xl font-semibold leading-6 text-pink-500">
-                        {option.title}
-                      </p>
-                      <p className="mt-1 text-xl leading-5 text-white">
+                    <h3 className="font-large mt-6 text-lg font-bold text-indigo-500 sm:text-sm md:text-xl">
+                      {option.title}
+                    </h3>
+                    <dl className="mt-1 flex flex-grow flex-col justify-between">
+                      <dt className="sr-only">Description</dt>
+                      <dd className="text-md text-indigo-700">
                         {option.description}
-                      </p>
+                      </dd>
+                    </dl>
+                  </div>
+                  <div>
+                    <div className="-mt-px flex">
+                      <div className="flex w-0 flex-1">
+                        <Link
+                          href={option.link}
+                          className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
+                        >
+                          <PlayIcon
+                            className="h-5 w-5 text-pink-400 transition duration-150 ease-in-out group-hover:text-gray-500"
+                            aria-hidden="true"
+                          />
+                          Create
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                  {/** Show a button to go to the page for the diagram */}
-                  <Link
-                    href={option.link}
-                    className="text-md flex h-24 w-24 items-center justify-center rounded-xl border border-transparent bg-indigo-700 px-4 py-2 font-medium leading-5 text-white shadow-xl transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-pink-500 hover:shadow-2xl"
-                  >
-                    Create
-                  </Link>
                 </li>
               ))}
             </ul>

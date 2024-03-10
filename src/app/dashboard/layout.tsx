@@ -18,7 +18,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [title, setTitle] = useState<string>('')
+  const [title, setTitle] = useState<string>(exampleFlowDiagramPrompts[2].title)
   const [description, setDescription] = useState<string>(
     exampleFlowDiagramPrompts[2].description,
   )

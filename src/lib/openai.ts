@@ -160,6 +160,7 @@ export const promptForUserMessage = (
 }
 
 export const promptForResponse = `The response MUST ONLY be in JSON that includes valid ReactFlow Node and Edge array. Remember to position the edges and nodes so that it is a readable view. The response will be validated and if it is not valid, you will be asked to try again.
+FIrst node should be of type "input" and last node should be of type "output"
 \n Example Response FROM YOU: \n
 \`\`\`JSON
 {

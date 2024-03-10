@@ -1,20 +1,12 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import {
-  use,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
   Node,
   addEdge,
-  MiniMap,
   useNodesState,
   useEdgesState,
   ConnectionLineType,
@@ -22,41 +14,34 @@ import ReactFlow, {
   BackgroundVariant,
   EdgeTypes,
   Edge,
+  MarkerType,
+  getRectOfNodes,
+  getTransformForBounds,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
 import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
-//@ts-ignore
-import DownloadFlowDiagramButton from './DownloadImageButton'
 
 import Chart from 'chart.js/auto'
 import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
 import { initialEdges, initialNodes } from '@/lib/react-flow.code'
-import EditDiagramButton from './EditDiagramButton'
-import CustomEdge from './ReactFlow/CustomEdge'
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
-import { DiagramOrChartType } from '@/lib/utils'
-import ReactFlowLayoutButton from './ReactFlowLayoutButton'
-
-const defaultEdgeOptions = {
-  animated: true,
-  type: ConnectionLineType.Step,
-}
-
-const nodeTypes = {
-  customNode: CustomInputBoxNode,
-}
-
-const edgeTypes: EdgeTypes = {
-  custom: CustomEdge,
-}
-
-const defaultViewport = { x: 0, y: 0, zoom: 1.5 }
+import { DiagramOrChartType, downloadImage } from '@/lib/utils'
+import DiagramSettingsBar from './ReactFlow/DiagramSettingsBar'
+import { toPng } from 'html-to-image'
+import ShareableLinksModal from './ShareableLinkModal'
+import SimpleNotification from './SimpleNotification'
+import {
+  defaultEdgeOptions,
+  defaultViewport,
+  edgeTypes,
+  nodeTypes,
+} from '@/lib/react-flow.util'
 
 const Loader = () => {
   return (
@@ -77,8 +62,17 @@ export default function DiagramOrChartView({
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  const [toggleReactFlowGird, setToggleReactFlowGird] = useState<boolean>(true)
 
-  const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
+  const [openShareableLinkModal, setOpenShareableLinkModal] =
+    useState<boolean>(false)
+  const [shareableLink, setShareableLink] = useState<{
+    link: string
+    inviteCode: string
+  }>({
+    link: '',
+    inviteCode: '',
+  })
 
   const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
     JSON.stringify(scenarios.house_buying_process),
@@ -87,6 +81,12 @@ export default function DiagramOrChartView({
   const [chartCreated, setChartCreated] = useState<boolean>(false)
 
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
+
+  const [notification, setNotification] = useState<{
+    message: string
+    title: string
+    type: 'success' | 'error' | 'warning' | 'info'
+  }>()
 
   const context = useContext(DiagramContext)
 
@@ -101,7 +101,7 @@ export default function DiagramOrChartView({
         console.log('Individual edge: ', edge)
         return {
           ...edge,
-          type: 'custom',
+          type: 'floating',
           data: {
             label: edge.label ? edge.label : '',
           },
@@ -112,11 +112,16 @@ export default function DiagramOrChartView({
         return {
           ...node,
           ...nodeStyle,
+          type: 'customNode',
         }
       })
 
+      // const { nodes: arrangedNodes, edges: arrangedEdges } =
+      //   autoArrangeNodesAndEdges(nodesWithStyle, edgesWithMarkerAndStyle)
+      // console.log('arrangedNodes', arrangedNodes)
+
       setNodes(nodesWithStyle)
-      setEdges(edgesWithMarkerAndStyle as any)
+      setEdges(edgesWithMarkerAndStyle as Edge[])
 
       const fitButton = document.getElementsByClassName(
         '.react-flow__controls-fitview',
@@ -180,8 +185,34 @@ export default function DiagramOrChartView({
 
   const onConnect = useCallback(
     (params: any) => {
-      console.log('onConnect params', params)
-      setEdges((eds) => addEdge(params, eds))
+      console.log('Connecting: ', params)
+      setEdges((eds) => {
+        context.setEdges(
+          eds.map((edge) => {
+            if (
+              edge.source === params.source &&
+              edge.target === params.target
+            ) {
+              return {
+                ...edge,
+                data: {
+                  ...edge.data,
+                  label: params.label,
+                },
+              }
+            }
+            return edge
+          }),
+        )
+        return addEdge(
+          {
+            ...params,
+            type: 'floating',
+            markerEnd: { type: MarkerType.Arrow },
+          },
+          eds,
+        )
+      })
     },
     [setEdges],
   )
@@ -241,6 +272,18 @@ export default function DiagramOrChartView({
     [nodes],
   )
 
+  const deleteEdge = useCallback(
+    (edgeId: string) => {
+      context.setEdges(edges.filter((e) => e.id !== edgeId))
+      setEdges((es) => {
+        const edgeIndex = es.findIndex((e) => e.id === edgeId)
+        es.splice(edgeIndex, 1)
+        return es
+      })
+    },
+    [edges],
+  )
+
   const updateEdgeLabel = useCallback(
     (id: string, newValue: string) => {
       setEdges((es) => {
@@ -269,6 +312,11 @@ export default function DiagramOrChartView({
     link.click()
   }
 
+  const clearReactFlowDiagram = () => {
+    setNodes([])
+    setEdges([])
+  }
+
   if (type === 'Chart') {
     if (context.loading) {
       return <Loader />
@@ -287,15 +335,92 @@ export default function DiagramOrChartView({
     )
   }
 
+  const createShareableLink = async () => {
+    const type = context.type
+    let data = {
+      type: '',
+      diagramData: {},
+      title: context.title,
+      description: context.description,
+    }
+    if (type === 'Flow Diagram') {
+      data.type = 'Flow Diagram'
+      data.diagramData = { nodes, edges }
+    } else if (type === 'Whiteboard') {
+      data.type = 'Whiteboard'
+      data.diagramData = { tlDrawRecords: JSON.parse(tlDrawInputJson).records }
+    }
+
+    const response = await fetch('/api/generate-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (response && response.status !== 200) {
+      console.error('Error creating shareable link')
+      setNotification({
+        message: 'Error creating shareable link',
+        title: 'Error',
+        type: 'error',
+      })
+      return
+    }
+
+    const responseJson = await response.json()
+    console.log('responseJson', responseJson)
+
+    if (!responseJson.result) {
+      setNotification({
+        message:
+          'There was an error creating the shareable link, please try again later!',
+        title: 'Error',
+        type: 'error',
+      })
+      return
+    }
+
+    setShareableLink({
+      link: responseJson.result.link,
+      inviteCode: responseJson.result.inviteCode,
+    })
+    setOpenShareableLinkModal(true)
+  }
+
+  const toggleGrid = (enabled: boolean) => {
+    setToggleReactFlowGird(enabled)
+  }
+
   return (
     <>
-      <div className="mr-5 mt-7">
-        <h1 className="text-center text-2xl font-bold text-pink-500 sm:truncate sm:text-3xl">
-          {context.title}
-        </h1>
+      {notification && (
+        <SimpleNotification
+          message={notification?.message}
+          title={notification?.title}
+          type={notification?.type}
+        />
+      )}
+
+      <div className="mt-4">
+        {context.type === 'Flow Diagram' && (
+          <DiagramSettingsBar
+            nodes={nodes}
+            edges={edges}
+            deleteNode={deleteNode}
+            addNode={addNode}
+            updateNodeLabel={updateNodeLabel}
+            updateEdgeLabel={updateEdgeLabel}
+            deleteEdge={deleteEdge}
+            clearReactFlowDiagram={clearReactFlowDiagram}
+            createShareableLink={createShareableLink}
+            toggleGrid={toggleGrid}
+          />
+        )}
       </div>
 
-      <div className="ml-auto mr-auto mt-14 h-screen w-11/12 rounded-xl bg-black shadow-lg">
+      <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
         {context.loading ? (
           <Loader />
         ) : (
@@ -310,7 +435,7 @@ export default function DiagramOrChartView({
                   onEdgeUpdate={onEdgeUpdate}
                   onConnect={onConnect}
                   connectionLineType={ConnectionLineType.SimpleBezier}
-                  snapToGrid={true}
+                  snapToGrid={false}
                   snapGrid={[25, 25]}
                   defaultViewport={defaultViewport}
                   fitView
@@ -318,30 +443,16 @@ export default function DiagramOrChartView({
                   defaultEdgeOptions={defaultEdgeOptions}
                   nodeTypes={nodeTypes}
                   edgeTypes={edgeTypes}
+                  className="react-flow__container"
                 >
                   <Controls />
-                  <Background
-                    color="#808080"
-                    gap={40}
-                    variant={BackgroundVariant.Lines}
-                  />
-                  <MiniMap className="w-1/4" />
-
-                  <DownloadFlowDiagramButton />
-                  <EditDiagramButton
-                    nodes={nodes}
-                    edges={edges}
-                    deleteNode={deleteNode}
-                    addNode={addNode}
-                    updateNodeLabel={updateNodeLabel}
-                    updateEdgeLabel={updateEdgeLabel}
-                  />
-                  <ReactFlowLayoutButton
-                    nodes={nodes}
-                    edges={edges}
-                    setNodes={context.setNodes}
-                    setLoading={context.setLoading}
-                  />
+                  {toggleReactFlowGird && (
+                    <Background
+                      color="#808080"
+                      gap={40}
+                      variant={BackgroundVariant.Cross}
+                    />
+                  )}
                 </ReactFlow>
               </>
             )}
@@ -356,11 +467,17 @@ export default function DiagramOrChartView({
         header="Success!"
         message={`Yayy! Your ${type} has been generated! ${
           type === 'Flow Diagram'
-            ? 'Try clicking on the labels to move them around!'
+            ? 'Scroll down and try clicking on the labels to move them around!'
             : ''
         }'`}
         open={successDialogOpen}
         setOpen={setSuccessDialogOpen}
+      />
+      <ShareableLinksModal
+        isOpen={openShareableLinkModal}
+        onClose={() => setOpenShareableLinkModal(false)}
+        shareableLink={shareableLink?.link}
+        inviteCode={shareableLink?.inviteCode}
       />
     </>
   )

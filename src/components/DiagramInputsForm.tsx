@@ -1,8 +1,6 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import ExamplesDropdown from './Dropdown'
-import TypeSelection from './TypeSelection'
 import {
   chartJsAverageNewYorkWeatherReport,
   chartJsCancerRatesExampleReport,
@@ -10,15 +8,16 @@ import {
   chartJsTeslaStockPricesExampleReport,
 } from '@/lib/chart-js.code'
 import { DiagramOrChartType, extractParsableJSON } from '@/lib/utils'
-import { track } from '@vercel/analytics'
 import {
   ChartBarIcon,
-  PencilIcon,
   ComputerDesktopIcon,
+  PencilIcon,
 } from '@heroicons/react/20/solid'
+import { track } from '@vercel/analytics'
+import ExamplesDropdown from './Dropdown'
 import ErrorDialog from './ErrorDialog'
-import { useAssistant } from './Whiteboard/UserPrompt'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
+import { useAssistant } from './Whiteboard/UserPrompt'
 
 export const exampleFlowDiagramPrompts = [
   {
@@ -232,34 +231,9 @@ export default function DiagramInputsForm({
     <>
       <nav aria-label="Progress">
         <ol role="list" className="overflow-hidden">
-          {/* <li key="1" className="relative mt-2">
-            <>
-              <StepLine />
-              <div className="group relative flex items-start">
-                <span className="flex h-9 items-center">
-                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">1</p>
-                  </span>
-                </span>
-                <span className="ml-4 flex min-w-0 flex-col">
-                  <span className="text-xl font-medium font-semibold">
-                    Choose a Type
-                  </span>
-                  <span className="text-md text-white">
-                    <TypeSelection
-                      options={typeSelectionOptions}
-                      selectedOption={selectedType}
-                      setSelectedOption={selectOption}
-                    />
-                  </span>
-                </span>
-              </div>
-            </>
-          </li> */}
           <li key="1" className="relative mt-2">
             <>
               <StepLine />
-
               <div className="group relative flex items-start">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
@@ -327,7 +301,7 @@ export default function DiagramInputsForm({
                     Generate
                   </span>
                   <button
-                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={handleSubmit}
                     disabled={context.loading || !title}
                   >
@@ -339,7 +313,6 @@ export default function DiagramInputsForm({
           </li>
         </ol>
       </nav>
-
       <div className="mt-2">
         <ExamplesDropdown
           values={selectedType.prompts}
