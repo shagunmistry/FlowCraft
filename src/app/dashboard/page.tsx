@@ -68,27 +68,27 @@ export default async function Dashboard() {
             </div>
             <ul
               role="list"
-              className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
             >
               {options.map((option) => (
                 <li
                   key={option.title}
-                  className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg bg-gradient-to-b from-black to-indigo-500 text-center transition duration-300 ease-in-out hover:scale-105"
+                  className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg bg-white text-center transition duration-300 ease-in-out hover:scale-105"
                 >
                   <div className="flex flex-1 flex-col p-8">
                     <Image
-                      className="mx-auto h-32 w-32 flex-shrink-0 rounded-full object-cover"
+                      className="mx-auto h-32 w-32 flex-shrink-0 rounded-full object-cover shadow-lg"
                       src={option.source}
                       height={128}
                       width={128}
                       alt={option.title}
                     />
-                    <h3 className="font-large mt-6 text-lg font-bold text-gray-50 sm:text-sm md:text-xl">
+                    <h3 className="font-large mt-6 text-lg font-bold text-indigo-500 sm:text-sm md:text-xl">
                       {option.title}
                     </h3>
                     <dl className="mt-1 flex flex-grow flex-col justify-between">
                       <dt className="sr-only">Description</dt>
-                      <dd className="text-md text-white">
+                      <dd className="text-md text-indigo-700">
                         {option.description}
                       </dd>
                     </dl>
@@ -98,10 +98,10 @@ export default async function Dashboard() {
                       <div className="flex w-0 flex-1">
                         <Link
                           href={option.link}
-                          className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-gray-50 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
+                          className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
                         >
                           <PlayIcon
-                            className="h-5 w-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-500"
+                            className="h-5 w-5 text-pink-400 transition duration-150 ease-in-out group-hover:text-gray-500"
                             aria-hidden="true"
                           />
                           Create
