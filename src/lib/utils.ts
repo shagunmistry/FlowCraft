@@ -3,6 +3,50 @@ import { twMerge } from 'tailwind-merge'
 
 export type DiagramOrChartType = 'Whiteboard' | 'Chart' | 'Flow Diagram'
 
+export enum DiagramType {
+  FlowDiagram = 'Flow Diagram',
+  Whiteboard = 'Whiteboard',
+  Chart = 'Chart',
+}
+
+interface Option {
+  title: string
+  icon: string // Replace with appropriate icon class names
+  link: string // Replace with actual links to corresponding pages
+  source: string
+  description: string
+}
+
+export const navigationOptions: Option[] = [
+  {
+    title: 'Flow Diagram',
+    icon: 'fas fa-chart-branch',
+    link: '/dashboard/flow-diagram',
+    source:
+      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_diagram.jpg?alt=media&token=779cd4b2-3f5d-43e4-999e-369405c4aeff',
+    description:
+      'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
+  },
+  {
+    title: 'Whiteboard',
+    icon: 'fas fa-chalkboard',
+    link: '/dashboard/whiteboard',
+    source:
+      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_whiteboard.jpg?alt=media&token=eb068b8d-bfcf-41bd-9b5d-986ad0ed235f',
+    description:
+      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
+  },
+  {
+    title: 'Chart',
+    icon: 'fas fa-chart-bar',
+    link: '/dashboard/chart',
+    source:
+      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
+    description:
+      'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
+  },
+]
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

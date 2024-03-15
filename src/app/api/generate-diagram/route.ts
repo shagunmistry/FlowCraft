@@ -113,16 +113,22 @@ export async function POST(req: Request) {
     console.log('2. Response from OpenAI: ', result)
 
     if (result) {
-      await supabaseClient.from('diagrams').insert([
-        {
-          title: diagramTitle,
-          description: diagramDescription,
-          type,
-          data: JSON.stringify(result),
-          created_at: new Date().toISOString(),
-          user_id: userData.user?.id,
-        },
-      ])
+      const { data: insertData, error: insertError } = await supabaseClient
+        .from('diagrams')
+        .insert([
+          {
+            title: diagramTitle,
+            description: diagramDescription,
+            type,
+            data: JSON.stringify(result),
+            created_at: new Date().toISOString(),
+            user_id: userData.user?.id,
+            private: true,
+          },
+        ])
+
+      console.log('Insert Data: ', insertData)
+      console.log('Insert Error: ', insertError)
       return new Response(
         JSON.stringify({
           result,

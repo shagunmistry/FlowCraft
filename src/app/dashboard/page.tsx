@@ -3,52 +3,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { DiagramData } from '@/lib/DiagramType.db'
-import { cn } from '@/lib/utils'
 
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
-
-interface Option {
-  title: string
-  icon: string // Replace with appropriate icon class names
-  link: string // Replace with actual links to corresponding pages
-  source: string
-  description: string
-}
-
-const options: Option[] = [
-  {
-    title: 'Flow Diagram',
-    icon: 'fas fa-chart-branch',
-    link: '/dashboard/flow-diagram',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_diagram.jpg?alt=media&token=779cd4b2-3f5d-43e4-999e-369405c4aeff',
-    description:
-      'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
-  },
-  {
-    title: 'Whiteboard',
-    icon: 'fas fa-chalkboard',
-    link: '/dashboard/whiteboard',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_whiteboard.jpg?alt=media&token=eb068b8d-bfcf-41bd-9b5d-986ad0ed235f',
-    description:
-      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
-  },
-  {
-    title: 'Chart',
-    icon: 'fas fa-chart-bar',
-    link: '/dashboard/chart',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
-    description:
-      'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
-  },
-]
+import { Metadata } from 'next'
+import { navigationOptions } from '@/lib/utils'
+import { track } from '@vercel/analytics'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
 
   return data.json()
+}
+
+// Metadata
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'Create and manage your diagrams and charts',
 }
 
 export default async function Dashboard() {
@@ -58,24 +28,12 @@ export default async function Dashboard() {
   console.log('diagrams', diagrams)
 
   return (
-    <div className="min-h-screen bg-black sm:py-12">
+    <div className="min-h-screen bg-gray-100 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="min-h-screen rounded-lg p-4">
-            <div className="flex justify-between">
-              <h1 className="text-3xl font-bold leading-9 text-indigo-500">
-                Dashboard
-              </h1>
-              <Link
-                className="rounded-lg bg-indigo-700 px-4 py-2 font-medium leading-5 text-white text-white shadow-xl hover:bg-pink-500"
-                href="/auth/logout"
-              >
-                Logout
-              </Link>
-            </div>
-
-            <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="mt-8 flex items-center justify-between">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between">
                 <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
                   What would you like to create?
                 </h2>
@@ -84,10 +42,10 @@ export default async function Dashboard() {
                 role="list"
                 className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
               >
-                {options.map((option) => (
+                {navigationOptions.map((option) => (
                   <li
                     key={option.title}
-                    className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg bg-white text-center transition duration-300 ease-in-out hover:scale-105"
+                    className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white text-center shadow-lg transition duration-300 ease-in-out hover:scale-105"
                   >
                     <div className="flex flex-1 flex-col p-8">
                       <Image
@@ -128,7 +86,7 @@ export default async function Dashboard() {
               </ul>
             </div>
 
-            {diagrams ? (
+            {diagrams && diagrams.length > 0 ? (
               <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
                   <div className="flex items-center justify-between">
@@ -143,7 +101,7 @@ export default async function Dashboard() {
                     {diagrams.map((diagram: DiagramData) => (
                       <li
                         key={diagram.id}
-                        className="transform overflow-hidden rounded-xl border border-gray-200 bg-white transition duration-300 ease-in-out hover:scale-105"
+                        className="transform overflow-hidden rounded-lg border border-gray-200 bg-white transition duration-300 ease-in-out hover:scale-105"
                       >
                         <div className="flex items-center gap-x-4 border-b border-indigo-900/5 bg-gray-50 p-6">
                           <div className="text-md font-medium leading-6 text-indigo-700">
@@ -176,10 +134,10 @@ export default async function Dashboard() {
                           {/** button to view the diagram */}
                           <Link
                             href={`/dashboard/diagram/${diagram.id}`}
-                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg p-2 font-medium text-indigo-700 transition duration-300 ease-in-out hover:scale-105 hover:border-indigo-700 hover:bg-indigo-700 hover:text-white"
+                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-300 hover:text-white"
                           >
                             <PlayIcon
-                              className="h-5 w-5 text-pink-700 transition duration-150 ease-in-out hover:text-white"
+                              className="h-5 w-5 text-pink-700"
                               aria-hidden="true"
                             />
                             View

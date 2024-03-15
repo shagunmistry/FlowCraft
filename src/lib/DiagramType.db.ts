@@ -1,7 +1,8 @@
 import { Edge, Node } from 'reactflow'
+import { DiagramOrChartType } from './utils'
 
 export interface DiagramData {
-  type: string
+  type: DiagramOrChartType
   data: {
     edges: Edge[]
     nodes: Node[]

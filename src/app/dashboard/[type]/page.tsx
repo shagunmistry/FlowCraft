@@ -64,37 +64,10 @@ export default function DynamicDiagramPage({
   }
 
   return (
-    <div className="bg-black sm:py-12">
+    <div className="bg-gray-100 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <div className="flex items-center justify-between">
-            <Link
-              href="/dashboard"
-              className="mb-4 flex transform items-center space-x-2 rounded-lg bg-white px-3 py-2 text-indigo-700 shadow-md transition-colors duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-indigo-100 hover:text-indigo-900 hover:shadow-lg"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
-                />
-              </svg>
-              <span>Back</span>
-            </Link>
-          </div>
-          <p className="text-semibold text-xl text-indigo-700">FlowCraft</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-indigo-700 sm:text-4xl">
-            Welcome back! 🎉
-          </h1>
-
-          <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 text-gray-700 text-white lg:max-w-none lg:grid-cols-2">
+          <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 lg:max-w-none lg:grid-cols-2">
             <ChartDescriptionInput type={context.type} />
           </div>
         </div>

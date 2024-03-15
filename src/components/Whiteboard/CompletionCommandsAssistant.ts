@@ -117,7 +117,7 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
         if (stream.aborted) return
 
         console.log('-- Processing final snapshot --', snapshot)
-        fetch('/api/whiteboard-completion', {
+        fetch('/api/save-to-db', {
           method: 'POST',
           body: JSON.stringify({
             snapshot,
