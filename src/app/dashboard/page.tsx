@@ -50,6 +50,15 @@ export default async function Dashboard() {
     return redirect('/login')
   }
 
+  const { data: diagramsData, error: diagramsError } = await supabase
+    .from('diagrams')
+    .select('*')
+    .eq('user_id', data.user.id)
+
+  if (diagramsError) {
+    console.error(diagramsError)
+  }
+
   return (
     <div className="min-h-screen bg-black sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -66,6 +75,9 @@ export default async function Dashboard() {
                 Logout
               </Link>
             </div>
+
+            
+
             <ul
               role="list"
               className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"

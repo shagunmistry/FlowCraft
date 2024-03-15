@@ -14,6 +14,6 @@ export interface Thread<T> {
   /** 2. The user message is send to the LLM which sends back a response */
   sendMessage(input: string): Promise<T>
   /** 3. The response is used to control the editor */
-  handleAssistantResponse(result: T): Promise<void>
+  handleAssistantResponse(result: T, input: string): Promise<void>
   cancel(): void
 }

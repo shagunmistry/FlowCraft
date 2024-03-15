@@ -21,19 +21,19 @@ import { useAssistant } from './Whiteboard/UserPrompt'
 
 export const exampleFlowDiagramPrompts = [
   {
-    title: 'What is the house buying process?',
+    title: 'SAMPLE: What is the house buying process?',
     description: '',
   },
   {
-    title: 'How do you make a peanut butter and jelly sandwich?',
+    title: 'SAMPLE: How do you make a peanut butter and jelly sandwich?',
     description: '',
   },
   {
-    title: 'How to Make a Paper Airplane',
+    title: 'SAMPLE: How to Make a Paper Airplane',
     description: '',
   },
   {
-    title: 'Explain the Patient Triaging Process from a Patient Perspective',
+    title: 'SAMPLE: Explain the Patient Triaging Process from a Patient Perspective',
     description: '',
   },
 ]
@@ -135,9 +135,7 @@ export default function DiagramInputsForm({
       console.log('Selected Type: ', type)
 
       if (type === 'Whiteboard') {
-        // context.setLoading(true)
         await controls?.start(title)
-        // context.setLoading(false)
       } else {
         context.setLoading(true)
         const diagram = await fetch('/api/generate-diagram', {

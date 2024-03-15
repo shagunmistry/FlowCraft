@@ -79,7 +79,7 @@ export function useAssistant<T>(assistant: Assistant<T>) {
       console.log('User Message: ', userMessage)
       const result = await thread.sendMessage(userMessage)
       console.log('Result: ', result)
-      await thread.handleAssistantResponse(result)
+      await thread.handleAssistantResponse(result, input)
       context.setLoading(false)
     },
     [thread],

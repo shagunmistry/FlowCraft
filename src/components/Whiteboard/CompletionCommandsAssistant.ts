@@ -93,7 +93,7 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
     }
   }
 
-  async handleAssistantResponse(stream: ChatCompletionStream) {
+  async handleAssistantResponse(stream: ChatCompletionStream, input: string) {
     assert(this.currentStream === stream)
 
     const api = new EditorDriverApi(this.editor)
@@ -117,15 +117,20 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
         if (stream.aborted) return
 
         console.log('-- Processing final snapshot --', snapshot)
-        // Tell the driver API to complete
+        fetch('/api/whiteboard-completion', {
+          method: 'POST',
+          body: JSON.stringify({
+            snapshot,
+            title: input,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         api.processSnapshot(snapshot, true)
         api.complete()
 
         console.log('Adding assistant message to the editor')
-        // this.messages.push({
-        //   role: 'assistant',
-        //   content: snapshot,
-        // })
         resolve()
       })
 

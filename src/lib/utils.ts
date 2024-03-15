@@ -12,10 +12,10 @@ export function extractJSON(response: string): string | null {
   return match ? match[1] : null
 }
 
-export function downloadImage(dataUrl: string) {
+export function downloadImage(dataUrl: string, fileName: string) {
   const a = document.createElement('a')
 
-  a.setAttribute('download', 'reactflow.png')
+  a.setAttribute('download', `${fileName}.png`)
   a.setAttribute('href', dataUrl)
   a.click()
 }

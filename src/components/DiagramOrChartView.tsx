@@ -17,6 +17,7 @@ import ReactFlow, {
   MarkerType,
   getRectOfNodes,
   getTransformForBounds,
+  getViewportForBounds,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -393,6 +394,70 @@ export default function DiagramOrChartView({
     setToggleReactFlowGird(enabled)
   }
 
+  const downloadFlowDiagramAsPng = async () => {
+    const reactFlowContainer = document.querySelector(
+      '.react-flow__container',
+    ) as HTMLElement
+
+    if (!reactFlowContainer) {
+      console.error('reactFlowContainer not found')
+      return
+    }
+    const imageWidth = 1024
+    const imageHeight = 768
+
+    const nodesBounds = getRectOfNodes(nodes)
+    const transform = getTransformForBounds(
+      nodesBounds,
+      imageWidth,
+      imageHeight,
+      0.5,
+      2,
+    )
+
+    const tempNodes = [...nodes]
+    const tempEdges = [...edges]
+
+    const nodesWithDefaultStyle = nodes.map((node: Node) => {
+      return {
+        ...node,
+        type: '',
+      }
+    })
+
+    setNodes(nodesWithDefaultStyle)
+
+    const fitButton = document.getElementsByClassName(
+      '.react-flow__controls-fitview',
+    )[0] as HTMLButtonElement
+    if (fitButton) {
+      fitButton.click()
+    }
+
+    const source = document.querySelector(
+      '.react-flow__viewport',
+    ) as HTMLElement
+
+    const dataUrl = await toPng(source, {
+      backgroundColor: '#1a365d',
+      width: imageWidth,
+      height: imageHeight,
+      style: {
+        width: imageWidth.toString(),
+        height: imageHeight.toString(),
+        transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
+      },
+    })
+
+    const fileName = context.title
+      ? context.title.replace(' ', '-')
+      : 'flow-diagram'
+    downloadImage(dataUrl, fileName)
+
+    setNodes(tempNodes)
+    setEdges(tempEdges)
+  }
+
   return (
     <>
       {notification && (
@@ -416,6 +481,7 @@ export default function DiagramOrChartView({
             clearReactFlowDiagram={clearReactFlowDiagram}
             createShareableLink={createShareableLink}
             toggleGrid={toggleGrid}
+            downloadFlowDiagramAsPng={downloadFlowDiagramAsPng}
           />
         )}
       </div>
