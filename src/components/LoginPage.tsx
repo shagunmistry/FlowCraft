@@ -229,7 +229,7 @@ export default function LoginPage({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              {/* <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
@@ -253,7 +253,7 @@ export default function LoginPage({
                     Forgot password?
                   </a>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex justify-between">
                 <button
@@ -278,7 +278,7 @@ export default function LoginPage({
                 Don't have an account?{' '}
                 <button
                   type="button"
-                  className="font-semibold text-white hover:text-indigo-500"
+                  className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
                   onClick={_signup}
                 >
                   Sign up
@@ -326,7 +326,9 @@ export default function LoginPage({
                 <button
                   type="button"
                   onClick={_loginWithGithub}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                  className={`flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent ${
+                    process.env.NODE_ENV === 'production' ? 'col-span-2' : ''
+                  }`}
                 >
                   <svg
                     className="h-5 w-5 fill-[#24292F]"
