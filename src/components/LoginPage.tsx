@@ -166,6 +166,7 @@ export default function LoginPage({
     }
 
     if (res && res.data) {
+      console.log('Redirecting to: ', res.data.url)
       window.location.href = res.data.url
     }
   }
@@ -289,7 +290,7 @@ export default function LoginPage({
             <div>
               <div className="mt-6 grid grid-cols-2 gap-4">
                 {/** If in production, dont show the Sign in with Google button */}
-                {process.env.NODE_ENV === 'production' ? null : (
+                {/* {process.env.NODE_ENV === 'production' ? null : ( */}
                   <button
                     type="button"
                     onClick={_loginWithGoogle}
@@ -321,7 +322,7 @@ export default function LoginPage({
                       Google
                     </span>
                   </button>
-                )}
+                {/* )} */}
 
                 <button
                   type="button"

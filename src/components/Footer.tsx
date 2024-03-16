@@ -8,6 +8,10 @@ const footerNavigation = {
     { name: 'Blogs', href: '/blogs' },
     { name: 'Release Notes', href: '/release-notes' },
   ],
+  legal: [
+    { name: 'Privacy', href: '/privacy-policy' },
+    { name: 'Terms', href: '/terms' },
+  ],
   social: [
     {
       name: 'Instagram',
@@ -74,6 +78,19 @@ export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
           ))}
         </div>
         <FeedbackButton />
+
+        <div className="mt-8 flex justify-center space-x-6">
+          {footerNavigation.legal.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="text-base text-white hover:text-white"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+
         <p className="mt-8 text-center text-base text-white">
           &copy; 2024 FlowCraft. All rights reserved.
         </p>
