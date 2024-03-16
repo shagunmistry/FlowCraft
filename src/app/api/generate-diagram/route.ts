@@ -1,12 +1,5 @@
+import { getEmbeddingForContext } from '@/lib/supabase'
 import {
-  MATCH_DOCUMENTS_FOR_CHARTJS_TABLE,
-  MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE,
-  getEmbeddingForContext,
-  supabase,
-} from '@/lib/supabase'
-import {
-  inputForChartJsContext,
-  inputForReactFlowContext,
   openAiModel,
   promptForChartJsContext,
   promptForChartJsExampleCode,
@@ -18,13 +11,24 @@ import {
   promptForUserMessageForChartJs,
 } from '@/lib/openai'
 import * as tldrawInputs from '@/lib/openai.tldraw'
-import GPT3Tokenizer from 'gpt3-tokenizer'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { DiagramOrChartType } from '@/lib/utils'
+import { createClient } from '@/lib/supabase-auth/server'
 
 export const maxDuration = 200
 
 export async function POST(req: Request) {
+  const supabaseClient = createClient()
+  const { data: userData, error: userDataError } =
+    await supabaseClient.auth.getUser()
+
+  if (userDataError) {
+    console.error(
+      'Error getting user data while generating diagram:',
+      userDataError,
+    )
+  }
+
   const json = await req.json()
   const { title: diagramTitle, description: diagramDescription } = json
   const type = json.type as DiagramOrChartType
@@ -109,6 +113,22 @@ export async function POST(req: Request) {
     console.log('2. Response from OpenAI: ', result)
 
     if (result) {
+      const { data: insertData, error: insertError } = await supabaseClient
+        .from('diagrams')
+        .insert([
+          {
+            title: diagramTitle,
+            description: diagramDescription,
+            type,
+            data: JSON.stringify(result),
+            created_at: new Date().toISOString(),
+            user_id: userData.user?.id,
+            private: true,
+          },
+        ])
+
+      console.log('Insert Data: ', insertData)
+      console.log('Insert Error: ', insertError)
       return new Response(
         JSON.stringify({
           result,
@@ -123,6 +143,16 @@ export async function POST(req: Request) {
 
     console.log('3. Response from OpenAI: ', res.choices[0].message.content)
 
+    await supabaseClient.from('diagrams').insert([
+      {
+        title: diagramTitle,
+        description: diagramDescription,
+        type,
+        data: JSON.stringify(result),
+        created_at: new Date().toISOString(),
+        user_id: userData.user?.id,
+      },
+    ])
     return new Response(
       JSON.stringify({
         result: res.choices[0].message.content,
@@ -135,6 +165,16 @@ export async function POST(req: Request) {
     )
   }
 
+  await supabaseClient.from('diagrams').insert([
+    {
+      title: diagramTitle,
+      description: diagramDescription,
+      type,
+      data: `Failed to generate diagram`,
+      created_at: new Date().toISOString(),
+      user_id: userData.user?.id,
+    },
+  ])
   return new Response(
     JSON.stringify({
       result: 'Failed to generate diagram',

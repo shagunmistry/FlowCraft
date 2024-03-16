@@ -1,117 +1,154 @@
-import { createClient } from '@/lib/supabase-auth/server'
 import { PlayIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 
-interface Option {
-  title: string
-  icon: string // Replace with appropriate icon class names
-  link: string // Replace with actual links to corresponding pages
-  source: string
-  description: string
+import { DiagramData } from '@/lib/DiagramType.db'
+
+import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
+import { Metadata } from 'next'
+import { navigationOptions } from '@/lib/utils'
+import { track } from '@vercel/analytics'
+
+async function getDiagrams() {
+  const data = await _getDiagrams()
+
+  return data.json()
 }
 
-const options: Option[] = [
-  {
-    title: 'Flow Diagram',
-    icon: 'fas fa-chart-branch',
-    link: '/dashboard/flow-diagram',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_diagram.jpg?alt=media&token=779cd4b2-3f5d-43e4-999e-369405c4aeff',
-    description:
-      'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
-  },
-  {
-    title: 'Whiteboard',
-    icon: 'fas fa-chalkboard',
-    link: '/dashboard/whiteboard',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_whiteboard.jpg?alt=media&token=eb068b8d-bfcf-41bd-9b5d-986ad0ed235f',
-    description:
-      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
-  },
-  {
-    title: 'Chart',
-    icon: 'fas fa-chart-bar',
-    link: '/dashboard/chart',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
-    description:
-      'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
-  },
-]
+// Metadata
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'Create and manage your diagrams and charts',
+}
 
 export default async function Dashboard() {
-  const supabase = createClient()
+  // const diagrams: any = []
+  const { diagrams } = await getDiagrams()
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    return redirect('/login')
-  }
+  console.log('diagrams', diagrams)
 
   return (
-    <div className="min-h-screen bg-black sm:py-12">
+    <div className="min-h-screen bg-gray-100 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <div className="min-h-screen rounded-md p-4">
-            <div className="flex justify-between">
-              <h1 className="text-3xl font-bold leading-9 text-indigo-500">
-                What do you want to create today?
-              </h1>
-              <Link
-                className="rounded-md bg-indigo-700 px-4 py-2 font-medium leading-5 text-white text-white shadow-xl hover:bg-pink-500"
-                href="/auth/logout"
+          <div className="min-h-screen rounded-lg p-4">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between">
+                <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
+                  What would you like to create?
+                </h2>
+              </div>
+              <ul
+                role="list"
+                className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
               >
-                Logout
-              </Link>
-            </div>
-            <ul
-              role="list"
-              className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
-            >
-              {options.map((option) => (
-                <li
-                  key={option.title}
-                  className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg bg-white text-center transition duration-300 ease-in-out hover:scale-105"
-                >
-                  <div className="flex flex-1 flex-col p-8">
-                    <Image
-                      className="mx-auto h-32 w-32 flex-shrink-0 rounded-full object-cover shadow-lg"
-                      src={option.source}
-                      height={128}
-                      width={128}
-                      alt={option.title}
-                    />
-                    <h3 className="font-large mt-6 text-lg font-bold text-indigo-500 sm:text-sm md:text-xl">
-                      {option.title}
-                    </h3>
-                    <dl className="mt-1 flex flex-grow flex-col justify-between">
-                      <dt className="sr-only">Description</dt>
-                      <dd className="text-md text-indigo-700">
-                        {option.description}
-                      </dd>
-                    </dl>
-                  </div>
-                  <div>
-                    <div className="-mt-px flex">
-                      <div className="flex w-0 flex-1">
-                        <Link
-                          href={option.link}
-                          className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
-                        >
-                          <PlayIcon
-                            className="h-5 w-5 text-pink-400 transition duration-150 ease-in-out group-hover:text-gray-500"
-                            aria-hidden="true"
-                          />
-                          Create
-                        </Link>
+                {navigationOptions.map((option) => (
+                  <li
+                    key={option.title}
+                    className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white text-center shadow-lg transition duration-300 ease-in-out hover:scale-105"
+                  >
+                    <div className="flex flex-1 flex-col p-8">
+                      <Image
+                        className="mx-auto h-32 w-32 flex-shrink-0 rounded-full object-cover shadow-lg"
+                        src={option.source}
+                        height={128}
+                        width={128}
+                        alt={option.title}
+                      />
+                      <h3 className="font-large mt-6 text-lg font-bold text-indigo-500 sm:text-sm md:text-xl">
+                        {option.title}
+                      </h3>
+                      <dl className="mt-1 flex flex-grow flex-col justify-between">
+                        <dt className="sr-only">Description</dt>
+                        <dd className="text-md text-indigo-700">
+                          {option.description}
+                        </dd>
+                      </dl>
+                    </div>
+                    <div>
+                      <div className="-mt-px flex">
+                        <div className="flex w-0 flex-1">
+                          <Link
+                            href={option.link}
+                            className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
+                          >
+                            <PlayIcon
+                              className="h-5 w-5 text-pink-400 transition duration-150 ease-in-out group-hover:text-gray-500"
+                              aria-hidden="true"
+                            />
+                            Create
+                          </Link>
+                        </div>
                       </div>
                     </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {diagrams && diagrams.length > 0 ? (
+              <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+                  <div className="flex items-center justify-between">
+                    <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
+                      Recent Diagrams
+                    </h2>
                   </div>
-                </li>
-              ))}
-            </ul>
+                  <ul
+                    role="list"
+                    className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
+                  >
+                    {diagrams.map((diagram: DiagramData) => (
+                      <li
+                        key={diagram.id}
+                        className="transform overflow-hidden rounded-lg border border-gray-200 bg-white transition duration-300 ease-in-out hover:scale-105"
+                      >
+                        <div className="flex items-center gap-x-4 border-b border-indigo-900/5 bg-gray-50 p-6">
+                          <div className="text-md font-medium leading-6 text-indigo-700">
+                            {diagram.title}
+                          </div>
+                        </div>
+                        <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                          <div className="flex justify-between gap-x-4 py-3">
+                            <dt className="text-gray-500">Created On</dt>
+                            <dd className="text-gray-700">
+                              <time dateTime={diagram.created_at}>
+                                {new Date(
+                                  diagram.created_at,
+                                ).toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </time>
+                            </dd>
+                          </div>
+                          <div className="flex justify-between gap-x-4 py-3">
+                            <dt className="text-gray-500">Details</dt>
+                            <dd className="flex items-start gap-x-2">
+                              <div className="text-md rounded-lg px-2 py-1 font-medium shadow-lg ring-1 ring-inset">
+                                {diagram.type}
+                              </div>
+                            </dd>
+                          </div>
+                          {/** button to view the diagram */}
+                          <Link
+                            href={`/dashboard/diagram/${diagram.id}`}
+                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-300 hover:text-white"
+                          >
+                            <PlayIcon
+                              className="h-5 w-5 text-pink-700"
+                              aria-hidden="true"
+                            />
+                            View
+                          </Link>
+                        </dl>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

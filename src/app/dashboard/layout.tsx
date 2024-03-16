@@ -12,6 +12,9 @@ import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
 import Navbar from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
+import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
+
+import 'reactflow/dist/style.css'
 
 export default function DashboardLayout({
   children,
@@ -368,6 +371,7 @@ export default function DashboardLayout({
         }}
       >
         <main>
+          <DashboardNavbar />
           <div className="relative">{children}</div>
         </main>
         <Footer className="no-action" />

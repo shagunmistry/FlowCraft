@@ -29,7 +29,7 @@ export default function ExamplesDropdown({
       <Listbox value={selected} onChange={handleSelect}>
         {({ open }) => (
           <>
-            <Listbox.Label className="block text-sm font-medium leading-6 text-white">
+            <Listbox.Label className="block text-sm font-medium leading-6">
               Try these examples to get started!
             </Listbox.Label>
             <div className="relative mt-2">

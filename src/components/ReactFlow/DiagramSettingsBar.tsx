@@ -47,6 +47,7 @@ export default function DiagramSettingsBar({
   clearReactFlowDiagram,
   createShareableLink,
   toggleGrid,
+  downloadFlowDiagramAsPng
 }: {
   nodes: Node[]
   edges: Edge[]
@@ -58,6 +59,7 @@ export default function DiagramSettingsBar({
   clearReactFlowDiagram: () => void
   createShareableLink: () => void
   toggleGrid: (enabled: boolean) => void
+  downloadFlowDiagramAsPng: () => void
 }) {
   const context = useContext(DiagramContext)
 
@@ -184,6 +186,21 @@ export default function DiagramSettingsBar({
                             onClick={() => createShareableLink()}
                           >
                             Share
+                          </motion.button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              active ? 'bg-indigo-400' : '',
+                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                            )}
+                            onClick={() => downloadFlowDiagramAsPng()}
+                          >
+                            Download
                           </motion.button>
                         )}
                       </Menu.Item>

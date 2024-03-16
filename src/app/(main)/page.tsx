@@ -5,14 +5,7 @@ import {
   getChartJsJSONFile,
   getReactCodeFlowJSONFile,
 } from '@/lib/supabase'
-import DiagramOrChartView from '@/components/DiagramOrChartView'
-import ChartDescriptionInput from '@/components/ChartDescriptionInput'
-import PricingTier from '@/components/PricingTier'
 
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-
-import { createClient } from '@/lib/supabase-auth/server'
 import MainLanding from '@/components/Main.landing'
 
 const getEmbeddings = async () => {

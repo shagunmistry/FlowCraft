@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase-auth/server'
+import { AuthUser } from '@supabase/supabase-js'
 
 const getURL = () => {
   const baseRoute = 'auth/confirm'
@@ -34,7 +35,7 @@ export async function login(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { data: userData, error } = await supabase.auth.signInWithPassword(data)
 
   console.log('---> Error during Login', error)
 
@@ -42,8 +43,22 @@ export async function login(formData: FormData) {
     return { error: 'Invalid login credentials' }
   }
 
+  // create a user in supabase DB if it doesn't exist
+  await createOrUpdateUserInDB(supabase, userData.user)
+
   revalidatePath('/dashboard')
   return redirect('/dashboard')
+}
+
+async function createOrUpdateUserInDB(supabaseClient: any, userData: AuthUser) {
+  const { error: dbError } = await supabaseClient.from('users').upsert({
+    user_id: userData.id,
+    email: userData.email,
+  })
+
+  if (dbError) {
+    console.error('Error during user creation:', dbError)
+  }
 }
 
 export async function signup(formData: FormData) {
@@ -59,12 +74,16 @@ export async function signup(formData: FormData) {
   console.log('Email', data.email)
   console.log('Password', data.password)
 
-  const { error } = await supabase.auth.signUp(data)
+  const { data: userData, error } = await supabase.auth.signUp(data)
 
   console.log('---> Error', error)
 
   if (error) {
     return { error: error.message }
+  }
+
+  if (userData.user) {
+    await createOrUpdateUserInDB(supabase, userData.user)
   }
 
   return {

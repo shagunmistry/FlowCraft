@@ -7,6 +7,7 @@ import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { ArrowDownCircleIcon } from '@heroicons/react/20/solid'
 
 const navigation = [
   { name: 'Start Here', href: '/dashboard' },
@@ -33,7 +34,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-black">
+    <header className="bg-gray-100">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -64,14 +65,15 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="rounded-lg bg-indigo-500 px-3 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-900"
+                className="rounded-lg bg-indigo-500 px-3 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-pink-500"
               >
                 {item.name}
               </Link>
             ))}
           </div>
           <Menu as="div" className="relative">
-            <Menu.Button className="rounded-lg px-3 font-semibold text-white transition duration-150 ease-in-out hover:text-indigo-500">
+            <Menu.Button className="rounded-lg px-3 font-semibold transition duration-150 ease-in-out hover:text-indigo-500">
+              <ArrowDownCircleIcon className="h-5 w-5 inline-block -mt-1 mr-3" />
               Use Cases
             </Menu.Button>
             <Transition
