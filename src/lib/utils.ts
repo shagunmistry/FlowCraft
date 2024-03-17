@@ -47,6 +47,61 @@ export const navigationOptions: Option[] = [
   },
 ]
 
+export const frequencies = [
+  { value: 'monthly', label: 'Monthly' },
+  { value: 'annually', label: 'Annually' },
+]
+export const tiers = [
+  // {
+  //   name: 'Free',
+  //   id: 'tier-free',
+  //   href: '#',
+  //   featured: false,
+  //   description:
+  //     'Ideal for casual users. Get started with the power of AI for free.',
+  //   price: { monthly: '$0', annually: '$0' },
+  //   mainFeatures: [
+  //     '5 AI-generated diagrams per month',
+  //     '5 AI-generated whiteboards per month',
+  //   ],
+  //   cta: 'Sign Up for Free',
+  // },
+  {
+    name: 'Hobby',
+    id: 'tier-hobby',
+    href: '#',
+    featured: true, // This plan is featured
+    description:
+      'Designed for regular users. Unlock more AI-generated visuals and export options.',
+    price: { monthly: '$9', annually: '$99' }, // You can offer a discount for annual billing
+    mainFeatures: [
+      'All features of the Free plan',
+      '20 AI-generated diagrams per month',
+      '20 AI-generated whiteboards per month',
+      'Shareable links to diagrams and whiteboards',
+      'Priority customer support',
+    ],
+    cta: 'Start your Hobby trial!',
+  },
+  {
+    name: 'Pro',
+    id: 'tier-pro',
+    href: '#',
+    featured: false,
+    description:
+      'Perfect for professionals. Get unlimited AI-generated visuals and team collaboration features.',
+    price: { monthly: '$29', annually: '$252' }, // You can offer a discount for annual billing
+    mainFeatures: [
+      'All features of the Hobby plan',
+      'Unlimited AI-generated diagrams and whiteboards',
+      'Team collaboration features (shared workspaces, version control)',
+      'Export diagrams and whiteboards',
+      'Priority customer support',
+    ],
+    cta: 'Start your Pro trial!',
+  },
+]
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

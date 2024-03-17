@@ -8,7 +8,6 @@ import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
-import PricingTier from '@/components/PricingTier'
 import Link from 'next/link'
 
 const allowedTypes = ['whiteboard', 'chart', 'flow-diagram']
