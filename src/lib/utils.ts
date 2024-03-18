@@ -90,7 +90,7 @@ export const tiers = [
     featured: false,
     description:
       'Perfect for professionals. Get unlimited AI-generated visuals and team collaboration features.',
-    price: { monthly: '$29', annually: '$252' }, // You can offer a discount for annual billing
+    price: { monthly: '$19', annually: '$199' },
     mainFeatures: [
       'All features of the Hobby plan',
       'Unlimited AI-generated diagrams and whiteboards',
