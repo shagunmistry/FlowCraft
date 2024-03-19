@@ -372,7 +372,9 @@ export default function MainLayout({
         </main>
         <Footer />
 
-        <Analytics />
+        <Analytics
+          mode={process.env.NODE_ENV as 'auto' | 'development' | 'production'}
+        />
       </DiagramContext.Provider>
     </WhiteboardContext.Provider>
   )

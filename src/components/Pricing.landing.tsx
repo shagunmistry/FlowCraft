@@ -2,10 +2,62 @@ import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { cn, frequencies, tiers } from '@/lib/utils'
+import Link from 'next/link'
 
-export default function PricingTiers() {
+import { loadStripe } from '@stripe/stripe-js'
+import SimpleNotification from './SimpleNotification'
+import SuccessDialog from './SuccessDialog'
+import ErrorDialog from './ErrorDialog'
+
+export default function PricingTiers({
+  goToCheckout = false,
+}: {
+  goToCheckout: boolean
+}) {
   const [frequency, setFrequency] = useState(frequencies[0])
+  const [openDialog, setOpenDialog] = useState(false)
 
+  const handleGoingToCheckout = async (id: string) => {
+    console.log('Going to checkout', id)
+    const stripe = await loadStripe(
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
+    )
+
+    if (stripe) {
+      const { id: sessionId } = await fetch('/api/checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ product: id }),
+      })
+        .then((res) => res.json())
+        .catch((error) => {
+          console.error('Error fetching checkout session', error)
+          setOpenDialog(true)
+          return { id: '' }
+        })
+
+      if (!sessionId) {
+        setOpenDialog(true)
+        return
+      }
+
+      console.log('Session ID', sessionId)
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      })
+
+      if (error) {
+        console.error('Error redirecting to checkout', error)
+        setOpenDialog(true)
+      }
+    } else {
+      setOpenDialog(true)
+    }
+  }
+
+  console.log('Go to checkout', goToCheckout)
   return (
     <div className="isolate overflow-hidden px-4 sm:px-6 lg:px-8">
       <div className="flow-root rounded-xl bg-gray-900 pb-16 pt-24 shadow-lg sm:pt-32 lg:pb-0">
@@ -125,18 +177,33 @@ export default function PricingTiers() {
                         >{`Billed ${frequency.value}`}</p>
                       </div>
                     </div>
-                    <a
-                      href={tier.href}
-                      aria-describedby={tier.id}
-                      className={cn(
-                        tier.featured
-                          ? 'bg-pink-600 shadow-sm hover:bg-pink-500 focus-visible:outline-pink-600'
-                          : 'bg-white/10 hover:bg-white/20 focus-visible:outline-white',
-                        'rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
-                      )}
-                    >
-                      {tier.cta}
-                    </a>
+                    {goToCheckout ? (
+                      <button
+                        type="button"
+                        className={cn(
+                          tier.featured
+                            ? 'bg-pink-600 shadow-sm hover:bg-pink-500 focus-visible:outline-pink-600'
+                            : 'bg-white/10 hover:bg-white/20 focus-visible:outline-white',
+                          'rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                        )}
+                        onClick={() => handleGoingToCheckout(tier.id)}
+                      >
+                        {tier.cta}
+                      </button>
+                    ) : (
+                      <Link
+                        href={tier.href}
+                        aria-describedby={tier.id}
+                        className={cn(
+                          tier.featured
+                            ? 'bg-pink-600 shadow-sm hover:bg-pink-500 focus-visible:outline-pink-600'
+                            : 'bg-white/10 hover:bg-white/20 focus-visible:outline-white',
+                          'rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                        )}
+                      >
+                        {tier.cta}
+                      </Link>
+                    )}
                   </div>
                   <div className="mt-8 flow-root sm:mt-10">
                     <ul
@@ -169,6 +236,12 @@ export default function PricingTiers() {
         </div>
       </div>
       <div className="relative bg-gray-100 pb-8 lg:pt-14"></div>
+      <ErrorDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title="Error"
+        message="An error occurred while processing your request. Please try again later."
+      />
     </div>
   )
 }

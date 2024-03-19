@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
   console.log('GET /auth/checkout SEARCH PARAMS: ', searchParams.toString())
 
-  const checkoutSessionId = searchParams.get('code')
+  const checkoutSessionId = searchParams.get('session_id')
 
   if (checkoutSessionId && process.env.STRIPE_SECRET_KEY) {
     const _stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -23,25 +23,33 @@ export async function GET(request: NextRequest) {
 
     const session = await _stripe.checkout.sessions.retrieve(checkoutSessionId)
     console.log('GET /auth/checkout: ', session)
-    if (session && session.payment_status === 'paid') {
+    if (
+      session &&
+      session.payment_status === 'paid' &&
+      session.mode === 'subscription'
+    ) {
       // update user subscription status in DB and redirect to dashboard
-      const { error } = await supabase
+      const { data: userData, error } = await supabase
         .from('users')
         .update({
           subscribed: true,
           plan: session.subscription,
           date_subscribed: new Date().toISOString(),
         })
-        .eq('user_id', data.user.id)
+        .eq('email', data.user.email)
+        .select('*')
 
+      console.log('GET /auth/checkout AFTER Update: ', userData, error)
       if (error) {
         console.error('Error updating user subscription status', error)
         return redirect(
           '/error?message=Error updating user subscription status! Please contact support.',
         )
       }
-    }
 
-    return redirect('/dashboard')
+      return redirect('/dashboard')
+    } else {
+      return redirect('/dashboard')
+    }
   }
 }

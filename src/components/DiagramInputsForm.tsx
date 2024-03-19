@@ -33,7 +33,8 @@ export const exampleFlowDiagramPrompts = [
     description: '',
   },
   {
-    title: 'SAMPLE: Explain the Patient Triaging Process from a Patient Perspective',
+    title:
+      'SAMPLE: Explain the Patient Triaging Process from a Patient Perspective',
     description: '',
   },
 ]
@@ -129,6 +130,7 @@ export default function DiagramInputsForm({
         track('create', {
           type: type,
           title: title,
+          env: process.env.NEXT_PUBLIC_VERCEL_ENV,
         })
       }
 
@@ -246,7 +248,7 @@ export default function DiagramInputsForm({
                     type="text"
                     name="title"
                     id="title"
-                    className="mt-2 block w-96 border-0 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-b-2 border-indigo-500 focus:border-pink-200"
+                    className="mt-2 block w-96 border-0 border-b-2 border-indigo-500 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Enter Diagram Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -267,13 +269,15 @@ export default function DiagramInputsForm({
                 </span>
                 <span className="ml-4 flex min-w-0 flex-col">
                   <span className="text-xl font-medium font-semibold">
-                    {type === 'Chart' ? 'Chart Data' : 'Describe what you want to create'}
+                    {type === 'Chart'
+                      ? 'Chart Data'
+                      : 'Describe what you want to create'}
                   </span>
                   <textarea
                     rows={5}
                     name="description"
                     id="description"
-                    className="mt-2 block w-96 resize-none border-0 py-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-b-2 border-indigo-500 focus:border-pink-200"
+                    className="mt-2 block w-96 resize-none border-0 border-b-2 border-indigo-500 py-2 text-gray-900 placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder={
                       context.type === 'Chart'
                         ? 'Enter Chart Data. Data should be in CSV format with headers.'
@@ -301,7 +305,9 @@ export default function DiagramInputsForm({
                   <button
                     className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={handleSubmit}
-                    disabled={context.loading || (!title || description.length < 10)}
+                    disabled={
+                      context.loading || !title || description.length < 10
+                    }
                   >
                     Create
                   </button>

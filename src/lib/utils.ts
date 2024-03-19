@@ -75,11 +75,10 @@ export const tiers = [
       'Designed for regular users. Unlock more AI-generated visuals and export options.',
     price: { monthly: '$9', annually: '$99' }, // You can offer a discount for annual billing
     mainFeatures: [
-      'All features of the Free plan',
       '20 AI-generated diagrams per month',
       '20 AI-generated whiteboards per month',
-      'Shareable links to diagrams and whiteboards',
-      'Priority customer support',
+      '10 Shareable links to generated visuals per month',
+      'Customer support',
     ],
     cta: 'Start your Hobby trial!',
   },
@@ -94,7 +93,7 @@ export const tiers = [
     mainFeatures: [
       'All features of the Hobby plan',
       'Unlimited AI-generated diagrams and whiteboards',
-      'Team collaboration features (shared workspaces, version control)',
+      'Invite others to your team and collaborate',
       'Export diagrams and whiteboards',
       'Priority customer support',
     ],

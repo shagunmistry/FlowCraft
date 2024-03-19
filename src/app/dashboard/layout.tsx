@@ -15,6 +15,7 @@ import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
 
 import 'reactflow/dist/style.css'
+import Script from 'next/script'
 
 export default function DashboardLayout({
   children,
@@ -376,7 +377,9 @@ export default function DashboardLayout({
         </main>
         <Footer className="no-action" />
 
-        <Analytics />
+        <Analytics
+          mode={process.env.NODE_ENV as 'auto' | 'development' | 'production'}
+        />
       </DiagramContext.Provider>
     </WhiteboardContext.Provider>
   )

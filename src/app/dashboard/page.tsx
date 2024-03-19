@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { DiagramData } from '@/lib/DiagramType.db'
 
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
+import { GET as _getUserData } from '@/app/api/user/route'
 import { Metadata } from 'next'
 import { navigationOptions } from '@/lib/utils'
 import { track } from '@vercel/analytics/server'
@@ -19,6 +20,12 @@ async function getDiagrams() {
   return data.json()
 }
 
+async function getUserData() {
+  const data = await _getUserData()
+
+  return data.json()
+}
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -26,30 +33,39 @@ export const metadata: Metadata = {
 }
 
 export default async function Dashboard() {
-  const client = createClient()
-  const { data: userData, error: userError } = await client.auth.getUser()
+  // const client = createClient()
+  // const { data: userData, error: userError } = await client.auth.getUser()
 
-  if (userError || !userData?.user) {
-    return redirect('/login')
-  }
+  // if (userError || !userData?.user) {
+  //   return redirect('/login')
+  // }
 
-  track('dashboard/visit', {
-    user_id: userData.user ? userData.user.id : null,
-  })
+  // process.env.NODE_ENV !== 'development' &&
+  //   track('dashboard/visit', {
+  //     user_id: userData.user ? userData.user.id : null,
+  //     env: process.env.NODE_ENV,
+  //   })
 
-  // Check if the user is subscribed to a plan
-  const { data: subscriptionData, error: subscriptionError } = await supabase
-    .from('users')
-    .select('subscribed, plan')
-    .eq('user_id', userData.user.id)
+  // console.log('Fetching subscription data of user', userData.user)
+  // // Check if the user is subscribed to a plan
+  // const { data: subscriptionData, error: subscriptionError } = await supabase
+  //   .from('users')
+  //   .select('subscribed, plan')
+  //   .eq('email', userData.user.email)
 
-  if (
-    subscriptionError ||
-    (subscriptionData && subscriptionData.length === 0)
-  ) {
-    console.error('Error fetching subscription', subscriptionError)
-  }
+  // console.log('----> subscriptionData', subscriptionData)
+  // if (
+  //   subscriptionError ||
+  //   (subscriptionData && subscriptionData.length === 0)
+  // ) {
+  //   console.error('Error fetching subscription or there is no subscription', {
+  //     subscriptionError,
+  //     subscriptionData,
+  //   })
+  // }
+  const subscriptionData = await getUserData()
 
+  console.log('----> subscriptionData', subscriptionData)
   const isSubscribed =
     subscriptionData && subscriptionData.length > 0
       ? subscriptionData[0].subscribed
@@ -192,13 +208,12 @@ export default async function Dashboard() {
                     Every plan includes a 7-day free trial. You can cancel at
                     any time. <br />
                     <span className="font-medium text-indigo-500">
-                      Also get access to all the upcoming
-                      features and updates.
+                      Also get access to all the upcoming features and updates.
                     </span>
                   </p>
                 </div>
               </div>
-              <PricingOnDashboard />
+              <PricingOnDashboard goToCheckout={true} />
             </div>
           )}
         </div>

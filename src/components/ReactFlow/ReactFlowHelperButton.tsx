@@ -7,7 +7,10 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 export default function ReactFlowHelperButton() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const handleEditButtonClick = () => {
-    track('diagram_help_button_clicked')
+    track('diagram_help_button_clicked', {
+      env: process.env.NODE_ENV,
+      user_id: process.env.USER_ID || null,
+    })
 
     setIsModalOpen(true)
   }
@@ -24,7 +27,6 @@ export default function ReactFlowHelperButton() {
           aria-hidden="true"
         />
       </button>
-      
     </Panel>
   )
 }

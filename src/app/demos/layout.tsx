@@ -18,7 +18,9 @@ export default function MainLayout({
         <div className="relative">{children}</div>
       </main>
       <Footer />
-      <Analytics />
+      <Analytics
+        mode={process.env.NODE_ENV as 'auto' | 'development' | 'production'}
+      />
     </>
   )
 }

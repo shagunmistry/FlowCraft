@@ -21,7 +21,10 @@ export default function EditDiagramButton({
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const handleEditButtonClick = () => {
-    track('diagram_edit_button_clicked')
+    track('diagram_edit_button_clicked', {
+      env: process.env.NODE_ENV,
+      user_id: process.env.USER_ID || null,
+    })
 
     setIsModalOpen(true)
   }
