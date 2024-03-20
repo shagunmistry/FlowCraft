@@ -5,14 +5,30 @@ import Link from 'next/link'
 import { DiagramData } from '@/lib/DiagramType.db'
 
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
+import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import { navigationOptions } from '@/lib/utils'
-import { track } from '@vercel/analytics'
+import { DiagramType, navigationOptions } from '@/lib/utils'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
 
-  return data.json()
+  if (data.status === 200) {
+    const result = await data.json()
+    return { diagrams: result.diagrams }
+  }
+
+  return { diagrams: [] }
+}
+
+async function getShares() {
+  const data = await _getShares()
+
+  if (data.status === 200) {
+    const result = await data.json()
+    return { shares: result.shares }
+  }
+
+  return { shares: [] }
 }
 
 // Metadata
@@ -22,10 +38,30 @@ export const metadata: Metadata = {
 }
 
 export default async function Dashboard() {
-  // const diagrams: any = []
+  const stats = [
+    { id: 1, name: 'Flow Diagrams Created', value: 0 },
+    { id: 2, name: 'Charts Created', value: 0 },
+    { id: 3, name: 'Whiteboard Sketches Created', value: 0 },
+    { id: 4, name: 'Total Shares', value: 0 },
+  ]
   const { diagrams } = await getDiagrams()
+  const { shares } = await getShares()
 
-  console.log('diagrams', diagrams)
+  if (diagrams.length > 0) {
+    stats[0].value = diagrams.filter(
+      (d: any) => d.type === DiagramType.FlowDiagram,
+    ).length
+    stats[1].value = diagrams.filter(
+      (d: any) => d.type === DiagramType.Chart,
+    ).length
+    stats[2].value = diagrams.filter(
+      (d: any) => d.type === DiagramType.Whiteboard,
+    ).length
+  }
+
+  if (shares.length > 0) {
+    stats[3].value = shares.length
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 sm:py-12">
@@ -38,6 +74,7 @@ export default async function Dashboard() {
                   What would you like to create?
                 </h2>
               </div>
+
               <ul
                 role="list"
                 className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
@@ -94,6 +131,18 @@ export default async function Dashboard() {
                       Recent Diagrams
                     </h2>
                   </div>
+                  <dl className="mt-6 grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl text-center shadow-lg sm:grid-cols-2 lg:grid-cols-4">
+                    {stats.map((stat) => (
+                      <div key={stat.id} className="flex flex-col bg-white p-8">
+                        <dt className="text-sm font-semibold leading-6 text-indigo-500">
+                          {stat.name}
+                        </dt>
+                        <dd className="order-first text-3xl font-semibold tracking-tight text-black">
+                          {stat.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
                   <ul
                     role="list"
                     className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
@@ -101,7 +150,7 @@ export default async function Dashboard() {
                     {diagrams.map((diagram: DiagramData) => (
                       <li
                         key={diagram.id}
-                        className="transform overflow-hidden rounded-lg border border-gray-200 bg-white transition duration-300 ease-in-out hover:scale-105"
+                        className="transform overflow-hidden rounded-xl border border-gray-200 bg-white transition duration-300 ease-in-out hover:scale-105"
                       >
                         <div className="flex items-center gap-x-4 border-b border-indigo-900/5 bg-gray-50 p-6">
                           <div className="text-md font-medium leading-6 text-indigo-700">
