@@ -1,16 +1,20 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { cn } from '@/lib/utils'
+import { cn, DiagramOrChartType } from '@/lib/utils'
 
 export default function ExamplesDropdown({
   values,
   selectExample,
+  selectedType,
+  selectedTypeDescription,
 }: {
   values: {
     title: string
     description: string
   }[]
+  selectedType: DiagramOrChartType
+  selectedTypeDescription: string
   selectExample: (title: string, description: string) => void
 }) {
   const [selected, setSelected] = useState(values[2])
@@ -26,6 +30,36 @@ export default function ExamplesDropdown({
 
   return (
     <div className="mb-4">
+      <h2 className="text-lg font-medium leading-6">
+        {selectedTypeDescription}
+      </h2>
+      <ul className="my-8 text-lg text-gray-500">
+        {selectedType === 'Chart' ? (
+          <>
+            <h2 className="text-lg font-medium leading-6">
+              Prefix your Diagram Title with:
+            </h2>
+            {[
+              'Bar Chart',
+              'Bubble Chart',
+              'Line Chart',
+              'Pie Chart',
+              'Polar Area Chart',
+              'Radar Chart',
+              'Scatter Chart',
+            ].map((title) => (
+              <li key={title} className="flex items-center gap-x-2">
+                <CheckIcon className="h-5 w-5 text-pink-600" />
+                <span>"{title} of..."</span>
+              </li>
+            ))}
+            <li key="Custom Chart" className="flex items-center gap-x-2">
+              <CheckIcon className="h-5 w-5 text-pink-600" />
+              <span>Or let the AI decide for you!</span>
+            </li>
+          </>
+        ) : null}
+      </ul>
       <Listbox value={selected} onChange={handleSelect}>
         {({ open }) => (
           <>

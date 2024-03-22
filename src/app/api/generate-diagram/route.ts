@@ -57,9 +57,7 @@ export async function POST(req: Request) {
         ? promptForResponse
         : type === 'Chart'
           ? promptForChartJsResponse
-          : type === 'Whiteboard'
-            ? tldrawInputs.promptForResponse
-            : '',
+          : '',
   }
 
   const assistantMessage3: ChatCompletionMessageParam = {
@@ -69,9 +67,7 @@ export async function POST(req: Request) {
         ? promptForExampleCode
         : type === 'Chart'
           ? promptForChartJsExampleCode
-          : type === 'Whiteboard'
-            ? tldrawInputs.promptForExampleCode
-            : '',
+          : '',
   }
 
   const userMessage: ChatCompletionMessageParam = {
@@ -81,12 +77,7 @@ export async function POST(req: Request) {
         ? promptForUserMessage(diagramTitle, diagramDescription)
         : type === 'Chart'
           ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
-          : type === 'Whiteboard'
-            ? tldrawInputs.promptForUserMessageForTlDraw(
-                diagramTitle,
-                diagramDescription,
-              )
-            : '',
+          : '',
   }
 
   const res = await openAiModel.chat.completions.create({

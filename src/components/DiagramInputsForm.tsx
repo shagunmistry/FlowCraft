@@ -33,7 +33,8 @@ export const exampleFlowDiagramPrompts = [
     description: '',
   },
   {
-    title: 'SAMPLE: Explain the Patient Triaging Process from a Patient Perspective',
+    title:
+      'SAMPLE: Explain the Patient Triaging Process from a Patient Perspective',
     description: '',
   },
 ]
@@ -227,95 +228,104 @@ export default function DiagramInputsForm({
 
   return (
     <>
-      <nav aria-label="Progress">
-        <ol role="list" className="overflow-hidden">
-          <li key="1" className="relative mt-2">
-            <>
-              <StepLine />
-              <div className="group relative flex items-start">
-                <span className="flex h-9 items-center">
-                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">1</p>
+      <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 lg:max-w-none lg:grid-cols-2">
+        <nav aria-label="Progress">
+          <ol role="list" className="overflow-hidden">
+            <li key="1" className="relative mt-2">
+              <>
+                <StepLine />
+                <div className="group relative flex items-start">
+                  <span className="flex h-9 items-center">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                      <p className="text-lg font-semibold text-white">1</p>
+                    </span>
                   </span>
-                </span>
-                <span className="ml-4 flex min-w-0 flex-col">
-                  <span className="text-xl font-medium font-semibold">
-                    Diagram Title
+                  <span className="ml-4 flex min-w-0 flex-col">
+                    <span className="text-xl font-medium font-semibold">
+                      Diagram Title
+                    </span>
+                    <input
+                      type="text"
+                      name="title"
+                      id="title"
+                      className="mt-2 block w-96 border-0 border-b-2 border-indigo-500 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="Enter Diagram Title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
                   </span>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="mt-2 block w-96 border-0 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-b-2 border-indigo-500 focus:border-pink-200"
-                    placeholder="Enter Diagram Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </span>
-              </div>
-            </>
-          </li>
-          <li key="2" className="relative mt-2">
-            <>
-              <StepLine />
+                </div>
+              </>
+            </li>
+            <li key="2" className="relative mt-2">
+              <>
+                <StepLine />
 
-              <div className="group relative flex items-start">
-                <span className="flex h-9 items-center">
-                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">2</p>
+                <div className="group relative flex items-start">
+                  <span className="flex h-9 items-center">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                      <p className="text-lg font-semibold text-white">2</p>
+                    </span>
                   </span>
-                </span>
-                <span className="ml-4 flex min-w-0 flex-col">
-                  <span className="text-xl font-medium font-semibold">
-                    {type === 'Chart' ? 'Chart Data' : 'Describe what you want to create'}
+                  <span className="ml-4 flex min-w-0 flex-col">
+                    <span className="text-xl font-medium font-semibold">
+                      {type === 'Chart'
+                        ? 'Chart Data'
+                        : 'Describe what you want to create'}
+                    </span>
+                    <textarea
+                      rows={5}
+                      name="description"
+                      id="description"
+                      className="mt-2 block w-96 resize-none border-0 border-b-2 border-indigo-500 py-2 text-gray-900 placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder={
+                        context.type === 'Chart'
+                          ? 'Enter Chart Data. Data should be in CSV format with headers.'
+                          : 'Enter Diagram details here'
+                      }
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
                   </span>
-                  <textarea
-                    rows={5}
-                    name="description"
-                    id="description"
-                    className="mt-2 block w-96 resize-none border-0 py-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 border-b-2 border-indigo-500 focus:border-pink-200"
-                    placeholder={
-                      context.type === 'Chart'
-                        ? 'Enter Chart Data. Data should be in CSV format with headers.'
-                        : 'Enter Diagram details here'
-                    }
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </span>
-              </div>
-            </>
-          </li>
-          <li key="3" className="relative mt-2">
-            <>
-              <div className="group relative flex items-start">
-                <span className="flex h-9 items-center">
-                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                    <p className="text-lg font-semibold text-white">3</p>
+                </div>
+              </>
+            </li>
+            <li key="3" className="relative mt-2">
+              <>
+                <div className="group relative flex items-start">
+                  <span className="flex h-9 items-center">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                      <p className="text-lg font-semibold text-white">3</p>
+                    </span>
                   </span>
-                </span>
-                <span className="ml-4 flex min-w-0 flex-col">
-                  <span className="text-xl font-medium font-semibold">
-                    Generate
+                  <span className="ml-4 flex min-w-0 flex-col">
+                    <span className="text-xl font-medium font-semibold">
+                      Generate
+                    </span>
+                    <button
+                      className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+                      onClick={handleSubmit}
+                      disabled={
+                        context.loading || !title || description.length < 10
+                      }
+                    >
+                      Create
+                    </button>
                   </span>
-                  <button
-                    className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
-                    onClick={handleSubmit}
-                    disabled={context.loading || (!title || description.length < 10)}
-                  >
-                    Create
-                  </button>
-                </span>
-              </div>
-            </>
-          </li>
-        </ol>
-      </nav>
-      <div className="mt-2">
-        <ExamplesDropdown
-          values={selectedType.prompts}
-          selectExample={selectExample}
-        />
+                </div>
+              </>
+            </li>
+          </ol>
+        </nav>
+
+        <div className="mt-2">
+          <ExamplesDropdown
+            values={selectedType.prompts}
+            selectExample={selectExample}
+            selectedType={selectedType.id}
+            selectedTypeDescription={selectedType.description}
+          />
+        </div>
       </div>
 
       <ErrorDialog

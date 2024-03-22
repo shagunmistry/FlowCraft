@@ -8,6 +8,8 @@ import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
 import { DiagramType, navigationOptions } from '@/lib/utils'
+import { createClient } from '@/lib/supabase-auth/server'
+import { redirect } from 'next/navigation'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
@@ -38,6 +40,14 @@ export const metadata: Metadata = {
 }
 
 export default async function Dashboard() {
+  const sbClient = createClient()
+
+  const { data: userData, error } = await sbClient.auth.getUser()
+
+  if (error || userData?.user === null) {
+    return redirect('/login')
+  }
+
   const stats = [
     { id: 1, name: 'Flow Diagrams Created', value: 0 },
     { id: 2, name: 'Charts Created', value: 0 },

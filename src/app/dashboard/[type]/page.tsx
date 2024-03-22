@@ -67,9 +67,7 @@ export default function DynamicDiagramPage({
     <div className="bg-gray-100 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <div className="mt-10 grid max-w-xl grid-cols-1 gap-8 text-xl leading-7 lg:max-w-none lg:grid-cols-2">
-            <ChartDescriptionInput type={context.type} />
-          </div>
+          <ChartDescriptionInput type={context.type} />
         </div>
       </div>
       <div className="mx-auto max-w-7xl">
