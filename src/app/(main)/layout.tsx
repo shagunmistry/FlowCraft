@@ -331,6 +331,7 @@ export default function MainLayout({
   const [whiteboardInput, setWhiteboardInput] = useState<string>('')
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
   const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
+  const [mermaidData, setMermaidData] = useState<string>('')
   const [controls, setControls] = useState<any>(null)
 
   return (
@@ -351,6 +352,8 @@ export default function MainLayout({
           chartJsData: chartJsData,
           description: description,
           edges: edges,
+          mermaidData: mermaidData,
+          setMermaidData: setMermaidData,
           loading: loading,
           nodes: nodes,
           setChartJsData: setChartJsData,
