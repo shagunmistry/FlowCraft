@@ -9,11 +9,13 @@ import {
   promptForResponse,
   promptForUserMessage,
   promptForUserMessageForChartJs,
+  promptForUserMessageForMermaid,
 } from '@/lib/openai'
 import * as tldrawInputs from '@/lib/openai.tldraw'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { DiagramOrChartType } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
+import { mermaidCommandsPrompt } from '@/lib/completions-prompt.mermaid'
 
 export const maxDuration = 200
 
@@ -34,7 +36,7 @@ export async function POST(req: Request) {
   const type = json.type as DiagramOrChartType
 
   let contextText = ''
-  if (type !== 'Whiteboard') {
+  if (type !== 'Whiteboard' && type !== 'Mermaid') {
     contextText = await getEmbeddingForContext(type, contextText)
   }
 
@@ -47,17 +49,9 @@ export async function POST(req: Request) {
         ? promptForReactFlowContext(contextText)
         : type === 'Chart'
           ? promptForChartJsContext(contextText)
-          : '',
-  }
-
-  const userMessage2: ChatCompletionMessageParam = {
-    role: 'user',
-    content:
-      type === 'Flow Diagram'
-        ? promptForResponse
-        : type === 'Chart'
-          ? promptForChartJsResponse
-          : '',
+          : type === 'Mermaid'
+            ? mermaidCommandsPrompt
+            : '',
   }
 
   const assistantMessage3: ChatCompletionMessageParam = {
@@ -77,12 +71,31 @@ export async function POST(req: Request) {
         ? promptForUserMessage(diagramTitle, diagramDescription)
         : type === 'Chart'
           ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
+          : type === 'Mermaid'
+            ? promptForUserMessageForMermaid(diagramTitle, diagramDescription)
+            : '',
+  }
+
+  const userMessage2: ChatCompletionMessageParam = {
+    role: 'user',
+    content:
+      type === 'Flow Diagram'
+        ? promptForResponse
+        : type === 'Chart'
+          ? promptForChartJsResponse
           : '',
   }
 
+  const arrayOfMessages = [
+    assistantMessage1,
+    assistantMessage3,
+    userMessage2,
+    userMessage,
+  ]
+
   const res = await openAiModel.chat.completions.create({
     model: 'gpt-4-0125-preview',
-    messages: [assistantMessage1, assistantMessage3, userMessage2, userMessage],
+    messages: arrayOfMessages,
     temperature: 0.8,
     max_tokens: 2300,
   })

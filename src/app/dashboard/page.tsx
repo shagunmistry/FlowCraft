@@ -10,6 +10,7 @@ import { Metadata } from 'next'
 import { DiagramType, navigationOptions } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
+import { Badge } from '@/components/Badge'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
@@ -49,9 +50,9 @@ export default async function Dashboard() {
   }
 
   const stats = [
-    { id: 1, name: 'Flow Diagrams Created', value: 0 },
-    { id: 2, name: 'Charts Created', value: 0 },
-    { id: 3, name: 'Whiteboard Sketches Created', value: 0 },
+    { id: 1, name: 'Diagrams Created', value: 0 },
+    // { id: 2, name: 'Charts Created', value: 0 },
+    // { id: 3, name: 'Whiteboard Sketches Created', value: 0 },
     { id: 4, name: 'Total Shares', value: 0 },
   ]
   const { diagrams } = await getDiagrams()
@@ -59,18 +60,22 @@ export default async function Dashboard() {
 
   if (diagrams.length > 0) {
     stats[0].value = diagrams.filter(
-      (d: any) => d.type === DiagramType.FlowDiagram,
+      (d: any) =>
+        d.type === DiagramType.FlowDiagram ||
+        d.type === DiagramType.Chart ||
+        d.type === DiagramType.Whiteboard ||
+        d.type === DiagramType.Mermaid,
     ).length
-    stats[1].value = diagrams.filter(
-      (d: any) => d.type === DiagramType.Chart,
-    ).length
-    stats[2].value = diagrams.filter(
-      (d: any) => d.type === DiagramType.Whiteboard,
-    ).length
+    // stats[1].value = diagrams.filter(
+    //   (d: any) => d.type === DiagramType.Chart,
+    // ).length
+    // stats[2].value = diagrams.filter(
+    //   (d: any) => d.type === DiagramType.Whiteboard,
+    // ).length
   }
 
   if (shares.length > 0) {
-    stats[3].value = shares.length
+    stats[1].value = shares.length
   }
 
   return (
@@ -87,7 +92,7 @@ export default async function Dashboard() {
 
               <ul
                 role="list"
-                className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
+                className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:gap-8 xl:grid-cols-4"
               >
                 {navigationOptions.map((option) => (
                   <li
@@ -103,7 +108,10 @@ export default async function Dashboard() {
                         alt={option.title}
                       />
                       <h3 className="font-large mt-6 text-lg font-bold text-indigo-500 sm:text-sm md:text-xl">
-                        {option.title}
+                        {option.title} {option.emoji}
+                        {option.badgeType && (
+                          <Badge badgeType={option.badgeType} />
+                        )}
                       </h3>
                       <dl className="mt-1 flex flex-grow flex-col justify-between">
                         <dt className="sr-only">Description</dt>
@@ -136,12 +144,8 @@ export default async function Dashboard() {
             {diagrams && diagrams.length > 0 ? (
               <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-                  <div className="flex items-center justify-between">
-                    <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                      Recent Diagrams
-                    </h2>
-                  </div>
-                  <dl className="mt-6 grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl text-center shadow-lg sm:grid-cols-2 lg:grid-cols-4">
+                  <hr className="border-t-2 border-indigo-500" />
+                  <dl className="my-12 grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl text-center shadow-lg">
                     {stats.map((stat) => (
                       <div key={stat.id} className="flex flex-col bg-white p-8">
                         <dt className="text-sm font-semibold leading-6 text-indigo-500">
@@ -153,6 +157,11 @@ export default async function Dashboard() {
                       </div>
                     ))}
                   </dl>
+                  <div className="flex items-center justify-between">
+                    <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
+                      Recent Diagrams
+                    </h2>
+                  </div>
                   <ul
                     role="list"
                     className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"

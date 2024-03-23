@@ -11,15 +11,15 @@ import LottieAnimation from '@/lib/LoaderAnimation.json'
 import PricingTier from '@/components/PricingTier'
 import Link from 'next/link'
 
-const allowedTypes = ['whiteboard', 'chart', 'flow-diagram']
+const allowedTypes = ['whiteboard', 'chart', 'flow-diagram', 'mermaid']
 
 export default function DynamicDiagramPage({
   params,
 }: {
-  params: { type: 'whiteboard' | 'chart' | 'flow-diagram' }
+  params: { type: 'whiteboard' | 'chart' | 'flow-diagram' | 'mermaid' }
 }) {
   if (!allowedTypes.includes(params.type) || !params.type) {
-    return redirect('/dashboard/whiteboard')
+    return redirect('/dashboard')
   }
   const [username, setUsername] = useState<string | null>(null)
   const supabase = createClient()
@@ -42,12 +42,16 @@ export default function DynamicDiagramPage({
   const context = useContext(DiagramContext)
 
   useEffect(() => {
+    console.log('Type: ', type)
     switch (type) {
       case 'whiteboard':
         context.setType('Whiteboard')
         break
       case 'chart':
         context.setType('Chart')
+        break
+      case 'mermaid':
+        context.setType('Mermaid')
         break
       case 'flow-diagram':
         context.setType('Flow Diagram')

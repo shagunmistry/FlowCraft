@@ -7,11 +7,13 @@ export const DiagramContext = createContext<{
   description: string
   edges: Edge[]
   loading: boolean
+  mermaidData: string
   nodes: Node[]
   setChartJsData: (chartJsData: any) => void
   setDescription: (description: string) => void
   setEdges: (edges: Edge[]) => void
   setLoading: (loading: boolean) => void
+  setMermaidData: (mermaidData: string) => void
   setNodes: (nodes: Node[]) => void
   setTitle: (title: string) => void
   setTlDrawRecords: (tlDrawRecords: any[]) => void
@@ -24,11 +26,13 @@ export const DiagramContext = createContext<{
   description: '',
   edges: [],
   loading: false,
+  mermaidData: '',
   nodes: [],
   setChartJsData: () => {},
   setDescription: () => {},
   setEdges: () => {},
   setLoading: () => {},
+  setMermaidData: () => {},
   setNodes: () => {},
   setTitle: () => {},
   setTlDrawRecords: () => {},
