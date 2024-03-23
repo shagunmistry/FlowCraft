@@ -82,6 +82,14 @@ export const typeSelectionOptions = [
     prompts: exampleFlowDiagramPrompts,
     icon: ComputerDesktopIcon,
   },
+  {
+    id: 'Mermaid' as DiagramOrChartType,
+    title: 'Mermaid',
+    description:
+      'Mermaid lets you create diagrams and flowcharts using text and code.',
+    prompts: exampleFlowDiagramPrompts,
+    icon: PencilIcon,
+  },
 ]
 
 export function StepLine() {
@@ -169,7 +177,7 @@ export default function DiagramInputsForm({
           return
         }
 
-        console.log('Diagram JSON: ', JSON.parse(parseableJson))
+        console.log('Diagram JSON: ', JSON.parse(parseableJson), 'Type: ', type)
         const diagramResult = JSON.parse(diagramJson.result)
 
         if (
@@ -182,6 +190,9 @@ export default function DiagramInputsForm({
           context.setEdges(diagramResult.edges)
         } else if (diagramResult && diagramResult.data && type === 'Chart') {
           context.setChartJsData(diagramResult)
+        } else if (diagramResult && diagramResult.mermaid && type === 'Mermaid') {
+          console.log('Setting Mermaid Data: ', diagramResult.mermaid)
+          context.setMermaidData(diagramResult.mermaid)
         }
 
         context.setLoading(false)

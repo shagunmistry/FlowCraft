@@ -48,23 +48,21 @@ export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
       }
     >
       <div className="mx-auto max-w-md overflow-hidden px-6 py-12 sm:max-w-3xl lg:max-w-7xl lg:px-8">
-        {isNoAction ? null : (
-          <nav
-            className="-mx-5 -my-2 flex flex-wrap justify-center"
-            aria-label="Footer"
-          >
-            {footerNavigation.main.map((item) => (
-              <div key={item.name} className="px-5 py-2">
-                <a
-                  href={item.href}
-                  className="text-base text-white hover:text-white"
-                >
-                  {item.name}
-                </a>
-              </div>
-            ))}
-          </nav>
-        )}
+        <nav
+          className="-mx-5 -my-2 flex flex-wrap justify-center"
+          aria-label="Footer"
+        >
+          {footerNavigation.main.map((item) => (
+            <div key={item.name} className="px-5 py-2">
+              <a
+                href={item.href}
+                className="text-base text-white hover:text-white"
+              >
+                {item.name}
+              </a>
+            </div>
+          ))}
+        </nav>
         <div className="mt-8 flex justify-center space-x-6">
           {footerNavigation.social.map((item) => (
             <a

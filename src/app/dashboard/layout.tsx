@@ -15,6 +15,7 @@ import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
 
 import 'reactflow/dist/style.css'
+import Script from 'next/script'
 
 export default function DashboardLayout({
   children,
@@ -334,6 +335,16 @@ export default function DashboardLayout({
   const [whiteboardInput, setWhiteboardInput] = useState<string>('')
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
   const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
+  const [mermaidData, setMermaidData] = useState<string>(
+    `graph TD
+    A[Hard edge] -->|Link text| B(Round edge)
+    B --> C{Decision}
+    C -->|One| D[Result one]
+    C -->|Two| E[Result two]
+    C -->|Three| F[Result three]
+    C -->|Four| G[Result four]
+    C -->|Five| H[Result five]`,
+  )
 
   const [controls, setControls] = useState<any>(null)
 
@@ -356,11 +367,13 @@ export default function DashboardLayout({
           description: description,
           edges: edges,
           loading: loading,
+          mermaidData: mermaidData,
           nodes: nodes,
           setChartJsData: setChartJsData,
           setDescription: setDescription,
           setEdges: _setEdges,
           setLoading: _setLoading,
+          setMermaidData: setMermaidData,
           setNodes: _setNodes,
           setTitle: setTitle,
           setTlDrawRecords: setTlDrawRecords,

@@ -3,6 +3,37 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { cn, DiagramOrChartType } from '@/lib/utils'
 
+const TitlePrefixExamples = {
+  Chart: [
+    'Bar Chart of...',
+    'Bubble Chart of...',
+    'Line Chart of...',
+    'Pie Chart of...',
+    'Polar Area Chart of...',
+    'Radar Chart of...',
+    'Scatter Chart of...',
+  ],
+  Mermaid: [
+    'Flowchart of...',
+    'Sequence Diagram of...',
+    'Class Diagram of...',
+    'State Diagram of...',
+    'Entity Relationship Diagram of...',
+    'User Journey of...',
+    'Gantt of...',
+    'Pie Chart of...',
+    'Quadrant Chart of...',
+    'Requirement Diagram of...',
+    'Gitgraph (Git) Diagram of...',
+    'Mindmaps of...',
+    'Timeline of...',
+    'Zenuml of...',
+    'Sankey of...',
+  ],
+  Whiteboard: [],
+  'Flow Diagram': [],
+}
+
 export default function ExamplesDropdown({
   values,
   selectExample,
@@ -34,20 +65,13 @@ export default function ExamplesDropdown({
         {selectedTypeDescription}
       </h2>
       <ul className="my-8 text-lg text-gray-500">
-        {selectedType === 'Chart' ? (
+        {TitlePrefixExamples[selectedType] &&
+        TitlePrefixExamples[selectedType].length > 0 ? (
           <>
             <h2 className="text-lg font-medium leading-6">
               Prefix your Diagram Title with:
             </h2>
-            {[
-              'Bar Chart',
-              'Bubble Chart',
-              'Line Chart',
-              'Pie Chart',
-              'Polar Area Chart',
-              'Radar Chart',
-              'Scatter Chart',
-            ].map((title) => (
+            {TitlePrefixExamples[selectedType].map((title) => (
               <li key={title} className="flex items-center gap-x-2">
                 <CheckIcon className="h-5 w-5 text-pink-600" />
                 <span>"{title} of..."</span>

@@ -20,6 +20,7 @@ import ReactFlow, {
   getViewportForBounds,
 } from 'reactflow'
 
+import mermaid from 'mermaid'
 import 'reactflow/dist/style.css'
 import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
@@ -175,6 +176,15 @@ export default function DiagramOrChartView({
 
       scenarios.house_buying_process.records = recordsWithNecessaryFields
       setTlDrawInputJson(JSON.stringify(scenarios.house_buying_process))
+    } else if (context.type === 'Mermaid') {
+      console.log('context.mermaidData: ', context.mermaidData)
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'forest',
+      })
+      mermaid.run({
+        querySelector: '.mermaid',
+      })
     }
   }, [
     context.nodes,
@@ -182,6 +192,7 @@ export default function DiagramOrChartView({
     context.loading,
     context.chartJsData,
     context.type,
+    context.mermaidData,
   ])
 
   const onConnect = useCallback(
@@ -458,6 +469,29 @@ export default function DiagramOrChartView({
     setEdges(tempEdges)
   }
 
+  const downloadMermaidDiagramAsPng = async () => {
+    const mermaidContainer = document.querySelector('.mermaid') as HTMLElement
+
+    if (!mermaidContainer) {
+      console.error('mermaidContainer not found')
+      return
+    }
+
+    const imageWidth = 1024
+    const imageHeight = 768
+
+    const dataUrl = await toPng(mermaidContainer, {
+      backgroundColor: '#1a365d',
+      width: imageWidth,
+      height: imageHeight,
+    })
+
+    const fileName = context.title
+      ? context.title.replace(' ', '-')
+      : 'mermaid-diagram'
+    downloadImage(dataUrl, fileName)
+  }
+
   return (
     <>
       {notification && (
@@ -524,6 +558,20 @@ export default function DiagramOrChartView({
             )}
             {type === 'Whiteboard' && (
               <Whiteboard inputJson={tlDrawInputJson} />
+            )}
+            {type === 'Mermaid' && (
+              <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mx-auto max-w-7xl items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
+                <p className="text-center text-2xl font-bold text-pink-500">
+                  {context.title}
+                </p>
+                <button
+                  className="mb-2 mt-2 rounded-md bg-pink-500 p-2 text-white hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md"
+                  onClick={downloadMermaidDiagramAsPng}
+                >
+                  Download Diagram
+                </button>
+                <pre className="mermaid">{context.mermaidData}</pre>
+              </div>
             )}
           </>
         )}

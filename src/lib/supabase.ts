@@ -6,6 +6,7 @@ import {
   openAiModel,
 } from './openai'
 import GPT3Tokenizer from 'gpt3-tokenizer'
+import { DiagramOrChartType } from './utils'
 
 const privateKey = process.env.SUPABASE_PRIVATE_KEY || 'secret-key'
 const supabase_url = process.env.SUPABASE_URL || 'http://localhost:8000'
@@ -157,17 +158,17 @@ export const getChartJsJSONFile = async (): Promise<ApifyData[] | null> => {
 }
 
 export const getEmbeddingForContext = async (
-  type: string,
+  type: DiagramOrChartType,
   contextText: string,
 ) => {
   const inputToUse =
-    type === 'Whiteboard'
+    type === 'Flow Diagram'
       ? inputForReactFlowContext
       : type === 'Chart'
         ? inputForChartJsContext
         : ''
   const matchFunctionToUse =
-    type === 'Whiteboard'
+    type === 'Flow Diagram'
       ? MATCH_DOCUMENTS_FOR_REACT_FLOW_TABLE
       : MATCH_DOCUMENTS_FOR_CHARTJS_TABLE
 

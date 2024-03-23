@@ -339,3 +339,12 @@ export const promptForUserMessageForChartJs = (
 export const promptForChartJsExampleCode = `Here is an example of a valid ChartJS code:
 ${chartJsAllCombinedBasicCode}
 `
+
+/** Mermaid */
+export const promptForUserMessageForMermaid = (
+  diagramTitle: string,
+  diagramDescription: string,
+) => {
+  return `${promptForDiagram}  \n\nDiagram Title: ${diagramTitle}\nDiagram Description: ${diagramDescription}
+    \n`
+}
