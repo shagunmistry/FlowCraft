@@ -58,11 +58,28 @@ export const exampleChartDataPrompts = [
   },
 ]
 
+export const exampleMermaidPrompts = [
+  { title: 'Sequence Diagram of a User Login', description: '' },
+  { title: 'Flowchart of a User Registration Process', description: '' },
+  { title: 'Mindmap of a Product Roadmap', description: '' },
+  { title: 'Gantt Chart of a Project Timeline', description: '' },
+  { title: 'Pie Chart of a Sales Report', description: '' },
+  { title: 'Quadrant Chart of a Product Analysis', description: '' },
+  { title: 'Requirement Diagram of a Software Project', description: '' },
+  { title: 'Gitgraph (Git) Diagram of a Repository', description: '' },
+  { title: 'State Diagram of a User Journey', description: '' },
+  { title: 'Entity Relationship Diagram of a Database', description: '' },
+  { title: 'User Journey of a Customer', description: '' },
+  { title: 'Zenuml of a Software Architecture', description: '' },
+  { title: 'Sankey of a Data Flow', description: '' },
+]
+
 export const typeSelectionOptions = [
   {
     id: 'Flow Diagram' as DiagramOrChartType,
     title: 'Flow Diagram',
-    description: 'a diagram representing some kind of process or workflow.',
+    description:
+      'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
     prompts: exampleFlowDiagramPrompts,
     icon: PencilIcon,
   },
@@ -70,7 +87,7 @@ export const typeSelectionOptions = [
     id: 'Chart' as DiagramOrChartType,
     title: 'Chart',
     description:
-      'A chart is a graphical representation of data, in which "the data is represented by symbols, such as bars in a bar chart, lines in a line chart, or slices in a pie chart".',
+      'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
     prompts: exampleChartDataPrompts,
     icon: ChartBarIcon,
   },
@@ -78,16 +95,16 @@ export const typeSelectionOptions = [
     id: 'Whiteboard' as DiagramOrChartType,
     title: 'Whiteboard',
     description:
-      'Whiteboard is a tool for creating diagrams that are easy to create, easy to read, and easy to edit.',
+      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
     prompts: exampleFlowDiagramPrompts,
     icon: ComputerDesktopIcon,
   },
   {
     id: 'Mermaid' as DiagramOrChartType,
-    title: 'Mermaid',
+    title: 'Other Types',
     description:
-      'Mermaid lets you create diagrams and flowcharts using text and code.',
-    prompts: exampleFlowDiagramPrompts,
+      'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
+    prompts: exampleMermaidPrompts,
     icon: PencilIcon,
   },
 ]
@@ -190,7 +207,11 @@ export default function DiagramInputsForm({
           context.setEdges(diagramResult.edges)
         } else if (diagramResult && diagramResult.data && type === 'Chart') {
           context.setChartJsData(diagramResult)
-        } else if (diagramResult && diagramResult.mermaid && type === 'Mermaid') {
+        } else if (
+          diagramResult &&
+          diagramResult.mermaid &&
+          type === 'Mermaid'
+        ) {
           console.log('Setting Mermaid Data: ', diagramResult.mermaid)
           context.setMermaidData(diagramResult.mermaid)
         }

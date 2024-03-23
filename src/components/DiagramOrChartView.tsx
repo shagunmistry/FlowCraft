@@ -562,7 +562,9 @@ export default function DiagramOrChartView({
             {type === 'Mermaid' && (
               <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mx-auto max-w-7xl items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
                 <p className="text-center text-2xl font-bold text-pink-500">
-                  {context.title}
+                  {context.title && !context.title.includes('SAMPLE')
+                    ? context.title
+                    : ''}
                 </p>
                 <button
                   className="mb-2 mt-2 rounded-md bg-pink-500 p-2 text-white hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md"

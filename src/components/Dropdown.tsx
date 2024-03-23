@@ -74,7 +74,7 @@ export default function ExamplesDropdown({
             {TitlePrefixExamples[selectedType].map((title) => (
               <li key={title} className="flex items-center gap-x-2">
                 <CheckIcon className="h-5 w-5 text-pink-600" />
-                <span>"{title} of..."</span>
+                <span>"{title}"</span>
               </li>
             ))}
             <li key="Custom Chart" className="flex items-center gap-x-2">
