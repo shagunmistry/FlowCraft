@@ -10,6 +10,7 @@ import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 import PricingTier from '@/components/PricingTier'
 import Link from 'next/link'
+import { track } from '@vercel/analytics'
 
 const allowedTypes = ['whiteboard', 'chart', 'flow-diagram', 'mermaid']
 
@@ -37,6 +38,10 @@ export default function DynamicDiagramPage({
 
     fetchUser()
   }, [])
+
+  useEffect(() => {
+    track(`dashboard/${params.type}`)
+  }, [params.type])
 
   const type = params.type
   const context = useContext(DiagramContext)

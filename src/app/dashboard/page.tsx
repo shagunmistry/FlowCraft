@@ -11,6 +11,7 @@ import { DiagramType, navigationOptions } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
+import { track } from '@vercel/analytics'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
