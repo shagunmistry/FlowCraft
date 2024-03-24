@@ -20,7 +20,7 @@ interface Option {
   link: string // Replace with actual links to corresponding pages
   source: string
   description: string
-  badgeType?: 'popular' | 'new'
+  badgeType?: 'popular' | 'new' | 'coming-soon'
 }
 
 export const navigationOptions: Option[] = [
@@ -34,16 +34,7 @@ export const navigationOptions: Option[] = [
       'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
     badgeType: 'popular',
   },
-  {
-    title: 'Complex Diagrams',
-    emoji: '🧜‍♂️',
-    link: '/dashboard/mermaid',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FMindmap_screenshot.png?alt=media&token=6ba9fbdf-df6e-49b2-bc71-7f9ce55d821d',
-    description:
-      'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
-    badgeType: 'new',
-  },
+
   {
     title: 'Whiteboard',
     emoji: '🎨',
@@ -61,6 +52,16 @@ export const navigationOptions: Option[] = [
       'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
     description:
       'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
+  },
+  {
+    title: 'Complex Diagrams',
+    emoji: '🧜‍♂️',
+    link: '/dashboard/mermaid',
+    source:
+      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FMindmap_screenshot.png?alt=media&token=6ba9fbdf-df6e-49b2-bc71-7f9ce55d821d',
+    description:
+      'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
+    badgeType: 'coming-soon',
   },
 ]
 
