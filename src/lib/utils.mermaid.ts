@@ -1,0 +1,36 @@
+/**
+ *   'Flowchart of...',
+    'Sequence Diagram of...',
+    'Class Diagram of...',
+    'State Diagram of...',
+    'Entity Relationship Diagram of...',
+    'User Journey of...',
+    'Gantt of...',
+    'Pie Chart of...',
+    'Quadrant Chart of...',
+    'Requirement Diagram of...',
+    'Gitgraph (Git) Diagram of...',
+    'Mindmaps of...',
+    'Timeline of...',
+    'Zenuml of...',
+    'Sankey of...',
+ */
+export const MermaidDiagramTypes = [
+  'FlowChart',
+  'Sequence Diagram',
+  'Class Diagram',
+  'State Diagram',
+  'Entity Relationship Diagram',
+  'User Journey',
+  'Gantt',
+  'Pie Chart',
+  'Quadrant Chart',
+  'Requirement Diagram',
+  'Gitgraph (Git) Diagram',
+  'Mindmaps',
+  'Timeline',
+  'Zenuml',
+  'Sankey',
+]
+
+export type MermaidDiagramType = (typeof MermaidDiagramTypes)[number]
