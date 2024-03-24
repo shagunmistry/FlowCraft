@@ -185,7 +185,10 @@ export default function LoginPage({
             />
           </Link>
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-pink-500">
-            Sign in to FlowCraft
+            Sign in to{' '}
+            <Link href="/" className="text-indigo-500">
+              FlowCraft
+            </Link>
           </h2>
         </div>
 

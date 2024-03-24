@@ -147,7 +147,7 @@ export default function MainLanding() {
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <Link
-                      className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-pink-500 px-8 py-3 font-medium text-gray-500 text-indigo-600 text-white hover:bg-indigo-500 sm:inline-flex sm:w-auto sm:items-center sm:px-6 transition-all duration-300 ease-in-out hover:scale-125"
+                      className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-pink-500 px-8 py-3 font-medium text-gray-500 text-indigo-600 text-white transition-all duration-300 ease-in-out hover:scale-125 hover:bg-indigo-500 sm:inline-flex sm:w-auto sm:items-center sm:px-6"
                       href={authenticated ? '/dashboard' : '/login'}
                     >
                       {authenticated ? 'Go to Dashboard' : 'Get Started'}
@@ -188,7 +188,9 @@ export default function MainLanding() {
                     />
                     {feature.name}
                   </dt>{' '}
-                  <dd className="inline text-gray-900">{feature.description}</dd>
+                  <dd className="inline text-gray-900">
+                    {feature.description}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -230,7 +232,7 @@ export default function MainLanding() {
                 <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
                   <Link
                     href="/login"
-                    className="rounded-md border border-transparent bg-pink-500 px-3.5 px-8 py-2.5 py-3 text-lg font-medium font-semibold text-white shadow-lg transition-all duration-300 ease-in-out hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white hover:scale-125"
+                    className="rounded-md border border-transparent bg-pink-500 px-3.5 px-8 py-2.5 py-3 text-lg font-medium font-semibold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-125 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   >
                     Get started
                   </Link>
