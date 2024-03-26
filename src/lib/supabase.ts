@@ -7,6 +7,7 @@ import {
 } from './openai'
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { DiagramOrChartType } from './utils'
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 
 const privateKey = process.env.SUPABASE_PRIVATE_KEY || 'secret-key'
 const supabase_url = process.env.SUPABASE_URL || 'http://localhost:8000'
@@ -158,7 +159,7 @@ export const getChartJsJSONFile = async (): Promise<ApifyData[] | null> => {
 }
 
 export const getEmbeddingForContext = async (
-  type: DiagramOrChartType,
+  type: DiagramOrChartType | TempMermaidDiagramType,
   contextText: string,
 ) => {
   const inputToUse =

@@ -44,6 +44,7 @@ import {
   edgeTypes,
   nodeTypes,
 } from '@/lib/react-flow.util'
+import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 
 const Loader = () => {
   return (
@@ -57,10 +58,32 @@ const Loader = () => {
   )
 }
 
+const checkIfMermaidDiagram = (
+  type: DiagramOrChartType | TempMermaidDiagramType,
+) => {
+  return (
+    type === 'classDiagram' ||
+    type === 'flowchart' ||
+    type === 'sequenceDiagram' ||
+    type === 'stateDiagram' ||
+    type === 'entityRelationshipDiagram' ||
+    type === 'userJourney' ||
+    type === 'gantt' ||
+    type === 'pieChart' ||
+    type === 'quadrantChart' ||
+    type === 'requirementDiagram' ||
+    type === 'gitgraph' ||
+    type === 'mindmaps' ||
+    type === 'sankey' ||
+    type === 'timeline' ||
+    type === 'zenuml'
+  )
+}
+
 export default function DiagramOrChartView({
   type,
 }: {
-  type: DiagramOrChartType
+  type: DiagramOrChartType | TempMermaidDiagramType
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
@@ -577,7 +600,7 @@ export default function DiagramOrChartView({
             {type === 'Whiteboard' && (
               <Whiteboard inputJson={tlDrawInputJson} />
             )}
-            {type === 'Mermaid' && (
+            {checkIfMermaidDiagram(type) && (
               <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mx-auto h-screen max-w-7xl items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
                 <p className="text-center text-2xl font-bold text-pink-500">
                   {context.title && !context.title.includes('SAMPLE')

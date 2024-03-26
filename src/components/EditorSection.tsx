@@ -2,12 +2,13 @@
 
 import { DiagramOrChartType } from '@/lib/utils'
 import DiagramInputsForm from './DiagramInputsForm'
+import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 
 export function EditorSection({
   type,
   ...props
 }: {
-  type: DiagramOrChartType
+  type: DiagramOrChartType | TempMermaidDiagramType
 } & React.HTMLProps<HTMLElement>) {
   return (
     <section {...props}>

@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 import { Edge, Node } from 'reactflow'
 import { DiagramOrChartType } from '../utils'
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 
 export const DiagramContext = createContext<{
   chartJsData: any
@@ -17,10 +18,10 @@ export const DiagramContext = createContext<{
   setNodes: (nodes: Node[]) => void
   setTitle: (title: string) => void
   setTlDrawRecords: (tlDrawRecords: any[]) => void
-  setType: (type: DiagramOrChartType) => void
+  setType: (type: DiagramOrChartType | TempMermaidDiagramType) => void
   title: string
   tlDrawRecords: any[]
-  type: DiagramOrChartType | null
+  type: DiagramOrChartType | TempMermaidDiagramType | null
 }>({
   chartJsData: {},
   description: '',

@@ -3,229 +3,245 @@ import { cn } from '@/lib/utils'
 import { Menu } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
-import { MermaidDiagramType, MermaidDiagramTypes } from '@/lib/utils.mermaid'
+import {
+  MermaidDiagramEnums,
+  MermaidDiagramType,
+  MermaidDiagramTypes,
+} from '@/lib/utils.mermaid'
+import {
+  ArrowLongRightIcon,
+  ArrowLongUpIcon,
+  BugAntIcon,
+  ChartPieIcon,
+  ChevronRightIcon,
+  ClockIcon,
+  ComputerDesktopIcon,
+  DocumentCheckIcon,
+  DocumentIcon,
+  GlobeAltIcon,
+  MapIcon,
+  PresentationChartBarIcon,
+  PresentationChartLineIcon,
+  QueueListIcon,
+  Square2StackIcon,
+  UserGroupIcon,
+} from '@heroicons/react/20/solid'
+import Link from 'next/link'
+import OverviewDialog from '@/components/Mermaid/OverviewDialog.mermaid'
 
-const steps: {
-  id: string
-  name: string
-  description: string
-  status?: 'complete' | 'current' | 'upcoming'
-}[] = [
-  {
-    id: '01',
-    name: 'Choose Type of Complex Diagram',
-    description: 'Select the type of diagram you want to create',
-    status: 'current',
+const DiagramIcon: React.FC<{ type: string }> = ({ type }) => {
+  return (
+    <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-100">
+      {type === 'flowchart' && (
+        <ArrowLongUpIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'sequenceDiagram' && (
+        <ArrowLongRightIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'classDiagram' && (
+        <DocumentIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'stateDiagram' && (
+        <PresentationChartLineIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'entityRelationshipDiagram' && (
+        <PresentationChartBarIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'userJourney' && (
+        <UserGroupIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'gantt' && <BugAntIcon className="h-6 w-6 text-gray-500" />}
+      {type === 'pieChart' && (
+        <ChartPieIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'quadrantChart' && (
+        <Square2StackIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'requirementDiagram' && (
+        <DocumentCheckIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'gitgraph' && (
+        <ComputerDesktopIcon className="h-6 w-6 text-gray-500" />
+      )}
+      {type === 'mindmaps' && <MapIcon className="h-6 w-6 text-gray-500" />}
+      {type === 'timeline' && <ClockIcon className="h-6 w-6 text-gray-500" />}
+      {type === 'zenuml' && <QueueListIcon className="h-6 w-6 text-gray-500" />}
+      {type === 'sankey' && <GlobeAltIcon className="h-6 w-6 text-gray-500" />}
+    </div>
+  )
+}
+
+console.log('DiagramTypes:', MermaidDiagramTypes)
+
+const DiagramOptions: {
+  [key: string]: {
+    title: string
+    description: string
+    link: string
+  }
+} = {
+  flowchart: {
+    title: 'Flowchart',
+    description:
+      'A flowchart is a type of diagram that represents a workflow or process.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.FlowChart}`,
   },
-  {
-    id: '02',
-    name: 'Details',
-    description: 'Enter the details of the diagram',
-    status: 'upcoming',
+  sequenceDiagram: {
+    title: 'Sequence Diagram',
+    description:
+      'A sequence diagram shows how objects interact in a particular scenario of a use case.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.SequenceDiagram}`,
   },
-  {
-    id: '03',
-    name: 'View Generated Diagram',
-    description: 'View the generated diagram',
-    status: 'upcoming',
+  classDiagram: {
+    title: 'Class Diagram',
+    description:
+      'A class diagram is a type of static structure diagram that describes the structure of a system by showing the system’s classes, their attributes, operations (or methods), and the relationships among objects.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.ClassDiagram}`,
   },
-]
+  stateDiagram: {
+    title: 'State Diagram',
+    description:
+      'A state diagram is a type of diagram used in computer science and related fields to describe the behavior of systems.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.StateDiagram}`,
+  },
+  entityRelationshipDiagram: {
+    title: 'Entity Relationship Diagram',
+    description:
+      'An entity-relationship diagram (ERD) is a data modeling technique that graphically illustrates an information system’s entities and the relationships between those entities.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.EntityRelationshipDiagram}`,
+  },
+  userJourney: {
+    title: 'User Journey',
+    description:
+      'A user journey map is a visualization of the process that a person goes through in order to accomplish a goal.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.UserJourney}`,
+  },
+  gantt: {
+    title: 'Gantt Diagram',
+    description:
+      'A Gantt chart is a type of bar chart that illustrates a project schedule.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.Gantt}`,
+  },
+  pieChart: {
+    title: 'Pie Chart',
+    description:
+      'A pie chart is a circular statistical graphic that is divided into slices to illustrate numerical proportions.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.PieChart}`,
+  },
+  quadrantChart: {
+    title: 'Quadrant Chart',
+    description:
+      'A quadrant chart is a type of chart that is divided into four equal parts.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.QuadrantChart}`,
+  },
+  requirementDiagram: {
+    title: 'Requirement Diagram',
+    description:
+      'A requirement diagram is a type of diagram that represents the requirements of a system.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.RequirementDiagram}`,
+  },
+  gitgraph: {
+    title: 'Gitgraph Diagram',
+    description:
+      'A Gitgraph diagram is a type of diagram that represents the history of a Git repository.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.GitgraphDiagram}`,
+  },
+  mindmaps: {
+    title: 'Mindmaps',
+    description:
+      'A mind map is a diagram used to visually organize information.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.Mindmaps}`,
+  },
+  timeline: {
+    title: 'Timeline',
+    description:
+      'A timeline is a type of diagram that represents a sequence of events.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.Timeline}`,
+  },
+  zenuml: {
+    title: 'Zenuml',
+    description: 'Zenuml is a tool for creating sequence diagrams from text.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.Zenuml}`,
+  },
+  sankey: {
+    title: 'Sankey',
+    description:
+      'A Sankey diagram is a type of diagram that shows the flow of energy or materials.',
+    link: `/dashboard/mermaid/${MermaidDiagramEnums.Sankey}`,
+  },
+}
 
 export default function ComplexDiagramsPage() {
-  const [currentStep, setCurrentStep] = useState<'01' | '02' | '03'>('01')
-  const [diagramType, setDiagramType] = useState<MermaidDiagramType | null>(
-    null,
-  )
+  const [diagramType, setDiagramType] = useState<any>('flowchart')
+
+  const [openOverview, setOpenOverview] = useState(false)
 
   return (
     <div className="lg:border-b lg:border-t lg:border-gray-200">
-      <nav
-        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
-        aria-label="Progress"
-      >
-        <ol
-          role="list"
-          className="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200"
-        >
-          {steps.map((step, stepIdx) => (
-            <li key={step.id} className="relative overflow-hidden lg:flex-1">
-              <div
-                className={cn(
-                  stepIdx === 0 ? 'rounded-t-md border-b-0' : '',
-                  stepIdx === steps.length - 1 ? 'rounded-b-md border-t-0' : '',
-                  'overflow-hidden border border-gray-200 lg:border-0',
-                )}
-              >
-                {step.status === 'complete' ? (
-                  <button className="group">
-                    <span
-                      className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={cn(
-                        stepIdx !== 0 ? 'lg:pl-9' : '',
-                        'flex items-start px-6 py-5 text-sm font-medium',
-                      )}
-                    >
-                      <span className="flex-shrink-0">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600">
-                          <CheckIcon
-                            className="h-6 w-6 text-white"
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </span>
-                      <span className="ml-4 mt-0.5 flex min-w-0 flex-col">
-                        <span className="text-sm font-medium">{step.name}</span>
-                        <span className="text-sm font-medium text-gray-500">
-                          {step.description}
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                ) : step.status === 'current' ? (
-                  <button aria-current="step">
-                    <span
-                      className="absolute left-0 top-0 h-full w-1 bg-indigo-600 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={cn(
-                        stepIdx !== 0 ? 'lg:pl-9' : '',
-                        'flex items-start px-6 py-5 text-sm font-medium',
-                      )}
-                    >
-                      <span className="flex-shrink-0">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-indigo-600">
-                          <span className="text-indigo-600">{step.id}</span>
-                        </span>
-                      </span>
-                      <span className="ml-4 mt-0.5 flex min-w-0 flex-col">
-                        <span className="text-sm font-medium text-indigo-600">
-                          {step.name}
-                        </span>
-                        <span className="text-sm font-medium text-gray-500">
-                          {step.description}
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                ) : (
-                  <button className="group" disabled>
-                    <span
-                      className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={cn(
-                        stepIdx !== 0 ? 'lg:pl-9' : '',
-                        'flex items-start px-6 py-5 text-sm font-medium',
-                      )}
-                    >
-                      <span className="flex-shrink-0">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300">
-                          <span className="text-gray-500">{step.id}</span>
-                        </span>
-                      </span>
-                      <span className="ml-4 mt-0.5 flex min-w-0 flex-col">
-                        <span className="text-sm font-medium text-gray-500">
-                          {step.name}
-                        </span>
-                        <span className="text-sm font-medium text-gray-500">
-                          {step.description}
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                )}
-
-                {stepIdx !== 0 ? (
-                  <>
-                    {/* Separator */}
-                    <div
-                      className="absolute inset-0 left-0 top-0 hidden w-3 lg:block"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        className="h-full w-full text-gray-300"
-                        viewBox="0 0 12 82"
-                        fill="none"
-                        preserveAspectRatio="none"
-                      >
-                        <path
-                          d="M0.5 0V31L10.5 41L0.5 51V82"
-                          stroke="currentcolor"
-                          vectorEffect="non-scaling-stroke"
-                        />
-                      </svg>
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </nav>
-      {currentStep === '01' && (
-        <div className="mx-auto h-screen max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mt-8 max-w-2xl">
-            <div className="rounded-lg bg-white p-8 shadow-lg">
-              <h2 className="text-lg font-medium text-gray-900">
-                Choose Type of Complex Diagram
-              </h2>
-              <p className="mt-2 text-sm text-gray-500">
-                Select the type of diagram you want to create
-              </p>
-            </div>
-            {/** Dropdown to select */}
-            <Menu as="div" className="mt-8">
-              <div>
-                <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-                  Select a Diagram Type
-                  <svg
-                    className="-mr-1 ml-2 h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M7.293 7.293a1 1 0 011.414 0L10 9.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"
-                    />
-                  </svg>
-                </Menu.Button>
-              </div>
-              <Menu.Items className="absolute z-10 mt-2 w-fit rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1">
-                  {MermaidDiagramTypes.map((type) => (
-                    <Menu.Item key={type}>
-                      {({ active }) => (
-                        <button
-                          className={cn(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block w-full px-4 py-2 text-left text-sm transition-all duration-200 hover:scale-105 hover:bg-indigo-600 hover:text-white',
-                          )}
-                          onClick={() => {
-                            setDiagramType(type)
-                            setCurrentStep('02')
-                          }}
-                        >
-                          {type}
-                        </button>
-                      )}
-                    </Menu.Item>
-                  ))}
-                </div>
-              </Menu.Items>
-            </Menu>
-          </div>
+      <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div className="my-6 ml-4">
+          <h3 className="text-base font-semibold leading-6 text-gray-900">
+            Choose a Diagram Type
+          </h3>
         </div>
-      )}
+        <ul
+          role="list"
+          className="divide-y overflow-hidden border border-gray-200 bg-white shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl"
+        >
+          {Object.keys(DiagramOptions).map((type) => {
+            console.log('type:', type)
+            return (
+              <li
+                key={type}
+                className="relative flex transform justify-between gap-x-6 px-4 py-5 transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:bg-indigo-50 hover:shadow-lg sm:px-6"
+                onClick={() => {
+                  setDiagramType(type as MermaidDiagramType)
+                  setOpenOverview(true)
+                }}
+              >
+                <div className="flex min-w-0 gap-x-4">
+                  <DiagramIcon type={type} />
+                  <div className="min-w-0 flex-auto">
+                    <p className="text-lg font-semibold leading-6 text-indigo-500">
+                      {/* <Link href={DiagramOptions[type].link}> */}
+                      <span className="absolute inset-x-0 -top-px bottom-0" />
+                      {DiagramOptions[type].title}
+                      {/* </Link> */}
+                    </p>
+                    <p className="mt-1 flex text-sm leading-5 text-gray-500">
+                      {/* <Link
+                        href={DiagramOptions[type].link}
+                        className="relative truncate hover:underline"
+                      > */}
+                      {DiagramOptions[type].description}
+                      {/* </Link> */}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-x-4">
+                  <div className="hidden sm:flex sm:flex-col sm:items-end">
+                    {/* <Link
+                      href={DiagramOptions[type].link}
+                      className="text-md rounded-lg bg-indigo-500 p-2 font-semibold text-white"
+                    > */}
+                    Create
+                    {/* </Link> */}
+                  </div>
+                  <ChevronRightIcon
+                    className="h-5 w-5 flex-none text-gray-400"
+                    aria-hidden="true"
+                  />
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      <OverviewDialog
+        type={diagramType}
+        open={openOverview}
+        setOpen={setOpenOverview}
+      />
     </div>
   )
 }
