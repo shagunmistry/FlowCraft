@@ -6,10 +6,6 @@ import { redirect } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
 import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
-import Lottie from 'lottie-react'
-import LottieAnimation from '@/lib/LoaderAnimation.json'
-import PricingTier from '@/components/PricingTier'
-import Link from 'next/link'
 import { track } from '@vercel/analytics'
 
 const allowedTypes = ['whiteboard', 'chart', 'flow-diagram', 'mermaid']

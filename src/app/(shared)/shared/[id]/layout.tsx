@@ -4,12 +4,8 @@ import Navbar from '@/components/Navbar'
 
 import { Footer } from '@/components/Footer'
 import { useState } from 'react'
-import { DiagramOrChartType } from '@/lib/utils'
 import { Edge, Node } from 'reactflow'
-import { exampleFlowDiagramPrompts } from '@/components/DiagramInputsForm'
-import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
-import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
-import { DiagramContext } from '@/lib/Contexts/DiagramContext'
+
 import { SharedDiagramContext } from '@/lib/Contexts/SharedDiagramContext'
 
 import 'reactflow/dist/style.css'

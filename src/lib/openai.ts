@@ -345,6 +345,6 @@ export const promptForUserMessageForMermaid = (
   diagramTitle: string,
   diagramDescription: string,
 ) => {
-  return `${promptForDiagram}  \n\nDiagram Title: ${diagramTitle}\nDiagram Description: ${diagramDescription}
+  return `\n\nDiagram Title: ${diagramTitle}\nDiagram Description: ${diagramDescription}
     \n`
 }

@@ -16,6 +16,8 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { DiagramOrChartType } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { mermaidCommandsPrompt } from '@/lib/completions-prompt.mermaid'
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
+import { getDiagramPrompt } from '@/lib/Examples/GetDiagramPrompt'
 
 export const maxDuration = 200
 
@@ -32,11 +34,12 @@ export async function POST(req: Request) {
   }
 
   const json = await req.json()
+  console.log('JSON: ', json)
   const { title: diagramTitle, description: diagramDescription } = json
-  const type = json.type as DiagramOrChartType
+  const type = json.type as DiagramOrChartType | TempMermaidDiagramType
 
   let contextText = ''
-  if (type !== 'Whiteboard' && type !== 'Mermaid') {
+  if (type === 'Flow Diagram' || type === 'Chart') {
     contextText = await getEmbeddingForContext(type, contextText)
   }
 
@@ -44,14 +47,7 @@ export async function POST(req: Request) {
 
   const assistantMessage1: ChatCompletionMessageParam = {
     role: 'assistant',
-    content:
-      type === 'Flow Diagram'
-        ? promptForReactFlowContext(contextText)
-        : type === 'Chart'
-          ? promptForChartJsContext(contextText)
-          : type === 'Mermaid'
-            ? mermaidCommandsPrompt
-            : '',
+    content: getDiagramPrompt(type, contextText),
   }
 
   const assistantMessage3: ChatCompletionMessageParam = {
@@ -71,9 +67,7 @@ export async function POST(req: Request) {
         ? promptForUserMessage(diagramTitle, diagramDescription)
         : type === 'Chart'
           ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
-          : type === 'Mermaid'
-            ? promptForUserMessageForMermaid(diagramTitle, diagramDescription)
-            : '',
+          : promptForUserMessageForMermaid(diagramTitle, diagramDescription),
   }
 
   const userMessage2: ChatCompletionMessageParam = {

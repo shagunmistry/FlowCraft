@@ -18,45 +18,9 @@ import ExamplesDropdown from './Dropdown'
 import ErrorDialog from './ErrorDialog'
 import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 import { useAssistant } from './Whiteboard/UserPrompt'
-
-export const exampleFlowDiagramPrompts = [
-  {
-    title: 'SAMPLE: What is the house buying process?',
-    description: '',
-  },
-  {
-    title: 'SAMPLE: How do you make a peanut butter and jelly sandwich?',
-    description: '',
-  },
-  {
-    title: 'SAMPLE: How to Make a Paper Airplane',
-    description: '',
-  },
-  {
-    title:
-      'SAMPLE: Explain the Patient Triaging Process from a Patient Perspective',
-    description: '',
-  },
-]
-
-export const exampleChartDataPrompts = [
-  {
-    title: 'Average Temperature in NYC',
-    description: chartJsAverageNewYorkWeatherReport,
-  },
-  {
-    title: 'Netflix Sales Report',
-    description: chartJsNetflixFinancialExampleReport,
-  },
-  {
-    title: 'Tesla Stock Price',
-    description: chartJsTeslaStockPricesExampleReport,
-  },
-  {
-    title: 'Annual Cancer Rates',
-    description: chartJsCancerRatesExampleReport,
-  },
-]
+import StepLine from './StepLine'
+import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
+import { DiagramSelectionOptionsAndExamples } from '@/lib/DiagramSelectionOptionsAndExamples'
 
 export const exampleMermaidPrompts = [
   { title: 'Sequence Diagram of a User Login', description: '' },
@@ -74,54 +38,10 @@ export const exampleMermaidPrompts = [
   { title: 'Sankey of a Data Flow', description: '' },
 ]
 
-export const typeSelectionOptions = [
-  {
-    id: 'Flow Diagram' as DiagramOrChartType,
-    title: 'Flow Diagram',
-    description:
-      'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
-    prompts: exampleFlowDiagramPrompts,
-    icon: PencilIcon,
-  },
-  {
-    id: 'Chart' as DiagramOrChartType,
-    title: 'Chart',
-    description:
-      'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
-    prompts: exampleChartDataPrompts,
-    icon: ChartBarIcon,
-  },
-  {
-    id: 'Whiteboard' as DiagramOrChartType,
-    title: 'Whiteboard',
-    description:
-      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
-    prompts: exampleFlowDiagramPrompts,
-    icon: ComputerDesktopIcon,
-  },
-  {
-    id: 'Mermaid' as DiagramOrChartType,
-    title: 'Other Types',
-    description:
-      'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
-    prompts: exampleMermaidPrompts,
-    icon: PencilIcon,
-  },
-]
-
-export function StepLine() {
-  return (
-    <div
-      className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-indigo-600"
-      aria-hidden="true"
-    />
-  )
-}
-
 export default function DiagramInputsForm({
   type,
 }: {
-  type: DiagramOrChartType
+  type: DiagramOrChartType | TempMermaidDiagramType
 }) {
   const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
 
@@ -130,13 +50,18 @@ export default function DiagramInputsForm({
   const [description, setDescription] = useState<string>('')
   const [error, setError] = useState<string | null>('')
   const [openErrorDialog, setOpenErrorDialog] = useState(false)
-  const [selectedType, setSelectedType] = useState<any>(typeSelectionOptions[2])
+  const [selectedType, setSelectedType] = useState<any>(
+    DiagramSelectionOptionsAndExamples[2],
+  )
   const [title, setTitle] = useState<string>('')
 
   const context = useContext(DiagramContext)
 
   useEffect(() => {
-    setSelectedType(typeSelectionOptions.find((option) => option.id === type))
+    setSelectedType(
+      DiagramSelectionOptionsAndExamples.find((option) => option.id === type),
+    )
+    context.setType(type)
   }, [type])
 
   const handleSubmit = async () => {
@@ -164,6 +89,10 @@ export default function DiagramInputsForm({
         await controls?.start(title)
       } else {
         context.setLoading(true)
+        context.setChartJsData(null)
+        context.setMermaidData('')
+        context.setNodes([])
+        context.setEdges([])
         const diagram = await fetch('/api/generate-diagram', {
           method: 'POST',
           body: JSON.stringify({
@@ -195,7 +124,10 @@ export default function DiagramInputsForm({
         }
 
         console.log('Diagram JSON: ', JSON.parse(parseableJson), 'Type: ', type)
-        const diagramResult = JSON.parse(diagramJson.result)
+
+        let diagramResult = JSON.parse(diagramJson.result)
+
+        console.log('Diagram Result: ', diagramResult)
 
         if (
           diagramResult &&
@@ -207,11 +139,7 @@ export default function DiagramInputsForm({
           context.setEdges(diagramResult.edges)
         } else if (diagramResult && diagramResult.data && type === 'Chart') {
           context.setChartJsData(diagramResult)
-        } else if (
-          diagramResult &&
-          diagramResult.mermaid &&
-          type === 'Mermaid'
-        ) {
+        } else if (diagramResult && diagramResult.mermaid) {
           console.log('Setting Mermaid Data: ', diagramResult.mermaid)
           context.setMermaidData(diagramResult.mermaid)
         }

@@ -44,6 +44,7 @@ import {
   edgeTypes,
   nodeTypes,
 } from '@/lib/react-flow.util'
+import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 
 const Loader = () => {
   return (
@@ -57,10 +58,32 @@ const Loader = () => {
   )
 }
 
+const checkIfMermaidDiagram = (
+  type: DiagramOrChartType | TempMermaidDiagramType | null,
+) => {
+  return (
+    type === 'classDiagram' ||
+    type === 'flowchart' ||
+    type === 'sequenceDiagram' ||
+    type === 'stateDiagram' ||
+    type === 'entityRelationshipDiagram' ||
+    type === 'userJourney' ||
+    type === 'gantt' ||
+    type === 'pieChart' ||
+    type === 'quadrantChart' ||
+    type === 'requirementDiagram' ||
+    type === 'gitgraph' ||
+    type === 'mindmaps' ||
+    type === 'sankey' ||
+    type === 'timeline' ||
+    type === 'zenuml'
+  )
+}
+
 export default function DiagramOrChartView({
   type,
 }: {
-  type: DiagramOrChartType
+  type: DiagramOrChartType | TempMermaidDiagramType
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
@@ -81,8 +104,8 @@ export default function DiagramOrChartView({
   )
 
   const [chartCreated, setChartCreated] = useState<boolean>(false)
-
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
+  const [isMermaidError, setIsMermaidError] = useState<boolean>(false)
 
   const [notification, setNotification] = useState<{
     message: string
@@ -91,6 +114,14 @@ export default function DiagramOrChartView({
   }>()
 
   const context = useContext(DiagramContext)
+
+  useEffect(() => {
+    context.setMermaidData('')
+    context.setChartJsData({})
+    context.setNodes([])
+    context.setEdges([])
+    context.setTlDrawRecords([])
+  }, [type])
 
   useEffect(() => {
     console.log('context.type: ', context.type)
@@ -176,15 +207,42 @@ export default function DiagramOrChartView({
 
       scenarios.house_buying_process.records = recordsWithNecessaryFields
       setTlDrawInputJson(JSON.stringify(scenarios.house_buying_process))
-    } else if (context.type === 'Mermaid') {
+    } else if (
+      checkIfMermaidDiagram(context.type) &&
+      context.mermaidData !== '' &&
+      !context.loading
+    ) {
       console.log('context.mermaidData: ', context.mermaidData)
-      mermaid.initialize({
-        startOnLoad: true,
-        theme: 'forest',
-      })
-      mermaid.run({
-        querySelector: '.mermaid',
-      })
+
+      mermaid.mermaidAPI
+        .parse(context.mermaidData, { suppressErrors: true })
+        .then(async (res) => {
+          console.log('Mermaid API Response: ', res)
+          if (res) {
+            setIsMermaidError(false)
+            mermaid.initialize({
+              startOnLoad: false,
+              theme: 'forest',
+            })
+            mermaid.run({
+              querySelector: '.mermaid',
+            })
+
+            await mermaid.init(
+              undefined,
+              document.querySelectorAll('.mermaid')[0] as HTMLElement,
+            )
+
+            return
+          }
+
+          setIsMermaidError(true)
+          return
+        })
+        .catch((err) => {
+          console.error('Mermaid API Error: ', err)
+          setIsMermaidError(true)
+        })
     }
   }, [
     context.nodes,
@@ -559,20 +617,34 @@ export default function DiagramOrChartView({
             {type === 'Whiteboard' && (
               <Whiteboard inputJson={tlDrawInputJson} />
             )}
-            {type === 'Mermaid' && (
-              <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mx-auto max-w-7xl items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
+            {checkIfMermaidDiagram(type) && (
+              <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mx-auto h-screen max-w-7xl items-center justify-center rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
                 <p className="text-center text-2xl font-bold text-pink-500">
                   {context.title && !context.title.includes('SAMPLE')
                     ? context.title
                     : ''}
                 </p>
                 <button
-                  className="mb-2 mt-2 rounded-md bg-pink-500 p-2 text-white hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md"
+                  className="mb-2 mt-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={downloadMermaidDiagramAsPng}
+                  disabled={isMermaidError || context.loading}
                 >
                   Download Diagram
                 </button>
-                <pre className="mermaid">{context.mermaidData}</pre>
+                {isMermaidError ? (
+                  <div className="text-center text-red-500">
+                    There was an error generating the diagram. Please try again
+                    later.
+                  </div>
+                ) : context.mermaidData === '' ? (
+                  <div className="text-center text-red-500">
+                    No data to display
+                  </div>
+                ) : (
+                  <pre className="mermaid mx-auto h-full w-full text-center">
+                    {context.mermaidData}
+                  </pre>
+                )}
               </div>
             )}
           </>
