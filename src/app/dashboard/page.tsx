@@ -7,7 +7,7 @@ import { DiagramData } from '@/lib/DiagramType.db'
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import { DiagramType, navigationOptions } from '@/lib/utils'
+import { cn, DiagramType, navigationOptions } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
@@ -98,11 +98,18 @@ export default async function Dashboard() {
                 {navigationOptions.map((option) => (
                   <li
                     key={option.title}
-                    className="col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white text-center shadow-lg transition duration-300 ease-in-out hover:scale-105"
+                    className={cn(
+                      'col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white text-center shadow-lg transition duration-300 ease-in-out hover:scale-105',
+                      option.badgeType === 'coming-soon' ? 'opacity-50' : '',
+                      option.badgeType === 'popular' ? 'border-indigo-500' : '',
+                    )}
                   >
                     <div className="flex flex-1 flex-col p-8">
+                      {option.badgeType && (
+                        <Badge badgeType={option.badgeType} />
+                      )}
                       <Image
-                        className="mx-auto h-32 w-32 flex-shrink-0 rounded-full object-cover shadow-lg"
+                        className="mx-auto mt-4 h-32 w-32 flex-shrink-0 rounded-xl border-4 border-indigo-200 object-cover shadow-lg"
                         src={option.source}
                         height={128}
                         width={128}
@@ -110,9 +117,6 @@ export default async function Dashboard() {
                       />
                       <h3 className="font-large mt-6 text-lg font-bold text-indigo-500 sm:text-sm md:text-xl">
                         {option.title} {option.emoji}
-                        {option.badgeType && (
-                          <Badge badgeType={option.badgeType} />
-                        )}
                       </h3>
                       <dl className="mt-1 flex flex-grow flex-col justify-between">
                         <dt className="sr-only">Description</dt>
@@ -124,16 +128,30 @@ export default async function Dashboard() {
                     <div>
                       <div className="-mt-px flex">
                         <div className="flex w-0 flex-1">
-                          <Link
-                            href={option.link}
-                            className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
-                          >
-                            <PlayIcon
-                              className="h-5 w-5 text-pink-400 transition duration-150 ease-in-out group-hover:text-gray-500"
-                              aria-hidden="true"
-                            />
-                            Create
-                          </Link>
+                          {option.badgeType === 'coming-soon' ? (
+                            <button
+                              type="button"
+                              className="relative -mr-px inline-flex w-0 flex-1 cursor-not-allowed items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-gray-400"
+                              disabled
+                            >
+                              <PlayIcon
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                              Create
+                            </button>
+                          ) : (
+                            <Link
+                              href={option.link}
+                              className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
+                            >
+                              <PlayIcon
+                                className="h-5 w-5 text-pink-400 transition duration-150 ease-in-out group-hover:text-gray-500"
+                                aria-hidden="true"
+                              />
+                              Create
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>

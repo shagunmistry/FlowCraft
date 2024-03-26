@@ -20,7 +20,7 @@ interface Option {
   link: string // Replace with actual links to corresponding pages
   source: string
   description: string
-  badgeType?: 'popular' | 'new'
+  badgeType?: 'popular' | 'new' | 'coming-soon' | 'experimental'
 }
 
 export const navigationOptions: Option[] = [
@@ -42,7 +42,7 @@ export const navigationOptions: Option[] = [
       'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FMindmap_screenshot.png?alt=media&token=6ba9fbdf-df6e-49b2-bc71-7f9ce55d821d',
     description:
       'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
-    badgeType: 'new',
+    badgeType: 'experimental',
   },
   {
     title: 'Whiteboard',
