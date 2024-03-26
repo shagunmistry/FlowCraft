@@ -28,6 +28,7 @@ import {
 } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import OverviewDialog from '@/components/Mermaid/OverviewDialog.mermaid'
+import { Badge } from '@/components/Badge'
 
 const DiagramIcon: React.FC<{ type: string }> = ({ type }) => {
   return (
@@ -182,6 +183,7 @@ export default function ComplexDiagramsPage() {
         <div className="my-6 ml-4">
           <h3 className="text-base font-semibold leading-6 text-gray-900">
             Choose a Diagram Type
+            <Badge badgeType="experimental" />
           </h3>
         </div>
         <ul

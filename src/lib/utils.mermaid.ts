@@ -1,3 +1,5 @@
+import { TempMermaidDiagramType } from "@/components/Mermaid/OverviewDialog.mermaid"
+
 export const MermaidDiagramTypes = [
   'FlowChart',
   'Sequence Diagram',
@@ -49,4 +51,41 @@ export enum MermaidDiagramEnums {
   Timeline = 'timeline',
   Zenuml = 'zenuml',
   Sankey = 'sankey',
+}
+
+export const getMermaidDiagramTitle = (type: TempMermaidDiagramType) => {
+  switch (type) {
+    case 'flowchart':
+      return 'Flowchart'
+    case 'sequenceDiagram':
+      return 'Sequence Diagram'
+    case 'classDiagram':
+      return 'Class Diagram'
+    case 'stateDiagram':
+      return 'State Diagram'
+    case 'entityRelationshipDiagram':
+      return 'Entity Relationship Diagram'
+    case 'userJourney':
+      return 'User Journey'
+    case 'gantt':
+      return 'Gantt Chart'
+    case 'pieChart':
+      return 'Pie Chart'
+    case 'quadrantChart':
+      return 'Quadrant Chart'
+    case 'requirementDiagram':
+      return 'Requirement Diagram'
+    case 'gitgraph':
+      return 'Git Graph'
+    case 'mindmaps':
+      return 'Mind Maps'
+    case 'timeline':
+      return 'Timeline'
+    case 'zenuml':
+      return 'ZenUML'
+    case 'sankey':
+      return 'Sankey Diagram'
+    default:
+      return 'Diagram'
+  }
 }

@@ -1,9 +1,45 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const SankeyMermaidPrompt = `
-${prefix}
+${prefix('sankey')}
 
 # Sankey Diagram Syntax
+
+## Syntax
+
+The idea behind syntax is that a user types "sankey-beta" keyword first, then pastes raw CSV below and get the result.
+
+It implements CSV standard as [described here](https://www.ietf.org/rfc/rfc4180.txt) with subtle **differences**:
+
+- CSV must contain **3 columns only**
+- It is **allowed** to have **empty lines** without comma separators for visual purposes
+
+### Basic
+
+It is implied that 3 columns inside CSV should represent "source", "target" and "value" accordingly.
+
+### Empty Lines
+
+CSV does not support empty lines without comma delimiters by default. But you can add them if needed.
+
+
+### Double Quotes
+
+If you need to have double quote, put a pair of them inside quoted string.
+
+### Links Coloring
+
+You can adjust links' color by setting "linkColor" to one of those:
+
+- "source" - link will be of a source node color
+- "target" - link will be of a target node color
+- "gradient" - link color will be smoothly transient between source and target node colors
+- hex code of color, like "#a1a1a1"
+
+### Commas
+
+If you need to have a comma, wrap it in double quotes:
+
 '''
 ---
 config:

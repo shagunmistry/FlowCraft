@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const PieChartMermaidPrompt = `
-${prefix}
+${prefix('pieChart')}
 
 # Pie Chart Syntax
 '''

@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const MindmapsMermaidPrompt = `
-${prefix}
+${prefix('mindmaps')}
 
 # Mindmaps Syntax
 

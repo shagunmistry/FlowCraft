@@ -89,6 +89,10 @@ export default function DiagramInputsForm({
         await controls?.start(title)
       } else {
         context.setLoading(true)
+        context.setChartJsData(null)
+        context.setMermaidData('')
+        context.setNodes([])
+        context.setEdges([])
         const diagram = await fetch('/api/generate-diagram', {
           method: 'POST',
           body: JSON.stringify({

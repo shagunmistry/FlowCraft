@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const RequirementsDiagramMermaidPrompt = `
-${prefix}
+${prefix('requirementDiagram')}
 
 # Requirements Diagram Syntax
 '''

@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const QuadrantChartMermaidPrompt = `
-${prefix}
+${prefix('quadrantChart')}
 
 # Quadrant Chart Syntax
 '''

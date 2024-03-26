@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const ZenumlMermaidPrompt = `
-${prefix}
+${prefix('zenuml')}
 
 # Zenuml Diagram Syntax
 '''

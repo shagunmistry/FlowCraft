@@ -1,6 +1,6 @@
 'use client'
 
-import { MermaidDiagramType } from '@/lib/utils.mermaid'
+import { getMermaidDiagramTitle, MermaidDiagramType } from '@/lib/utils.mermaid'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
@@ -58,43 +58,6 @@ const getDescription = (type: TempMermaidDiagramType) => {
       return 'Visualize complex relationships between flows or stocks, often used to represent material or energy flows (Beta).'
     default:
       return 'Description not available.'
-  }
-}
-
-const getTitle = (type: TempMermaidDiagramType) => {
-  switch (type) {
-    case 'flowchart':
-      return 'Flowchart'
-    case 'sequenceDiagram':
-      return 'Sequence Diagram'
-    case 'classDiagram':
-      return 'Class Diagram'
-    case 'stateDiagram':
-      return 'State Diagram'
-    case 'entityRelationshipDiagram':
-      return 'Entity Relationship Diagram'
-    case 'userJourney':
-      return 'User Journey'
-    case 'gantt':
-      return 'Gantt Chart'
-    case 'pieChart':
-      return 'Pie Chart'
-    case 'quadrantChart':
-      return 'Quadrant Chart'
-    case 'requirementDiagram':
-      return 'Requirement Diagram'
-    case 'gitgraph':
-      return 'Git Graph'
-    case 'mindmaps':
-      return 'Mind Maps'
-    case 'timeline':
-      return 'Timeline'
-    case 'zenuml':
-      return 'ZenUML'
-    case 'sankey':
-      return 'Sankey Diagram'
-    default:
-      return 'Diagram'
   }
 }
 
@@ -185,7 +148,7 @@ export default function OverviewDialog({
                       <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg shadow-lg">
                         <Image
                           src={getDiagramImage(type)}
-                          alt={getTitle(type)}
+                          alt={getMermaidDiagramTitle(type)}
                           className="h-full w-full object-scale-down object-center"
                           fill
                         />
@@ -193,7 +156,7 @@ export default function OverviewDialog({
                     </div>
                     <div className="sm:col-span-8 lg:col-span-7">
                       <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
-                        {getTitle(type)}
+                        {getMermaidDiagramTitle(type)}
                       </h2>
 
                       <section
@@ -212,7 +175,7 @@ export default function OverviewDialog({
                         href={`/dashboard/mermaid/${type}`}
                         className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
-                        Create {getTitle(type)}
+                        Create {getMermaidDiagramTitle(type)}
                       </Link>
                     </div>
                   </div>

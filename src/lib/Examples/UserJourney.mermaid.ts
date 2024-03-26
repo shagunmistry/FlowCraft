@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const UserJourneyMermaidPrompt = `
-${prefix}
+${prefix('userJourney')}
 
 # User Journey Diagram Syntax
 '''

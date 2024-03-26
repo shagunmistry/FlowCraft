@@ -1,7 +1,7 @@
 import { prefix } from "../completions-prompt.mermaid";
 
 export const EntityRelationshipMermaidPrompt = `
-${prefix}
+${prefix('entityRelationshipDiagram')}
 
 # Entity Relationship Diagram Syntax
 '''

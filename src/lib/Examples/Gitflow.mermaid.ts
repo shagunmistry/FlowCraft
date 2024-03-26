@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const GitflowMermaidPrompt = `
-${prefix}
+${prefix('gitgraph')}
 
 # Gitflow Diagram Syntax
 '''

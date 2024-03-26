@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const TimelineMermaidPrompt = `
-${prefix}
+${prefix('timeline')}
 
 # Timeline Syntax
 '''
@@ -69,18 +69,6 @@ title History of Social Media Platform
   2004 : Facebook : Google
   2005 : Youtube
   2006 : Twitter
-'''
-
-'''
-mermaid.initialize({
-    theme: 'base',
-    startOnLoad: true,
-    logLevel: 0,
-    timeline: {
-      disableMulticolor: false,
-    },
-    ...
-    ...
 '''
 
 '''

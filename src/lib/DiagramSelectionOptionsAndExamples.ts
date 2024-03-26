@@ -44,6 +44,14 @@ export const DiagramSelectionOptionsAndExamples: {
     icon: ComputerDesktopIcon,
   },
   {
+    id: 'flowchart' as TempMermaidDiagramType,
+    title: 'Flowchart',
+    description:
+      'Flowcharts are used to visualize the steps of a process or algorithm.',
+    prompts: exampleMermaidDiagramPrompts.flowchart,
+    icon: PencilIcon,
+  },
+  {
     id: 'classDiagram' as TempMermaidDiagramType,
     title: 'Class Diagram',
     description:

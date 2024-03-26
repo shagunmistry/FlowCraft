@@ -1,6 +1,10 @@
 import { cn } from '@/lib/utils'
 
-export const Badge = ({ badgeType }: { badgeType: 'popular' | 'new' }) => {
+export const Badge = ({
+  badgeType,
+}: {
+  badgeType: 'popular' | 'new' | 'experimental'
+}) => {
   const className =
     badgeType === 'popular'
       ? 'bg-blue-100 text-blue-700'

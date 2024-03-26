@@ -1,7 +1,7 @@
 import { prefix } from '../completions-prompt.mermaid'
 
 export const GanttMermaidPrompt = `
-${prefix}
+${prefix('gantt')}
 
 # Gantt Diagram Syntax
 '''

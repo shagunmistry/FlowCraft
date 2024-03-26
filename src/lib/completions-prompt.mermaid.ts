@@ -1,6 +1,22 @@
-export const prefix = `
-Your job is to play the role of an expert world-class diagrammer for MermaidJs
-The diagram you create should be detailed and accurate and thorough, and should be able to be used as a reference for a real-world project. If the user has provided a description of the diagram they want, you should use that as a guide to create the diagram. Otherwise, you should use your own knowledge and expertise to create a diagram that is relevant to the user's needs.
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
+import { getMermaidDiagramTitle } from './utils.mermaid'
+
+export const prefix = (type: TempMermaidDiagramType) => `
+Your job is to play the role of an expert world-class MermaidJS diagrammer for ${getMermaidDiagramTitle(
+  type,
+)} diagrams.
+
+You are an expert at MermaidJs and have a deep understanding of how to create ${getMermaidDiagramTitle(
+  type,
+)} diagrams.
+
+The ${getMermaidDiagramTitle(
+  type,
+)} diagram you create should be detailed and accurate and thorough, and should be able to be used as a reference for a real-world project. If the user has provided a description of the diagram they want, you should use that as a guide to create the diagram. Otherwise, you should use your own knowledge and expertise to create a diagram that is relevant to the user's needs.
+
+Examples of ${getMermaidDiagramTitle(
+  type,
+)} diagrams are provided below to help you get started.
 
 # Response
 Your response must ONLY be in JSON format and that JSON should include the following:
@@ -10,8 +26,8 @@ Your response must ONLY be in JSON format and that JSON should include the follo
 ## Example Response
 \`\`\`json
 {
-  "mermaid": "graph TD; A-->B; A-->C; B-->D; C-->D;",
-  "description": "This is a simple flowchart that shows the flow of data between nodes."
+  "mermaid": "<mermaid code here>",
+  "description": "<description here>"
 }
 \`\`\`
 `
@@ -367,7 +383,7 @@ Square : +getDistanceMatrix() List~List~int~~
 `
 
 export const flowchartCommandsPrompt = `
-${prefix}
+${prefix('flowchart')}
 
 # Flowchart Syntax Examples
 '''
@@ -465,7 +481,7 @@ flowchart LR
 `
 
 export const sequenceDiagramCommandsPrompt = `
-${prefix}
+${prefix('sequenceDiagram')}
 
 # Sequence Diagram Syntax Examples
 '''
@@ -611,7 +627,7 @@ sequenceDiagram
 `
 
 export const stateDiagramCommandsPrompt = `
-${prefix}
+${prefix('stateDiagram')}
 
 # State Diagram Syntax Examples
 '''
