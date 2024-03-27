@@ -43,7 +43,7 @@ export async function login(formData: FormData) {
   }
 
   // create a user in supabase DB if it doesn't exist
-  await createOrUpdateUserInDB()
+  // await createOrUpdateUserInDB()
 
   revalidatePath('/dashboard')
   return redirect('/dashboard')
@@ -116,7 +116,7 @@ export async function signup(formData: FormData) {
     return { error: error.message }
   }
 
-  await createOrUpdateUserInDB()
+  // await createOrUpdateUserInDB()
 
   return {
     success:
@@ -168,7 +168,7 @@ export async function loginWithGoogle() {
     return { error: 'Error during login' }
   }
 
-  await createOrUpdateUserInDB()
+  // await createOrUpdateUserInDB()
 
   return { success: 'Google Login successful!', data }
 }
