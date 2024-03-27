@@ -111,7 +111,7 @@ export const DiagramSelectionOptionsAndExamples: {
     id: 'quadrantChart' as TempMermaidDiagramType,
     title: 'Quadrant Chart',
     description:
-      'Quadrant charts are used to show the relationship between two variables.',
+      "Quadrant charts, also known as quad charts, are visual tools that divide data into four quadrants to help identify trends and patterns in data. The chart's x-axis represents one variable, and the y-axis represents another. The quadrants are based on a criteria specific to the data being analyzed",
     prompts: exampleMermaidDiagramPrompts.quadrantChart,
     icon: PencilIcon,
   },
@@ -135,7 +135,7 @@ export const DiagramSelectionOptionsAndExamples: {
     id: 'mindmaps' as TempMermaidDiagramType,
     title: 'Mindmaps',
     description:
-      'Mindmaps are used to visually organize information and ideas.',
+      'Mindmaps are used to visually organize information and ideas. They are great for brainstorming, note-taking, and problem-solving.',
     prompts: exampleMermaidDiagramPrompts.mindmaps,
     icon: PencilIcon,
   },
@@ -150,8 +150,7 @@ export const DiagramSelectionOptionsAndExamples: {
   {
     id: 'zenuml' as TempMermaidDiagramType,
     title: 'ZenUML',
-    description:
-      'ZenUML diagrams are used to visualize the structure of a system.',
+    description: 'ZenUML is a simple and intuitive way to create UML diagrams.',
     prompts: exampleMermaidDiagramPrompts.zenuml,
     icon: PencilIcon,
   },
@@ -159,7 +158,7 @@ export const DiagramSelectionOptionsAndExamples: {
     id: 'sankey' as TempMermaidDiagramType,
     title: 'Sankey Diagram',
     description:
-      'Sankey diagrams are used to visualize the flow of energy or materials.',
+      'A Sankey diagram is a visualization technique that shows the flow of values from one set to another. The entities being connected are called nodes, and the connections are called links. Sankey diagrams use rectangles or text to represent nodes, and arrows or arcs to represent links. The width of the links is proportional to the importance of the flow. ',
     prompts: exampleMermaidDiagramPrompts.sankey,
     icon: PencilIcon,
   },

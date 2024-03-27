@@ -88,6 +88,7 @@ export default function DiagramOrChartView({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const [toggleReactFlowGird, setToggleReactFlowGird] = useState<boolean>(true)
+  const [mermaidSVG, setMermaidSVG] = useState<string>('')
 
   const [openShareableLinkModal, setOpenShareableLinkModal] =
     useState<boolean>(false)
@@ -220,20 +221,33 @@ export default function DiagramOrChartView({
           console.log('Mermaid API Response: ', res)
           if (res) {
             setIsMermaidError(false)
-            mermaid.initialize({
-              startOnLoad: false,
-              theme: 'forest',
-            })
-            mermaid.run({
-              querySelector: '.mermaid',
-            })
 
-            await mermaid.init(
-              undefined,
-              document.querySelectorAll('.mermaid')[0] as HTMLElement,
-            )
+            try {
+              const { svg } = await mermaid.render(
+                'mermaid',
+                context.mermaidData,
+              )
 
-            return
+
+              if (svg === undefined) {
+                console.error('SVG from Mermaid API is undefined')
+                setIsMermaidError(true)
+                return
+              }
+
+              setMermaidSVG(svg)
+
+              mermaid.initialize({
+                startOnLoad: false,
+                theme: 'forest',
+              })
+
+              return
+            } catch (err) {
+              console.error('Error rendering mermaid diagram: ', err)
+              setIsMermaidError(true)
+              return
+            }
           }
 
           setIsMermaidError(true)
@@ -535,11 +549,11 @@ export default function DiagramOrChartView({
       return
     }
 
-    const imageWidth = 1024
+    const imageWidth = 1080
     const imageHeight = 768
 
     const dataUrl = await toPng(mermaidContainer, {
-      backgroundColor: '#1a365d',
+      backgroundColor: '#FFFFFF',
       width: imageWidth,
       height: imageHeight,
     })
@@ -618,12 +632,7 @@ export default function DiagramOrChartView({
               <Whiteboard inputJson={tlDrawInputJson} />
             )}
             {checkIfMermaidDiagram(type) && (
-              <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mx-auto h-screen max-w-7xl items-center justify-center rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
-                <p className="text-center text-2xl font-bold text-pink-500">
-                  {context.title && !context.title.includes('SAMPLE')
-                    ? context.title
-                    : ''}
-                </p>
+              <div className="mx-auto h-screen max-w-7xl items-center justify-center overflow-y-auto rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
                 <button
                   className="mb-2 mt-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={downloadMermaidDiagramAsPng}
@@ -636,14 +645,15 @@ export default function DiagramOrChartView({
                     There was an error generating the diagram. Please try again
                     later.
                   </div>
-                ) : context.mermaidData === '' ? (
+                ) : mermaidSVG === '' ? (
                   <div className="text-center text-red-500">
                     No data to display
                   </div>
                 ) : (
-                  <pre className="mermaid mx-auto h-full w-full text-center">
-                    {context.mermaidData}
-                  </pre>
+                  <div
+                    className="mermaid mx-auto h-full w-full p-4 text-center"
+                    dangerouslySetInnerHTML={{ __html: mermaidSVG }}
+                  ></div>
                 )}
               </div>
             )}

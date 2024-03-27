@@ -1,4 +1,4 @@
-import { TempMermaidDiagramType } from "@/components/Mermaid/OverviewDialog.mermaid"
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 
 export const MermaidDiagramTypes = [
   'FlowChart',
