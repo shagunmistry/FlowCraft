@@ -28,8 +28,6 @@ export async function GET() {
     })
   }
 
-  console.log(diagramsData)
-
   return new Response(JSON.stringify({ diagrams: diagramsData }), {
     status: 200,
     headers: {

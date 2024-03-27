@@ -27,7 +27,7 @@ export async function GET() {
     })
   }
 
-  console.log('Shared Links of User', shareableLinksData)
+  console.log('Shared Links of User', shareableLinksData.length)
 
   return new Response(JSON.stringify({ shares: shareableLinksData }), {
     status: 200,

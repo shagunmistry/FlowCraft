@@ -34,7 +34,7 @@ export async function login(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { data: userData, error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithPassword(data)
 
   console.log('---> Error during Login', error)
 
@@ -43,20 +43,30 @@ export async function login(formData: FormData) {
   }
 
   // create a user in supabase DB if it doesn't exist
-  await createOrUpdateUserInDB(userData.user)
+  await createOrUpdateUserInDB()
 
   revalidatePath('/dashboard')
   return redirect('/dashboard')
 }
 
-async function createOrUpdateUserInDB(userData: AuthUser) {
+async function createOrUpdateUserInDB() {
   const supabaseClient = createClient()
+
+  const { data: loggedInUser, error: loggedInUserError } =
+    await supabaseClient.auth.getUser()
+
+  if (loggedInUserError || !loggedInUser?.user) {
+    console.error(
+      '(createOrUpdateUserInDB) Error during logged in user fetch:',
+      loggedInUserError,
+    )
+  }
 
   // Check if user exists in DB
   const { data: user, error: userError } = await supabaseClient
     .from('users')
     .select('user_id')
-    .eq('user_id', userData.id)
+    .eq('user_id', loggedInUser?.user?.id)
     .single()
 
   if (userError) {
@@ -71,8 +81,8 @@ async function createOrUpdateUserInDB(userData: AuthUser) {
   }
 
   const { error: dbError } = await supabaseClient.from('users').insert({
-    user_id: userData.id,
-    email: userData.email,
+    user_id: loggedInUser?.user?.id,
+    email: loggedInUser?.user?.email,
   })
 
   if (dbError) {
@@ -100,15 +110,13 @@ export async function signup(formData: FormData) {
 
   const { data: userData, error } = await supabase.auth.signUp(data)
 
-  console.log('---> Error', error)
+  console.log('(signup) Error during signup:', error)
 
   if (error) {
     return { error: error.message }
   }
 
-  if (userData.user) {
-    await createOrUpdateUserInDB(userData.user)
-  }
+  await createOrUpdateUserInDB()
 
   return {
     success:
@@ -142,7 +150,7 @@ export async function loginWithGoogle() {
   const supabase = createClient()
   const redirectURL = getURL()
 
-  console.log('Redirect URL:', redirectURL)
+  console.log('(loginWithGoogle) Redirect URL:', redirectURL)
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -160,15 +168,7 @@ export async function loginWithGoogle() {
     return { error: 'Error during login' }
   }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser()
-
-  if (userError) {
-    console.error('(loginWithGoogle) Error during user creation:', userError)
-  }
-
-  if (userData && userData.user) {
-    await createOrUpdateUserInDB(userData.user)
-  }
+  await createOrUpdateUserInDB()
 
   return { success: 'Google Login successful!', data }
 }
