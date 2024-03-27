@@ -124,6 +124,10 @@ export async function loginWithGoogle() {
     provider: 'google',
     options: {
       redirectTo: redirectURL,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
     },
   })
 
@@ -132,6 +136,15 @@ export async function loginWithGoogle() {
     return { error: 'Error during login' }
   }
 
-  console.log('Data:', data)
+  const { data: userData, error: userError } = await supabase.auth.getUser()
+
+  if (userError) {
+    console.error('Error during user creation:', userError)
+  }
+
+  if (userData && userData.user) {
+    await createOrUpdateUserInDB(supabase, userData.user)
+  }
+
   return { success: 'Google Login successful!', data }
 }
