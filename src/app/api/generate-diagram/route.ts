@@ -31,6 +31,53 @@ export async function POST(req: Request) {
       'Error getting user data while generating diagram:',
       userDataError,
     )
+
+    return new Response(
+      JSON.stringify({
+        error: 'Error getting user data while generating diagram',
+      }),
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+        status: 401,
+      },
+    )
+  }
+
+  // Check if the user exists in the users table, if not, insert them
+  const { data: userDataFromDB, error: userErrorFromDB } = await supabaseClient
+    .from('users')
+    .select('*')
+    .eq('id', userData.user?.id)
+
+  if (userDataFromDB?.length === 0) {
+    const { data: insertUserData, error: insertUserError } =
+      await supabaseClient.from('users').insert([
+        {
+          id: userData.user?.id,
+          email: userData.user?.email,
+          created_at: new Date().toISOString(),
+        },
+      ])
+    if (insertUserError) {
+      console.error(
+        'Error inserting user data while generating diagram:',
+        insertUserError,
+      )
+
+      // return new Response(
+      //   JSON.stringify({
+      //     error: 'Error inserting user data while generating diagram',
+      //   }),
+      //   {
+      //     headers: {
+      //       'content-type': 'application/json',
+      //     },
+      //     status: 401,
+      //   },
+      // )
+    }
   }
 
   const json = await req.json()
