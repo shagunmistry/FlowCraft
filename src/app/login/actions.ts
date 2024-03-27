@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase-auth/server'
@@ -44,21 +43,46 @@ export async function login(formData: FormData) {
   }
 
   // create a user in supabase DB if it doesn't exist
-  await createOrUpdateUserInDB(supabase, userData.user)
+  await createOrUpdateUserInDB(userData.user)
 
   revalidatePath('/dashboard')
   return redirect('/dashboard')
 }
 
-async function createOrUpdateUserInDB(supabaseClient: any, userData: AuthUser) {
-  const { error: dbError } = await supabaseClient.from('users').upsert({
+async function createOrUpdateUserInDB(userData: AuthUser) {
+  const supabaseClient = createClient()
+
+  // Check if user exists in DB
+  const { data: user, error: userError } = await supabaseClient
+    .from('users')
+    .select('user_id')
+    .eq('user_id', userData.id)
+    .single()
+
+  if (userError) {
+    console.error(
+      '(createOrUpdateUserInDB) Error during user fetch:',
+      userError,
+    )
+  }
+
+  if (user && user.user_id) {
+    return
+  }
+
+  const { error: dbError } = await supabaseClient.from('users').insert({
     user_id: userData.id,
     email: userData.email,
   })
 
   if (dbError) {
-    console.error('Error during user creation:', dbError)
+    console.error(
+      '(createOrUpdateUserInDB) Error during user creation:',
+      dbError,
+    )
   }
+
+  return
 }
 
 export async function signup(formData: FormData) {
@@ -83,7 +107,7 @@ export async function signup(formData: FormData) {
   }
 
   if (userData.user) {
-    await createOrUpdateUserInDB(supabase, userData.user)
+    await createOrUpdateUserInDB(userData.user)
   }
 
   return {
@@ -139,11 +163,11 @@ export async function loginWithGoogle() {
   const { data: userData, error: userError } = await supabase.auth.getUser()
 
   if (userError) {
-    console.error('Error during user creation:', userError)
+    console.error('(loginWithGoogle) Error during user creation:', userError)
   }
 
   if (userData && userData.user) {
-    await createOrUpdateUserInDB(supabase, userData.user)
+    await createOrUpdateUserInDB(userData.user)
   }
 
   return { success: 'Google Login successful!', data }
