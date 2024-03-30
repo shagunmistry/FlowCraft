@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
 
-export const metatdata: Metadata = {
+export const metadata: Metadata = {
   title: 'FlowCraft | Support',
   description: 'Contact FlowCraft for support',
 }
