@@ -4,11 +4,6 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
 
-export const metadata: Metadata = {
-  title: 'FlowCraft | Support',
-  description: 'Contact FlowCraft for support',
-}
-
 export default function SupportPage() {
   const [notificationMessage, setNotificationMessage] = useState('')
   const [notificationType, setNotificationType] = useState<'success' | 'error'>(
