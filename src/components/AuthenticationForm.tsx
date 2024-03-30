@@ -9,6 +9,7 @@ import SuccessAlert from './SuccessAlert'
 import { Provider } from '@supabase/supabase-js'
 import GithubSVG from '@/lib/Shared/svgs/Github.svg'
 import GoogleSVG from '@/lib/Shared/svgs/Google.svg'
+import { cn } from '@/lib/utils'
 
 export default function AuthenticationForm({
   login,
@@ -189,7 +190,7 @@ export default function AuthenticationForm({
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <Link href="/">
             <Image
-              className="mx-auto rounded-lg shadow-2xl"
+              className="mx-auto rounded-lg shadow-2xl hover:shadow-lg transition-all duration-200 ease-in-out"
               src={FlowCraftLogo}
               alt="FlowCraft Logo"
               height={200}
@@ -197,7 +198,7 @@ export default function AuthenticationForm({
             />
           </Link>
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-pink-500">
-            Sign in to{' '}
+            {isLoginOrSignup === 'login' ? 'Sign in to' : 'Sign up for'}{' '}
             <Link href="/" className="text-indigo-500">
               FlowCraft
             </Link>
@@ -205,7 +206,14 @@ export default function AuthenticationForm({
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-pink-500 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div
+            className={cn(
+              'px-6 py-12 shadow sm:rounded-lg sm:px-12',
+              isLoginOrSignup === 'login'
+                ? 'bg-gradient-to-br from-indigo-500 to-pink-600'
+                : 'bg-gradient-to-br from-pink-500 to-indigo-600',
+            )}
+          >
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -274,7 +282,12 @@ export default function AuthenticationForm({
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="ml-2 flex-1 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+                  className={cn(
+                    'ml-2 flex-1 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+                    isLoginOrSignup === 'login'
+                      ? 'bg-indigo-600 hover:bg-indigo-500'
+                      : 'bg-pink-600 hover:bg-pink-500',
+                  )}
                 >
                   {isLoginOrSignup === 'login' ? 'Sign in' : 'Sign up'}
                 </button>

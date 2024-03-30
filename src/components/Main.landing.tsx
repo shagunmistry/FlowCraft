@@ -14,6 +14,8 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
+import PricingTemplate from './Pricing/Pricing.template'
+import HowToUseSteps from './HowToUseSteps'
 
 const features = [
   {
@@ -167,8 +169,18 @@ export default function MainLanding() {
             </div>
           </div>
 
-          {/** Features section */}
+          {/** How It works section */}
           <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-96 lg:mt-5 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:mx-0">
+              <p className="mt-2 text-3xl font-bold tracking-tight text-pink-500 sm:text-4xl">
+                3 Simple Steps
+              </p>
+            </div>
+            <HowToUseSteps />
+          </div>
+
+          {/** Features section */}
+          <div className="mx-auto mt-10 max-w-7xl px-6 sm:mt-12 lg:mt-20 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
               <h2 className="text-base font-semibold leading-7">
                 Everything you need
@@ -195,6 +207,9 @@ export default function MainLanding() {
               ))}
             </dl>
           </div>
+
+          {/** Pricing Section */}
+          <PricingTemplate sourcePage="landing" />
 
           {/** CTA section */}
           <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">

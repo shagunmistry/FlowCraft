@@ -7,11 +7,23 @@ import { DiagramData } from '@/lib/DiagramType.db'
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import { cn, DiagramType, navigationOptions } from '@/lib/utils'
+import { cn, navigationOptions } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
-import { track } from '@vercel/analytics'
+import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
+
+/**
+ * 
+ * User: id: 1,
+  user_id: 'f24434ef-aeb6-44d6-ad9a-0e5dc45a6509',
+  email: 'shagun.mistry@hotmail.com',
+  created_at: '2024-03-14T16:14:23.254016+00:00',
+  plan: 'sub_1OzqRaCMQTPfBEpAd7x41cxU',
+  subscribed: true,
+  date_subscribed: '2024-03-30',
+  data_cancelled: null
+ */
 
 async function getDiagrams() {
   const data = await _getDiagrams()
@@ -35,6 +47,32 @@ async function getShares() {
   return { shares: [] }
 }
 
+async function getUserDataFromTable(userId: string): Promise<{
+  user: {
+    id: number
+    user_id: string
+    email: string
+    created_at: string
+    plan: string
+    subscribed: boolean
+    date_subscribed: string
+    date_cancelled: string | null
+  } | null
+}> {
+  const sbClient = createClient()
+
+  const { data: userData, error } = await sbClient
+    .from('users')
+    .select('*')
+    .eq('user_id', userId)
+
+  if (error || userData.length === 0) {
+    return { user: null }
+  }
+
+  return { user: userData[0] }
+}
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -52,31 +90,24 @@ export default async function Dashboard() {
 
   const stats = [
     { id: 1, name: 'Diagrams Created', value: 0 },
-    // { id: 2, name: 'Charts Created', value: 0 },
-    // { id: 3, name: 'Whiteboard Sketches Created', value: 0 },
     { id: 4, name: 'Total Shares', value: 0 },
   ]
   const { diagrams } = await getDiagrams()
   const { shares } = await getShares()
+  const { user } = await getUserDataFromTable(userData.user.id)
+
+  console.log('User data:', user)
 
   if (diagrams.length > 0) {
-    stats[0].value = diagrams.filter(
-      (d: any) =>
-        d.type === DiagramType.FlowDiagram ||
-        d.type === DiagramType.Chart ||
-        d.type === DiagramType.Whiteboard ||
-        d.type === DiagramType.Mermaid,
-    ).length
-    // stats[1].value = diagrams.filter(
-    //   (d: any) => d.type === DiagramType.Chart,
-    // ).length
-    // stats[2].value = diagrams.filter(
-    //   (d: any) => d.type === DiagramType.Whiteboard,
-    // ).length
+    stats[0].value = diagrams.length
   }
 
   if (shares.length > 0) {
     stats[1].value = shares.length
+  }
+
+  if (user === null) {
+    return redirect('/error?message=There was an error getting your user data. Please contact support.')
   }
 
   return (
@@ -142,7 +173,12 @@ export default async function Dashboard() {
                             </button>
                           ) : (
                             <Link
-                              href={option.link}
+                              href={
+                                stats[0].value > DiagramsAllowed &&
+                                user?.subscribed === false
+                                  ? '/dashboard/pricing'
+                                  : option.link
+                              }
                               className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
                             >
                               <PlayIcon

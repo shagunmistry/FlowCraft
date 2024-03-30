@@ -108,11 +108,16 @@ export default function DiagramOrChartView({
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
   const [isMermaidError, setIsMermaidError] = useState<boolean>(false)
 
+  const [openNotification, setOpenNotification] = useState(false)
   const [notification, setNotification] = useState<{
     message: string
     title: string
     type: 'success' | 'error' | 'warning' | 'info'
-  }>()
+  }>({
+    message: '',
+    title: '',
+    type: 'success',
+  })
 
   const context = useContext(DiagramContext)
 
@@ -227,7 +232,6 @@ export default function DiagramOrChartView({
                 'mermaid',
                 context.mermaidData,
               )
-
 
               if (svg === undefined) {
                 console.error('SVG from Mermaid API is undefined')
@@ -450,6 +454,7 @@ export default function DiagramOrChartView({
         title: 'Error',
         type: 'error',
       })
+      setOpenNotification(true)
       return
     }
 
@@ -463,6 +468,7 @@ export default function DiagramOrChartView({
         title: 'Error',
         type: 'error',
       })
+      setOpenNotification(true)
       return
     }
 
@@ -566,13 +572,13 @@ export default function DiagramOrChartView({
 
   return (
     <>
-      {notification && (
-        <SimpleNotification
-          message={notification?.message}
-          title={notification?.title}
-          type={notification?.type}
-        />
-      )}
+      <SimpleNotification
+        message={notification?.message}
+        title={notification?.title}
+        type={notification?.type}
+        open={openNotification}
+        setOpen={setOpenNotification}
+      />
 
       <div className="mt-4">
         {context.type === 'Flow Diagram' && (
