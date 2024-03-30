@@ -413,8 +413,9 @@ export default function DiagramOrChartView({
       <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-white p-5 shadow-lg">
         {/** A button to download the chart */}
         <button
-          className="rounded-md bg-indigo-700 p-2 text-white"
+          className="rounded-md bg-indigo-700 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
           onClick={donwloadChart}
+          disabled={context.loading || !context.chartJsData.type}
         >
           Download Chart
         </button>

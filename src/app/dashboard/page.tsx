@@ -107,7 +107,9 @@ export default async function Dashboard() {
   }
 
   if (user === null) {
-    return redirect('/error?message=There was an error getting your user data. Please contact support.')
+    return redirect(
+      '/error?message=There was an error getting your user data. Please contact support.',
+    )
   }
 
   return (
@@ -118,7 +120,7 @@ export default async function Dashboard() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between">
                 <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                  What would you like to create?
+                  What would you like to creat on FlowCraft?
                 </h2>
               </div>
 
@@ -214,7 +216,7 @@ export default async function Dashboard() {
                   </dl>
                   <div className="flex items-center justify-between">
                     <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                      Recent Diagrams
+                      Recent FlowCraft Diagrams
                     </h2>
                   </div>
                   <ul
@@ -257,10 +259,10 @@ export default async function Dashboard() {
                           {/** button to view the diagram */}
                           <Link
                             href={`/dashboard/diagram/${diagram.id}`}
-                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-300 hover:text-white"
+                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-200 ease-in-out hover:scale-105 hover:bg-indigo-500 hover:text-white"
                           >
                             <PlayIcon
-                              className="h-5 w-5 text-pink-700"
+                              className="h-5 w-5"
                               aria-hidden="true"
                             />
                             View

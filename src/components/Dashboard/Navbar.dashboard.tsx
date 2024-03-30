@@ -43,13 +43,38 @@ export default function DashboardNavbar() {
                     />
                   </Link>
                 </div>
+
+                {/* Desktop navigation */}
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-indigo-300 hover:text-gray-700" */}
                   <Link
                     href="/dashboard"
                     className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
                   >
                     Dashboard
+                  </Link>
+                  <Link
+                    href="/dashboard/flow-diagram"
+                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                  >
+                    Flow Diagrams
+                  </Link>
+                  <Link
+                    href="/dashboard/mermaid"
+                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                  >
+                    Complex Diagrams
+                  </Link>
+                  <Link
+                    href="/dashboard/whiteboard"
+                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                  >
+                    Whiteboard
+                  </Link>
+                  <Link
+                    href="/dashboard/chart"
+                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                  >
+                    Charts
                   </Link>
                 </div>
               </div>
@@ -165,6 +190,7 @@ export default function DashboardNavbar() {
             </div>
           </div>
 
+          {/* Mobile navigation */}
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 pb-3 pt-2">
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
@@ -177,6 +203,50 @@ export default function DashboardNavbar() {
                   className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
                 >
                   Dashboard
+                </Disclosure.Button>
+              </Link>
+              <Link
+                href="/dashboard/flow-diagram"
+                className="text-indigo-700 hover:text-indigo-900"
+              >
+                <Disclosure.Button
+                  as="button"
+                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
+                >
+                  Flow Diagrams
+                </Disclosure.Button>
+              </Link>
+              <Link
+                href="/dashboard/mermaid"
+                className="text-indigo-700 hover:text-indigo-900"
+              >
+                <Disclosure.Button
+                  as="button"
+                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
+                >
+                  Complex Diagrams
+                </Disclosure.Button>
+              </Link>
+              <Link
+                href="/dashboard/whiteboard"
+                className="text-indigo-700 hover:text-indigo-900"
+              >
+                <Disclosure.Button
+                  as="button"
+                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
+                >
+                  Whiteboard
+                </Disclosure.Button>
+              </Link>
+              <Link
+                href="/dashboard/chart"
+                className="text-indigo-700 hover:text-indigo-900"
+              >
+                <Disclosure.Button
+                  as="button"
+                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
+                >
+                  Charts
                 </Disclosure.Button>
               </Link>
             </div>

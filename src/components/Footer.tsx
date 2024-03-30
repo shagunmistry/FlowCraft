@@ -7,6 +7,8 @@ const footerNavigation = {
     { name: 'Get Started', href: '/' },
     { name: 'Blogs', href: '/blogs' },
     { name: 'Release Notes', href: '/release-notes' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Contact Us', href: '/support' },
   ],
   legal: [
     { name: 'Privacy', href: '/privacy-policy' },

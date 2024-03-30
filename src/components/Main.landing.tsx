@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
 import PricingTemplate from './Pricing/Pricing.template'
 import HowToUseSteps from './HowToUseSteps'
+import FAQs from './FAQ'
 
 const features = [
   {
@@ -159,11 +160,11 @@ export default function MainLanding() {
               </div>
               <div className="-mb-16 mt-12 sm:-mb-48 lg:relative lg:m-0">
                 <Image
-                  height={500}
-                  width={500}
-                  src="https://firebasestorage.googleapis.com/v0/b/immipal.appspot.com/o/a_cat_teacher.png?alt=media&token=ab1f1534-6163-4b48-8dc3-8abc2fa34fb9"
+                  height={700}
+                  width={700}
+                  src="https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FDashboard%20-%20FlowCraft.jpeg?alt=media&token=2ba5c2db-a62c-48e5-ba05-c50c18e97865"
                   alt="Illustration of a person using a computer"
-                  className="mx mx-auto rounded-xl shadow-xl"
+                  className="mx mx-auto rounded-xl shadow-xl mt-12"
                 />
               </div>
             </div>
@@ -264,6 +265,9 @@ export default function MainLanding() {
               </div>
             </div>
           </div>
+
+          {/** FAQ section */}
+          <FAQs />
         </div>
       </main>
     </div>
