@@ -1,6 +1,13 @@
+'use client'
+
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 export default function ErrorPage() {
+  const searchParams = useSearchParams()
+  const message = searchParams.get('message')
+
+  console.log('ErrorPage message: ', message)
   return (
     <>
       <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -9,15 +16,13 @@ export default function ErrorPage() {
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             We're sorry &mdash; something's gone wrong on our end.
           </h1>
+          <p className="mt-6 text-base leading-7 text-gray-600">{message}</p>
           <p className="mt-6 text-base leading-7 text-gray-600">
             Please try again later, or contact
-            <a
-              href="mailto:smistr61@gmail.com"
-              className="text-pink-700 underline"
-            >
+            <Link href="/support" className="text-pink-700 underline">
               {' '}
               support{' '}
-            </a>
+            </Link>
             if the problem persists.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">

@@ -11,7 +11,21 @@ export enum DiagramType {
   FlowDiagram = 'Flow Diagram',
   Whiteboard = 'Whiteboard',
   Chart = 'Chart',
-  Mermaid = 'Mermaid',
+  FlowChart = 'flowchart',
+  SequenceDiagram = 'sequenceDiagram',
+  ClassDiagram = 'classDiagram',
+  StateDiagram = 'stateDiagram',
+  EntityRelationshipDiagram = 'erDiagram',
+  UserJourney = 'userJourney',
+  Gantt = 'gantt',
+  PieChart = 'pieChart',
+  QuadrantChart = 'quadrantChart',
+  RequirementDiagram = 'requirementDiagram',
+  GitGraph = 'gitGraph',
+  Mindmaps = 'mindmaps',
+  Timeline = 'timeline',
+  ZenUML = 'zenuml',
+  Sankey = 'sankey',
 }
 
 interface Option {

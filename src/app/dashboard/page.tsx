@@ -7,11 +7,11 @@ import { DiagramData } from '@/lib/DiagramType.db'
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import { cn, DiagramType, navigationOptions } from '@/lib/utils'
+import { cn, navigationOptions } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
-import { track } from '@vercel/analytics'
+import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
@@ -35,6 +35,55 @@ async function getShares() {
   return { shares: [] }
 }
 
+async function getUserDataFromTable(
+  userId: string,
+  email: string,
+): Promise<{
+  user: {
+    id: number
+    user_id: string
+    email: string
+    created_at: string
+    plan: string
+    subscribed: boolean
+    date_subscribed: string
+    date_cancelled: string | null
+  } | null
+}> {
+  const sbClient = createClient()
+
+  const { data: userData, error } = await sbClient
+    .from('users')
+    .select('*')
+    .eq('user_id', userId)
+
+  if (error || userData.length === 0) {
+    // Insert the user into the table
+    const { data: insertedUserData, error: insertError } = await sbClient
+      .from('users')
+      .insert([
+        {
+          user_id: userId,
+          email: email,
+          plan: '',
+          subscribed: false,
+          date_subscribed: null,
+          date_cancelled: null,
+        },
+      ])
+      .select('*')
+
+    console.log('Inserted user data:', insertedUserData, insertError)
+    if (insertError || insertedUserData.length === 0) {
+      return { user: null }
+    }
+
+    return { user: insertedUserData[0] }
+  }
+
+  return { user: userData[0] }
+}
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -52,31 +101,36 @@ export default async function Dashboard() {
 
   const stats = [
     { id: 1, name: 'Diagrams Created', value: 0 },
-    // { id: 2, name: 'Charts Created', value: 0 },
-    // { id: 3, name: 'Whiteboard Sketches Created', value: 0 },
     { id: 4, name: 'Total Shares', value: 0 },
   ]
   const { diagrams } = await getDiagrams()
   const { shares } = await getShares()
 
+  if (!userData.user.id || !userData.user.email) {
+    return redirect(
+      '/error?message=There was an error getting your user data. Please contact support.',
+    )
+  }
+
+  const { user } = await getUserDataFromTable(
+    userData.user.id,
+    userData.user.email,
+  )
+
+  console.log('User data:', user)
+
   if (diagrams.length > 0) {
-    stats[0].value = diagrams.filter(
-      (d: any) =>
-        d.type === DiagramType.FlowDiagram ||
-        d.type === DiagramType.Chart ||
-        d.type === DiagramType.Whiteboard ||
-        d.type === DiagramType.Mermaid,
-    ).length
-    // stats[1].value = diagrams.filter(
-    //   (d: any) => d.type === DiagramType.Chart,
-    // ).length
-    // stats[2].value = diagrams.filter(
-    //   (d: any) => d.type === DiagramType.Whiteboard,
-    // ).length
+    stats[0].value = diagrams.length
   }
 
   if (shares.length > 0) {
     stats[1].value = shares.length
+  }
+
+  if (user === null) {
+    return redirect(
+      '/error?message=There was an error getting your user data. Please contact support.',
+    )
   }
 
   return (
@@ -87,7 +141,7 @@ export default async function Dashboard() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between">
                 <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                  What would you like to create?
+                  What would you like to creat on FlowCraft?
                 </h2>
               </div>
 
@@ -142,7 +196,12 @@ export default async function Dashboard() {
                             </button>
                           ) : (
                             <Link
-                              href={option.link}
+                              href={
+                                stats[0].value > DiagramsAllowed &&
+                                user?.subscribed === false
+                                  ? '/dashboard/pricing'
+                                  : option.link
+                              }
                               className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg rounded-br-lg border border-transparent py-4 text-lg font-medium text-pink-400 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-700 hover:text-white"
                             >
                               <PlayIcon
@@ -178,7 +237,7 @@ export default async function Dashboard() {
                   </dl>
                   <div className="flex items-center justify-between">
                     <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                      Recent Diagrams
+                      Recent FlowCraft Diagrams
                     </h2>
                   </div>
                   <ul
@@ -221,12 +280,9 @@ export default async function Dashboard() {
                           {/** button to view the diagram */}
                           <Link
                             href={`/dashboard/diagram/${diagram.id}`}
-                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-300 hover:text-white"
+                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-200 ease-in-out hover:scale-105 hover:bg-indigo-500 hover:text-white"
                           >
-                            <PlayIcon
-                              className="h-5 w-5 text-pink-700"
-                              aria-hidden="true"
-                            />
+                            <PlayIcon className="h-5 w-5" aria-hidden="true" />
                             View
                           </Link>
                         </dl>

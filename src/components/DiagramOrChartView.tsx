@@ -108,11 +108,16 @@ export default function DiagramOrChartView({
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
   const [isMermaidError, setIsMermaidError] = useState<boolean>(false)
 
+  const [openNotification, setOpenNotification] = useState(false)
   const [notification, setNotification] = useState<{
     message: string
     title: string
     type: 'success' | 'error' | 'warning' | 'info'
-  }>()
+  }>({
+    message: '',
+    title: '',
+    type: 'success',
+  })
 
   const context = useContext(DiagramContext)
 
@@ -227,7 +232,6 @@ export default function DiagramOrChartView({
                 'mermaid',
                 context.mermaidData,
               )
-
 
               if (svg === undefined) {
                 console.error('SVG from Mermaid API is undefined')
@@ -409,8 +413,9 @@ export default function DiagramOrChartView({
       <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-white p-5 shadow-lg">
         {/** A button to download the chart */}
         <button
-          className="rounded-md bg-indigo-700 p-2 text-white"
+          className="rounded-md bg-indigo-700 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
           onClick={donwloadChart}
+          disabled={context.loading || !context.chartJsData.type}
         >
           Download Chart
         </button>
@@ -450,6 +455,7 @@ export default function DiagramOrChartView({
         title: 'Error',
         type: 'error',
       })
+      setOpenNotification(true)
       return
     }
 
@@ -463,6 +469,7 @@ export default function DiagramOrChartView({
         title: 'Error',
         type: 'error',
       })
+      setOpenNotification(true)
       return
     }
 
@@ -566,13 +573,13 @@ export default function DiagramOrChartView({
 
   return (
     <>
-      {notification && (
-        <SimpleNotification
-          message={notification?.message}
-          title={notification?.title}
-          type={notification?.type}
-        />
-      )}
+      <SimpleNotification
+        message={notification?.message}
+        title={notification?.title}
+        type={notification?.type}
+        open={openNotification}
+        setOpen={setOpenNotification}
+      />
 
       <div className="mt-4">
         {context.type === 'Flow Diagram' && (

@@ -10,7 +10,7 @@ export function ReleaseNotesLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 px-4">
       <Navbar />
       {/* <Image
         src={FlowCraftLogo}

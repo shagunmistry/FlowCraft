@@ -29,13 +29,15 @@ export default function SimpleNotification({
   message,
   title,
   type,
+  open,
+  setOpen,
 }: {
   message: string
   title: string
   type: 'success' | 'error' | 'warning' | 'info'
+  open: boolean
+  setOpen: (open: boolean) => void
 }) {
-  const [show, setShow] = useState(true)
-
   return (
     <>
       {/* Global notification live region, render this permanently at the end of the document */}
@@ -46,7 +48,7 @@ export default function SimpleNotification({
         <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
           <Transition
-            show={show}
+            show={open}
             as={Fragment}
             enter="transform ease-out duration-300 transition"
             enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
@@ -68,7 +70,7 @@ export default function SimpleNotification({
                       type="button"
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
-                        setShow(false)
+                        setOpen(false)
                       }}
                     >
                       <span className="sr-only">Close</span>

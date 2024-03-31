@@ -16,11 +16,17 @@ const navigation = [
   { name: 'For Healthcare', href: '/demos/healthcare' },
   { name: 'For Engineers', href: '/demos/engineers' },
   { name: 'Blog', href: '/blogs' },
+  { name: 'Release Notes', href: '/release-notes' },
+  { name: 'Pricing', href: '/pricing' },
+  { name: 'Contact Us', href: '/support' },
 ]
 
 const mainNavigation = [
   { name: 'Start Here', href: '/dashboard' },
   { name: 'Blog', href: '/blogs' },
+  { name: 'Release Notes', href: '/release-notes' },
+  { name: 'Pricing', href: '/pricing' },
+  { name: 'Contact Us', href: '/support' },
 ]
 
 const useCasesNavigation = [
@@ -70,42 +76,42 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
+            <Menu as="a" className="">
+              <Menu.Button className="rounded-lg bg-indigo-500 px-3 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-pink-500">
+                <ArrowDownCircleIcon className="-mt-1 mr-3 inline-block h-5 w-5" />
+                Use Cases
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  {useCasesNavigation.map((item) => (
+                    <Menu.Item key={item.name}>
+                      {({ active }) => (
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            active
+                              ? 'bg-gray-100 text-gray-900'
+                              : 'text-gray-700',
+                            'block px-4 py-2 text-sm',
+                          )}
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </Menu.Item>
+                  ))}
+                </Menu.Items>
+              </Transition>
+            </Menu>
           </div>
-          <Menu as="div" className="relative">
-            <Menu.Button className="rounded-lg px-3 font-semibold transition duration-150 ease-in-out hover:text-indigo-500">
-              <ArrowDownCircleIcon className="h-5 w-5 inline-block -mt-1 mr-3" />
-              Use Cases
-            </Menu.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {useCasesNavigation.map((item) => (
-                  <Menu.Item key={item.name}>
-                    {({ active }) => (
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          active
-                            ? 'bg-gray-100 text-gray-900'
-                            : 'text-gray-700',
-                          'block px-4 py-2 text-sm',
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </Menu.Item>
-                ))}
-              </Menu.Items>
-            </Transition>
-          </Menu>
         </div>
       </nav>
 

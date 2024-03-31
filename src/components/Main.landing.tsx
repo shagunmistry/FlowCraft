@@ -14,6 +14,9 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
+import PricingTemplate from './Pricing/Pricing.template'
+import HowToUseSteps from './HowToUseSteps'
+import FAQs from './FAQ'
 
 const features = [
   {
@@ -157,18 +160,28 @@ export default function MainLanding() {
               </div>
               <div className="-mb-16 mt-12 sm:-mb-48 lg:relative lg:m-0">
                 <Image
-                  height={500}
-                  width={500}
-                  src="https://firebasestorage.googleapis.com/v0/b/immipal.appspot.com/o/a_cat_teacher.png?alt=media&token=ab1f1534-6163-4b48-8dc3-8abc2fa34fb9"
+                  height={700}
+                  width={700}
+                  src="https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FDashboard%20-%20FlowCraft.jpeg?alt=media&token=2ba5c2db-a62c-48e5-ba05-c50c18e97865"
                   alt="Illustration of a person using a computer"
-                  className="mx mx-auto rounded-xl shadow-xl"
+                  className="mx mx-auto rounded-xl shadow-xl mt-12"
                 />
               </div>
             </div>
           </div>
 
-          {/** Features section */}
+          {/** How It works section */}
           <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-96 lg:mt-5 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:mx-0">
+              <p className="mt-2 text-3xl font-bold tracking-tight text-pink-500 sm:text-4xl">
+                3 Simple Steps
+              </p>
+            </div>
+            <HowToUseSteps />
+          </div>
+
+          {/** Features section */}
+          <div className="mx-auto mt-10 max-w-7xl px-6 sm:mt-12 lg:mt-20 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
               <h2 className="text-base font-semibold leading-7">
                 Everything you need
@@ -195,6 +208,9 @@ export default function MainLanding() {
               ))}
             </dl>
           </div>
+
+          {/** Pricing Section */}
+          <PricingTemplate sourcePage="landing" />
 
           {/** CTA section */}
           <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -249,6 +265,9 @@ export default function MainLanding() {
               </div>
             </div>
           </div>
+
+          {/** FAQ section */}
+          <FAQs />
         </div>
       </main>
     </div>
