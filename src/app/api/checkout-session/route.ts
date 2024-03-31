@@ -33,6 +33,9 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
+      subscription_data: {
+        trial_period_days: 7,
+      },
       mode: 'subscription',
       success_url: `${base_url}/auth/checkout?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base_url}/dashboard`,

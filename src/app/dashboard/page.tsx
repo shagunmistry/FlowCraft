@@ -13,18 +13,6 @@ import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
 import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
 
-/**
- * 
- * User: id: 1,
-  user_id: 'f24434ef-aeb6-44d6-ad9a-0e5dc45a6509',
-  email: 'shagun.mistry@hotmail.com',
-  created_at: '2024-03-14T16:14:23.254016+00:00',
-  plan: 'sub_1OzqRaCMQTPfBEpAd7x41cxU',
-  subscribed: true,
-  date_subscribed: '2024-03-30',
-  data_cancelled: null
- */
-
 async function getDiagrams() {
   const data = await _getDiagrams()
 
@@ -47,7 +35,10 @@ async function getShares() {
   return { shares: [] }
 }
 
-async function getUserDataFromTable(userId: string): Promise<{
+async function getUserDataFromTable(
+  userId: string,
+  email: string,
+): Promise<{
   user: {
     id: number
     user_id: string
@@ -67,7 +58,27 @@ async function getUserDataFromTable(userId: string): Promise<{
     .eq('user_id', userId)
 
   if (error || userData.length === 0) {
-    return { user: null }
+    // Insert the user into the table
+    const { data: insertedUserData, error: insertError } = await sbClient
+      .from('users')
+      .insert([
+        {
+          user_id: userId,
+          email: email,
+          plan: '',
+          subscribed: false,
+          date_subscribed: null,
+          date_cancelled: null,
+        },
+      ])
+      .select('*')
+
+    console.log('Inserted user data:', insertedUserData, insertError)
+    if (insertError || insertedUserData.length === 0) {
+      return { user: null }
+    }
+
+    return { user: insertedUserData[0] }
   }
 
   return { user: userData[0] }
@@ -94,7 +105,10 @@ export default async function Dashboard() {
   ]
   const { diagrams } = await getDiagrams()
   const { shares } = await getShares()
-  const { user } = await getUserDataFromTable(userData.user.id)
+  const { user } = await getUserDataFromTable(
+    userData.user.id,
+    userData.user.email,
+  )
 
   console.log('User data:', user)
 
@@ -261,10 +275,7 @@ export default async function Dashboard() {
                             href={`/dashboard/diagram/${diagram.id}`}
                             className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-200 ease-in-out hover:scale-105 hover:bg-indigo-500 hover:text-white"
                           >
-                            <PlayIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
+                            <PlayIcon className="h-5 w-5" aria-hidden="true" />
                             View
                           </Link>
                         </dl>
