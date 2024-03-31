@@ -4,10 +4,17 @@ import {
   CursorArrowRaysIcon,
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
+  PlusCircleIcon,
   PlusIcon,
 } from '@heroicons/react/20/solid'
 
-type BadgeType = 'popular' | 'new' | 'coming-soon' | 'experimental'
+type BadgeType =
+  | 'popular'
+  | 'new'
+  | 'coming-soon'
+  | 'experimental'
+  | 'subscribed'
+  | 'not-subscribed'
 
 export const Badge = ({ badgeType }: { badgeType: BadgeType }) => {
   const getBadgeColor = (badgeType: BadgeType) => {
@@ -20,6 +27,8 @@ export const Badge = ({ badgeType }: { badgeType: BadgeType }) => {
         return 'bg-yellow-500'
       case 'experimental':
         return 'bg-yellow-500'
+      case 'subscribed':
+        return 'bg-pink-500'
       default:
         return 'bg-gray-500'
     }
@@ -35,6 +44,8 @@ export const Badge = ({ badgeType }: { badgeType: BadgeType }) => {
         return 'fill-yellow-500'
       case 'experimental':
         return 'fill-yellow-500'
+      case 'subscribed':
+        return 'fill-pink-500'
       default:
         return 'fill-gray-500'
     }
@@ -50,6 +61,8 @@ export const Badge = ({ badgeType }: { badgeType: BadgeType }) => {
         return 'Coming Soon'
       case 'experimental':
         return 'Experimental'
+      case 'subscribed':
+        return 'Subscribed'
       default:
         return 'Experimental'
     }
@@ -62,13 +75,11 @@ export const Badge = ({ badgeType }: { badgeType: BadgeType }) => {
       case 'new':
         return <PlusIcon className="h-3 w-3 text-white" />
       case 'coming-soon':
-        return (
-          <CursorArrowRaysIcon className="h-3 w-3 text-white" />
-        )
+        return <CursorArrowRaysIcon className="h-3 w-3 text-white" />
       case 'experimental':
-        return (
-          <ExclamationTriangleIcon className="h-3 w-3 text-white" />
-        )
+        return <ExclamationTriangleIcon className="h-3 w-3 text-white" />
+      case 'subscribed':
+        return <PlusCircleIcon className="h-3 w-3 text-white" />
       default:
         return (
           <svg

@@ -12,6 +12,7 @@ import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
 import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
+import DashboardHeading from '@/components/Dashboard/Header.dashboard'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
@@ -134,17 +135,18 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 sm:py-12">
+    <div className="min-h-screen bg-gray-100">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="min-h-screen rounded-lg p-4">
+            <header className="py-10">
+              <DashboardHeading
+                subscribed={user.subscribed}
+                name={userData.user.email.split('@')[0]}
+                imageUrl={userData.user.user_metadata.avatar_url}
+              />
+            </header>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between">
-                <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                  What would you like to creat on FlowCraft?
-                </h2>
-              </div>
-
               <ul
                 role="list"
                 className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:gap-8 xl:grid-cols-4"

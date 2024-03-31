@@ -12,6 +12,13 @@ const RandomProfilePicColored = () => {
   return <UserIcon className="h-6 w-6 text-indigo-500" aria-hidden="true" />
 }
 
+const NavigationOptions = [
+  { title: 'Flow Diagram', link: '/dashboard/flow-diagram' },
+  { title: 'Mermaid', link: '/dashboard/mermaid' },
+  { title: 'Whiteboard', link: '/dashboard/whiteboard' },
+  { title: 'Chart', link: '/dashboard/chart' },
+]
+
 export default function DashboardNavbar() {
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -52,42 +59,20 @@ export default function DashboardNavbar() {
                   >
                     Dashboard
                   </Link>
-                  <Link
-                    href="/dashboard/flow-diagram"
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Flow Diagrams
-                  </Link>
-                  <Link
-                    href="/dashboard/mermaid"
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Complex Diagrams
-                  </Link>
-                  <Link
-                    href="/dashboard/whiteboard"
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Whiteboard
-                  </Link>
-                  <Link
-                    href="/dashboard/chart"
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Charts
-                  </Link>
+                  {NavigationOptions.map((option) => (
+                    <Link
+                      key={option.title}
+                      href={option.link}
+                      className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 transition-all duration-100 hover:scale-105 hover:border-b-2 hover:border-indigo-500 hover:text-indigo-500"
+                    >
+                      {option.title}
+                    </Link>
+                  ))}
                 </div>
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Menu as="div" className="relative ml-3">
-                    <div>
-                      <Menu.Button className="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">Create new</span>
-                        <PlusIcon className="h-6 w-6" aria-hidden="true" />
-                      </Menu.Button>
-                    </div>
                     <Transition
                       as={Fragment}
                       enter="transition ease-out duration-200"
