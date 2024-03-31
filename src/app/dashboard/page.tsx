@@ -105,6 +105,13 @@ export default async function Dashboard() {
   ]
   const { diagrams } = await getDiagrams()
   const { shares } = await getShares()
+
+  if (!userData.user.id || !userData.user.email) {
+    return redirect(
+      '/error?message=There was an error getting your user data. Please contact support.',
+    )
+  }
+
   const { user } = await getUserDataFromTable(
     userData.user.id,
     userData.user.email,
