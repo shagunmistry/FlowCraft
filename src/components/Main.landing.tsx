@@ -164,7 +164,7 @@ export default function MainLanding() {
                   width={700}
                   src="https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FDashboard%20-%20FlowCraft.jpeg?alt=media&token=2ba5c2db-a62c-48e5-ba05-c50c18e97865"
                   alt="Illustration of a person using a computer"
-                  className="mx mx-auto rounded-xl shadow-xl mt-12"
+                  className="mx mx-auto mt-12 rounded-xl shadow-xl"
                 />
               </div>
             </div>
@@ -210,7 +210,10 @@ export default function MainLanding() {
           </div>
 
           {/** Pricing Section */}
-          <PricingTemplate sourcePage="landing" />
+          <PricingTemplate
+            sourcePage="landing"
+            shouldGoToCheckout={authenticated}
+          />
 
           {/** CTA section */}
           <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
