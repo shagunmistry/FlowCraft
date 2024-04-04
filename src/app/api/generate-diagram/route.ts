@@ -192,7 +192,7 @@ export async function POST(req: Request) {
         title: diagramTitle,
         description: diagramDescription,
         type,
-        data: JSON.stringify(result),
+        data: JSON.stringify(res.choices[0].message.content),
         created_at: new Date().toISOString(),
         user_id: userData.user?.id,
       },
