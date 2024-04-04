@@ -44,6 +44,8 @@ export default function DashboardLayout({
   const [mermaidData, setMermaidData] = useState<string>('')
   const [controls, setControls] = useState<any>(null)
 
+  const [diagramId, setDiagramId] = useState<string>('')
+
   return (
     <>
       <WhiteboardContext.Provider
@@ -62,15 +64,17 @@ export default function DashboardLayout({
           value={{
             chartJsData: chartJsData,
             description: description,
+            diagramId: diagramId,
             edges: edges,
-            mermaidData: mermaidData,
-            setMermaidData: setMermaidData,
             loading: loading,
+            mermaidData: mermaidData,
             nodes: nodes,
             setChartJsData: setChartJsData,
             setDescription: setDescription,
+            setDiagramId: setDiagramId,
             setEdges: _setEdges,
             setLoading: _setLoading,
+            setMermaidData: setMermaidData,
             setNodes: _setNodes,
             setTitle: setTitle,
             setTlDrawRecords: setTlDrawRecords,

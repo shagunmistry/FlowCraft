@@ -34,13 +34,30 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
 
       const diagramInfoFromApi = diagram[0] as DiagramData
 
-      console.log('---> data', diagram)
+      console.log('----- Diagram Info From API -----')
+      console.log(diagramInfoFromApi)
       diagramContext.setTitle(diagramInfoFromApi.title)
       diagramContext.setDescription(diagramInfoFromApi.description)
-      diagramContext.setEdges(diagramInfoFromApi.data.edges)
       diagramContext.setNodes(diagramInfoFromApi.data.nodes)
+      diagramContext.setEdges(diagramInfoFromApi.data.edges)
       diagramContext.setType(diagramInfoFromApi.type)
 
+      if (
+        typeof diagramInfoFromApi.data === 'string' &&
+        diagramInfoFromApi.type === 'Flow Diagram'
+      ) {
+        let parsedData = JSON.parse(diagramInfoFromApi.data)
+        if (typeof parsedData === 'string') {
+          parsedData = JSON.parse(parsedData)
+        }
+        const nodes = parsedData.nodes
+        const edges = parsedData.edges
+
+        diagramContext.setEdges(edges)
+        diagramContext.setNodes(nodes)
+      }
+
+      diagramContext.setDiagramId(params.id)
       setLoading(false)
     }
 

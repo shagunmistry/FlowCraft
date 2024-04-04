@@ -1,6 +1,10 @@
 import { createClient } from '@/lib/supabase-auth/server'
 import { NextRequest } from 'next/server'
 
+/**
+ * This function is the route to get all diagrams for a user
+ * @returns {Response}
+ */
 export async function GET() {
   const supabase = createClient()
 
@@ -36,6 +40,11 @@ export async function GET() {
   })
 }
 
+/**
+ * This function is the route to get a diagram by id
+ * @param req 
+ * @returns 
+ */
 export async function POST(req: NextRequest) {
   const { id } = await req.json()
   const supabase = createClient()

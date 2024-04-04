@@ -6,40 +6,16 @@ export const maxDuration = 200
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { type, diagramData, title, description } = body
+
+  const { diagramData, diagramId } = body
 
   // Check if the user is authenticated with supabase auth
   const supabaseClient = createClient()
   const { data: userData, error } = await supabaseClient.auth.getUser()
 
-  console.log('User: ', diagramData)
   if (error || !diagramData) {
     console.error('Error getting user', error)
     return { status: 401, body: { error: 'Unauthorized' } }
-  }
-
-  // Save the diagram information to the database
-  const { error: diagramError, data: insertedDiagram } = await supabase
-    .from('diagrams')
-    .insert([
-      {
-        type,
-        data: diagramData,
-        title,
-        description,
-        user_id: userData.user.id,
-        private: false,
-        created_at: new Date().toISOString(),
-      },
-    ])
-    .select('id')
-
-  if (diagramError) {
-    console.error('Error saving diagram', diagramError)
-    return new Response(
-      JSON.stringify({ error: 'There was an error saving the diagram' }),
-      { status: 500 },
-    )
   }
 
   const inviteCode = generateInviteCode(7)
@@ -51,7 +27,7 @@ export async function POST(req: Request) {
       {
         user_id: userData.user.id,
         invite_code: inviteCode,
-        diagram_id: insertedDiagram[0].id,
+        diagram_id: diagramId,
         created_at: new Date().toISOString(),
       },
     ])
@@ -124,7 +100,8 @@ export async function PUT(req: Request) {
   const { data: diagramData, error: diagramError } = await supabase
     .from('diagrams')
     .select('title, data, type, description')
-    .eq('id', linkData[0].diagram_id)
+
+  console.log('Diagram Data:', diagramData, 'Diagram Error:', diagramError)
 
   if (diagramError) {
     console.error('Error getting diagram data', diagramError)

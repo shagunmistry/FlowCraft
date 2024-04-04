@@ -431,6 +431,7 @@ export default function DiagramOrChartView({
       diagramData: {},
       title: context.title,
       description: context.description,
+      diagramId: context.diagramId,
     }
     if (type === 'Flow Diagram') {
       data.type = 'Flow Diagram'

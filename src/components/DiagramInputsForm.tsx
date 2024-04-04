@@ -144,6 +144,7 @@ export default function DiagramInputsForm({
           context.setMermaidData(diagramResult.mermaid)
         }
 
+        context.setDiagramId(diagramJson.id)
         context.setLoading(false)
       }
     } catch (e) {
@@ -156,18 +157,6 @@ export default function DiagramInputsForm({
   const selectExample = (title: string, description: string) => {
     setTitle(title)
     setDescription(description)
-  }
-
-  const selectOption = (option: {
-    id: string
-    title: string
-    description: string
-    prompts: { title: string; description: string }[]
-  }) => {
-    console.log('Selecting option', option)
-    setSelectedType(option)
-    // selectExample(option.prompts[2].title, option.prompts[2].description)
-    context.setType(option.id as DiagramOrChartType)
   }
 
   if (context.loading) {
