@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+export const OPEN_AI_MODEL = 'gpt-4-0125-preview'
+
 export type DiagramOrChartType =
   | 'Whiteboard'
   | 'Chart'

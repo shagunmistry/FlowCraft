@@ -6,6 +6,7 @@ import { supabase, checkIfEmbeddingsExist } from '@/lib/supabase'
 import { allCombinedCodeExample } from './react-flow.code'
 import { chartJsAllCombinedBasicCode } from './chart-js.code'
 
+
 export interface ApifyData {
   markdown: string
   url: string

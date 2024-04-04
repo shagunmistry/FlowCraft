@@ -1,23 +1,21 @@
 import { getEmbeddingForContext } from '@/lib/supabase'
 import {
   openAiModel,
-  promptForChartJsContext,
   promptForChartJsExampleCode,
   promptForChartJsResponse,
   promptForExampleCode,
-  promptForReactFlowContext,
   promptForResponse,
   promptForUserMessage,
   promptForUserMessageForChartJs,
   promptForUserMessageForMermaid,
 } from '@/lib/openai'
-import * as tldrawInputs from '@/lib/openai.tldraw'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { DiagramOrChartType } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
-import { mermaidCommandsPrompt } from '@/lib/completions-prompt.mermaid'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import { getDiagramPrompt } from '@/lib/Examples/GetDiagramPrompt'
+
+import { OPEN_AI_MODEL } from '@/lib/utils'
 
 export const maxDuration = 200
 
@@ -135,10 +133,11 @@ export async function POST(req: Request) {
   ]
 
   const res = await openAiModel.chat.completions.create({
-    model: 'gpt-4-0125-preview',
+    model: OPEN_AI_MODEL,
     messages: arrayOfMessages,
     temperature: 0.8,
     max_tokens: 2300,
+    response_format: { type: 'json_object' },
   })
 
   if (res?.choices?.[0]?.message) {

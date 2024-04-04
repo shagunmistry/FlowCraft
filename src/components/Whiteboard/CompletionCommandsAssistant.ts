@@ -9,6 +9,7 @@ import { commandsPrompt } from './completions-prompt'
 import { assert, sampleProcess } from '@/lib/utils'
 import { EditorDriverApi } from './EditorDriverApi'
 import { getUserMessage } from './getUserMessage'
+import { OPEN_AI_MODEL } from '@/lib/utils'
 
 const apiKey = process.env.OPENAI_API_KEY ?? null
 
@@ -77,7 +78,7 @@ export class CompletionCommandsThread implements Thread<ChatCompletionStream> {
     })
 
     const stream = openai.beta.chat.completions.stream({
-      model: 'gpt-4-0125-preview',
+      model: OPEN_AI_MODEL,
       messages: this.messages,
     })
 
