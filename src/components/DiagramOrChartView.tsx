@@ -439,6 +439,12 @@ export default function DiagramOrChartView({
     } else if (type === 'Whiteboard') {
       data.type = 'Whiteboard'
       data.diagramData = { tlDrawRecords: JSON.parse(tlDrawInputJson).records }
+    } else if (type === 'Chart') {
+      data.type = 'Chart'
+      data.diagramData = context.chartJsData
+    } else {
+      data.type = context.type as TempMermaidDiagramType
+      data.diagramData = context.mermaidData
     }
 
     const response = await fetch('/api/generate-link', {

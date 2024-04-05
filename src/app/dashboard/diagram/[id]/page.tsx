@@ -57,6 +57,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         diagramContext.setNodes(nodes)
       }
 
+      console.log('Setting Diagram ID:', params.id)
       diagramContext.setDiagramId(params.id)
       setLoading(false)
     }

@@ -1,5 +1,7 @@
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import { createContext } from 'react'
 import { Edge, Node } from 'reactflow'
+import { DiagramOrChartType } from '../utils'
 
 export const SharedDiagramContext = createContext<{
   nodes: Node[]
@@ -10,6 +12,8 @@ export const SharedDiagramContext = createContext<{
   setTitle: (title: string) => void
   description: string
   setDescription: (description: string) => void
+  type: DiagramOrChartType | TempMermaidDiagramType
+  setType: (type: DiagramOrChartType | TempMermaidDiagramType) => void
 }>({
   nodes: [],
   setNodes: () => {},
@@ -19,4 +23,6 @@ export const SharedDiagramContext = createContext<{
   setTitle: () => {},
   description: '',
   setDescription: () => {},
+  type: 'Flow Diagram',
+  setType: () => {},
 })

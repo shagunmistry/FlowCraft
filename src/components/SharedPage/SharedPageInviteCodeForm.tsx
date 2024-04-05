@@ -58,20 +58,31 @@ export default function SharedDiagramInviteCodeForm({
 
     console.log('Data:', data)
     const { diagramData } = data
+    sharedDiagramContext.setTitle(diagramData.title)
+    sharedDiagramContext.setDescription(diagramData.description)
+    sharedDiagramContext.setType(diagramData.type)
+
     if (diagramData.type === 'Flow Diagram') {
       setIsLoading(false)
       setCanAccess(true)
-      console.log('setting diagram type as flow diagram')
-      const { nodes, edges } = diagramData.data
+      console.log(
+        'setting diagram type as flow diagram',
+        JSON.parse(diagramData.data),
+      )
+      const { nodes, edges } = JSON.parse(diagramData.data)
       sharedDiagramContext.setNodes(nodes)
       sharedDiagramContext.setEdges(edges)
-      sharedDiagramContext.setTitle(diagramData.title)
-      sharedDiagramContext.setDescription(diagramData.description)
+    }
+
+    if (diagramData.type === 'Chart') {
+      setIsLoading(false)
+      setCanAccess(true)
+      console.log('setting diagram type as chart', JSON.parse(diagramData.data))
     }
   }
 
   return (
-    <div className="bg-black">
+    <div className="bg-gray-100">
       <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
         {!canAccess ? (
           <div className="shadow-4xl relative isolate overflow-hidden bg-black px-6 py-24 text-center shadow-inner shadow-indigo-600 sm:rounded-3xl sm:px-16">
@@ -131,27 +142,29 @@ export default function SharedDiagramInviteCodeForm({
             {sharedDiagramContext.title}
           </motion.h1>
         )}
-        {canAccess && sharedDiagramContext.title && (
-          <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
-            <ReactFlow
-              nodes={sharedDiagramContext.nodes}
-              edges={sharedDiagramContext.edges}
-              fitView
-              className="react-flow__container"
-              nodesDraggable={true}
-              zoomOnScroll={true}
-              attributionPosition="bottom-center"
-              nodesConnectable={false}
-              elementsSelectable={false}
-              defaultEdgeOptions={defaultEdgeOptions}
-              //   nodeTypes={nodeTypes}
-              edgeTypes={edgeTypes}
-              defaultViewport={defaultViewport}
-            >
-              <Controls />
-            </ReactFlow>
-          </div>
-        )}
+        {canAccess &&
+          sharedDiagramContext.title &&
+          sharedDiagramContext.type === 'Flow Diagram' && (
+            <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
+              <ReactFlow
+                nodes={sharedDiagramContext.nodes}
+                edges={sharedDiagramContext.edges}
+                fitView
+                className="react-flow__container"
+                nodesDraggable={true}
+                zoomOnScroll={true}
+                attributionPosition="bottom-center"
+                nodesConnectable={false}
+                elementsSelectable={false}
+                defaultEdgeOptions={defaultEdgeOptions}
+                //   nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                defaultViewport={defaultViewport}
+              >
+                <Controls />
+              </ReactFlow>
+            </div>
+          )}
       </div>
     </div>
   )

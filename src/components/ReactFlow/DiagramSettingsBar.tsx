@@ -184,7 +184,6 @@ export default function DiagramSettingsBar({
                               'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
                             )}
                             onClick={() => createShareableLink()}
-                            disabled={true}
                           >
                             Share
                           </motion.button>
@@ -327,7 +326,6 @@ export default function DiagramSettingsBar({
                               'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
                             )}
                             onClick={() => createShareableLink()}
-                            disabled={true}
                           >
                             Share
                           </motion.button>

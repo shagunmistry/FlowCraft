@@ -9,6 +9,8 @@ import { Edge, Node } from 'reactflow'
 import { SharedDiagramContext } from '@/lib/Contexts/SharedDiagramContext'
 
 import 'reactflow/dist/style.css'
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
+import { DiagramOrChartType } from '@/lib/utils'
 
 export default function SharedDiagramsLayout({
   children,
@@ -20,6 +22,10 @@ export default function SharedDiagramsLayout({
 
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
+
+  const [type, setType] = useState<DiagramOrChartType | TempMermaidDiagramType>(
+    'Flow Diagram',
+  )
 
   return (
     <>
@@ -37,6 +43,8 @@ export default function SharedDiagramsLayout({
           setEdges: (edges: Edge[]) => {
             _setEdges(edges)
           },
+          type,
+          setType,
         }}
       >
         <main>
