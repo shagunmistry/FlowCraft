@@ -244,7 +244,7 @@ export default async function Dashboard() {
                           ) : (
                             <Link
                               href={
-                                stats[0].value > DiagramsAllowed &&
+                                diagrams.length > 5 &&
                                 user?.subscribed === false
                                   ? '/dashboard/pricing'
                                   : option.link
@@ -352,7 +352,7 @@ export default async function Dashboard() {
                           share.id,
                           process.env.NEXT_PUBLIC_BASE_URL || '',
                         )}
-                        className="relative flex items-center space-x-3 rounded-lg bg-white px-6 py-5 shadow-sm border-2 border-transparent transition duration-200 ease-in-out focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-2 hover:border-indigo-400"
+                        className="relative flex items-center space-x-3 rounded-lg border-2 border-transparent bg-white px-6 py-5 shadow-sm transition duration-200 ease-in-out focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-2 hover:border-indigo-400"
                       >
                         <div className="min-w-0 flex-1">
                           <Link

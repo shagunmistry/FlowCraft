@@ -171,7 +171,7 @@ export default function MainLanding() {
                       className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-pink-500 px-8 py-3 font-medium text-gray-500 text-indigo-600 text-white transition-all duration-300 ease-in-out hover:scale-125 hover:bg-indigo-500 sm:inline-flex sm:w-auto sm:items-center sm:px-6"
                       href={authenticated ? '/dashboard' : '/login'}
                     >
-                      {authenticated ? 'Go to Dashboard' : 'Get Started'}
+                      {authenticated ? 'Go to Dashboard' : 'Get Started For Free'}
                     </Link>
                   </div>
                 </div>
