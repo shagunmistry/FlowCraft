@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useRouter } from 'next/router'
+import PageLoader from '@/components/PageLoader'
 
 export default function DiagramPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true)
@@ -34,11 +35,12 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
 
       const diagramInfoFromApi = diagram[0] as DiagramData
 
-      console.log('---> data', diagram)
+      console.log('----- Diagram Info From API -----')
+      console.log(diagramInfoFromApi)
       diagramContext.setTitle(diagramInfoFromApi.title)
       diagramContext.setDescription(diagramInfoFromApi.description)
-      diagramContext.setEdges(diagramInfoFromApi.data.edges)
       diagramContext.setNodes(diagramInfoFromApi.data.nodes)
+      diagramContext.setEdges(diagramInfoFromApi.data.edges)
       diagramContext.setType(diagramInfoFromApi.type)
 
       if (
@@ -56,6 +58,8 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         diagramContext.setNodes(nodes)
       }
 
+      console.log('Setting Diagram ID:', params.id)
+      diagramContext.setDiagramId(params.id)
       setLoading(false)
     }
 
@@ -64,20 +68,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
 
   if (loading) {
     // return loading animation for the whole page
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <motion.div
-            className="h-16 w-16 animate-spin rounded-full border-4 border-t-4 border-gray-200"
-            style={{ borderTopColor: '#3498db' }}
-          ></motion.div>
-        </motion.div>
-      </div>
-    )
+    return <PageLoader />
   }
 
   console.log('Type: ', diagramContext.type, diagramContext.title)

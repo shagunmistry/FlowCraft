@@ -14,7 +14,7 @@ const RandomProfilePicColored = () => {
 
 const NavigationOptions = [
   { title: 'Flow Diagram', link: '/dashboard/flow-diagram' },
-  { title: 'Mermaid', link: '/dashboard/mermaid' },
+  { title: 'Complex Diagrams', link: '/dashboard/mermaid' },
   { title: 'Whiteboard', link: '/dashboard/whiteboard' },
   { title: 'Chart', link: '/dashboard/chart' },
 ]

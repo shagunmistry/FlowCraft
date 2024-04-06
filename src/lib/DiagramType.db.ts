@@ -6,7 +6,7 @@ export interface DiagramData {
   data: {
     edges: Edge[]
     nodes: Node[]
-  }
+  } | any
   title: string
   user_id: string
   created_at: string

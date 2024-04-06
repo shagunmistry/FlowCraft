@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import ReactFlow, {
   Controls,
   Background,
@@ -12,12 +12,10 @@ import ReactFlow, {
   ConnectionLineType,
   updateEdge,
   BackgroundVariant,
-  EdgeTypes,
   Edge,
   MarkerType,
   getRectOfNodes,
   getTransformForBounds,
-  getViewportForBounds,
 } from 'reactflow'
 
 import mermaid from 'mermaid'
@@ -26,13 +24,11 @@ import Lottie from 'lottie-react'
 import LottieAnimation from '@/lib/LoaderAnimation.json'
 
 import Chart from 'chart.js/auto'
-import CustomInputBoxNode from './ReactFlow/CustomInputBoxNode'
 import { initialEdges, initialNodes } from '@/lib/react-flow.code'
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
-import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
 import { DiagramOrChartType, downloadImage } from '@/lib/utils'
 import DiagramSettingsBar from './ReactFlow/DiagramSettingsBar'
 import { toPng } from 'html-to-image'
@@ -171,7 +167,7 @@ export default function DiagramOrChartView({
 
       console.log('Setting success dialog open to true', nodesWithStyle.length)
       setSuccessDialogOpen(true && !context.loading)
-    } else if (context.type === 'Chart') {
+    } else if (context.type === 'Chart' && context.chartJsData) {
       console.log('context.chartJsData', context.chartJsData)
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
 
@@ -405,25 +401,6 @@ export default function DiagramOrChartView({
     setEdges([])
   }
 
-  if (type === 'Chart') {
-    if (context.loading) {
-      return <Loader />
-    }
-    return (
-      <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-white p-5 shadow-lg">
-        {/** A button to download the chart */}
-        <button
-          className="rounded-md bg-indigo-700 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-          onClick={donwloadChart}
-          disabled={context.loading || !context.chartJsData.type}
-        >
-          Download Chart
-        </button>
-        <canvas id="myChart"></canvas>
-      </div>
-    )
-  }
-
   const createShareableLink = async () => {
     const type = context.type
     let data = {
@@ -431,6 +408,7 @@ export default function DiagramOrChartView({
       diagramData: {},
       title: context.title,
       description: context.description,
+      diagramId: context.diagramId,
     }
     if (type === 'Flow Diagram') {
       data.type = 'Flow Diagram'
@@ -438,6 +416,12 @@ export default function DiagramOrChartView({
     } else if (type === 'Whiteboard') {
       data.type = 'Whiteboard'
       data.diagramData = { tlDrawRecords: JSON.parse(tlDrawInputJson).records }
+    } else if (type === 'Chart') {
+      data.type = 'Chart'
+      data.diagramData = context.chartJsData
+    } else {
+      data.type = context.type as TempMermaidDiagramType
+      data.diagramData = context.mermaidData
     }
 
     const response = await fetch('/api/generate-link', {
@@ -571,6 +555,35 @@ export default function DiagramOrChartView({
     downloadImage(dataUrl, fileName)
   }
 
+  // if (type === 'Chart') {
+  //   if (context.loading) {
+  //     return <Loader />
+  //   }
+  //   return (
+  //     <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-white p-5 shadow-lg">
+  //       <span className="isolate inline-flex rounded-md shadow-sm">
+  //         <button
+  //           type="button"
+  //           className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+  //           onClick={donwloadChart}
+  //           disabled={context.loading || !context.chartJsData.type}
+  //         >
+  //           Download Chart
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+  //           onClick={createShareableLink}
+  //           disabled={context.loading || !context.chartJsData.type}
+  //         >
+  //           Share
+  //         </button>
+  //       </span>
+  //       <canvas id="myChart"></canvas>
+  //     </div>
+  //   )
+  // }
+
   return (
     <>
       <SimpleNotification
@@ -607,22 +620,22 @@ export default function DiagramOrChartView({
             {context.type === 'Flow Diagram' && (
               <>
                 <ReactFlow
-                  nodes={nodes}
+                  attributionPosition="bottom-left"
+                  className="react-flow__container"
+                  connectionLineType={ConnectionLineType.SimpleBezier}
+                  defaultEdgeOptions={defaultEdgeOptions}
+                  defaultViewport={defaultViewport}
                   edges={edges}
-                  onNodesChange={onNodesChange}
+                  edgeTypes={edgeTypes}
+                  fitView
+                  nodes={nodes}
+                  nodeTypes={nodeTypes}
+                  onConnect={onConnect}
                   onEdgesChange={onEdgesChange}
                   onEdgeUpdate={onEdgeUpdate}
-                  onConnect={onConnect}
-                  connectionLineType={ConnectionLineType.SimpleBezier}
-                  snapToGrid={false}
+                  onNodesChange={onNodesChange}
                   snapGrid={[25, 25]}
-                  defaultViewport={defaultViewport}
-                  fitView
-                  attributionPosition="bottom-left"
-                  defaultEdgeOptions={defaultEdgeOptions}
-                  nodeTypes={nodeTypes}
-                  edgeTypes={edgeTypes}
-                  className="react-flow__container"
+                  snapToGrid={false}
                 >
                   <Controls />
                   {toggleReactFlowGird && (
@@ -638,14 +651,48 @@ export default function DiagramOrChartView({
             {type === 'Whiteboard' && (
               <Whiteboard inputJson={tlDrawInputJson} />
             )}
+            {type === 'Chart' && (
+              <div className="mx-auto h-screen max-w-7xl items-center justify-center overflow-y-auto rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
+                <span className="isolate inline-flex rounded-md shadow-sm">
+                  <button
+                    type="button"
+                    className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={donwloadChart}
+                    disabled={context.loading || !context.chartJsData.type}
+                  >
+                    Download Chart
+                  </button>
+                  <button
+                    type="button"
+                    className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={createShareableLink}
+                    disabled={context.loading || !context.chartJsData.type}
+                  >
+                    Share
+                  </button>
+                </span>
+                <canvas id="myChart"></canvas>
+              </div>
+            )}
             {checkIfMermaidDiagram(type) && (
               <div className="mx-auto h-screen max-w-7xl items-center justify-center overflow-y-auto rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
                 <button
-                  className="mb-2 mt-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={downloadMermaidDiagramAsPng}
-                  disabled={isMermaidError || context.loading}
+                  disabled={
+                    isMermaidError || context.loading || mermaidSVG === ''
+                  }
                 >
-                  Download Diagram
+                  Download
+                </button>
+                <button
+                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={createShareableLink}
+                  disabled={
+                    isMermaidError || context.loading || mermaidSVG === ''
+                  }
+                >
+                  Share
                 </button>
                 {isMermaidError ? (
                   <div className="text-center text-red-500">

@@ -22,3 +22,9 @@ To test the validity of the SMPT endpoint, you can use the following command:
 ```bash
 openssl s_client -crlf -quiet -starttls smtp -connect email-smtp.us-east-1.amazonaws.com:587
 ```
+
+
+## Example Shared Diagram testing
+b7PPpdG
+
+http://localhost:3000/shared/5151ddaa-736d-4363-8887-4af733014443

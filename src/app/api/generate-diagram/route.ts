@@ -140,9 +140,8 @@ export async function POST(req: Request) {
     response_format: { type: 'json_object' },
   })
 
+  console.log('1. Response from OpenAI: ', res.choices[0].message.content)
   if (res?.choices?.[0]?.message) {
-    console.log('1. Response from OpenAI: ', res.choices[0].message.content)
-
     // if the response includes ```json or ``` then we need to extract the json
     // and return it as the result
     const response = res.choices[0].message.content as string
@@ -170,12 +169,32 @@ export async function POST(req: Request) {
             private: true,
           },
         ])
+        .select('id')
+
+      if (insertError) {
+        console.error(
+          'Error inserting diagram data while generating diagram:',
+          insertError,
+        )
+        return new Response(
+          JSON.stringify({
+            error: 'Error inserting diagram data while generating diagram',
+          }),
+          {
+            headers: {
+              'content-type': 'application/json',
+            },
+            status: 401,
+          },
+        )
+      }
 
       console.log('Insert Data: ', insertData)
       console.log('Insert Error: ', insertError)
       return new Response(
         JSON.stringify({
           result,
+          id: insertData[0].id,
         }),
         {
           headers: {
@@ -187,19 +206,43 @@ export async function POST(req: Request) {
 
     console.log('3. Response from OpenAI: ', res.choices[0].message.content)
 
-    await supabaseClient.from('diagrams').insert([
-      {
-        title: diagramTitle,
-        description: diagramDescription,
-        type,
-        data: JSON.stringify(res.choices[0].message.content),
-        created_at: new Date().toISOString(),
-        user_id: userData.user?.id,
-      },
-    ])
+    const { data: insertData, error: insertError } = await supabaseClient
+      .from('diagrams')
+      .insert([
+        {
+          title: diagramTitle,
+          description: diagramDescription,
+          type,
+          data: JSON.stringify(response),
+          created_at: new Date().toISOString(),
+          user_id: userData.user?.id,
+        },
+      ])
+      .select('id')
+
+    if (insertError) {
+      console.error(
+        'Error inserting diagram data while generating diagram:',
+        insertError,
+      )
+
+      return new Response(
+        JSON.stringify({
+          error: 'Error inserting diagram data while generating diagram',
+        }),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+          status: 401,
+        },
+      )
+    }
+
     return new Response(
       JSON.stringify({
         result: res.choices[0].message.content,
+        id: insertData[0].id,
       }),
       {
         headers: {

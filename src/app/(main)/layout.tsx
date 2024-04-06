@@ -44,6 +44,7 @@ export default function MainLayout({
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
   const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
   const [mermaidData, setMermaidData] = useState<string>('')
+  const [diagramId, setDiagramId] = useState<string>('')
   const [controls, setControls] = useState<any>(null)
 
   return (
@@ -63,15 +64,17 @@ export default function MainLayout({
         value={{
           chartJsData: chartJsData,
           description: description,
+          diagramId: diagramId,
           edges: edges,
-          mermaidData: mermaidData,
-          setMermaidData: setMermaidData,
           loading: loading,
+          mermaidData: mermaidData,
           nodes: nodes,
           setChartJsData: setChartJsData,
           setDescription: setDescription,
+          setDiagramId: setDiagramId,
           setEdges: _setEdges,
           setLoading: _setLoading,
+          setMermaidData: setMermaidData,
           setNodes: _setNodes,
           setTitle: setTitle,
           setTlDrawRecords: setTlDrawRecords,

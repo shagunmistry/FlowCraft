@@ -6,53 +6,39 @@ export const maxDuration = 200
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { type, diagramData, title, description } = body
+
+  const { diagramData, diagramId, type, title } = body
 
   // Check if the user is authenticated with supabase auth
   const supabaseClient = createClient()
   const { data: userData, error } = await supabaseClient.auth.getUser()
 
-  console.log('User: ', diagramData)
   if (error || !diagramData) {
     console.error('Error getting user', error)
     return { status: 401, body: { error: 'Unauthorized' } }
   }
 
-  // Save the diagram information to the database
-  const { error: diagramError, data: insertedDiagram } = await supabase
-    .from('diagrams')
-    .insert([
-      {
-        type,
-        data: diagramData,
-        title,
-        description,
-        user_id: userData.user.id,
-        private: false,
-        created_at: new Date().toISOString(),
-      },
-    ])
-    .select('id')
-
-  if (diagramError) {
-    console.error('Error saving diagram', diagramError)
-    return new Response(
-      JSON.stringify({ error: 'There was an error saving the diagram' }),
-      { status: 500 },
-    )
-  }
-
   const inviteCode = generateInviteCode(7)
 
+  console.log(
+    'Saving link with invite code:',
+    inviteCode,
+    'for diagram:',
+    diagramId,
+  )
+
   // Create a new link
-  const { data: link, error: linkError } = await supabase
+  const { data: link, error: linkError } = await supabaseClient
     .from('shareable_links')
     .insert([
       {
         user_id: userData.user.id,
         invite_code: inviteCode,
-        diagram_id: insertedDiagram[0].id,
+        diagram_id: diagramId,
         created_at: new Date().toISOString(),
+        type: type,
+        title: title,
+        data: JSON.stringify(diagramData),
       },
     ])
     .select('id')
@@ -92,11 +78,16 @@ export async function PUT(req: Request) {
   const body = await req.json()
   const { inviteCode, linkId } = body
 
+  const supabaseClient = createClient()
+
+  console.log('searching for invite code:', inviteCode, 'for link:', linkId)
   // Check if the invite code matches the shared link
-  const { data: linkData, error: linkError } = await supabase
+  const { data: linkData, error: linkError } = await supabaseClient
     .from('shareable_links')
-    .select('diagram_id, invite_code')
+    .select('type, data, title, user_id, invite_code')
     .eq('invite_code', inviteCode)
+
+  console.log('Link Data:', linkData, 'Link Error:', linkError)
 
   if (linkError) {
     console.error('Error getting link data', linkError)
@@ -120,24 +111,10 @@ export async function PUT(req: Request) {
     )
   }
 
-  // Get diagram data
-  const { data: diagramData, error: diagramError } = await supabase
-    .from('diagrams')
-    .select('title, data, type, description')
-    .eq('id', linkData[0].diagram_id)
-
-  if (diagramError) {
-    console.error('Error getting diagram data', diagramError)
-    return new Response(
-      JSON.stringify({ error: 'There was an error getting the diagram data' }),
-      { status: 500 },
-    )
-  }
-
   return new Response(
     JSON.stringify({
       result: 'Success',
-      diagramData: diagramData[0],
+      diagramData: linkData[0],
     }),
     {
       headers: {
