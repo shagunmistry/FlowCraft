@@ -54,14 +54,16 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
   const blog = data[0] as BlogPost
 
   return (
-    <div className="bg-black">
+    <div className="bg-gray-100 py-12">
       <nav className="mx-auto flex w-full max-w-3xl items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white">{blog.title}</h1>
-          <p className="mt-2 text-sm text-gray-500">{blog.published_at}</p>
+          <h1 className="text-4xl font-bold text-indigo-700">{blog.title}</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            {new Date(blog.published_at).toLocaleDateString()}
+          </p>
         </div>
       </nav>
-      <div className="prose-h1:font-large prose prose-lg mx-auto mt-24 max-w-3xl space-y-6 text-white prose-headings:underline prose-a:text-blue-600 prose-strong:text-white prose-code:rounded-md prose-img:rounded-xl sm:space-y-8">
+      <div className="prose-h1:font-large prose prose-lg mx-auto mt-24 max-w-3xl space-y-6 text-black prose-headings:underline prose-a:text-blue-600 prose-strong:text-black prose-code:rounded-md prose-img:rounded-xl sm:space-y-8">
         <Image
           src={blog.image_url}
           alt={blog.title}

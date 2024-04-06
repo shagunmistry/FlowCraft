@@ -80,34 +80,39 @@ export default function BlogsHomePage() {
   }
 
   return (
-    <div className="bg-black py-24 sm:py-32">
-      {isAdmin && (
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-0">
-          <div className="flex justify-end">
+    <div className="bg-gray-100 p-12">
+      <div className="md:flex md:items-center md:justify-between">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            FlowCraft Blog
+          </h2>
+        </div>
+        {isAdmin && (
+          <div className="mt-4 flex md:ml-4 md:mt-0">
             <Link
               href="/blogs/create"
-              className="rounded-md border border-indigo-200 bg-indigo-100 px-4 py-2 text-sm font-semibold leading-6 text-indigo-600 hover:bg-indigo-200"
+              className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Create or manage posts
             </Link>
           </div>
-        </div>
-      )}
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 px-6 sm:gap-y-16 lg:grid-cols-2 lg:px-8">
+        )}
+      </div>
+      <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 sm:gap-y-16 lg:grid-cols-2 mt-8">
         <article className="mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-lg">
           <time
             dateTime={featuredPost.datetime}
-            className="block text-sm leading-6 text-gray-200"
+            className="block text-sm leading-6 text-indigo-500"
           >
             {new Date(featuredPost.date).toLocaleDateString()}
           </time>
           <h2
             id="featured-post"
-            className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl"
+            className="mt-4 text-2xl font-bold tracking-tight sm:text-xl"
           >
             {featuredPost.title}
           </h2>
-          <p className="mt-4 text-lg leading-8 text-gray-200">
+          <p className="mt-4 text-lg leading-8 text-indigo-500">
             {featuredPost.description}
           </p>
           <div className="mt-4 flex flex-col justify-between gap-6 sm:mt-8 sm:flex-row-reverse sm:gap-8 lg:mt-4 lg:flex-col">
@@ -129,24 +134,24 @@ export default function BlogsHomePage() {
                 <div className="group relative max-w-xl">
                   <time
                     dateTime={blog.published_at}
-                    className="block text-sm leading-6 text-gray-200"
+                    className="block text-sm leading-6 text-indigo-500"
                   >
                     {new Date(blog.published_at).toLocaleDateString()}
                   </time>
-                  <h2 className="mt-2 text-lg font-semibold text-white group-hover:text-gray-200">
+                  <h2 className="mt-2 text-lg font-semibold group-hover:text-indigo-500">
                     <Link href={`/blogs/${blog.id}`}>
                       <span className="absolute inset-0" />
                       {blog.title}
                     </Link>
                   </h2>
-                  <p className="mt-4 text-sm leading-6 text-gray-200">
+                  <p className="mt-4 text-sm leading-6 text-indigo-500">
                     {blog.description}
                   </p>
                 </div>
                 <div className="mt-4 flex">
                   <Link
                     href={`/blogs/${blog.id}`}
-                    className="relative flex gap-x-2.5 text-sm font-semibold leading-6 text-white"
+                    className="relative flex gap-x-2.5 text-sm font-semibold leading-6"
                   >
                     <Image
                       src={blog.image_url}
