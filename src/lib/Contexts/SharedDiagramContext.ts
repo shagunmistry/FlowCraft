@@ -4,25 +4,29 @@ import { Edge, Node } from 'reactflow'
 import { DiagramOrChartType } from '../utils'
 
 export const SharedDiagramContext = createContext<{
-  nodes: Node[]
-  setNodes: (nodes: Node[]) => void
-  edges: Edge[]
-  setEdges: (edges: Edge[]) => void
-  title: string
-  setTitle: (title: string) => void
+  chartJsData: any
   description: string
+  edges: Edge[]
+  nodes: Node[]
+  setChartJsData: (data: any) => void
   setDescription: (description: string) => void
-  type: DiagramOrChartType | TempMermaidDiagramType
+  setEdges: (edges: Edge[]) => void
+  setNodes: (nodes: Node[]) => void
+  setTitle: (title: string) => void
   setType: (type: DiagramOrChartType | TempMermaidDiagramType) => void
+  title: string
+  type: DiagramOrChartType | TempMermaidDiagramType
 }>({
-  nodes: [],
-  setNodes: () => {},
-  edges: [],
-  setEdges: () => {},
-  title: '',
-  setTitle: () => {},
+  chartJsData: {},
   description: '',
+  edges: [],
+  nodes: [],
+  setChartJsData: () => {},
   setDescription: () => {},
-  type: 'Flow Diagram',
+  setEdges: () => {},
+  setNodes: () => {},
+  setTitle: () => {},
   setType: () => {},
+  title: '',
+  type: 'Flow Diagram',
 })

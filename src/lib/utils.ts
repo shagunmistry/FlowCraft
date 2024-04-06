@@ -3,6 +3,17 @@ import { twMerge } from 'tailwind-merge'
 
 export const OPEN_AI_MODEL = 'gpt-4-0125-preview'
 
+export type SharedDiagramResult = {
+  user_id: string
+  invite_code: string
+  created_at: string
+  diagram_id: string
+  id: string
+  type: string
+  data: string
+  title: string
+}
+
 export type DiagramOrChartType =
   | 'Whiteboard'
   | 'Chart'
@@ -179,4 +190,8 @@ export const generateInviteCode = (length: number) => {
   }
 
   return inviteCode
+}
+
+export const getShareableLinkUrl = (id: string, origin: string) => {
+  return `/shared/${id}`
 }

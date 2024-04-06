@@ -104,6 +104,9 @@ dependencies:
   react-aria:
     specifier: ^3.19.0
     version: 3.30.0(react-dom@18.2.0)(react@18.2.0)
+  react-chartjs-2:
+    specifier: ^5.2.0
+    version: 5.2.0(chart.js@4.4.1)(react@18.2.0)
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
@@ -7682,6 +7685,16 @@ packages:
       '@react-types/shared': 3.22.0(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-chartjs-2@5.2.0(chart.js@4.4.1)(react@18.2.0):
+    resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      chart.js: 4.4.1
+      react: 18.2.0
     dev: false
 
   /react-dom@18.2.0(react@18.2.0):

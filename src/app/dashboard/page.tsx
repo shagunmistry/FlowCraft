@@ -7,12 +7,20 @@ import { DiagramData } from '@/lib/DiagramType.db'
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import { cn, navigationOptions } from '@/lib/utils'
+import {
+  cn,
+  getShareableLinkUrl,
+  navigationOptions,
+  SharedDiagramResult,
+} from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import { Badge } from '@/components/Badge'
 import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
 import DashboardHeading from '@/components/Dashboard/Header.dashboard'
+
+const errorMessagePage =
+  '/error?message=There was an error getting your user data. Please contact support.'
 
 async function getDiagrams() {
   const data = await _getDiagrams()
@@ -85,6 +93,28 @@ async function getUserDataFromTable(
   return { user: userData[0] }
 }
 
+const SectionHeading = ({ title, link }: { title: string; link: string }) => {
+  return (
+    <div className="mt-24 rounded-lg bg-black px-4 py-5 shadow-lg sm:px-6">
+      <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
+        <div className="ml-4 mt-2">
+          <h3 className="text-base font-semibold leading-6 text-white">
+            {title}
+          </h3>
+        </div>
+        <div className="ml-4 mt-2 flex-shrink-0">
+          <Link
+            href={link}
+            className="relative inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            View All
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -101,16 +131,17 @@ export default async function Dashboard() {
   }
 
   const stats = [
-    { id: 1, name: 'Diagrams Created', value: 0 },
-    { id: 4, name: 'Total Shares', value: 0 },
+    { id: 1, name: 'Flow Diagrams', value: 0 },
+    { id: 2, name: 'Complex Diagrams', value: 0 },
+    { id: 3, name: 'Whiteboards', value: 0 },
+    { id: 4, name: 'Charts', value: 0 },
+    { id: 5, name: 'Total Shares', value: 0 },
   ]
   const { diagrams } = await getDiagrams()
   const { shares } = await getShares()
 
   if (!userData.user.id || !userData.user.email) {
-    return redirect(
-      '/error?message=There was an error getting your user data. Please contact support.',
-    )
+    return redirect(errorMessagePage)
   }
 
   const { user } = await getUserDataFromTable(
@@ -118,10 +149,25 @@ export default async function Dashboard() {
     userData.user.email,
   )
 
-  console.log('User data:', user)
-
   if (diagrams.length > 0) {
-    stats[0].value = diagrams.length
+    stats[0].value = diagrams.filter(
+      (diagram: DiagramData) => diagram.type === 'Flow Diagram',
+    ).length
+
+    stats[1].value = diagrams.filter(
+      (diagram: DiagramData) =>
+        diagram.type !== 'Flow Diagram' &&
+        diagram.type !== 'Chart' &&
+        diagram.type !== 'Whiteboard',
+    ).length
+
+    stats[2].value = diagrams.filter(
+      (diagram: DiagramData) => diagram.type === 'Whiteboard',
+    ).length
+
+    stats[3].value = diagrams.filter(
+      (diagram: DiagramData) => diagram.type === 'Chart',
+    ).length
   }
 
   if (shares.length > 0) {
@@ -129,9 +175,7 @@ export default async function Dashboard() {
   }
 
   if (user === null) {
-    return redirect(
-      '/error?message=There was an error getting your user data. Please contact support.',
-    )
+    return redirect(errorMessagePage)
   }
 
   return (
@@ -144,6 +188,7 @@ export default async function Dashboard() {
                 subscribed={user.subscribed}
                 name={userData.user.email.split('@')[0]}
                 imageUrl={userData.user.user_metadata.avatar_url}
+                stats={stats}
               />
             </header>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -155,7 +200,7 @@ export default async function Dashboard() {
                   <li
                     key={option.title}
                     className={cn(
-                      'col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white text-center shadow-lg transition duration-300 ease-in-out hover:scale-105',
+                      'col-span-1 flex transform flex-col divide-y divide-gray-200 rounded-lg bg-white text-center transition duration-300 ease-in-out hover:scale-105',
                       option.badgeType === 'coming-soon' ? 'opacity-50' : '',
                       option.badgeType === 'popular' ? 'border-indigo-500' : '',
                     )}
@@ -165,7 +210,7 @@ export default async function Dashboard() {
                         <Badge badgeType={option.badgeType} />
                       )}
                       <Image
-                        className="mx-auto mt-4 h-32 w-32 flex-shrink-0 rounded-xl border-4 border-indigo-200 object-cover shadow-lg"
+                        className="mx-auto mt-4 h-32 w-32 flex-shrink-0 rounded-xl border-4 border-indigo-200 object-cover shadow-sm"
                         src={option.source}
                         height={128}
                         width={128}
@@ -221,76 +266,125 @@ export default async function Dashboard() {
               </ul>
             </div>
 
+            {/** Recent Diagrams */}
             {diagrams && diagrams.length > 0 ? (
               <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-                  <hr className="border-t-2 border-indigo-500" />
-                  <dl className="my-12 grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl text-center shadow-lg">
-                    {stats.map((stat) => (
-                      <div key={stat.id} className="flex flex-col bg-white p-8">
-                        <dt className="text-sm font-semibold leading-6 text-indigo-500">
-                          {stat.name}
-                        </dt>
-                        <dd className="order-first text-3xl font-semibold tracking-tight text-black">
-                          {stat.value}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <div className="flex items-center justify-between">
-                    <h2 className="border-b-2 border-indigo-500 text-base text-lg font-semibold text-indigo-500">
-                      Recent FlowCraft Diagrams
-                    </h2>
-                  </div>
+                  <SectionHeading
+                    title="Recent Diagrams"
+                    link="/dashboard/diagrams"
+                  />
                   <ul
                     role="list"
                     className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
                   >
-                    {diagrams.map((diagram: DiagramData) => (
-                      <li
-                        key={diagram.id}
-                        className="transform overflow-hidden rounded-xl border border-gray-200 bg-white transition duration-300 ease-in-out hover:scale-105"
-                      >
-                        <div className="flex items-center gap-x-4 border-b border-indigo-900/5 bg-gray-50 p-6">
-                          <div className="text-md font-medium leading-6 text-indigo-700">
-                            {diagram.title}
+                    {diagrams
+                      .sort(
+                        (a: DiagramData, b: DiagramData) =>
+                          new Date(b.created_at).getTime() -
+                          new Date(a.created_at).getTime(),
+                      )
+                      .slice(0, 4)
+                      .map((diagram: DiagramData) => (
+                        <li
+                          key={diagram.id}
+                          className="transform overflow-hidden rounded-xl bg-white transition duration-300 ease-in-out hover:scale-105"
+                        >
+                          <div className="flex items-center gap-x-4 border-b border-indigo-900/5 bg-gray-50 p-6">
+                            <div className="text-md font-medium leading-6 text-indigo-700">
+                              {diagram.title}
+                            </div>
                           </div>
-                        </div>
-                        <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
-                          <div className="flex justify-between gap-x-4 py-3">
-                            <dt className="text-gray-500">Created On</dt>
-                            <dd className="text-gray-700">
-                              <time dateTime={diagram.created_at}>
-                                {new Date(
-                                  diagram.created_at,
-                                ).toLocaleDateString('en-US', {
-                                  year: 'numeric',
-                                  month: 'short',
-                                  day: 'numeric',
-                                })}
-                              </time>
-                            </dd>
-                          </div>
-                          <div className="flex justify-between gap-x-4 py-3">
-                            <dt className="text-gray-500">Details</dt>
-                            <dd className="flex items-start gap-x-2">
-                              <div className="text-md rounded-lg px-2 py-1 font-medium shadow-lg ring-1 ring-inset">
-                                {diagram.type}
-                              </div>
-                            </dd>
-                          </div>
-                          {/** button to view the diagram */}
-                          <Link
-                            href={`/dashboard/diagram/${diagram.id}`}
-                            className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-200 ease-in-out hover:scale-105 hover:bg-indigo-500 hover:text-white"
-                          >
-                            <PlayIcon className="h-5 w-5" aria-hidden="true" />
-                            View
-                          </Link>
-                        </dl>
-                      </li>
-                    ))}
+                          <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                            <div className="flex justify-between gap-x-4 py-3">
+                              <dt className="text-gray-500">Created On</dt>
+                              <dd className="text-gray-700">
+                                <time dateTime={diagram.created_at}>
+                                  {new Date(
+                                    diagram.created_at,
+                                  ).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                  })}
+                                </time>
+                              </dd>
+                            </div>
+                            <div className="flex justify-between gap-x-4 py-3">
+                              <dt className="text-gray-500">Details</dt>
+                              <dd className="flex items-start gap-x-2">
+                                <div className="text-md rounded-lg px-2 py-1 font-medium shadow-lg ring-1 ring-inset">
+                                  {diagram.type}
+                                </div>
+                              </dd>
+                            </div>
+                            {/** button to view the diagram */}
+                            <Link
+                              href={`/dashboard/diagram/${diagram.id}`}
+                              className="text-md relative inline-flex items-center justify-center gap-x-3 rounded-lg bg-pink-300 p-2 font-medium text-indigo-700 transition duration-200 ease-in-out hover:scale-105 hover:bg-indigo-500 hover:text-white"
+                            >
+                              <PlayIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              View
+                            </Link>
+                          </dl>
+                        </li>
+                      ))}
                   </ul>
+                </div>
+              </div>
+            ) : null}
+
+            {/** Shared Diagrams */}
+            {shares && shares.length > 0 ? (
+              <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+                  <SectionHeading
+                    title="Shared Diagrams"
+                    link="/dashboard/all-shared"
+                  />
+                  <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {shares.slice(0, 4).map((share: SharedDiagramResult) => (
+                      <div
+                        key={getShareableLinkUrl(
+                          share.id,
+                          process.env.NEXT_PUBLIC_BASE_URL || '',
+                        )}
+                        className="relative flex items-center space-x-3 rounded-lg bg-white px-6 py-5 shadow-sm border-2 border-transparent transition duration-200 ease-in-out focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-2 hover:border-indigo-400"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <Link
+                            href={getShareableLinkUrl(
+                              share.id,
+                              process.env.NEXT_PUBLIC_BASE_URL || '',
+                            )}
+                            className="block truncate text-lg font-semibold text-indigo-700 transition duration-200 ease-in-out"
+                          >
+                            {share.title}
+                          </Link>
+                          <p className="truncate text-sm text-gray-500">
+                            {new Date(share.created_at).toLocaleDateString(
+                              'en-US',
+                              {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              },
+                            )}
+                          </p>
+
+                          <p className="text-md text-gray-500">
+                            Invite Code:{' '}
+                            <span className="text-indigo-700">
+                              {share.invite_code}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             ) : null}

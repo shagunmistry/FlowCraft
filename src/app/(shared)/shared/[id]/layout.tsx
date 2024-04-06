@@ -23,6 +23,8 @@ export default function SharedDiagramsLayout({
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
 
+  const [chartJsData, setChartJsData] = useState<any>({})
+
   const [type, setType] = useState<DiagramOrChartType | TempMermaidDiagramType>(
     'Flow Diagram',
   )
@@ -45,6 +47,8 @@ export default function SharedDiagramsLayout({
           },
           type,
           setType,
+          chartJsData,
+          setChartJsData,
         }}
       >
         <main>

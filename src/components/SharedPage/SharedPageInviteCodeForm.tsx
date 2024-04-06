@@ -2,20 +2,34 @@
 
 import { useContext, useState } from 'react'
 import { DiagramOrChartType } from '@/lib/utils'
-import ReactFlow, { Controls } from 'reactflow'
+import ReactFlow, {
+  Background,
+  BackgroundVariant,
+  Controls,
+  useNodesState,
+} from 'reactflow'
 import { SharedDiagramContext } from '@/lib/Contexts/SharedDiagramContext'
 import {
   defaultEdgeOptions,
   defaultViewport,
   edgeTypes,
+  nodeTypes,
 } from '@/lib/react-flow.util'
 import { motion } from 'framer-motion'
+import { initialNodes } from '@/lib/react-flow.code'
+import { Chart, registerables } from 'chart.js'
+
+import mermaid from 'mermaid'
+import ChartJsComponent from '../ChartJsComponents'
 
 export default function SharedDiagramInviteCodeForm({
   linkId,
 }: {
   linkId: string
 }) {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+  const [mermaidSVG, setMermaidSVG] = useState('' as string)
+
   const [canAccess, setCanAccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const sharedDiagramContext = useContext(SharedDiagramContext)
@@ -72,12 +86,63 @@ export default function SharedDiagramInviteCodeForm({
       const { nodes, edges } = JSON.parse(diagramData.data)
       sharedDiagramContext.setNodes(nodes)
       sharedDiagramContext.setEdges(edges)
-    }
-
-    if (diagramData.type === 'Chart') {
-      setIsLoading(false)
+      setNodes(nodes)
+    } else if (diagramData.type === 'Chart') {
+      Chart.register(...registerables)
       setCanAccess(true)
-      console.log('setting diagram type as chart', JSON.parse(diagramData.data))
+
+      const chartData = JSON.parse(diagramData.data)
+      // let ctx = document.getElementById('myChart') as HTMLCanvasElement
+
+      // console.log(
+      //   'Chart data Type: ',
+      //   chartData.type,
+      //   'Data: ',
+      //   chartData.data,
+      //   'Options: ',
+      //   chartData.options,
+      // )
+
+      // if (ctx === null) {
+      //   console.log('Creating new canvas element')
+      //   // Create a new canvas element with the id 'myChart' and append it to the body, with a width of 400 and height of 400
+      //   ctx = document.createElement('canvas')
+      //   ctx.id = 'myChart'
+      //   ctx.width = 400
+      //   ctx.height = 400
+
+      //   document.getElementById('myChartContainer')?.appendChild(ctx)
+      // }
+
+      // console.log('Chart context:', ctx)
+
+      // const myChart = new Chart(ctx, {
+      //   type: chartData.type || 'bar',
+      //   ...chartData,
+      // }).update()
+
+      sharedDiagramContext.setChartJsData(chartData)
+
+      setIsLoading(false)
+    } else if (diagramData.type === 'Whiteboard') {
+    } else {
+      const { svg } = await mermaid.render(
+        'mermaid',
+        JSON.parse(diagramData.data),
+      )
+
+      if (svg === undefined) {
+        console.error('SVG from Mermaid API is undefined')
+        return
+      }
+
+      setMermaidSVG(svg)
+      setCanAccess(true)
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'forest',
+      })
     }
   }
 
@@ -147,23 +212,44 @@ export default function SharedDiagramInviteCodeForm({
           sharedDiagramContext.type === 'Flow Diagram' && (
             <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
               <ReactFlow
-                nodes={sharedDiagramContext.nodes}
-                edges={sharedDiagramContext.edges}
-                fitView
-                className="react-flow__container"
-                nodesDraggable={true}
-                zoomOnScroll={true}
                 attributionPosition="bottom-center"
-                nodesConnectable={false}
-                elementsSelectable={false}
+                className="react-flow__container"
                 defaultEdgeOptions={defaultEdgeOptions}
-                //   nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
                 defaultViewport={defaultViewport}
+                edges={sharedDiagramContext.edges}
+                edgeTypes={edgeTypes}
+                fitView
+                nodes={nodes}
+                nodeTypes={nodeTypes}
+                nodesConnectable={false}
+                zoomOnScroll={true}
+                snapGrid={[25, 25]}
+                snapToGrid={false}
+                onNodesChange={onNodesChange}
               >
                 <Controls />
+                <Background
+                  color="#808080"
+                  gap={40}
+                  variant={BackgroundVariant.Cross}
+                />
               </ReactFlow>
             </div>
+          )}
+
+        {sharedDiagramContext.title &&
+          sharedDiagramContext.type === 'Chart' && (
+            <ChartJsComponent data={sharedDiagramContext.chartJsData} />
+          )}
+
+        {canAccess &&
+          sharedDiagramContext.type !== 'Flow Diagram' &&
+          sharedDiagramContext.type !== 'Chart' &&
+          sharedDiagramContext.type !== 'Whiteboard' && (
+            <div
+              className="mermaid mx-auto h-full w-full p-4 text-center"
+              dangerouslySetInnerHTML={{ __html: mermaidSVG }}
+            ></div>
           )}
       </div>
     </div>
