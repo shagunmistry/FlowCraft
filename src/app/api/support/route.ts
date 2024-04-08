@@ -2,17 +2,23 @@ import { createClient } from '@/lib/supabase-auth/server'
 
 export async function POST(req: Request) {
   try {
-    const { firstName, lastName, email, message } = await req.json()
+    let { firstName, lastName, email, message, type, rating } = await req.json()
 
-    const supabase = createClient()
+    const supabaseClient = createClient()
 
-    const { data, error } = await supabase.from('support').insert([
+    const { data: userData } = await supabaseClient.auth.getUser()
+
+    email = email || userData?.user?.email
+
+    const { data, error } = await supabaseClient.from('support').insert([
       {
         firstname: firstName,
         lastname: lastName,
         email,
         message,
         created_at: new Date().toISOString(),
+        type,
+        rating,
       },
     ])
 

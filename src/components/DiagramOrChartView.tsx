@@ -41,6 +41,7 @@ import {
   nodeTypes,
 } from '@/lib/react-flow.util'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
+import StarRatingInput from './StarRatingInput'
 
 const Loader = () => {
   return (
@@ -617,6 +618,8 @@ export default function DiagramOrChartView({
           <Loader />
         ) : (
           <>
+            <StarRatingInput type={type} />
+
             {context.type === 'Flow Diagram' && (
               <>
                 <ReactFlow

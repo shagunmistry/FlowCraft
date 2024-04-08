@@ -1,11 +1,9 @@
 'use client'
-import Link from 'next/link'
 
 import { EditorSection } from './EditorSection'
-import { TinyWaveFormIcon } from './TinyWaveFormIcon'
 import { DiagramOrChartType } from '@/lib/utils'
-import FeedbackButton from './FeedbackButton'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
+import StarRatingInput from './StarRatingInput'
 
 export default function ChartDescriptionInput({
   type,
@@ -15,7 +13,6 @@ export default function ChartDescriptionInput({
   return (
     <div>
       <EditorSection type={type} />
-      <FeedbackButton />
     </div>
   )
 }
