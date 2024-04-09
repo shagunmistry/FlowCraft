@@ -34,6 +34,12 @@ export default function DashboardHeading({
                 <p className="text-xl font-bold text-gray-900 sm:text-2xl">
                   {name}
                 </p>
+                {/* <button
+                  type="button"
+                  className="mt-3 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Request A Feature
+                </button> */}
               </div>
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">

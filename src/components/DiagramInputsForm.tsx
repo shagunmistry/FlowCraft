@@ -223,10 +223,9 @@ export default function DiagramInputsForm({
                         : 'Describe what you want to create'}
                     </span>
                     <textarea
-                      rows={5}
                       name="description"
                       id="description"
-                      className="mt-2 block w-96 resize-none border-0 border-b-2 border-indigo-500 py-2 text-gray-900 placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="mt-2 block h-96 w-96 resize-y border-none py-2 text-gray-900 placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder={
                         context.type === 'Chart'
                           ? 'Enter Chart Data. Data should be in CSV format with headers.'
