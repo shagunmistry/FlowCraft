@@ -14,9 +14,10 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
-import PricingTemplate from './Pricing/Pricing.template'
-import HowToUseSteps from './HowToUseSteps'
-import FAQs from './FAQ'
+import PricingTemplate from '../Pricing/Pricing.template'
+import HowToUseSteps from '../HowToUseSteps'
+import FAQs from '../FAQ'
+import UsecasesForLanding from './Usecases.landing'
 
 const features = [
   {
@@ -163,15 +164,16 @@ export default function MainLanding() {
                     <span className="block">with AI in seconds</span>
                   </h1>
                   <p className="mt-3 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                    Turn your ideas and data into professional visuals
-                    effortlessly. No design skills required.
+                    Get 5 free diagram creations today when you sign up!
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <Link
                       className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-pink-500 px-8 py-3 font-medium text-gray-500 text-indigo-600 text-white transition-all duration-300 ease-in-out hover:scale-125 hover:bg-indigo-500 sm:inline-flex sm:w-auto sm:items-center sm:px-6"
                       href={authenticated ? '/dashboard' : '/login'}
                     >
-                      {authenticated ? 'Go to Dashboard' : 'Get Started For Free'}
+                      {authenticated
+                        ? 'Go to Dashboard'
+                        : 'Get Started For Free'}
                     </Link>
                   </div>
                 </div>
@@ -187,7 +189,6 @@ export default function MainLanding() {
               </div>
             </div>
           </div>
-
           {/** Stats Section */}
           <div className="py-24 sm:py-12">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -208,7 +209,6 @@ export default function MainLanding() {
               </dl>
             </div>
           </div>
-
           <div className="px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-4xl font-bold tracking-tight text-pink-500 sm:text-6xl">
@@ -216,7 +216,6 @@ export default function MainLanding() {
               </h2>
             </div>
           </div>
-
           {/** How It works section */}
           <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-96 lg:mt-5 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
@@ -227,8 +226,11 @@ export default function MainLanding() {
             <HowToUseSteps />
           </div>
 
+          {/** Use Cases */}
+          <UsecasesForLanding />
+
           {/** Features section */}
-          <div className="mx-auto mt-10 max-w-7xl px-6 sm:mt-12 lg:mt-20 lg:px-8">
+          {/* <div className="mx-auto mt-10 max-w-7xl px-6 sm:mt-12 lg:mt-20 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
               <h2 className="text-base font-semibold leading-7">
                 Everything you need
@@ -254,14 +256,12 @@ export default function MainLanding() {
                 </div>
               ))}
             </dl>
-          </div>
-
+          </div> */}
           {/** Pricing Section */}
           <PricingTemplate
             sourcePage="landing"
             shouldGoToCheckout={authenticated}
           />
-
           {/** CTA section */}
           <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
             <div className="relative isolate overflow-hidden bg-gray-900 px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
@@ -315,7 +315,6 @@ export default function MainLanding() {
               </div>
             </div>
           </div>
-
           {/** FAQ section */}
           <FAQs />
         </div>

@@ -82,10 +82,7 @@ export default function PricingTemplate({
       <div className="mx-auto max-w-2xl text-center lg:max-w-4xl">
         {sourcePage === 'landing' ? (
           <>
-            <h2 className="leading-2 text-base font-semibold text-pink-500">
-              Pricing
-            </h2>
-            <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <p className="mt-2 text-4xl font-bold tracking-tight text-pink-500 sm:text-5xl">
               Simple, transparent pricing.
             </p>
           </>
@@ -124,7 +121,7 @@ export default function PricingTemplate({
               className={
                 tier.featured
                   ? 'text-2xl font-bold tracking-tight'
-                  : 'text-2xl font-semibold tracking-tight text-gray-900'
+                  : 'text-2xl font-semibold tracking-tight text-pink-500'
               }
             >
               {tier.name}
@@ -133,13 +130,13 @@ export default function PricingTemplate({
               <span
                 className={cn(
                   'text-5xl font-bold tracking-tight',
-                  tier.featured ? 'text-white' : 'text-gray-900',
+                  tier.featured ? 'text-white' : 'text-pink-500',
                 )}
               >
                 {yearly ? tier.price.annually : tier.price.monthly}
               </span>
               <span
-                className={cn(tier.featured ? 'text-white' : 'text-gray-900')}
+                className={cn(tier.featured ? 'text-white' : 'text-pink-500')}
               >
                 /{yearly ? 'year' : 'month'}
               </span>
@@ -147,7 +144,7 @@ export default function PricingTemplate({
             <p
               className={cn(
                 'mt-6 text-base leading-7',
-                tier.featured ? 'text-white' : 'text-gray-900',
+                tier.featured ? 'text-white' : 'text-pink-500',
               )}
             >
               {tier.description}
@@ -156,14 +153,14 @@ export default function PricingTemplate({
               role="list"
               className={cn(
                 'mt-6 text-base leading-7',
-                tier.featured ? 'text-white' : 'text-gray-900',
+                tier.featured ? 'text-white' : 'text-pink-500',
               )}
             >
               {tier.mainFeatures.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
                   <CheckIcon
                     className={cn(
-                      tier.featured ? 'text-white' : 'text-gray-900',
+                      tier.featured ? 'text-white' : 'text-pink-500',
                       'h-5 w-5 flex-shrink-0',
                     )}
                     aria-hidden="true"

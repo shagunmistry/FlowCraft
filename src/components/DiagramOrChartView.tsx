@@ -613,13 +613,13 @@ export default function DiagramOrChartView({
         )}
       </div>
 
-      <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg">
+      <StarRatingInput type={type} />
+
+      <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg border-2 border-gray-500">
         {context.loading ? (
           <Loader />
         ) : (
           <>
-            <StarRatingInput type={type} />
-
             {context.type === 'Flow Diagram' && (
               <>
                 <ReactFlow

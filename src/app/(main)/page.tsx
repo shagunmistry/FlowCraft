@@ -6,7 +6,7 @@ import {
   getReactCodeFlowJSONFile,
 } from '@/lib/supabase'
 
-import MainLanding from '@/components/Main.landing'
+import MainLanding from '@/components/Landing/Main.landing'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
