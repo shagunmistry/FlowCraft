@@ -22,6 +22,8 @@ const StarRatingInput = ({
       setRating(0)
     }
 
+    console.log('Rating:', value)
+
     setRating(value)
 
     if (value < 5) {
@@ -52,24 +54,29 @@ const StarRatingInput = ({
   }
 
   const sendRatingToServer = async (message: string) => {
-    fetch('/api/support', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message,
-        type,
-        rating,
-      }),
+    console.log('Submitting support request:', {
+      message,
+      type,
+      rating,
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('Support request submitted:', data)
-      })
-      .catch((error) => {
-        console.error('Error submitting support request:', error)
-      })
+    // fetch('/api/support', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     message,
+    //     type,
+    //     rating,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log('Support request submitted:', data)
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error submitting support request:', error)
+    //   })
   }
 
   return (
@@ -165,6 +172,7 @@ const StarRatingInput = ({
                           </label>
                           <div className="mt-2">
                             <textarea
+                              required
                               id="improved"
                               name="improved"
                               rows={3}
@@ -183,6 +191,7 @@ const StarRatingInput = ({
                           </label>
                           <div className="mt-2">
                             <textarea
+                              required
                               id="features"
                               name="features"
                               rows={3}

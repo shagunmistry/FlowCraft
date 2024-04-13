@@ -20,11 +20,9 @@ import ReactFlow, {
 
 import mermaid from 'mermaid'
 import 'reactflow/dist/style.css'
-import Lottie from 'lottie-react'
-import LottieAnimation from '@/lib/LoaderAnimation.json'
 
 import Chart from 'chart.js/auto'
-import { initialEdges, initialNodes } from '@/lib/react-flow.code'
+
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
@@ -42,6 +40,8 @@ import {
 } from '@/lib/react-flow.util'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 import StarRatingInput from './StarRatingInput'
+import { ArrowUpCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid'
+import clsx from 'clsx'
 
 const Loader = () => {
   return (
@@ -50,8 +50,36 @@ const Loader = () => {
         Please be patient while we generate your diagram, it may take a couple
         minutes.
       </div>
-      <Lottie animationData={LottieAnimation} loop={true} />
+      <div className="mx-auto mt-10 w-1/4">
+        <Cog6ToothIcon className="mx-auto h-20 w-20 animate-spin text-indigo-600" />
+      </div>
     </>
+  )
+}
+
+const GoToTopButton = () => {
+  return (
+    <button
+      className="fixed bottom-10 left-10 rounded-full bg-pink-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:bg-indigo-600"
+      onClick={() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }}
+    >
+      <ArrowUpCircleIcon className="h-6 w-6" />
+    </button>
+  )
+}
+
+const CreateDiagramAtTopButton = () => {
+  return (
+    <button
+      className="mx-auto mt-2 block rounded-md bg-pink-500 p-2 text-white"
+      onClick={() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }}
+    >
+      Create Diagram
+    </button>
   )
 }
 
@@ -82,8 +110,8 @@ export default function DiagramOrChartView({
 }: {
   type: DiagramOrChartType | TempMermaidDiagramType
 }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  const [nodes, setNodes, onNodesChange] = useNodesState([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [toggleReactFlowGird, setToggleReactFlowGird] = useState<boolean>(true)
   const [mermaidSVG, setMermaidSVG] = useState<string>('')
 
@@ -556,35 +584,6 @@ export default function DiagramOrChartView({
     downloadImage(dataUrl, fileName)
   }
 
-  // if (type === 'Chart') {
-  //   if (context.loading) {
-  //     return <Loader />
-  //   }
-  //   return (
-  //     <div className="ml-auto mr-auto mt-14 w-5/6 rounded-xl bg-white p-5 shadow-lg">
-  //       <span className="isolate inline-flex rounded-md shadow-sm">
-  //         <button
-  //           type="button"
-  //           className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-  //           onClick={donwloadChart}
-  //           disabled={context.loading || !context.chartJsData.type}
-  //         >
-  //           Download Chart
-  //         </button>
-  //         <button
-  //           type="button"
-  //           className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-  //           onClick={createShareableLink}
-  //           disabled={context.loading || !context.chartJsData.type}
-  //         >
-  //           Share
-  //         </button>
-  //       </span>
-  //       <canvas id="myChart"></canvas>
-  //     </div>
-  //   )
-  // }
-
   return (
     <>
       <SimpleNotification
@@ -596,26 +595,33 @@ export default function DiagramOrChartView({
       />
 
       <div className="mt-4">
-        {context.type === 'Flow Diagram' && (
-          <DiagramSettingsBar
-            nodes={nodes}
-            edges={edges}
-            deleteNode={deleteNode}
-            addNode={addNode}
-            updateNodeLabel={updateNodeLabel}
-            updateEdgeLabel={updateEdgeLabel}
-            deleteEdge={deleteEdge}
-            clearReactFlowDiagram={clearReactFlowDiagram}
-            createShareableLink={createShareableLink}
-            toggleGrid={toggleGrid}
-            downloadFlowDiagramAsPng={downloadFlowDiagramAsPng}
-          />
-        )}
+        {context.type === 'Flow Diagram' &&
+          context.nodes.length > 0 &&
+          context.edges.length > 0 && (
+            <DiagramSettingsBar
+              nodes={nodes}
+              edges={edges}
+              deleteNode={deleteNode}
+              addNode={addNode}
+              updateNodeLabel={updateNodeLabel}
+              updateEdgeLabel={updateEdgeLabel}
+              deleteEdge={deleteEdge}
+              clearReactFlowDiagram={clearReactFlowDiagram}
+              createShareableLink={createShareableLink}
+              toggleGrid={toggleGrid}
+              downloadFlowDiagramAsPng={downloadFlowDiagramAsPng}
+            />
+          )}
       </div>
 
       <StarRatingInput type={type} />
 
-      <div className="ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg border-2 border-gray-500">
+      <div
+        className={clsx(
+          'ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg',
+          type !== 'Whiteboard' ? 'border-2 border-gray-500' : '',
+        )}
+      >
         {context.loading ? (
           <Loader />
         ) : (
@@ -698,14 +704,20 @@ export default function DiagramOrChartView({
                   Share
                 </button>
                 {isMermaidError ? (
-                  <div className="text-center text-red-500">
-                    There was an error generating the diagram. Please try again
-                    later.
-                  </div>
+                  <>
+                    <div className="text-center text-red-500">
+                      There was an error generating the diagram. Please try
+                      again later.
+                    </div>
+                    <CreateDiagramAtTopButton />
+                  </>
                 ) : mermaidSVG === '' ? (
-                  <div className="text-center text-red-500">
-                    No data to display
-                  </div>
+                  <>
+                    <div className="text-center text-red-500">
+                      No data to display
+                    </div>
+                    <CreateDiagramAtTopButton />
+                  </>
                 ) : (
                   <div
                     className="mermaid mx-auto h-full w-full p-4 text-center"
@@ -734,6 +746,7 @@ export default function DiagramOrChartView({
         shareableLink={shareableLink?.link}
         inviteCode={shareableLink?.inviteCode}
       />
+      <GoToTopButton />
     </>
   )
 }

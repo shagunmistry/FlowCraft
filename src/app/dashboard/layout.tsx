@@ -29,14 +29,10 @@ export default function DashboardLayout({
   const [nodes, _setNodes] = useState<Node[]>([])
   const [edges, _setEdges] = useState<Edge[]>([])
 
-  const [tlDrawRecords, setTlDrawRecords] = useState<any>([
-    ...WhiteboardStarter,
-  ])
+  const [tlDrawRecords, setTlDrawRecords] = useState<any>([])
 
   const [loading, _setLoading] = useState<boolean>(false)
-  const [chartJsData, setChartJsData] = useState<any>(
-    exampleChartJsDataForTesla,
-  )
+  const [chartJsData, setChartJsData] = useState<any>()
 
   const [whiteboardInput, setWhiteboardInput] = useState<string>('')
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
