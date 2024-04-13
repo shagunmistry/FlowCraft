@@ -1,4 +1,15 @@
+import { DiagramData } from "@/lib/DiagramType.db"
+
 export const DiagramsAllowed = 20
+
+export const numberOfDiagramsFromPastMonth = (diagrams: DiagramData[]) => {
+  const numberOfDiagramsPastMonth = diagrams.filter(
+    (diagram) =>
+      new Date(diagram.created_at).getMonth() === new Date().getMonth(),
+  ).length
+
+  return numberOfDiagramsPastMonth
+}
 
 export const frequencies = [
   { value: 'monthly', label: 'Monthly' },

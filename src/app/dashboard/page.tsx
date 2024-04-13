@@ -1,3 +1,4 @@
+
 import { PlayIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,7 +17,10 @@ import {
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect, usePathname } from 'next/navigation'
 import { Badge } from '@/components/Badge'
-import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
+import {
+  DiagramsAllowed,
+  numberOfDiagramsFromPastMonth,  
+} from '@/components/Pricing/Pricing.utils'
 import DashboardHeading from '@/components/Dashboard/Header.dashboard'
 
 const errorMessagePage =
@@ -178,6 +182,14 @@ export default async function Dashboard() {
     return redirect(errorMessagePage)
   }
 
+  // If the user is subscribed to sub_1P4SzzCMQTPfBEpAgwQOKZ4z plan, they can only have 20 diagrams per month
+  if (user.plan === 'sub_1P4SzzCMQTPfBEpAgwQOKZ4z') {
+    const numberOfDiagramsPastMonth = numberOfDiagramsFromPastMonth(diagrams)
+    if (numberOfDiagramsPastMonth >= DiagramsAllowed) {
+      return redirect('/dashboard/pricing')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -244,8 +256,12 @@ export default async function Dashboard() {
                           ) : (
                             <Link
                               href={
-                                diagrams.length > 5 &&
-                                user?.subscribed === false
+                                (diagrams.length > 5 &&
+                                  user?.subscribed === false) ||
+                                (user?.plan ===
+                                  'sub_1P4SzzCMQTPfBEpAgwQOKZ4z' &&
+                                  numberOfDiagramsFromPastMonth(diagrams) >=
+                                    DiagramsAllowed)
                                   ? '/dashboard/pricing'
                                   : option.link
                               }
