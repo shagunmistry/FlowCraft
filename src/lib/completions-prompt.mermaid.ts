@@ -624,6 +624,102 @@ sequenceDiagram
         end
     end
 '''
+
+'''
+sequenceDiagram
+    critical Establish a connection to the DB
+        Service-->DB: connect
+    option Network timeout
+        Service-->Service: Log error
+    option Credentials rejected
+        Service-->Service: Log different error
+    end
+'''
+
+'''
+sequenceDiagram
+    critical Establish a connection to the DB
+        Service-->DB: connect
+    end
+'''
+
+'''
+sequenceDiagram
+    Consumer-->API: Book something
+    API-->BookingService: Start booking process
+    break when the booking process fails
+        API-->Consumer: show failure
+    end
+    API-->BillingService: Start billing process
+'''
+
+'''
+sequenceDiagram
+    participant Alice
+    participant John
+
+    rect rgb(191, 223, 255)
+    note right of Alice: Alice calls John.
+    Alice->>+John: Hello John, how are you?
+    rect rgb(200, 150, 255)
+    Alice->>+John: John, can you hear me?
+    John-->>-Alice: Hi Alice, I can hear you!
+    end
+    John-->>-Alice: I feel great!
+    end
+    Alice ->>+ John: Did you want to go to the game tonight?
+    John -->>- Alice: Yeah! See you there.
+'''
+
+'''
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    %% this is a comment
+    John-->>Alice: Great!
+'''
+
+'''
+sequenceDiagram
+    A->>B: I #9829; you!
+    B->>A: I #9829; you #infin; times more!
+'''
+
+'''
+sequenceDiagram
+    autonumber
+    Alice->>John: Hello John, how are you?
+    loop HealthCheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts!
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+'''
+
+'''
+sequenceDiagram
+    participant Alice
+    participant John
+    link Alice: Dashboard @ https://dashboard.contoso.com/alice
+    link Alice: Wiki @ https://wiki.contoso.com/alice
+    link John: Dashboard @ https://dashboard.contoso.com/john
+    link John: Wiki @ https://wiki.contoso.com/john
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+'''
+
+'''
+sequenceDiagram
+    participant Alice
+    participant John
+    links Alice: {"Dashboard": "https://dashboard.contoso.com/alice", "Wiki": "https://wiki.contoso.com/alice"}
+    links John: {"Dashboard": "https://dashboard.contoso.com/john", "Wiki": "https://wiki.contoso.com/john"}
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+'''
 `
 
 export const stateDiagramCommandsPrompt = `
