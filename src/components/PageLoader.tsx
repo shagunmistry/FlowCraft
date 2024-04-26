@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 
 export default function PageLoader() {
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen items-center justify-center bg-gray-100">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
