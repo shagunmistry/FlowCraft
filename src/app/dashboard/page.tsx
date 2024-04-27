@@ -14,9 +14,8 @@ import {
   SharedDiagramResult,
 } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
-import { redirect, usePathname } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
-import { DiagramsAllowed } from '@/components/Pricing/Pricing.utils'
 import DashboardHeading from '@/components/Dashboard/Header.dashboard'
 
 const errorMessagePage =

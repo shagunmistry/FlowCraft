@@ -44,12 +44,12 @@ export async function POST(req: Request) {
   }
 
   // Check if the user exists in the users table, if not, insert them
-  const { data: userDataFromDB, error: userErrorFromDB } = await supabaseClient
+  const { data: userDataFromDB } = await supabaseClient
     .from('users')
     .select('*')
-    .eq('id', userData.user?.id)
+    .eq('user_id', userData.user?.id)
 
-  if (userDataFromDB?.length === 0) {
+  if (userDataFromDB?.length === 0 || !userDataFromDB) {
     const { data: insertUserData, error: insertUserError } =
       await supabaseClient.from('users').insert([
         {
@@ -63,18 +63,53 @@ export async function POST(req: Request) {
         'Error inserting user data while generating diagram:',
         insertUserError,
       )
+    }
+  }
 
-      // return new Response(
-      //   JSON.stringify({
-      //     error: 'Error inserting user data while generating diagram',
-      //   }),
-      //   {
-      //     headers: {
-      //       'content-type': 'application/json',
-      //     },
-      //     status: 401,
-      //   },
-      // )
+  console.log('User Data from DB: ', userDataFromDB)
+  if (
+    userDataFromDB &&
+    userDataFromDB?.length > 0 &&
+    userDataFromDB[0].subscribed === false
+  ) {
+    // Check how many diagrams the user has created already in the diagrams table
+    const { data: userDiagramsData, error: userDiagramsError } =
+      await supabaseClient
+        .from('diagrams')
+        .select()
+        .eq('user_id', userData.user?.id)
+
+    if (userDiagramsError) {
+      console.error(
+        'Error getting user diagrams while generating diagram:',
+        userDiagramsError,
+      )
+
+      return new Response(
+        JSON.stringify({
+          error: 'Error getting user diagrams while generating diagram',
+        }),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+          status: 401,
+        },
+      )
+    }
+
+    if (userDiagramsData.length > 5) {
+      return new Response(
+        JSON.stringify({
+          error: 'User has created more than 5 diagrams',
+        }),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+          status: 400,
+        },
+      )
     }
   }
 
@@ -87,8 +122,6 @@ export async function POST(req: Request) {
   if (type === 'Flow Diagram' || type === 'Chart') {
     contextText = await getEmbeddingForContext(type, contextText)
   }
-
-  console.log('Context Text: ', contextText)
 
   const assistantMessage1: ChatCompletionMessageParam = {
     role: 'assistant',

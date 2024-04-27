@@ -21,6 +21,7 @@ import { useAssistant } from './Whiteboard/UserPrompt'
 import StepLine from './StepLine'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 import { DiagramSelectionOptionsAndExamples } from '@/lib/DiagramSelectionOptionsAndExamples'
+import Error from 'next/error'
 
 export const exampleMermaidPrompts = [
   { title: 'Sequence Diagram of a User Login', description: '' },
@@ -85,6 +86,8 @@ export default function DiagramInputsForm({
 
       console.log('Selected Type: ', type)
 
+      // Check if the user is subscribed. If not, take them to the pricing page
+
       if (type === 'Whiteboard') {
         await controls?.start(title)
       } else {
@@ -93,7 +96,7 @@ export default function DiagramInputsForm({
         context.setMermaidData('')
         context.setNodes([])
         context.setEdges([])
-        const diagram = await fetch('/api/generate-diagram', {
+        await fetch('/api/generate-diagram', {
           method: 'POST',
           body: JSON.stringify({
             title: title,
@@ -101,51 +104,75 @@ export default function DiagramInputsForm({
             type: type,
           }),
         })
+          .catch((e) => {
+            console.log('Error generating diagram: ', e)
+            context.setLoading(false)
+            setError(
+              'There was an error generating the diagram, please try again',
+            )
+          })
+          .then(async (diagram: any) => {
+            console.log('Diagram Response: ', diagram)
 
-        console.log('Diagram Response: ', diagram)
+            if(diagram.status === 401 || diagram.status === 400) {
+              setError('You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.')
+              setOpenErrorDialog(true)
+              context.setLoading(false)
+              return
+            }
 
-        const diagramJson = await diagram.json()
+            const diagramJson = await diagram.json()
 
-        console.log('Diagram JSON 2: ', diagramJson)
+            console.log('Diagram JSON 2: ', diagramJson)
 
-        const whatToParse = diagramJson.result
-          ? diagramJson.result
-          : diagramJson.records
+            const whatToParse = diagramJson.result
+              ? diagramJson.result
+              : diagramJson.records
 
-        const parseableJson = extractParsableJSON(whatToParse)
+            const parseableJson = extractParsableJSON(whatToParse)
 
-        if (parseableJson === null) {
-          setError(
-            'There was an error generating the diagram, please try again',
-          )
-          setOpenErrorDialog(true)
-          context.setLoading(false)
-          return
-        }
+            if (parseableJson === null) {
+              setError(
+                'There was an error generating the diagram, please try again',
+              )
+              setOpenErrorDialog(true)
+              context.setLoading(false)
+              return
+            }
 
-        console.log('Diagram JSON: ', JSON.parse(parseableJson), 'Type: ', type)
+            console.log(
+              'Diagram JSON: ',
+              JSON.parse(parseableJson),
+              'Type: ',
+              type,
+            )
 
-        let diagramResult = JSON.parse(diagramJson.result)
+            let diagramResult = JSON.parse(diagramJson.result)
 
-        console.log('Diagram Result: ', diagramResult)
+            console.log('Diagram Result: ', diagramResult)
 
-        if (
-          diagramResult &&
-          diagramResult.nodes &&
-          diagramResult.edges &&
-          type === 'Flow Diagram'
-        ) {
-          context.setNodes(diagramResult.nodes)
-          context.setEdges(diagramResult.edges)
-        } else if (diagramResult && diagramResult.data && type === 'Chart') {
-          context.setChartJsData(diagramResult)
-        } else if (diagramResult && diagramResult.mermaid) {
-          console.log('Setting Mermaid Data: ', diagramResult.mermaid)
-          context.setMermaidData(diagramResult.mermaid)
-        }
+            if (
+              diagramResult &&
+              diagramResult.nodes &&
+              diagramResult.edges &&
+              type === 'Flow Diagram'
+            ) {
+              context.setNodes(diagramResult.nodes)
+              context.setEdges(diagramResult.edges)
+            } else if (
+              diagramResult &&
+              diagramResult.data &&
+              type === 'Chart'
+            ) {
+              context.setChartJsData(diagramResult)
+            } else if (diagramResult && diagramResult.mermaid) {
+              console.log('Setting Mermaid Data: ', diagramResult.mermaid)
+              context.setMermaidData(diagramResult.mermaid)
+            }
 
-        context.setDiagramId(diagramJson.id)
-        context.setLoading(false)
+            context.setDiagramId(diagramJson.id)
+            context.setLoading(false)
+          })
       }
     } catch (e) {
       console.log('Error generating diagram: ', e)

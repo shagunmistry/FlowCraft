@@ -667,7 +667,7 @@ export default function DiagramOrChartView({
                     type="button"
                     className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={donwloadChart}
-                    disabled={context.loading || !context.chartJsData.type}
+                    disabled={context.loading || (context.chartJsData && !context.chartJsData.type)}
                   >
                     Download Chart
                   </button>
@@ -675,7 +675,7 @@ export default function DiagramOrChartView({
                     type="button"
                     className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={createShareableLink}
-                    disabled={context.loading || !context.chartJsData.type}
+                    disabled={context.loading || (context.chartJsData && !context.chartJsData.type)}
                   >
                     Share
                   </button>

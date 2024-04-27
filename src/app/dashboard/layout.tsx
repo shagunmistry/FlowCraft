@@ -1,17 +1,16 @@
 'use client'
 
 import 'reactflow/dist/style.css'
-import { useState } from 'react'
-import { exampleFlowDiagramPrompts } from '@/lib/Examples/ExamplePrompts'
-import { DiagramOrChartType } from '@/lib/utils'
-import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
-import { WhiteboardStarter } from '@/lib/Examples/WhiteboardStarter.whiteboard'
-import { Edge, Node } from 'reactflow'
-import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
-import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
-import { DiagramContext } from '@/lib/Contexts/DiagramContext'
+
 import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
 import { Footer } from '@/components/Footer'
+import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
+import { DiagramContext } from '@/lib/Contexts/DiagramContext'
+import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
+import { exampleFlowDiagramPrompts } from '@/lib/Examples/ExamplePrompts'
+import { DiagramOrChartType } from '@/lib/utils'
+import { useState } from 'react'
+import { Edge, Node } from 'reactflow'
 
 export default function DashboardLayout({
   children,
@@ -26,21 +25,18 @@ export default function DashboardLayout({
   const [type, setType] = useState<DiagramOrChartType | TempMermaidDiagramType>(
     'Whiteboard',
   )
-  const [nodes, _setNodes] = useState<Node[]>([])
-  const [edges, _setEdges] = useState<Edge[]>([])
 
-  const [tlDrawRecords, setTlDrawRecords] = useState<any>([])
-
-  const [loading, _setLoading] = useState<boolean>(false)
   const [chartJsData, setChartJsData] = useState<any>()
-
-  const [whiteboardInput, setWhiteboardInput] = useState<string>('')
-  const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
-  const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
-  const [mermaidData, setMermaidData] = useState<string>('')
   const [controls, setControls] = useState<any>(null)
-
   const [diagramId, setDiagramId] = useState<string>('')
+  const [edges, _setEdges] = useState<Edge[]>([])
+  const [loading, _setLoading] = useState<boolean>(false)
+  const [mermaidData, setMermaidData] = useState<string>('')
+  const [nodes, _setNodes] = useState<Node[]>([])
+  const [tlDrawRecords, setTlDrawRecords] = useState<any>([])
+  const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
+  const [whiteboardInput, setWhiteboardInput] = useState<string>('')
+  const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
 
   return (
     <>

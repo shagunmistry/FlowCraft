@@ -1,8 +1,9 @@
-import ChartDescriptionInput from '@/components/ChartDescriptionInput'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import Link from 'next/link'
 import { ArrowLeftCircleIcon } from '@heroicons/react/20/solid'
+import DiagramInputsForm from '@/components/DiagramInputsForm'
+import { useEffect } from 'react'
 
 export default function DynamicMermaidDiagramPage({
   params,
@@ -21,7 +22,7 @@ export default function DynamicMermaidDiagramPage({
           <ArrowLeftCircleIcon className="inline-block h-6 w-6" />
         </Link>
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <ChartDescriptionInput type={type} />
+          <DiagramInputsForm type={type} />
         </div>
       </div>
       <div className="mx-auto max-w-7xl">
