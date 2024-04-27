@@ -19,40 +19,28 @@ import HowToUseSteps from '../HowToUseSteps'
 import FAQs from '../FAQ'
 import UsecasesForLanding from './Usecases.landing'
 
-const features = [
-  {
-    name: 'Effortless Creation',
-    description:
-      'Simply type your idea and let the tool do the rest. No design skills required.',
-    icon: CheckCircleIcon,
-  },
-  {
-    name: 'Customization Options',
-    description: 'Easily edit the results to fit your needs.',
-    icon: CheckCircleIcon,
-  },
-  {
-    name: 'Export & Share',
-    description: 'Download your creation as an image or share it with others.',
-    icon: CheckCircleIcon,
-  },
-  {
-    name: 'Save Time & Effort',
-    description: 'Save hours of work and get more done.',
-    icon: CheckCircleIcon,
-  },
-  {
-    name: 'Professional Results',
-    description: 'Get professional results without the hassle.',
-    icon: CheckCircleIcon,
-  },
-]
+const VSCodeIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth="1.5"
+    stroke="currentColor"
+    className="h-6 w-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"
+    />
+  </svg>
+)
 
 const stats = [
   {
     id: 1,
     name: 'Diagrams Created',
-    value: '500+',
+    value: '1300+',
   },
   {
     id: 2,
@@ -62,7 +50,7 @@ const stats = [
   {
     id: 3,
     name: 'Users Served',
-    value: '200+',
+    value: '500+',
   },
 ]
 
@@ -174,6 +162,15 @@ export default function MainLanding() {
                       {authenticated
                         ? 'Go to Dashboard'
                         : 'Get Started For Free'}
+                    </Link>
+                  </div>
+                  <div className="mt-2 sm:mt-6">
+                    <Link
+                      className="inline-flex items-center gap-x-1.5 rounded-md bg-blue-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 ease-in-out hover:scale-125 hover:bg-blue-500 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                      href="https://marketplace.visualstudio.com/items?itemName=FlowCraft.flowcraft"
+                    >
+                      <VSCodeIcon />
+                      Download VS Code Extension
                     </Link>
                   </div>
                 </div>
