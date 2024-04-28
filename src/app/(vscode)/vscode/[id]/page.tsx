@@ -56,6 +56,16 @@ export default function VSCodeDiagramPage({
 
       const mermaid_code = diagramData.mermaid_code.replace(/```/g, '')
 
+      console.log('mermaid_code:', mermaid_code)
+      const isValid = await mermaid.parse(mermaid_code).catch((err) => {
+        console.error('Error parsing Mermaid code:', err)
+        return false
+      })
+
+      if (isValid === undefined || !isValid || isValid === null) {
+        window.location.replace(`/error?message=Diagram data is invalid`)
+      }
+
       const { svg } = await mermaid.render('mermaid', mermaid_code)
 
       if (svg === undefined) {

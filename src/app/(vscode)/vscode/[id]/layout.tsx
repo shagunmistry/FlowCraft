@@ -32,10 +32,8 @@ export default function VSCodeDiagramsLayout({
         }}
       >
         <main>
-          <Navbar />
           <div className="relative">{children}</div>
         </main>
-        <Footer />
         <Analytics />
       </VSCodeDiagramsContext.Provider>
     </>
