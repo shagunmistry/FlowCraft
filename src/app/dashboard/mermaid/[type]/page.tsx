@@ -1,3 +1,4 @@
+'use client'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import Link from 'next/link'
