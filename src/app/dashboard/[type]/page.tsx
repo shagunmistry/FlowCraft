@@ -3,9 +3,10 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { redirect } from 'next/navigation'
 import { track } from '@vercel/analytics'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import DiagramInputsForm from '@/components/DiagramInputsForm'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
+import PageLoader from '@/components/PageLoader'
 
 const allowedTypes = ['whiteboard', 'chart', 'flow-diagram', 'mermaid']
 
@@ -17,6 +18,8 @@ export default function DynamicDiagramPage({
   if (!allowedTypes.includes(params.type) || !params.type) {
     return redirect('/dashboard')
   }
+
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     track(`dashboard/${params.type}`)
@@ -42,6 +45,32 @@ export default function DynamicDiagramPage({
         break
     }
   }, [type])
+
+  useEffect(() => {
+    // Check if the user is subscribed
+    // If not, redirect to the pricing page
+    const checkSubscription = async () => {
+      setLoading(true)
+      const response = await fetch('/api/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await response.json()
+
+      setLoading(false)
+      if (data && data.user.subscribed === false) {
+        window.location.href = `/pricing?sourcePage=${type}`
+      }
+    }
+
+    checkSubscription()
+  }, [])
+
+  if (loading) {
+    return <PageLoader />
+  }
 
   if (context.type === null) {
     return (

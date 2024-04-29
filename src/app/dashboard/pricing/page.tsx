@@ -1,5 +1,5 @@
 import FAQs from '@/components/FAQ'
-import PricingTemplate from '@/components/Pricing/Pricing.template'
+import PricingTemplate from '@/components/Pricing/Pricing'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 

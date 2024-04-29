@@ -1,7 +1,4 @@
 'use client'
-import { cn } from '@/lib/utils'
-import { Menu } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import {
   MermaidDiagramEnums,
@@ -26,7 +23,6 @@ import {
   Square2StackIcon,
   UserGroupIcon,
 } from '@heroicons/react/20/solid'
-import Link from 'next/link'
 import OverviewDialog from '@/components/Mermaid/OverviewDialog.mermaid'
 import { Badge } from '@/components/Badge'
 
@@ -191,7 +187,6 @@ export default function ComplexDiagramsPage() {
           className="divide-y overflow-hidden border border-gray-200 bg-white shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl"
         >
           {Object.keys(DiagramOptions).map((type) => {
-            console.log('type:', type)
             return (
               <li
                 key={type}
@@ -205,29 +200,17 @@ export default function ComplexDiagramsPage() {
                   <DiagramIcon type={type} />
                   <div className="min-w-0 flex-auto">
                     <p className="text-lg font-semibold leading-6 text-indigo-500">
-                      {/* <Link href={DiagramOptions[type].link}> */}
                       <span className="absolute inset-x-0 -top-px bottom-0" />
                       {DiagramOptions[type].title}
-                      {/* </Link> */}
                     </p>
                     <p className="mt-1 flex text-sm leading-5 text-gray-500">
-                      {/* <Link
-                        href={DiagramOptions[type].link}
-                        className="relative truncate hover:underline"
-                      > */}
                       {DiagramOptions[type].description}
-                      {/* </Link> */}
                     </p>
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-x-4">
                   <div className="hidden sm:flex sm:flex-col sm:items-end">
-                    {/* <Link
-                      href={DiagramOptions[type].link}
-                      className="text-md rounded-lg bg-indigo-500 p-2 font-semibold text-white"
-                    > */}
                     Create
-                    {/* </Link> */}
                   </div>
                   <ChevronRightIcon
                     className="h-5 w-5 flex-none text-gray-400"

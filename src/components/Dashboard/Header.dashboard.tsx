@@ -56,7 +56,7 @@ export default function DashboardHeading({
                 </span>
               ) : (
                 <Link
-                  href={'/dashboard/pricing'}
+                  href={'/pricing?sourcePage=dashboard'}
                   className="inline-flex items-center justify-center rounded-md bg-pink-500 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-200 ease-in-out hover:bg-gray-50 hover:text-pink-600"
                 >
                   Upgrade

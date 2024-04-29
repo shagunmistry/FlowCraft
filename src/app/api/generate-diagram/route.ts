@@ -98,7 +98,7 @@ export async function POST(req: Request) {
       )
     }
 
-    if (userDiagramsData.length > 5) {
+    if (userDiagramsData.length > 2) {
       return new Response(
         JSON.stringify({
           error: 'User has created more than 5 diagrams',

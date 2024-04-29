@@ -4,7 +4,8 @@ import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.merm
 import Link from 'next/link'
 import { ArrowLeftCircleIcon } from '@heroicons/react/20/solid'
 import DiagramInputsForm from '@/components/DiagramInputsForm'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import PageLoader from '@/components/PageLoader'
 
 export default function DynamicMermaidDiagramPage({
   params,
@@ -12,6 +13,31 @@ export default function DynamicMermaidDiagramPage({
   params: { type: TempMermaidDiagramType }
 }) {
   const { type } = params
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Check if the user is subscribed
+    // If not, redirect to the pricing page
+    const checkSubscription = async () => {
+      const response = await fetch('/api/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await response.json()
+
+      setLoading(false)
+      if (data && data.user.subscribed === false) {
+        window.location.href = '/pricing?sourcePage=mermaid'
+      }
+    }
+
+    checkSubscription()
+  }, [])
+
+  if (loading) return <PageLoader />
 
   return (
     <div className="bg-gray-100 sm:py-12">

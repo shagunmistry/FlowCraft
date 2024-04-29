@@ -14,7 +14,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
-import PricingTemplate from '../Pricing/Pricing.template'
+import PricingTemplate from '../Pricing/Pricing'
 import HowToUseSteps from '../HowToUseSteps'
 import FAQs from '../FAQ'
 import UsecasesForLanding from './Usecases.landing'
@@ -152,7 +152,7 @@ export default function MainLanding() {
                     <span className="block">with AI in seconds</span>
                   </h1>
                   <p className="mt-3 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                    Get 5 free diagram creations today when you sign up!
+                    Get 2 free diagram creations today when you sign up!
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <Link
