@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase-auth/client'
 import { Dialog, Transition } from '@headlessui/react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 
 export default function FeedbackDialog({
   open,
@@ -14,6 +14,8 @@ export default function FeedbackDialog({
   header: string
   message: string
 }) {
+  const [submitting, setSubmitting] = useState<boolean>(false)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -24,6 +26,7 @@ export default function FeedbackDialog({
     console.log('New Features:', newFeatures)
     console.log('Followup:', followup)
 
+    setSubmitting(true)
     const sbClient = createClient()
     const user = await sbClient.auth.getSession()
 
@@ -34,6 +37,7 @@ export default function FeedbackDialog({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
           },
           body: JSON.stringify({
             feedback,
@@ -49,8 +53,11 @@ export default function FeedbackDialog({
       } else {
         console.error('Feedback submission failed')
       }
+
+      setSubmitting(false)
     } else {
       console.error('No user found')
+      setSubmitting(false)
     }
 
     setOpen(false)
@@ -161,8 +168,9 @@ export default function FeedbackDialog({
                       <button
                         type="submit"
                         className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        disabled={submitting}
                       >
-                        Submit Feedback
+                        {submitting ? 'Submitting...' : 'Submit Feedback'}
                       </button>
                     </div>
                   </form>
