@@ -1,4 +1,7 @@
+'use client'
 import Link from 'next/link'
+import FeedbackDialog from '../FeedbackDialog'
+import { useState } from 'react'
 
 export default function DashboardHeading({
   subscribed,
@@ -11,6 +14,8 @@ export default function DashboardHeading({
   imageUrl: string
   stats: { id: number; name: string; value: number }[]
 }) {
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false)
+
   return (
     <>
       <div className="overflow-hidden rounded-lg bg-white shadow">
@@ -34,12 +39,13 @@ export default function DashboardHeading({
                 <p className="text-xl font-bold text-gray-900 sm:text-2xl">
                   {name}
                 </p>
-                {/* <button
+                <button
                   type="button"
-                  className="mt-3 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="mt-3 inline-flex items-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-200 ease-in-out hover:bg-green-700"
+                  onClick={() => setFeedbackModalOpen(true)}
                 >
-                  Request A Feature
-                </button> */}
+                  Feature Request
+                </button>
               </div>
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">
@@ -77,6 +83,12 @@ export default function DashboardHeading({
           ))}
         </div>
       </div>
+      <FeedbackDialog
+        header="Feature Request"
+        message="What features would you like to see in the future?"
+        open={feedbackModalOpen}
+        setOpen={setFeedbackModalOpen}
+      />
     </>
   )
 }

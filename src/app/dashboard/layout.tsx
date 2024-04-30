@@ -9,8 +9,9 @@ import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 import { exampleFlowDiagramPrompts } from '@/lib/Examples/ExamplePrompts'
 import { DiagramOrChartType } from '@/lib/utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Edge, Node } from 'reactflow'
+import FeedbackDialog from '@/components/FeedbackDialog'
 
 export default function DashboardLayout({
   children,
@@ -37,6 +38,28 @@ export default function DashboardLayout({
   const [whiteboardEditorRef, setWhiteboardEditorRef] = useState<any>(null)
   const [whiteboardInput, setWhiteboardInput] = useState<string>('')
   const [whiteBoardLoading, setWhiteBoardLoading] = useState<boolean>(false)
+
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    const showFeedbackModal = () => {
+      console.log('Showing feedback modal')
+      setTimeout(() => {
+        console.log('Setting feedback modal open')
+        setFeedbackModalOpen(true)
+        localStorage.setItem(`feedback-modal-shown`, 'true')
+      }, 1000)
+    }
+
+    // Check if modal has been shown before
+    const modalShown = localStorage.getItem(`feedback-modal-shown`)
+    console.log('Modal shown:', modalShown)
+    if (modalShown === 'true') {
+      console.log('Modal already shown')
+      return
+    }
+    showFeedbackModal()
+  }, [])
 
   return (
     <>
@@ -83,6 +106,12 @@ export default function DashboardLayout({
           </main>
         </DiagramContext.Provider>
       </WhiteboardContext.Provider>
+      <FeedbackDialog
+        header="Help Us Improve"
+        message="We'd love to hear your feedback. Please take a moment to let us know how we can improve."
+        open={feedbackModalOpen}
+        setOpen={setFeedbackModalOpen}
+      />
     </>
   )
 }

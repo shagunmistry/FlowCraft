@@ -32,7 +32,6 @@ export default function StartupCostsPage() {
       }
 
       setLoading(true)
-      console.log('Process: ', process.env.NEXT_PUBLIC_FLOWCRAFT_API)
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_FLOWCRAFT_API}/tools/startup-costs`,

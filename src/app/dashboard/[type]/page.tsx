@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from 'react'
 import DiagramInputsForm from '@/components/DiagramInputsForm'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import PageLoader from '@/components/PageLoader'
+import FeedbackDialog from '@/components/FeedbackDialog'
 
 const allowedTypes = ['whiteboard', 'chart', 'flow-diagram', 'mermaid']
 
