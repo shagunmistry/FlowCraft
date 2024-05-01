@@ -55,7 +55,7 @@ export default function UsecasesForLanding() {
             Use Cases
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            How FlowCraft has helped many users and organizations to like yours.
+            How FlowCraft has helped many users and organizations like yours.
           </p>
         </div>
       </div>
