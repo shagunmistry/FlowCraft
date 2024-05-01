@@ -91,35 +91,37 @@ export default function BlogsHomePage() {
           <div className="mt-4 flex md:ml-4 md:mt-0">
             <Link
               href="/blogs/create"
-              className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="ml-3 inline-flex items-center rounded-md bg-pink-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
             >
               Create or manage posts
             </Link>
           </div>
         )}
       </div>
-      <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 sm:gap-y-16 lg:grid-cols-2 mt-8">
+      <div className="mt-8 grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 sm:gap-y-16 lg:grid-cols-2">
         <article className="mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-lg">
           <time
             dateTime={featuredPost.datetime}
-            className="block text-sm leading-6 text-indigo-500"
+            className="block text-sm leading-6 text-pink-500"
           >
             {new Date(featuredPost.date).toLocaleDateString()}
           </time>
           <h2
             id="featured-post"
-            className="mt-4 text-2xl font-bold tracking-tight sm:text-xl"
+            className="mt-4 text-2xl font-bold tracking-tight hover:text-pink-500 sm:text-xl"
           >
-            {featuredPost.title}
+            <Link href={featuredPost.href} aria-describedby="featured-post">
+              {featuredPost.title}
+            </Link>
           </h2>
-          <p className="mt-4 text-lg leading-8 text-indigo-500">
+          <p className="mt-4 text-lg leading-8 text-pink-500">
             {featuredPost.description}
           </p>
           <div className="mt-4 flex flex-col justify-between gap-6 sm:mt-8 sm:flex-row-reverse sm:gap-8 lg:mt-4 lg:flex-col">
             <div className="flex">
               <Link
                 href={featuredPost.href}
-                className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="text-sm font-semibold leading-6 text-pink-600 hover:text-pink-500"
                 aria-describedby="featured-post"
               >
                 Continue reading <span aria-hidden="true">&rarr;</span>
@@ -128,23 +130,26 @@ export default function BlogsHomePage() {
           </div>
         </article>
         <div className="mx-auto w-full max-w-2xl border-t border-gray-900/10 pt-12 sm:pt-16 lg:mx-0 lg:max-w-none lg:border-t-0 lg:pt-0">
-          <div className="-my-12 divide-y divide-indigo-400">
+          <div className="-my-12 divide-y divide-pink-400">
             {blogs.map((blog: BlogPost) => (
-              <article key={blog.id} className="py-12">
+              <article
+                key={blog.id}
+                className="my-12 rounded-lg bg-white px-4 py-12 shadow-md sm:px-6"
+              >
                 <div className="group relative max-w-xl">
                   <time
                     dateTime={blog.published_at}
-                    className="block text-sm leading-6 text-indigo-500"
+                    className="block text-sm leading-6 text-pink-500"
                   >
                     {new Date(blog.published_at).toLocaleDateString()}
                   </time>
-                  <h2 className="mt-2 text-lg font-semibold group-hover:text-indigo-500">
+                  <h2 className="mt-2 text-lg font-semibold group-hover:text-pink-500">
                     <Link href={`/blogs/${blog.id}`}>
                       <span className="absolute inset-0" />
                       {blog.title}
                     </Link>
                   </h2>
-                  <p className="mt-4 text-sm leading-6 text-indigo-500">
+                  <p className="mt-4 text-sm leading-6 text-pink-500">
                     {blog.description}
                   </p>
                 </div>
