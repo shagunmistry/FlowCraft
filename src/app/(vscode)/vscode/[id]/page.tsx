@@ -30,6 +30,7 @@ export default function VSCodeDiagramPage({
   const [found, setFound] = useState(true)
   const [loading, setLoading] = useState(true)
   const [isError, setIsError] = useState(false)
+  const [title, setTitle] = useState('')
 
   useEffect(() => {
     const getDiagram = async () => {
@@ -45,8 +46,6 @@ export default function VSCodeDiagramPage({
 
       const data = await res.json()
 
-      console.log('data:', data)
-
       if (!data || !data.response) {
         console.error('No diagram data found')
         setFound(false)
@@ -58,7 +57,6 @@ export default function VSCodeDiagramPage({
 
       const mermaid_code = diagramData.mermaid_code.replace(/```/g, '')
 
-      console.log('mermaid_code:', mermaid_code)
       const isValid = await mermaid.parse(mermaid_code).catch((err) => {
         console.error('Error parsing Mermaid code:', err)
         return false
@@ -76,6 +74,19 @@ export default function VSCodeDiagramPage({
 
       if (svg === undefined) {
         console.error('SVG from Mermaid API is undefined')
+        const _title = diagramData.title
+        if (_title.length > 20) {
+          // Check if they have "/" or "\" in the title
+          if (_title.includes('/')) {
+            setTitle(_title.split('/')[0])
+          } else if (_title.includes('\\')) {
+            setTitle(_title.split('\\')[0])
+          } else {
+            setTitle(_title.slice(0, 20).concat('...'))
+          }
+        } else {
+          setTitle(_title)
+        }
         setDiagramData(diagramData)
         setFound(false)
         setLoading(false)
@@ -90,6 +101,20 @@ export default function VSCodeDiagramPage({
       diagramData.mermaid_code = svg
 
       setDiagramData(diagramData)
+
+      const title = diagramData.title
+      if (title.length > 10) {
+        if (title.includes('/')) {
+          setTitle(title.split('/')[title.split('/').length - 1])
+        } else if (title.includes('\\')) {
+          setTitle(title.split('\\')[title.split('\\').length - 1])
+        } else {
+          setTitle(title.slice(0, 20).concat('...'))
+        }
+      } else {
+        setTitle(title)
+      }
+
       setLoading(false)
     }
 
@@ -109,9 +134,7 @@ export default function VSCodeDiagramPage({
       <div className="px-6 py-12 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            {diagramdata.title.length > 20
-              ? `${diagramdata.title.slice(0, 20)}...`
-              : diagramdata.title}
+            {title}
           </h2>
           <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">
             LEVEL: {diagramdata.difficulty.toUpperCase()}
