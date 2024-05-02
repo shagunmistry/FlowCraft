@@ -1,10 +1,9 @@
 import CustomInputBoxNode from '@/components/ReactFlow/CustomInputBoxNode'
-import { ConnectionLineType, Edge, EdgeTypes, Node } from 'reactflow'
+import { EdgeTypes } from 'reactflow'
 import SimpleFloatingEdge from '@/components/ReactFlow/SimpleFloatingEdge'
 
 export const defaultEdgeOptions = {
   animated: true,
-  type: ConnectionLineType.Step,
 }
 
 export const nodeTypes = {

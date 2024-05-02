@@ -16,6 +16,7 @@ import ReactFlow, {
   MarkerType,
   getRectOfNodes,
   getTransformForBounds,
+  ConnectionMode,
 } from 'reactflow'
 
 import mermaid from 'mermaid'
@@ -23,7 +24,11 @@ import 'reactflow/dist/style.css'
 
 import Chart from 'chart.js/auto'
 import SuccessDialog from './SuccessDialog'
-import { nodeStyle } from '@/lib/react-flow.code'
+import {
+  nodeStyle,
+  TheJudgeMovieExampleEdges,
+  TheJudgeMovieExampleNodes,
+} from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { DiagramOrChartType, downloadImage } from '@/lib/utils'
@@ -43,6 +48,7 @@ import { ArrowUpCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 
 import dagre from 'dagre'
+import ConnectionLineComponent from './ReactFlow/ConnectionLineComponent'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
@@ -337,23 +343,24 @@ export default function DiagramOrChartView({
       console.log('Connecting: ', params)
       setEdges((eds) => {
         console.log('Edges: ', eds)
-        context.setEdges(
-          eds.map((edge) => {
-            if (
-              edge.source === params.source &&
-              edge.target === params.target
-            ) {
-              return {
-                ...edge,
-                data: {
-                  ...edge.data,
-                  label: params.label,
-                },
-              }
-            }
-            return edge
-          }),
-        )
+        // context.setEdges(
+        //   eds.map((edge) => {
+        //     if (
+        //       edge.source === params.source &&
+        //       edge.target === params.target
+        //     ) {
+        //       console.log('Updating edge: ', edge)
+        //       return {
+        //         ...edge,
+        //         data: {
+        //           ...edge.data,
+        //           label: params.label,
+        //         },
+        //       }
+        //     }
+        //     return edge
+        //   }),
+        // )
         return addEdge(
           {
             ...params,
@@ -668,7 +675,8 @@ export default function DiagramOrChartView({
                 <ReactFlow
                   attributionPosition="bottom-left"
                   className="react-flow__container"
-                  connectionLineType={ConnectionLineType.SimpleBezier}
+                  connectionLineComponent={ConnectionLineComponent}
+                  connectionMode={ConnectionMode.Loose}
                   defaultEdgeOptions={defaultEdgeOptions}
                   defaultViewport={defaultViewport}
                   edges={edges}

@@ -1,18 +1,19 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext } from 'react'
 import {
   useStore,
-  getBezierPath,
   BaseEdge,
   EdgeLabelRenderer,
   useReactFlow,
+  getSimpleBezierPath,
 } from 'reactflow'
 
-import { AnimatePresence, motion } from 'framer-motion'
 import { getEdgeParams } from './Utils'
-import { PencilIcon } from '@heroicons/react/20/solid'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
+import { TrashIcon } from '@heroicons/react/20/solid'
 
 function FloatingEdge({ id, source, target, markerEnd, style, data }: any) {
+  const { setEdges } = useReactFlow()
+  const { edges, setEdges: setContextEdges } = useContext(DiagramContext)
   const sourceNode = useStore(
     useCallback((store) => store.nodeInternals.get(source), [source]),
   )
@@ -29,7 +30,7 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }: any) {
     targetNode,
   )
 
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const [edgePath, labelX, labelY] = getSimpleBezierPath({
     sourceX: sx,
     sourceY: sy,
     sourcePosition: sourcePos,
@@ -39,30 +40,47 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }: any) {
   })
 
   const deleteEdge = () => {
-    console.log('delete edge', id)
-    const { setEdges } = useReactFlow()
-    const { setEdges: contextSetEdges, edges: _edges } =
-      useContext(DiagramContext)
-
-    // remove edge from react-flow
     setEdges((edges) => edges.filter((edge) => edge.id !== id))
 
-    // remove edge from context
-    contextSetEdges(_edges.filter((edge) => edge.id !== id))
+    if (setContextEdges) {
+      const newEdges = edges.filter((edge) => edge.id !== id)
+      setContextEdges(newEdges)
+    }
   }
 
   return (
     <>
-      <BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} />
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        markerEnd={markerEnd}
+        style={{
+          strokeWidth: 2,
+          stroke: 'black',
+          ...style,
+        }}
+      />
       {data && data.label && (
         <EdgeLabelRenderer>
           <div
             style={{
+              position: 'absolute',
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              fontSize: 12,
+              // everything inside EdgeLabelRenderer has no pointer events by default
+              // if you have an interactive element, set pointer-events: all
+              pointerEvents: 'all',
             }}
-            className="absolute rounded bg-yellow-300 p-2 text-xs font-semibold hover:bg-black shadow-md shadow-yellow-300"
+            className="nodrag nopan rounded bg-yellow-300 p-2 text-xs font-semibold"
+            // onClick={deleteEdge}
           >
             {data.label}
+            <button
+              onClick={deleteEdge}
+              className="absolute right-0 top-0 flex h-6 w-6 -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-red-500 text-white transition-colors duration-200 hover:bg-red-600"
+            >
+              <TrashIcon className="h-4 w-4" />
+            </button>
           </div>
         </EdgeLabelRenderer>
       )}
