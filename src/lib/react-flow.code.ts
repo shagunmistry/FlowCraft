@@ -1227,3 +1227,262 @@ export const initialEdges = [
     },
   },
 ]
+
+export const TheJudgeMovieExampleEdges = [
+  {
+    id: 'e1',
+    source: 'hankPalmer',
+    target: 'judgeJosephPalmer',
+    animated: true,
+    label: 'Estranged relationship',
+    type: 'floating',
+    data: {
+      label: 'Estranged relationship',
+    },
+  },
+  {
+    id: 'e2',
+    source: 'judgeJosephPalmer',
+    target: 'courtroomScene',
+    animated: true,
+    label: "The Judge's confusion in court",
+    type: 'floating',
+    data: {
+      label: "The Judge's confusion in court",
+    },
+  },
+  {
+    id: 'e3',
+    source: 'courtroomScene',
+    target: 'carAccident',
+    animated: true,
+    label: 'Suspicions of a car accident',
+    type: 'floating',
+    data: {
+      label: 'Suspicions of a car accident',
+    },
+  },
+  {
+    id: 'e4',
+    source: 'carAccident',
+    target: 'familyConflict',
+    animated: true,
+    label: 'Leads to family conflict and old wounds reopened',
+    type: 'floating',
+    data: {
+      label: 'Leads to family conflict and old wounds reopened',
+    },
+  },
+  {
+    id: 'e5',
+    source: 'familyConflict',
+    target: 'hankLeaves',
+    animated: true,
+    label: "Hank's decision to leave Carlinville",
+    type: 'floating',
+    data: {
+      label: "Hank's decision to leave Carlinville",
+    },
+  },
+  {
+    id: 'e6',
+    source: 'hankLeaves',
+    target: 'judgeIndicted',
+    animated: true,
+    label: 'Judge indicted after Hank leaves',
+    type: 'floating',
+    data: {
+      label: 'Judge indicted after Hank leaves',
+    },
+  },
+  {
+    id: 'e7',
+    source: 'judgeIndicted',
+    target: 'trialPreparation',
+    animated: true,
+    label: "Trial preparation reveals Judge's illness",
+    type: 'floating',
+    data: {
+      label: "Trial preparation reveals Judge's illness",
+    },
+  },
+  {
+    id: 'e8',
+    source: 'trialPreparation',
+    target: 'trial',
+    animated: true,
+    label: "Trial proceedings and Judge's testimony",
+    type: 'floating',
+    data: {
+      label: "Trial proceedings and Judge's testimony",
+    },
+  },
+  {
+    id: 'e9',
+    source: 'trial',
+    target: 'judgeConvicted',
+    animated: true,
+    label: 'Judge convicted, a pivotal moment',
+    type: 'floating',
+    data: {
+      label: 'Judge convicted, a pivotal moment',
+    },
+  },
+  {
+    id: 'e10',
+    source: 'judgeConvicted',
+    target: 'hankReturns',
+    animated: true,
+    label: "Hank returns for his father's final days",
+    type: 'floating',
+    data: {
+      label: "Hank returns for his father's final days",
+    },
+  },
+  {
+    id: 'e11',
+    source: 'familyConflict',
+    target: 'hankReturns',
+    animated: false,
+    label: 'Resolution and new beginnings',
+    type: 'floating',
+    data: {
+      label: 'Resolution and new beginnings',
+    },
+  },
+]
+
+export const TheJudgeMovieExampleNodes = [
+  {
+    id: 'hankPalmer',
+    type: 'customNode',
+    position: {
+      x: 100,
+      y: 25,
+    },
+    data: {
+      label: 'Hank Palmer, a successful Chicago lawyer',
+    },
+    style: {},
+  },
+  {
+    id: 'judgeJosephPalmer',
+    position: {
+      x: 300,
+      y: 25,
+    },
+    data: {
+      label: "Judge Joseph Palmer, Hank's estranged father",
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'courtroomScene',
+    position: {
+      x: 500,
+      y: 25,
+    },
+    data: {
+      label: 'Courtroom scene, Judge seems confused',
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'carAccident',
+    position: {
+      x: 700,
+      y: 25,
+    },
+    data: {
+      label: 'Car accident suspicion',
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'familyConflict',
+    position: {
+      x: 500,
+      y: 150,
+    },
+    data: {
+      label: 'Family conflict and revelations',
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'hankLeaves',
+    position: {
+      x: 100,
+      y: 275,
+    },
+    data: {
+      label: 'Hank vows to never return',
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'judgeIndicted',
+    position: {
+      x: 300,
+      y: 275,
+    },
+    data: {
+      label: 'Judge indicted for fatal hit and run',
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'trialPreparation',
+    position: {
+      x: 500,
+      y: 275,
+    },
+    data: {
+      label: "Trial preparation, Judge's health revelation",
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'trial',
+    position: {
+      x: 700,
+      y: 275,
+    },
+    data: {
+      label: "Trial, Judge's testimony",
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'judgeConvicted',
+    position: {
+      x: 900,
+      y: 275,
+    },
+    data: {
+      label: 'Judge convicted of voluntary manslaughter',
+    },
+    style: {},
+    type: 'customNode',
+  },
+  {
+    id: 'hankReturns',
+    type: 'customNode',
+    position: {
+      x: 500,
+      y: 400,
+    },
+    data: {
+      label: 'Hank returns, Judge dies, New beginnings',
+    },
+    style: {},
+  },
+]
