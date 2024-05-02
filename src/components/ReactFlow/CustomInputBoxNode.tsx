@@ -49,13 +49,13 @@ function CustomInputBoxNode(props: any) {
   }
 
   const deleteNode = () => {
-   
-
     // remove node from react-flow
     setNodes((nodes) => nodes.filter((node) => node.id !== props.id))
 
     // remove node from context
-    diagramContext.setNodes(diagramContext.nodes.filter((node) => node.id !== props.id))
+    diagramContext.setNodes(
+      diagramContext.nodes.filter((node) => node.id !== props.id),
+    )
   }
 
   return (
@@ -65,7 +65,7 @@ function CustomInputBoxNode(props: any) {
       <Handle type="target" position={Position.Top} id={props.id} />
       <Handle type="target" position={Position.Bottom} id={props.id} />
       <motion.div
-        className="input-box-node relative w-fit rounded-lg border border-gray-200 bg-indigo-500 p-4 shadow-lg"
+        className="input-box-node relative w-64 max-w-xs rounded-lg bg-indigo-500 p-4 opacity-80 shadow-lg"
         whileHover={{ scale: 0.95 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
@@ -108,7 +108,10 @@ function CustomInputBoxNode(props: any) {
                             } flex w-full justify-between px-4 py-2 text-sm text-indigo-700`}
                             onClick={() => setIsEditing(true)}
                           >
-                            <PencilIcon className="h-5 w-5" aria-hidden="true" />
+                            <PencilIcon
+                              className="h-5 w-5"
+                              aria-hidden="true"
+                            />
                           </button>
                         )}
                       </Menu.Item>
@@ -141,7 +144,7 @@ function CustomInputBoxNode(props: any) {
               autoFocus
             />
           ) : (
-            <motion.label className="input-box-node__input text-balance h-full w-full border-none bg-transparent p-4 text-white transition-all duration-300">
+            <motion.label className="input-box-node__input text-balance h-full w-full break-words border-none bg-transparent p-4 text-white transition-all duration-300">
               {label}
             </motion.label>
           )}

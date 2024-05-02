@@ -22,7 +22,6 @@ import mermaid from 'mermaid'
 import 'reactflow/dist/style.css'
 
 import Chart from 'chart.js/auto'
-
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
@@ -42,6 +41,11 @@ import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 import StarRatingInput from './StarRatingInput'
 import { ArrowUpCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
+
+import dagre from 'dagre'
+
+const dagreGraph = new dagre.graphlib.Graph()
+dagreGraph.setDefaultEdgeLabel(() => ({}))
 
 const Loader = () => {
   return (
@@ -146,6 +150,43 @@ export default function DiagramOrChartView({
 
   const context = useContext(DiagramContext)
 
+  const onLayout = useCallback(
+    (direction: 'TB' | 'BT' | 'LR' | 'RL') => {
+      dagreGraph.setGraph({ rankdir: direction })
+      nodes.forEach((node) => {
+        dagreGraph.setNode(node.id, { width: 150, height: 100 })
+      })
+      edges.forEach((edge) => {
+        dagreGraph.setEdge(edge.source, edge.target)
+      })
+
+      dagre.layout(dagreGraph)
+
+      const newNodes = nodes.map((node) => {
+        const nodeWithPosition = dagreGraph.node(node.id)
+        return {
+          ...node,
+          position: {
+            x: nodeWithPosition.x,
+            y: nodeWithPosition.y,
+          },
+        }
+      })
+
+      const newEdges = edges.map((edge) => {
+        const edgeWithPosition = dagreGraph.edge(edge.source, edge.target)
+        return {
+          ...edge,
+          points: edgeWithPosition.points,
+        }
+      })
+
+      setNodes(newNodes)
+      setEdges(newEdges)
+    },
+    [nodes, edges],
+  )
+
   useEffect(() => {
     context.setMermaidData('')
     context.setChartJsData({})
@@ -162,7 +203,6 @@ export default function DiagramOrChartView({
       if (context.nodes.length === 0 || context.edges.length === 0) return
 
       const edgesWithMarkerAndStyle = context.edges.map((edge: Edge) => {
-        console.log('Individual edge: ', edge)
         return {
           ...edge,
           type: 'floating',
@@ -179,10 +219,6 @@ export default function DiagramOrChartView({
           type: 'customNode',
         }
       })
-
-      // const { nodes: arrangedNodes, edges: arrangedEdges } =
-      //   autoArrangeNodesAndEdges(nodesWithStyle, edgesWithMarkerAndStyle)
-      // console.log('arrangedNodes', arrangedNodes)
 
       setNodes(nodesWithStyle)
       setEdges(edgesWithMarkerAndStyle as Edge[])
@@ -300,6 +336,7 @@ export default function DiagramOrChartView({
     (params: any) => {
       console.log('Connecting: ', params)
       setEdges((eds) => {
+        console.log('Edges: ', eds)
         context.setEdges(
           eds.map((edge) => {
             if (
@@ -644,7 +681,7 @@ export default function DiagramOrChartView({
                   onEdgeUpdate={onEdgeUpdate}
                   onNodesChange={onNodesChange}
                   snapGrid={[25, 25]}
-                  snapToGrid={false}
+                  snapToGrid={true}
                 >
                   <Controls />
                   {toggleReactFlowGird && (
@@ -667,7 +704,10 @@ export default function DiagramOrChartView({
                     type="button"
                     className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={donwloadChart}
-                    disabled={context.loading || (context.chartJsData && !context.chartJsData.type)}
+                    disabled={
+                      context.loading ||
+                      (context.chartJsData && !context.chartJsData.type)
+                    }
                   >
                     Download Chart
                   </button>
@@ -675,7 +715,10 @@ export default function DiagramOrChartView({
                     type="button"
                     className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                     onClick={createShareableLink}
-                    disabled={context.loading || (context.chartJsData && !context.chartJsData.type)}
+                    disabled={
+                      context.loading ||
+                      (context.chartJsData && !context.chartJsData.type)
+                    }
                   >
                     Share
                   </button>
