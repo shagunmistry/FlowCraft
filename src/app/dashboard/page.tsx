@@ -243,7 +243,7 @@ export default async function Dashboard() {
                           ) : (
                             <Link
                               href={
-                                diagrams.length > 2 &&
+                                diagrams.length > 1 &&
                                 user?.subscribed === false
                                   ? '/dashboard/pricing'
                                   : option.link
