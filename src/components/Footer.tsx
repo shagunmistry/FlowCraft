@@ -94,6 +94,12 @@ export function Footer(props: React.ComponentPropsWithoutRef<'footer'>) {
         <p className="mt-8 text-center text-base text-white">
           &copy; 2024 FlowCraft. All rights reserved.
         </p>
+        <p className="mt-8 text-center text-sm text-white">
+          We improve our products and advertising by using Microsoft Clarity to
+          see how you use our website. By using our site, you agree that we and
+          Microsoft can collect and use this data. Our privacy policy explains
+          how we use your data and cookies.
+        </p>
       </div>
     </footer>
   )

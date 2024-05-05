@@ -27,6 +27,7 @@ const nextConfig = {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_FLOWCRAFT_API: process.env.FLOWCRAFT_API_URL,
+    NEXT_PUBLIC_MICROSOFT_CLARITY: "m7btrxqq27"
   },
   images: {
     domains: ['firebasestorage.googleapis.com'],

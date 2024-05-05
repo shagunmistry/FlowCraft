@@ -4,6 +4,7 @@ import '@/styles/tailwind.css'
 import Script from 'next/script'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
+import MicrosoftClarity from '@/components/MicrosoftClarity'
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +35,7 @@ export default function RootLayout({
         />
       </head>
       <GoogleAnalytics gaId="AW-16550420965" />
+      <MicrosoftClarity />
       <body className="flex min-h-full">
         <div className="w-full">{children}</div>
       </body>
