@@ -64,6 +64,31 @@ export const exampleWhiteboardPrompts = [
   },
 ]
 
+export const cloudArchitectPrompts = [
+  {
+    title: 'SAMPLE: Cloud Architecture Diagram for an AWS Web Application',
+    description:
+      'The diagram shows the architecture of a web application hosted on AWS. It includes the following components: S3 bucket, CloudFront distribution, EC2 instance, RDS database, and Route 53 DNS.',
+  },
+  {
+    title: 'SAMPLE: Cloud Architecture Diagram for an Azure Web Application',
+    description:
+      'The diagram shows the architecture of a web application hosted on Azure. It includes the following components: Blob storage, CDN endpoint, Virtual machine, SQL database, and DNS zone.',
+  },
+  {
+    title:
+      'SAMPLE: Cloud Architecture Diagram for a Google Cloud Web Application',
+    description:
+      'The diagram shows the architecture of a web application hosted on Google Cloud. It includes the following components: Cloud storage bucket, Load balancer, Compute engine instance, Cloud SQL database, and Cloud DNS.',
+  },
+  {
+    title:
+      'SAMPLE: Cloud Architecture Diagram for a Multi-Cloud Web Application',
+    description:
+      'The diagram shows the architecture of a web application hosted on multiple cloud providers. It includes the following components: AWS S3 bucket, Azure Blob storage, Google Cloud storage bucket, and CloudFront distribution.',
+  },
+]
+
 export const exampleMermaidDiagramPrompts: {
   [key in TempMermaidDiagramType]: { title: string; description: string }[]
 } = {

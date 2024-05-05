@@ -12,6 +12,7 @@ export interface ApifyData {
   url: string
   metadata: Metadata
   pageContent: string
+  text?: string
 }
 export interface Metadata {
   canonicalUrl: string
@@ -38,13 +39,13 @@ export const generateEmbeddings = async (
 ) => {
   const _openAiModel = openAiModel
 
-  const embeddingsExist = await checkIfEmbeddingsExist(tableToSaveTo)
+  // const embeddingsExist = await checkIfEmbeddingsExist(tableToSaveTo)
 
-  console.log('embeddingsExist: ', embeddingsExist)
-  if (embeddingsExist) {
-    console.log('Embeddings already exist for this table')
-    return
-  }
+  // console.log('embeddingsExist: ', embeddingsExist)
+  // if (embeddingsExist) {
+  //   console.log('Embeddings already exist for this table')
+  //   return
+  // }
 
   console.log('tableToSaveTo: ', tableToSaveTo)
 
@@ -77,9 +78,9 @@ export const generateEmbeddings = async (
       console.log('Chunk: ', chunk.length, ' All Chunks: ', chunks.length)
       chunk.forEach(async (law, lawIndex) => {
         try {
-          const contentToEmbed = law.pageContent
-            ? law.pageContent
-            : law.markdown
+          const contentToEmbed = law.text ? law.text : law.pageContent
+            // ? law.pageContent
+            // : law.markdown
           if (contentToEmbed.length > 8191) {
             // Split the content into chunks of 8191
             const contentChunks = contentToEmbed.match(/.{1,8191}/g)
@@ -94,7 +95,7 @@ export const generateEmbeddings = async (
             }
           } else {
             const embeddings = await _openAiModel.embeddings.create({
-              input: law.pageContent ? law.pageContent : law.markdown,
+              input: law.text ? law.text : law.pageContent,
               model: 'text-embedding-ada-002',
             })
 

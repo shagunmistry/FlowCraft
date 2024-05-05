@@ -26,6 +26,9 @@ export const MATCH_DOCUMENTS_FOR_D2_TABLE = 'match_documents_for_d2'
 export const DOCUMENTS_FOR_CHARTJS_TABLE = 'documents_for_chartjs'
 export const MATCH_DOCUMENTS_FOR_CHARTJS_TABLE = 'match_documents_for_chartjs'
 
+export const DOCUMENTS_FOR_DIAGRAMS_LIBRARY_TABLE = 'documents_for_diagrams_library'
+export const MATCH_DOCUMENTS_FOR_DIAGRAMS_LIBRARY_TABLE = 'match_documents_for_diagrams_library'
+
 export interface Metadata {
   canonicalUrl: string
   title: string
@@ -80,6 +83,29 @@ export const getReactCodeFlowJSONFile = async (): Promise<
   if (process.env.REACT_FLOW_SUPABASE_FILE) {
     console.log('Checking React Code Flow JSON file')
     const response = await fetch(process.env.REACT_FLOW_SUPABASE_FILE, {
+      method: 'GET',
+    })
+
+    if (!response.status || response.status !== 200) {
+      return null
+    }
+
+    const json = await response.json()
+
+    if (!json) {
+      return null
+    }
+
+    return json
+  }
+
+  return null
+}
+
+export const getDiagramsJSONFile = async (): Promise<ApifyData[] | null> => {
+  if (process.env.DIAGRAMS_SUPABASE_FILE) {
+    console.log('Checking Diagrams JSON file')
+    const response = await fetch(process.env.DIAGRAMS_SUPABASE_FILE, {
       method: 'GET',
     })
 

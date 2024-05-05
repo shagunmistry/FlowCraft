@@ -22,6 +22,7 @@ import StepLine from './StepLine'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 import { DiagramSelectionOptionsAndExamples } from '@/lib/DiagramSelectionOptionsAndExamples'
 import Error from 'next/error'
+import Image from 'next/image'
 
 export const exampleMermaidPrompts = [
   { title: 'Sequence Diagram of a User Login', description: '' },
@@ -55,6 +56,8 @@ export default function DiagramInputsForm({
     DiagramSelectionOptionsAndExamples[2],
   )
   const [title, setTitle] = useState<string>('')
+
+  const [src, setSrc] = useState<string>('')
 
   const context = useContext(DiagramContext)
 
@@ -90,6 +93,54 @@ export default function DiagramInputsForm({
 
       if (type === 'Whiteboard') {
         await controls?.start(title)
+      } else if (type === 'Cloud Architect') {
+        context.setLoading(true)
+
+        await fetch(
+          `${process.env.NEXT_PUBLIC_FLOWCRAFT_API}/diagrams/cloud-architect`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({
+              title: title,
+              description: description,
+              type: 'aws',
+            }),
+          },
+        )
+          .catch((e) => {
+            console.log('Error generating cloud architect diagram: ', e)
+            context.setLoading(false)
+            setError(
+              'There was an error generating the diagram, please try again',
+            )
+          })
+          .then(async (diagram: any) => {
+            const response = await diagram.json()
+            console.log('Cloud Architect Diagram Response: ', response.response)
+
+            if (typeof response === 'string' && response.includes('Error')) {
+              setError(
+                'There was an error generating the diagram, please try again',
+              )
+              setOpenErrorDialog(true)
+              context.setLoading(false)
+              return
+            }
+
+            // Response.body is a PNG image
+            const imageBytes = response.response.body
+            const blob = new Blob([imageBytes], { type: 'image/png' })
+            const src = URL.createObjectURL(blob)
+
+            console.log('Setting src: ', src)
+
+            setSrc(src)
+            context.setLoading(false)
+          })
       } else {
         context.setLoading(true)
         context.setChartJsData(null)
@@ -114,8 +165,10 @@ export default function DiagramInputsForm({
           .then(async (diagram: any) => {
             console.log('Diagram Response: ', diagram)
 
-            if(diagram.status === 401 || diagram.status === 400) {
-              setError('You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.')
+            if (diagram.status === 401 || diagram.status === 400) {
+              setError(
+                'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
+              )
               setOpenErrorDialog(true)
               context.setLoading(false)
               return
@@ -302,6 +355,16 @@ export default function DiagramInputsForm({
           />
         </div>
       </div>
+
+      {src && (
+        <Image
+          src={src}
+          alt="Diagram"
+          width={800}
+          height={800}
+          className="mt-10"
+        />
+      )}
 
       <ErrorDialog
         title="Error Generating Diagram"

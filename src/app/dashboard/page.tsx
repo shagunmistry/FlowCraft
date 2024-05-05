@@ -209,7 +209,7 @@ export default async function Dashboard() {
                         <Badge badgeType={option.badgeType} />
                       )}
                       <Image
-                        className="mx-auto mt-4 h-32 w-32 flex-shrink-0 rounded-xl border-4 border-indigo-200 object-cover shadow-sm"
+                        className="mx-auto mt-4 h-32 w-32 flex-shrink-0 rounded-xl object-cover shadow-lg"
                         src={option.source}
                         height={128}
                         width={128}

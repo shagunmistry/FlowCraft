@@ -19,6 +19,7 @@ export type DiagramOrChartType =
   | 'Chart'
   | 'Flow Diagram'
   | 'Mermaid'
+  | 'Cloud Architect'
 
 export enum DiagramType {
   FlowDiagram = 'Flow Diagram',
@@ -62,6 +63,16 @@ export const navigationOptions: Option[] = [
     badgeType: 'popular',
   },
   {
+    title: 'Cloud Architect Diagrams',
+    emoji: '☁️',
+    link: '/dashboard/cloud-architect',
+    source:
+      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fclustered_web_services_diagram.png?alt=media&token=16aa0acc-fe4c-4a85-a779-669a6b5fbc68',
+    description:
+      'Create cloud architecture diagrams to plan, design, and communicate cloud-based solutions.',
+    badgeType: 'experimental',
+  },
+  {
     title: 'Complex Diagrams',
     emoji: '🧜‍♂️',
     link: '/dashboard/mermaid',
@@ -80,15 +91,15 @@ export const navigationOptions: Option[] = [
     description:
       'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
   },
-  {
-    title: 'Chart',
-    emoji: '📊',
-    link: '/dashboard/chart',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
-    description:
-      'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
-  },
+  // {
+  //   title: 'Chart',
+  //   emoji: '📊',
+  //   link: '/dashboard/chart',
+  //   source:
+  //     'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
+  //   description:
+  //     'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
+  // },
 ]
 
 export function cn(...inputs: ClassValue[]) {

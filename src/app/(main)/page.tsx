@@ -1,8 +1,10 @@
 import { ApifyData, generateEmbeddings } from '@/lib/openai'
 import {
   DOCUMENTS_FOR_CHARTJS_TABLE,
+  DOCUMENTS_FOR_DIAGRAMS_LIBRARY_TABLE,
   DOCUMENTS_FOR_REACT_FLOW_TABLE,
   getChartJsJSONFile,
+  getDiagramsJSONFile,
   getReactCodeFlowJSONFile,
 } from '@/lib/supabase'
 
@@ -51,6 +53,42 @@ const getEmbeddings = async () => {
   }
 }
 
+const getDiagramsLibraryEmbeddings = async () => {
+  const diagramsDocs = await getDiagramsJSONFile()
+
+  if (!diagramsDocs) {
+    return {
+      status: 404,
+      body: JSON.stringify({
+        error: 'No embeddings found',
+      }),
+    }
+  }
+
+  try {
+    await generateEmbeddings(
+      diagramsDocs as ApifyData[],
+      DOCUMENTS_FOR_DIAGRAMS_LIBRARY_TABLE,
+    )
+
+    return {
+      status: 200,
+      body: JSON.stringify({
+        message: 'Embeddings generated',
+      }),
+    }
+  } catch (e) {
+    console.log('Error generating embeddings: ', e)
+
+    return {
+      status: 500,
+      body: JSON.stringify({
+        error: 'Could not generate embeddings',
+      }),
+    }
+  }
+}
+
 export const metadata: Metadata = {
   title: 'FlowCraft',
   description:
@@ -58,7 +96,8 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  await getEmbeddings()
+  // await getEmbeddings()
+  // await getDiagramsLibraryEmbeddings();
 
   return <MainLanding />
 }

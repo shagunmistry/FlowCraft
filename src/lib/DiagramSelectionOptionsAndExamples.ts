@@ -1,11 +1,13 @@
 import { DiagramOrChartType } from './utils'
 import {
   ChartBarIcon,
+  CloudIcon,
   ComputerDesktopIcon,
   PencilIcon,
 } from '@heroicons/react/20/solid'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import {
+  cloudArchitectPrompts,
   exampleChartDataPrompts,
   exampleFlowDiagramPrompts,
   exampleMermaidDiagramPrompts,
@@ -161,5 +163,13 @@ export const DiagramSelectionOptionsAndExamples: {
       'A Sankey diagram is a visualization technique that shows the flow of values from one set to another. The entities being connected are called nodes, and the connections are called links. Sankey diagrams use rectangles or text to represent nodes, and arrows or arcs to represent links. The width of the links is proportional to the importance of the flow. ',
     prompts: exampleMermaidDiagramPrompts.sankey,
     icon: PencilIcon,
+  },
+  {
+    id: 'Cloud Architect' as DiagramOrChartType,
+    title: 'Cloud Architect',
+    description:
+      'Cloud architects design and implement cloud-based solutions for businesses. They work with cloud technologies like AWS, Azure, and Google Cloud Platform.',
+    prompts: cloudArchitectPrompts,
+    icon: CloudIcon,
   },
 ]
