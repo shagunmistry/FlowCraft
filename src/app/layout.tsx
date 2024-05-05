@@ -1,6 +1,9 @@
 import { type Metadata } from 'next'
 
 import '@/styles/tailwind.css'
+import Script from 'next/script'
+
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +33,7 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap"
         />
       </head>
+      <GoogleAnalytics gaId="AW-16550420965" />
       <body className="flex min-h-full">
         <div className="w-full">{children}</div>
       </body>

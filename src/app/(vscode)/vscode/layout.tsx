@@ -4,6 +4,7 @@ import '@/styles/tailwind.css'
 import Navbar from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/react'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +23,8 @@ export default function VsCodePageLaytout({
 }) {
   return (
     <>
+      <GoogleAnalytics gaId="AW-16550420965" />
+
       <main>
         <Navbar />
         <div className="relative">{children}</div>
