@@ -40,7 +40,7 @@ const stats = [
   {
     id: 1,
     name: 'Diagrams Created',
-    value: '1300+',
+    value: '1500+',
   },
   {
     id: 2,
@@ -50,7 +50,7 @@ const stats = [
   {
     id: 3,
     name: 'Users Served',
-    value: '500+',
+    value: '600+',
   },
 ]
 
