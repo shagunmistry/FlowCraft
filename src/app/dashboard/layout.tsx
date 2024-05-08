@@ -97,6 +97,9 @@ export default function DashboardLayout({
             title: title,
             tlDrawRecords: tlDrawRecords,
             type: type,
+
+            feedbackModalOpen: feedbackModalOpen,
+            setFeedbackModalOpen: setFeedbackModalOpen,
           }}
         >
           <main>

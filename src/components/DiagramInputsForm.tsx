@@ -90,6 +90,11 @@ export default function DiagramInputsForm({
 
       if (type === 'Whiteboard') {
         await controls?.start(title)
+
+        // Show the feedback modal after 10 seconds
+        setTimeout(() => {
+          context.setFeedbackModalOpen(true)
+        }, 30000)
       } else {
         context.setLoading(true)
         context.setChartJsData(null)
@@ -114,8 +119,10 @@ export default function DiagramInputsForm({
           .then(async (diagram: any) => {
             console.log('Diagram Response: ', diagram)
 
-            if(diagram.status === 401 || diagram.status === 400) {
-              setError('You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.')
+            if (diagram.status === 401 || diagram.status === 400) {
+              setError(
+                'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
+              )
               setOpenErrorDialog(true)
               context.setLoading(false)
               return
@@ -172,12 +179,19 @@ export default function DiagramInputsForm({
 
             context.setDiagramId(diagramJson.id)
             context.setLoading(false)
+
+            // Show the feedback modal after 10 seconds
+            setTimeout(() => {
+              context.setFeedbackModalOpen(true)
+            }, 10000)
           })
       }
     } catch (e) {
       console.log('Error generating diagram: ', e)
       context.setLoading(false)
-      setError('There was an error generating the diagram, please try again')
+      setError(
+        'There was an error generating the diagram, please try creating again. We are sorry for the inconvenience.',
+      )
     }
   }
 

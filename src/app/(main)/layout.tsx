@@ -82,10 +82,12 @@ export default function MainLayout({
           title: title,
           tlDrawRecords: tlDrawRecords,
           type: type,
+
+          feedbackModalOpen: false,
+          setFeedbackModalOpen: () => {},
         }}
       >
         <main>
-          <Navbar />
           <div className="relative">{children}</div>
         </main>
         <Footer />

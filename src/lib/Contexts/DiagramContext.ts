@@ -24,6 +24,9 @@ export const DiagramContext = createContext<{
   title: string
   tlDrawRecords: any[]
   type: DiagramOrChartType | TempMermaidDiagramType | null
+
+  feedbackModalOpen: boolean
+  setFeedbackModalOpen: (feedbackModalOpen: boolean) => void
 }>({
   chartJsData: {},
   description: '',
@@ -45,4 +48,7 @@ export const DiagramContext = createContext<{
   title: '',
   tlDrawRecords: [],
   type: 'Whiteboard' as DiagramOrChartType,
+  
+  feedbackModalOpen: false,
+  setFeedbackModalOpen: () => {},
 })

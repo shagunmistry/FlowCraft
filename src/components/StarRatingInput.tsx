@@ -18,10 +18,6 @@ const StarRatingInput = ({
   const cancelButtonRef = useRef(null)
 
   const handleRating = async (value: number) => {
-    if (value === rating) {
-      setRating(0)
-    }
-
     console.log('Rating:', value)
 
     setRating(value)
@@ -29,7 +25,7 @@ const StarRatingInput = ({
     if (value < 5) {
       setOpenAdditionalFeedback(true)
     } else {
-      await sendRatingToServer('')
+      await sendRatingToServer('', value)
       setOpenAdditionalFeedback(false)
     }
   }
@@ -53,30 +49,30 @@ const StarRatingInput = ({
     e.currentTarget.reset()
   }
 
-  const sendRatingToServer = async (message: string) => {
+  const sendRatingToServer = async (message: string, value: number = 0) => {
     console.log('Submitting support request:', {
       message,
       type,
       rating,
     })
-    // fetch('/api/support', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     message,
-    //     type,
-    //     rating,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log('Support request submitted:', data)
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error submitting support request:', error)
-    //   })
+    fetch('/api/support', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message,
+        type,
+        rating: value === 0 ? rating : value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Support request submitted:', data)
+      })
+      .catch((error) => {
+        console.error('Error submitting support request:', error)
+      })
   }
 
   return (

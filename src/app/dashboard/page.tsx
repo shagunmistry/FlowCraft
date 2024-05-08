@@ -241,7 +241,7 @@ export default async function Dashboard() {
                               Create
                             </button>
                           ) : (
-                            <Link
+                            <a
                               href={
                                 diagrams.length > 2 &&
                                 user?.subscribed === false
@@ -255,7 +255,7 @@ export default async function Dashboard() {
                                 aria-hidden="true"
                               />
                               Create
-                            </Link>
+                            </a>
                           )}
                         </div>
                       </div>

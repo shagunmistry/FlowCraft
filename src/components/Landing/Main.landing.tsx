@@ -18,6 +18,8 @@ import PricingTemplate from '../Pricing/Pricing'
 import HowToUseSteps from '../HowToUseSteps'
 import FAQs from '../FAQ'
 import UsecasesForLanding from './Usecases.landing'
+import DashboardNavbar from '../Dashboard/Navbar.dashboard'
+import Navbar from '../Navbar'
 
 const VSCodeIcon = () => (
   <svg
@@ -112,9 +114,10 @@ export default function MainLanding() {
         </Transition>
       </Popover>
 
+      {authenticated ? <DashboardNavbar /> : <Navbar />}
       <main>
         <div className="bg-gray-100 lg:overflow-hidden lg:pb-14">
-          <main>
+          <div>
             <div className="relative isolate">
               <svg
                 className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-pink-300 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
@@ -248,7 +251,7 @@ export default function MainLanding() {
                 </div>
               </div>
             </div>
-          </main>
+          </div>
           {/* <div className="relative mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-6 sm:max-w-2xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left">
