@@ -45,7 +45,7 @@ const props: any = {
     ],
     ctaHeader: 'Sign up for free and start creating today!',
     ctaSubHeader: 'No credit card required',
-    diagramTitle: 'How does the mitochondria work?',
+    diagramTitle: 'How does the mitochondria function?',
   },
   healthcare: {
     headline: 'Transform Clinical Data into Actionable Insights',

@@ -69,7 +69,7 @@ export default function BaseUseCaseLanding({
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-gray-100">
       <main>
         {/* Hero section */}
         <div className="overflow-hidden pt-8 sm:pt-12 lg:relative lg:py-48">
@@ -158,7 +158,7 @@ export default function BaseUseCaseLanding({
                   nodes={nodes}
                   edges={edges}
                   fitView={true}
-                  className="transform overflow-hidden rounded-lg bg-black text-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:scale-110 lg:h-full lg:w-full"
+                  className="transform overflow-hidden rounded-lg bg-white text-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:scale-110 lg:h-full lg:w-full"
                   attributionPosition="top-right"
                   contentEditable={false}
                   edgeTypes={edgeTypes}
@@ -322,7 +322,7 @@ export default function BaseUseCaseLanding({
                   <div className="mt-4 sm:ml-3 sm:mt-0">
                     <a
                       // type="submit"
-                      href="/"
+                      href="/login"
                       className="block w-full rounded-md border border-transparent bg-pink-900 px-5 py-3 text-base font-medium text-white shadow hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pink-500 sm:px-10"
                     >
                       Get Started
