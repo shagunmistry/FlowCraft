@@ -4,6 +4,7 @@ import mermaid from 'mermaid'
 import { useEffect, useState } from 'react'
 import PageLoader from '@/components/PageLoader'
 import { XCircleIcon } from '@heroicons/react/24/outline'
+import FeedbackDialog from '@/components/FeedbackDialog'
 
 type DiagramData = {
   description: string
@@ -31,6 +32,8 @@ export default function VSCodeDiagramPage({
   const [loading, setLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [title, setTitle] = useState('')
+
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
 
   useEffect(() => {
     const getDiagram = async () => {
@@ -115,6 +118,10 @@ export default function VSCodeDiagramPage({
         setTitle(title)
       }
 
+      setTimeout(() => {
+        setIsFeedbackOpen(true)
+      }, 10000)
+
       setLoading(false)
     }
 
@@ -189,6 +196,13 @@ export default function VSCodeDiagramPage({
           dangerouslySetInnerHTML={{ __html: diagramdata.mermaid_code }}
         ></div>
       )}
+
+      <FeedbackDialog
+        header="Code Diagram Feedback"
+        message="We would love to hear your thoughts on the FlowCraft VS Code extension. What do you like? What can we improve?"
+        setOpen={setIsFeedbackOpen}
+        open={isFeedbackOpen}
+      />
     </div>
   )
 }
