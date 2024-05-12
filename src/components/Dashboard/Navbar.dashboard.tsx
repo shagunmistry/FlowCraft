@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { PlusIcon, UserIcon } from '@heroicons/react/20/solid'
 import { cn, navigationOptions } from '@/lib/utils'
-import Link from 'next/link'
+import a from 'next/link'
 
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import Image from 'next/image'
@@ -40,7 +40,7 @@ export default function DashboardNavbar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
-                  <Link href="/dashboard">
+                  <a href="/dashboard">
                     <Image
                       className="h-8 w-auto"
                       src={FlowCraftLogo}
@@ -48,25 +48,25 @@ export default function DashboardNavbar() {
                       height={32}
                       width={32}
                     />
-                  </Link>
+                  </a>
                 </div>
 
                 {/* Desktop navigation */}
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  <Link
+                  <a
                     href="/dashboard"
                     className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
                   >
                     Dashboard
-                  </Link>
+                  </a>
                   {NavigationOptions.map((option) => (
-                    <Link
+                    <a
                       key={option.title}
                       href={option.link}
                       className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 transition-all duration-100 hover:scale-105 hover:border-b-2 hover:border-indigo-500 hover:text-indigo-500"
                     >
                       {option.title}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -86,12 +86,12 @@ export default function DashboardNavbar() {
                         {navigationOptions.map((option) => (
                           <Menu.Item key={option.title}>
                             {({ active }) => (
-                              <Link
+                              <a
                                 href={option.link}
                                 className="block px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:scale-105 hover:rounded-md hover:bg-indigo-500 hover:text-lg hover:text-white focus:bg-indigo-500 focus:text-white"
                               >
                                 {option.title}
-                              </Link>
+                              </a>
                             )}
                           </Menu.Item>
                         ))}
@@ -130,7 +130,7 @@ export default function DashboardNavbar() {
                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <Link
+                            <a
                               href="/support"
                               className={cn(
                                 active ? 'bg-gray-100' : '',
@@ -138,12 +138,12 @@ export default function DashboardNavbar() {
                               )}
                             >
                               Help
-                            </Link>
+                            </a>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <Link
+                            <a
                               href="/auth/logout"
                               className={cn(
                                 active ? 'bg-gray-100' : '',
@@ -151,7 +151,7 @@ export default function DashboardNavbar() {
                               )}
                             >
                               Sign out
-                            </Link>
+                            </a>
                           )}
                         </Menu.Item>
                       </Menu.Items>
@@ -166,7 +166,7 @@ export default function DashboardNavbar() {
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 pb-3 pt-2">
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <Link
+              <a
                 href="/dashboard"
                 className="text-indigo-700 hover:text-indigo-900"
               >
@@ -176,8 +176,8 @@ export default function DashboardNavbar() {
                 >
                   Dashboard
                 </Disclosure.Button>
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/dashboard/flow-diagram"
                 className="text-indigo-700 hover:text-indigo-900"
               >
@@ -187,8 +187,8 @@ export default function DashboardNavbar() {
                 >
                   Flow Diagrams
                 </Disclosure.Button>
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/dashboard/mermaid"
                 className="text-indigo-700 hover:text-indigo-900"
               >
@@ -198,8 +198,8 @@ export default function DashboardNavbar() {
                 >
                   Complex Diagrams
                 </Disclosure.Button>
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/dashboard/whiteboard"
                 className="text-indigo-700 hover:text-indigo-900"
               >
@@ -209,8 +209,8 @@ export default function DashboardNavbar() {
                 >
                   Whiteboard
                 </Disclosure.Button>
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/dashboard/chart"
                 className="text-indigo-700 hover:text-indigo-900"
               >
@@ -220,7 +220,7 @@ export default function DashboardNavbar() {
                 >
                   Charts
                 </Disclosure.Button>
-              </Link>
+              </a>
             </div>
             <div className="border-t border-gray-200 pb-3 pt-4">
               <div className="flex items-center px-4 sm:px-6">
@@ -267,12 +267,12 @@ export default function DashboardNavbar() {
                   as="button"
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                 >
-                  <Link
+                  <a
                     className="rounded-lg bg-indigo-700 px-4 py-2 font-medium leading-5 text-white text-white shadow-xl hover:bg-pink-500"
                     href="/auth/logout"
                   >
                     Logout
-                  </Link>
+                  </a>
                 </Disclosure.Button>
               </div>
             </div>

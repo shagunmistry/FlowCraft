@@ -9,7 +9,6 @@ import ReactFlow, {
   addEdge,
   useNodesState,
   useEdgesState,
-  ConnectionLineType,
   updateEdge,
   BackgroundVariant,
   Edge,
@@ -24,11 +23,7 @@ import 'reactflow/dist/style.css'
 
 import Chart from 'chart.js/auto'
 import SuccessDialog from './SuccessDialog'
-import {
-  nodeStyle,
-  TheJudgeMovieExampleEdges,
-  TheJudgeMovieExampleNodes,
-} from '@/lib/react-flow.code'
+import { nodeStyle } from '@/lib/react-flow.code'
 import Whiteboard from './Whiteboard/Whiteboard'
 import { scenarios } from '@/components/Whiteboard/scenarios'
 import { DiagramOrChartType, downloadImage } from '@/lib/utils'
@@ -49,6 +44,7 @@ import clsx from 'clsx'
 
 import dagre from 'dagre'
 import ConnectionLineComponent from './ReactFlow/ConnectionLineComponent'
+import CodeEditorDialog from './Mermaid/CodeEditorDialog.mermaid'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
@@ -123,7 +119,7 @@ export default function DiagramOrChartView({
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [toggleReactFlowGird, setToggleReactFlowGird] = useState<boolean>(true)
-  const [mermaidSVG, setMermaidSVG] = useState<string>('')
+  const [mermaidSVG, setMermaidSVG] = useState<string | null>('')
 
   const [openShareableLinkModal, setOpenShareableLinkModal] =
     useState<boolean>(false)
@@ -141,6 +137,8 @@ export default function DiagramOrChartView({
 
   const [chartCreated, setChartCreated] = useState<boolean>(false)
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
+
+  const [openMermaidEditor, setOpenMermaidEditor] = useState<boolean>(false)
   const [isMermaidError, setIsMermaidError] = useState<boolean>(false)
 
   const [openNotification, setOpenNotification] = useState(false)
@@ -194,6 +192,7 @@ export default function DiagramOrChartView({
   )
 
   useEffect(() => {
+    console.log('DiagramOrChartView useEffect reset')
     context.setMermaidData('')
     context.setChartJsData({})
     context.setNodes([])
@@ -286,48 +285,12 @@ export default function DiagramOrChartView({
       !context.loading
     ) {
       console.log('context.mermaidData: ', context.mermaidData)
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'forest',
+      })
 
-      mermaid.mermaidAPI
-        .parse(context.mermaidData, { suppressErrors: true })
-        .then(async (res) => {
-          console.log('Mermaid API Response: ', res)
-          if (res) {
-            setIsMermaidError(false)
-
-            try {
-              const { svg } = await mermaid.render(
-                'mermaid',
-                context.mermaidData,
-              )
-
-              if (svg === undefined) {
-                console.error('SVG from Mermaid API is undefined')
-                setIsMermaidError(true)
-                return
-              }
-
-              setMermaidSVG(svg)
-
-              mermaid.initialize({
-                startOnLoad: false,
-                theme: 'forest',
-              })
-
-              return
-            } catch (err) {
-              console.error('Error rendering mermaid diagram: ', err)
-              setIsMermaidError(true)
-              return
-            }
-          }
-
-          setIsMermaidError(true)
-          return
-        })
-        .catch((err) => {
-          console.error('Mermaid API Error: ', err)
-          setIsMermaidError(true)
-        })
+      renderMermaidDiagramFromCode(context.mermaidData)
     }
   }, [
     context.nodes,
@@ -472,6 +435,47 @@ export default function DiagramOrChartView({
   const clearReactFlowDiagram = () => {
     setNodes([])
     setEdges([])
+  }
+
+  const renderMermaidDiagramFromCode = (code: string) => {
+    console.log('Current svg state: ', mermaidSVG ? mermaidSVG.length : 0)
+    setMermaidSVG(null)
+
+    mermaid.mermaidAPI
+      .parse(code, { suppressErrors: true })
+      .then(async (res) => {
+        console.log('Mermaid API Response: ', res)
+        if (res) {
+          setIsMermaidError(false)
+
+          try {
+            console.log('Rendering mermaid diagram from code: ', code)
+            const { svg } = await mermaid.render('mermaid', code)
+
+            if (svg === undefined) {
+              console.error('SVG from Mermaid API is undefined')
+              setIsMermaidError(true)
+              return
+            }
+
+            console.log('Setting SVG', svg.length)
+            setMermaidSVG(svg)
+
+            return
+          } catch (err) {
+            console.error('Error rendering mermaid diagram: ', err)
+            setIsMermaidError(true)
+            return
+          }
+        }
+
+        setIsMermaidError(true)
+        return
+      })
+      .catch((err) => {
+        console.error('Mermaid API Error: ', err)
+        setIsMermaidError(true)
+      })
   }
 
   const createShareableLink = async () => {
@@ -628,6 +632,11 @@ export default function DiagramOrChartView({
     downloadImage(dataUrl, fileName)
   }
 
+  const editMermaidDiagramCode = () => {
+    // Open up the mermaid diagram editor dialog where we show the mermaid code
+    setOpenMermaidEditor(true)
+  }
+
   return (
     <>
       <SimpleNotification
@@ -754,6 +763,15 @@ export default function DiagramOrChartView({
                 >
                   Share
                 </button>
+                <button
+                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={editMermaidDiagramCode}
+                  disabled={
+                    isMermaidError || context.loading || mermaidSVG === ''
+                  }
+                >
+                  Edit
+                </button>
                 {isMermaidError ? (
                   <>
                     <div className="text-center text-red-500">
@@ -762,7 +780,7 @@ export default function DiagramOrChartView({
                     </div>
                     <CreateDiagramAtTopButton />
                   </>
-                ) : mermaidSVG === '' ? (
+                ) : mermaidSVG === '' || mermaidSVG === null ? (
                   <>
                     <div className="text-center text-red-500">
                       No data to display
@@ -790,6 +808,12 @@ export default function DiagramOrChartView({
         }'`}
         open={successDialogOpen}
         setOpen={setSuccessDialogOpen}
+      />
+      <CodeEditorDialog
+        open={openMermaidEditor}
+        setOpen={setOpenMermaidEditor}
+        code={context.mermaidData}
+        renderMermaidDiagramFromCode={renderMermaidDiagramFromCode}
       />
       <ShareableLinksModal
         isOpen={openShareableLinkModal}
