@@ -132,7 +132,7 @@ export default async function Dashboard() {
   const stats = [
     { id: 1, name: 'Flow Diagrams', value: 0 },
     { id: 2, name: 'Complex Diagrams', value: 0 },
-    { id: 3, name: 'Whiteboards', value: 0 },
+    // { id: 3, name: 'Whiteboards', value: 0 },
     { id: 4, name: 'Charts', value: 0 },
     { id: 5, name: 'Total Shares', value: 0 },
   ]
@@ -193,7 +193,7 @@ export default async function Dashboard() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <ul
                 role="list"
-                className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:gap-8 xl:grid-cols-4"
+                className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
               >
                 {navigationOptions.map((option) => (
                   <li

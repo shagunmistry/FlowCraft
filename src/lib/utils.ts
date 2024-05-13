@@ -71,15 +71,15 @@ export const navigationOptions: Option[] = [
       'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
     badgeType: 'experimental',
   },
-  {
-    title: 'Whiteboard',
-    emoji: '🎨',
-    link: '/dashboard/whiteboard',
-    source:
-      'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_whiteboard.jpg?alt=media&token=eb068b8d-bfcf-41bd-9b5d-986ad0ed235f',
-    description:
-      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
-  },
+  // {
+  //   title: 'Whiteboard',
+  //   emoji: '🎨',
+  //   link: '/dashboard/whiteboard',
+  //   source:
+  //     'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_whiteboard.jpg?alt=media&token=eb068b8d-bfcf-41bd-9b5d-986ad0ed235f',
+  //   description:
+  //     'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
+  // },
   {
     title: 'Chart',
     emoji: '📊',

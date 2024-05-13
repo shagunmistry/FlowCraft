@@ -15,7 +15,7 @@ const RandomProfilePicColored = () => {
 const NavigationOptions = [
   { title: 'Flow Diagram', link: '/dashboard/flow-diagram' },
   { title: 'Complex Diagrams', link: '/dashboard/mermaid' },
-  { title: 'Whiteboard', link: '/dashboard/whiteboard' },
+  // { title: 'Whiteboard', link: '/dashboard/whiteboard' },
   { title: 'Chart', link: '/dashboard/chart' },
 ]
 
@@ -199,7 +199,7 @@ export default function DashboardNavbar() {
                   Complex Diagrams
                 </Disclosure.Button>
               </a>
-              <a
+              {/* <a
                 href="/dashboard/whiteboard"
                 className="text-indigo-700 hover:text-indigo-900"
               >
@@ -209,7 +209,7 @@ export default function DashboardNavbar() {
                 >
                   Whiteboard
                 </Disclosure.Button>
-              </a>
+              </a> */}
               <a
                 href="/dashboard/chart"
                 className="text-indigo-700 hover:text-indigo-900"

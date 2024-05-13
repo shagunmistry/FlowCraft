@@ -813,7 +813,6 @@ export default function DiagramOrChartView({
         open={openMermaidEditor}
         setOpen={setOpenMermaidEditor}
         code={context.mermaidData}
-        renderMermaidDiagramFromCode={renderMermaidDiagramFromCode}
       />
       <ShareableLinksModal
         isOpen={openShareableLinkModal}

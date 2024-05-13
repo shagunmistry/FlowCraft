@@ -35,14 +35,14 @@ export const DiagramSelectionOptionsAndExamples: {
     prompts: exampleChartDataPrompts,
     icon: ChartBarIcon,
   },
-  {
-    id: 'Whiteboard' as DiagramOrChartType,
-    title: 'Whiteboard',
-    description:
-      'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
-    prompts: exampleWhiteboardPrompts,
-    icon: ComputerDesktopIcon,
-  },
+  // {
+  //   id: 'Whiteboard' as DiagramOrChartType,
+  //   title: 'Whiteboard',
+  //   description:
+  //     'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
+  //   prompts: exampleWhiteboardPrompts,
+  //   icon: ComputerDesktopIcon,
+  // },
   {
     id: 'flowchart' as TempMermaidDiagramType,
     title: 'Flowchart',
