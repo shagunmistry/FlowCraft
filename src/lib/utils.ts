@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-export const OPEN_AI_MODEL = 'gpt-4-0125-preview'
+export const OPEN_AI_MODEL = 'gpt-4o'
 
 export type SharedDiagramResult = {
   user_id: string
