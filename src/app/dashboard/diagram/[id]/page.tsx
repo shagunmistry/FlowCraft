@@ -39,23 +39,31 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       console.log(diagramInfoFromApi)
       diagramContext.setTitle(diagramInfoFromApi.title)
       diagramContext.setDescription(diagramInfoFromApi.description)
-      diagramContext.setNodes(diagramInfoFromApi.data.nodes)
-      diagramContext.setEdges(diagramInfoFromApi.data.edges)
       diagramContext.setType(diagramInfoFromApi.type)
 
-      if (
-        typeof diagramInfoFromApi.data === 'string' &&
-        diagramInfoFromApi.type === 'Flow Diagram'
-      ) {
-        let parsedData = JSON.parse(diagramInfoFromApi.data)
+      if (diagramInfoFromApi.type === 'Flow Diagram') {
+        let parsedData = diagramInfoFromApi.data
         if (typeof parsedData === 'string') {
-          parsedData = JSON.parse(parsedData)
+          parsedData = JSON.parse(diagramInfoFromApi.data)
+          if (typeof parsedData === 'string') {
+            parsedData = JSON.parse(parsedData)
+          }
         }
+
         const nodes = parsedData.nodes
         const edges = parsedData.edges
 
         diagramContext.setEdges(edges)
         diagramContext.setNodes(nodes)
+      } else if (
+        diagramInfoFromApi.type !== 'Chart' &&
+        diagramInfoFromApi.type !== 'Whiteboard'
+      ) {
+        let parsedData = JSON.parse(diagramInfoFromApi.data)
+        parsedData =
+          typeof parsedData === 'string' ? JSON.parse(parsedData) : parsedData
+        console.log('Parsed Data:', typeof parsedData, parsedData)
+        diagramContext.setMermaidData(parsedData.mermaid)
       }
 
       console.log('Setting Diagram ID:', params.id)

@@ -39,7 +39,15 @@ import {
 } from '@/lib/react-flow.util'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 import StarRatingInput from './StarRatingInput'
-import { ArrowUpCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid'
+import {
+  ArrowDownTrayIcon,
+  ArrowUpCircleIcon,
+  CheckCircleIcon,
+  Cog6ToothIcon,
+  DocumentDuplicateIcon,
+  PencilIcon,
+  ShareIcon,
+} from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 
 import dagre from 'dagre'
@@ -151,6 +159,8 @@ export default function DiagramOrChartView({
     title: '',
     type: 'success',
   })
+
+  const [copied, setCopied] = useState<boolean>(false)
 
   const context = useContext(DiagramContext)
 
@@ -609,6 +619,80 @@ export default function DiagramOrChartView({
     setEdges(tempEdges)
   }
 
+  const copyFlowDiagramAsPng = async () => {
+    const reactFlowContainer = document.querySelector(
+      '.react-flow__container',
+    ) as HTMLElement
+
+    if (!reactFlowContainer) {
+      console.error('reactFlowContainer not found')
+      return
+    }
+
+    const imageWidth = 1024
+    const imageHeight = 768
+
+    const nodesBounds = getRectOfNodes(nodes)
+    const transform = getTransformForBounds(
+      nodesBounds,
+      imageWidth,
+      imageHeight,
+      0.5,
+      2,
+    )
+
+    const tempNodes = [...nodes]
+    const tempEdges = [...edges]
+
+    const nodesWithDefaultStyle = nodes.map((node: Node) => {
+      return {
+        ...node,
+        type: '',
+      }
+    })
+
+    setNodes(nodesWithDefaultStyle)
+
+    const fitButton = document.getElementsByClassName(
+      '.react-flow__controls-fitview',
+    )[0] as HTMLButtonElement
+    if (fitButton) {
+      fitButton.click()
+    }
+
+    const source = document.querySelector(
+      '.react-flow__viewport',
+    ) as HTMLElement
+
+    const dataUrl = await toPng(source, {
+      backgroundColor: '#1a365d',
+      width: imageWidth,
+      height: imageHeight,
+      style: {
+        width: imageWidth.toString(),
+        height: imageHeight.toString(),
+        transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
+      },
+    })
+
+    const blob = await fetch(dataUrl).then((res) => res.blob())
+
+    navigator.clipboard.write([
+      new ClipboardItem({
+        'image/png': blob,
+      }),
+    ])
+
+    setCopied(true)
+
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
+
+    setNodes(tempNodes)
+    setEdges(tempEdges)
+  }
+
   const downloadMermaidDiagramAsPng = async () => {
     const mermaidContainer = document.querySelector('.mermaid') as HTMLElement
 
@@ -630,6 +714,38 @@ export default function DiagramOrChartView({
       ? context.title.replace(' ', '-')
       : 'mermaid-diagram'
     downloadImage(dataUrl, fileName)
+  }
+
+  const copyMermaidDiagramAsPng = async () => {
+    const mermaidContainer = document.querySelector('.mermaid') as HTMLElement
+
+    if (!mermaidContainer) {
+      console.error('mermaidContainer not found')
+      return
+    }
+
+    const imageWidth = 1080
+    const imageHeight = 768
+
+    const dataUrl = await toPng(mermaidContainer, {
+      backgroundColor: '#FFFFFF',
+      width: imageWidth,
+      height: imageHeight,
+    })
+
+    const blob = await fetch(dataUrl).then((res) => res.blob())
+
+    navigator.clipboard.write([
+      new ClipboardItem({
+        'image/png': blob,
+      }),
+    ])
+
+    setCopied(true)
+
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
   }
 
   const editMermaidDiagramCode = () => {
@@ -663,6 +779,7 @@ export default function DiagramOrChartView({
               createShareableLink={createShareableLink}
               toggleGrid={toggleGrid}
               downloadFlowDiagramAsPng={downloadFlowDiagramAsPng}
+              copyFlowDiagramAsPng={copyFlowDiagramAsPng}
             />
           )}
       </div>
@@ -752,7 +869,20 @@ export default function DiagramOrChartView({
                     isMermaidError || context.loading || mermaidSVG === ''
                   }
                 >
-                  Download
+                  <ArrowDownTrayIcon className="h-6 w-6" />
+                </button>
+                <button
+                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={copyMermaidDiagramAsPng}
+                  disabled={
+                    isMermaidError || context.loading || mermaidSVG === ''
+                  }
+                >
+                  {copied ? (
+                    <CheckCircleIcon className="h-6 w-6" />
+                  ) : (
+                    <DocumentDuplicateIcon className="h-6 w-6" />
+                  )}
                 </button>
                 <button
                   className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
@@ -761,7 +891,7 @@ export default function DiagramOrChartView({
                     isMermaidError || context.loading || mermaidSVG === ''
                   }
                 >
-                  Share
+                  <ShareIcon className="h-6 w-6" />
                 </button>
                 <button
                   className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
@@ -770,7 +900,7 @@ export default function DiagramOrChartView({
                     isMermaidError || context.loading || mermaidSVG === ''
                   }
                 >
-                  Edit
+                  <PencilIcon className="h-6 w-6" />
                 </button>
                 {isMermaidError ? (
                   <>
