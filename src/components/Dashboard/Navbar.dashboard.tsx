@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { PlusIcon, UserIcon } from '@heroicons/react/20/solid'
-import { cn, navigationOptions } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import a from 'next/link'
 
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
