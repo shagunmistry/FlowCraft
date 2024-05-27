@@ -190,7 +190,22 @@ export default async function Dashboard() {
                 stats={stats}
               />
             </header>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mt-12 rounded-lg bg-white shadow-lg">
+              <div className="mx-auto max-w-7xl px-6 py-12 lg:flex lg:items-center lg:justify-between lg:px-8">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                  Ready to get started?
+                </h2>
+                <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
+                  <Link
+                    href="/dashboard/diagrams/new"
+                    className="rounded-md bg-pink-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+                  >
+                    Create Diagram
+                  </Link>
+                </div>
+              </div>
+            </div>
+            {/* <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <ul
                 role="list"
                 className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8 xl:grid-cols-3"
@@ -263,7 +278,7 @@ export default async function Dashboard() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/** Recent Diagrams */}
             {diagrams && diagrams.length > 0 ? (

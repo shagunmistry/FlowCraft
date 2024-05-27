@@ -3,6 +3,8 @@ import Link from 'next/link'
 import FeedbackDialog from '../FeedbackDialog'
 import { useState } from 'react'
 
+import { motion } from 'framer-motion'
+
 export default function DashboardHeading({
   subscribed,
   name,
@@ -71,18 +73,22 @@ export default function DashboardHeading({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-indigo-200 bg-gray-100 sm:grid-cols-5 sm:divide-x sm:divide-y-0">
+        <div className="grid grid-cols-1 divide-y divide-indigo-200 border-t border-indigo-200 bg-gray-100 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
           {stats.map((stat) => (
-            <div
+            <motion.div
               key={stat.name}
-              className="px-6 py-5 text-center text-sm font-medium"
+              className="px-6 py-5 text-center sm:px-4 sm:py-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
             >
               <span className="text-indigo-900">{stat.value}</span>{' '}
               <span className="text-indigo-600">{stat.name}</span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
+
       <FeedbackDialog
         header="Feature Request"
         message="What features would you like to see in the future?"

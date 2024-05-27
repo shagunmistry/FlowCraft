@@ -59,11 +59,27 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         diagramInfoFromApi.type !== 'Chart' &&
         diagramInfoFromApi.type !== 'Whiteboard'
       ) {
+        console.log('Diagram Info:', diagramInfoFromApi.data)
+
+        // Check if the first 3 characters are '```'
+        if (diagramInfoFromApi.data.substring(0, 3) === '```') {
+          const cleanedCode = diagramInfoFromApi.data
+            .replace(/```/g, '')
+            .replace(/```/g, '')
+          diagramContext.setMermaidData(cleanedCode)
+        } else {
+          let parsedData = JSON.parse(diagramInfoFromApi.data)
+          parsedData =
+            typeof parsedData === 'string' ? JSON.parse(parsedData) : parsedData
+          console.log('Parsed Data:', typeof parsedData, parsedData)
+          diagramContext.setMermaidData(parsedData.mermaid)
+        }
+      } else if (diagramInfoFromApi.type === 'Chart') {
         let parsedData = JSON.parse(diagramInfoFromApi.data)
         parsedData =
           typeof parsedData === 'string' ? JSON.parse(parsedData) : parsedData
         console.log('Parsed Data:', typeof parsedData, parsedData)
-        diagramContext.setMermaidData(parsedData.mermaid)
+        diagramContext.setChartJsData(parsedData)
       }
 
       console.log('Setting Diagram ID:', params.id)

@@ -9,19 +9,20 @@ import {
   XCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
+import { cn } from '@/lib/utils'
 
 function getIcon(type: 'success' | 'error' | 'warning' | 'info') {
   switch (type) {
     case 'success':
-      return <CheckCircleIcon className="h-6 w-6 text-green-400" />
+      return <CheckCircleIcon className="h-6 w-6 text-green-100" />
     case 'error':
-      return <XCircleIcon className="h-6 w-6 text-red-400" />
+      return <XCircleIcon className="h-6 w-6 text-red-100" />
     case 'warning':
-      return <ExclamationTriangleIcon className="h-6 w-6 text-yellow-400" />
+      return <ExclamationTriangleIcon className="h-6 w-6 text-yellow-100" />
     case 'info':
-      return <InformationCircleIcon className="h-6 w-6 text-indigo-400" />
+      return <InformationCircleIcon className="h-6 w-6 text-indigo-100" />
     default:
-      return <InformationCircleIcon className="h-6 w-6 text-gray-400" />
+      return <InformationCircleIcon className="h-6 w-6 text-gray-100" />
   }
 }
 
@@ -57,13 +58,21 @@ export default function SimpleNotification({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+            <div
+              className={cn(
+                type === 'success' && 'bg-green-500',
+                type === 'error' && 'bg-red-500',
+                type === 'warning' && 'bg-yellow-500',
+                type === 'info' && 'bg-indigo-500',
+                'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5',
+              )}
+            >
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">{getIcon(type)}</div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-gray-900">{title}</p>
-                    <p className="mt-1 text-sm text-gray-500">{message}</p>
+                    <p className="text-sm font-medium text-white">{title}</p>
+                    <p className="mt-1 text-sm text-white">{message}</p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button
