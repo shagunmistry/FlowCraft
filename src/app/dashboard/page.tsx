@@ -7,12 +7,7 @@ import { DiagramData } from '@/lib/DiagramType.db'
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import {
-  cn,
-  getShareableLinkUrl,
-  navigationOptions,
-  SharedDiagramResult,
-} from '@/lib/utils'
+import { cn, getShareableLinkUrl, SharedDiagramResult } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { Badge } from '@/components/Badge'
