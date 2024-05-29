@@ -192,6 +192,7 @@ export default function VSCodeDiagramPage({
           disabled={isError}
         >
           <ArrowDownTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          Download SVG
         </button>
         <button
           type="button"
@@ -199,6 +200,7 @@ export default function VSCodeDiagramPage({
           onClick={copyMermaidCode}
         >
           <ClipboardIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          Copy Code
           {isCopied ? (
             <CheckCircleIcon
               className="-mr-0.5 h-5 w-5 text-green-500"
