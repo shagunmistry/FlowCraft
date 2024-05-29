@@ -85,7 +85,8 @@ const availableDiagrams: {
 }[] = [
   {
     title: 'Flow Diagram',
-    description: 'Create a flow diagram to visualize a process or system.',
+    description:
+      'A visual representation of the steps in a process. It helps to show how different parts of a task or project connect and flow together. Think of it like a map for a complex activity.',
     iconBackground: 'bg-indigo-50',
     iconForeground: 'text-indigo-600',
     icon: CheckIcon,
@@ -93,7 +94,8 @@ const availableDiagrams: {
   },
   {
     title: 'Chart',
-    description: 'Create a chart to visualize data or statistics.',
+    description:
+      'A general term for visual representations of data, using bars, lines, points, or other shapes. Charts make data easier to understand and analyze.',
     iconBackground: 'bg-yellow-50',
     iconForeground: 'text-yellow-600',
     icon: PresentationChartBarIcon,
@@ -101,7 +103,8 @@ const availableDiagrams: {
   },
   {
     title: 'Flow Chart',
-    description: 'Create a flow chart to visualize a process or system.',
+    description:
+      'Very similar to a flow diagram, it uses specific symbols (rectangles, diamonds, etc.) to represent different types of actions in a process (decisions, tasks, inputs, outputs).',
     iconBackground: 'bg-green-50',
     iconForeground: 'text-green-600',
     icon: ArrowUpCircleIcon,
@@ -109,7 +112,8 @@ const availableDiagrams: {
   },
   {
     title: 'Sequence Diagram',
-    description: 'Create a sequence diagram to visualize a process or system.',
+    description:
+      "Shows how different parts of a system interact with each other over time. It's like a comic strip for software, illustrating the order of messages or actions between components.",
     iconBackground: 'bg-blue-50',
     iconForeground: 'text-blue-600',
     icon: ArrowTrendingUpIcon,
@@ -117,7 +121,8 @@ const availableDiagrams: {
   },
   {
     title: 'Class Diagram',
-    description: 'Create a class diagram to visualize a process or system.',
+    description:
+      'Used in software development, it provides a blueprint for the structure of a program. It defines the classes (types of objects), their properties, and how they relate to each other.',
     iconBackground: 'bg-purple-50',
     iconForeground: 'text-purple-600',
     icon: DocumentMagnifyingGlassIcon,
@@ -125,7 +130,8 @@ const availableDiagrams: {
   },
   {
     title: 'State Diagram',
-    description: 'Create a state diagram to visualize a process or system.',
+    description:
+      'Illustrates the different states an object can be in and how it transitions between those states. For instance, a traffic light might have states like "red," "yellow," and "green."',
     iconBackground: 'bg-red-50',
     iconForeground: 'text-red-600',
     icon: PresentationChartLineIcon,
@@ -134,7 +140,7 @@ const availableDiagrams: {
   {
     title: 'Entity Relationship Diagram',
     description:
-      'Create an entity relationship diagram to visualize a process or system.',
+      'Used in database design, it maps out the relationships between different entities (people, objects, concepts). It helps to define how data should be organized and stored.',
     iconBackground: 'bg-indigo-50',
     iconForeground: 'text-indigo-600',
     icon: Square2StackIcon,
@@ -143,7 +149,7 @@ const availableDiagrams: {
   {
     title: 'User Journey',
     description:
-      'Create a user journey diagram to visualize a process or system.',
+      "A visual story of a user's experience interacting with a product or service. It highlights touchpoints, pain points, and opportunities for improvement.",
     iconBackground: 'bg-gray-50',
     iconForeground: 'text-gray-500',
     icon: UserGroupIcon,
@@ -151,7 +157,8 @@ const availableDiagrams: {
   },
   {
     title: 'Gantt',
-    description: 'Create a gantt diagram to visualize a process or system.',
+    description:
+      "A horizontal bar chart that shows a project timeline. Each bar represents a task, and its length indicates the task's duration. It's helpful for planning and tracking project schedules.",
     iconBackground: 'bg-yellow-50',
     iconForeground: 'text-yellow-600',
     icon: BugAntIcon,
@@ -159,7 +166,8 @@ const availableDiagrams: {
   },
   {
     title: 'Pie Chart',
-    description: 'Create a pie chart to visualize a process or system.',
+    description:
+      'A circular chart divided into slices. Each slice represents a portion of a whole. Pie charts are used to show percentages or proportions.',
     iconBackground: 'bg-green-50',
     iconForeground: 'text-green-600',
     icon: ChartPieIcon,
@@ -167,7 +175,8 @@ const availableDiagrams: {
   },
   {
     title: 'Quadrant Chart',
-    description: 'Create a quadrant chart to visualize a process or system.',
+    description:
+      "A grid divided into four sections. It's used to categorize items based on two criteria. For example, a quadrant chart might plot products based on their market share and growth rate.",
     iconBackground: 'bg-blue-50',
     iconForeground: 'text-blue-600',
     icon: PuzzlePieceIcon,
@@ -176,7 +185,7 @@ const availableDiagrams: {
   {
     title: 'Requirement Diagram',
     description:
-      'Create a requirement diagram to visualize a process or system.',
+      'Used to capture and organize the functional and non-functional requirements of a project. It helps to ensure that everyone has a clear understanding of what needs to be built.',
     iconBackground: 'bg-purple-50',
     iconForeground: 'text-purple-600',
     icon: BriefcaseIcon,
@@ -184,7 +193,8 @@ const availableDiagrams: {
   },
   {
     title: 'Git Graph',
-    description: 'Create a git graph to visualize a process or system.',
+    description:
+      'Visualizes the history of a project in a version control system like Git. It shows branches, commits, merges, and other changes over time.',
     iconBackground: 'bg-red-50',
     iconForeground: 'text-red-600',
     icon: SparklesIcon,
@@ -192,7 +202,8 @@ const availableDiagrams: {
   },
   {
     title: 'Mindmaps',
-    description: 'Create a mindmaps diagram to visualize a process or system.',
+    description:
+      'A diagram used to visually organize information. It starts with a central idea and branches out into related concepts and subtopics. Great for brainstorming and note-taking.',
     iconBackground: 'bg-indigo-50',
     iconForeground: 'text-indigo-600',
     icon: FireIcon,
@@ -200,7 +211,8 @@ const availableDiagrams: {
   },
   {
     title: 'Timeline',
-    description: 'Create a timeline diagram to visualize a process or system.',
+    description:
+      'A visual representation of events in chronological order. It helps to understand the sequence of historical events or the steps in a project plan.',
     iconBackground: 'bg-gray-50',
     iconForeground: 'text-gray-500',
     icon: ClockIcon,
@@ -208,7 +220,8 @@ const availableDiagrams: {
   },
   {
     title: 'ZenUML',
-    description: 'Create a zenuml diagram to visualize a process or system.',
+    description:
+      'A text-based way to create UML diagrams. You write simple descriptions, and ZenUML generates the corresponding diagram.',
     iconBackground: 'bg-yellow-50',
     iconForeground: 'text-yellow-600',
     icon: DocumentDuplicateIcon,
@@ -216,7 +229,8 @@ const availableDiagrams: {
   },
   {
     title: 'Sankey',
-    description: 'Create a sankey diagram to visualize a process or system.',
+    description:
+      'Shows flows or transfers between different entities. The width of the arrows or bands indicates the magnitude of the flow. Often used to visualize energy flows or financial transactions.',
     iconBackground: 'bg-green-50',
     iconForeground: 'text-green-600',
     icon: ForwardIcon,
@@ -515,6 +529,16 @@ export default function NewDiagrampage() {
           </div>
         )}
 
+        <div className="flex justify-center">
+          {/** Step Title */}
+          <h2
+            id="diagram-options"
+            className="text-lg font-semibold leading-6 text-gray-900"
+          >
+            {(steps[currentStep - 1] && steps[currentStep - 1].name) || ''}
+          </h2>
+        </div>
+
         {/** Error Message */}
         {error && (
           <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
@@ -532,7 +556,6 @@ export default function NewDiagrampage() {
           </div>
         )}
 
-        {/** Next Button */}
         <div className="flex justify-end">
           <button
             type="button"
