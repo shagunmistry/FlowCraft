@@ -5,6 +5,13 @@ import { useEffect, useState } from 'react'
 import PageLoader from '@/components/PageLoader'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 import FeedbackDialog from '@/components/FeedbackDialog'
+import {
+  ArrowDownTrayIcon,
+  ArrowUpRightIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  ClipboardIcon,
+} from '@heroicons/react/20/solid'
 
 type DiagramData = {
   description: string
@@ -34,6 +41,8 @@ export default function VSCodeDiagramPage({
   const [title, setTitle] = useState('')
 
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+
+  const [isCopied, setIsCopied] = useState(false)
 
   useEffect(() => {
     const getDiagram = async () => {
@@ -136,6 +145,25 @@ export default function VSCodeDiagramPage({
     window.location.replace(`/error?message=Diagram not found`)
   }
 
+  const copyMermaidCode = () => {
+    console.log('Diagram data:', diagramdata)
+    const code = diagramdata.mermaid_code
+
+    navigator.clipboard.writeText(code).then(
+      function () {
+        console.log('Async: Copying to clipboard was successful!')
+        setIsCopied(true)
+        setTimeout(() => {
+          setIsCopied(false)
+        }, 3000)
+      },
+      function (err) {
+        console.error('Async: Could not copy text: ', err)
+        setIsCopied(false)
+      },
+    )
+  }
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100">
       <div className="px-6 py-12 lg:px-8">
@@ -143,48 +171,84 @@ export default function VSCodeDiagramPage({
           <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             {title}
           </h2>
-          <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">
-            LEVEL: {diagramdata.difficulty.toUpperCase()}
+          <span className="text-md inline-flex items-center rounded-md bg-green-50 px-2 py-1 font-medium text-green-800 ring-1 ring-inset ring-green-600/20">
+            Difficulty Level: {diagramdata.difficulty.toUpperCase()}
           </span>
         </div>
       </div>
 
-      <button
-        className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-400"
-        onClick={() => {
-          const svg = diagramdata.mermaid_code
-          const blob = new Blob([svg], { type: 'image/svg+xml' })
-          const url = URL.createObjectURL(blob)
-          const a = document.createElement('a')
-          a.href = url
-          a.download = `${diagramdata.title}.svg`
-          a.click()
-        }}
-        disabled={isError}
-      >
-        Download SVG
-      </button>
+      <span className="isolate inline-flex rounded-md shadow-sm">
+        <button
+          className="mx-4 inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-lg font-semibold text-white shadow-lg hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+          onClick={() => {
+            const svg = diagramdata.mermaid_code
+            const blob = new Blob([svg], { type: 'image/svg+xml' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `${diagramdata.title}.svg`
+            a.click()
+          }}
+          disabled={isError}
+        >
+          <ArrowDownTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-lg font-semibold text-white shadow-lg hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={copyMermaidCode}
+        >
+          <ClipboardIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          {isCopied ? (
+            <CheckCircleIcon
+              className="-mr-0.5 h-5 w-5 text-green-500"
+              aria-hidden="true"
+            />
+          ) : null}
+        </button>
+      </span>
       {isError && (
-        <div className="my-12 rounded-md bg-red-50 p-4">
+        <div className="my-12 rounded-xl bg-red-50 p-4 shadow-sm">
           <div className="flex">
             <div className="flex-shrink-0">
               <XCircleIcon
-                className="h-5 w-5 text-red-400"
+                className="h-12 w-12 text-red-400"
                 aria-hidden="true"
               />
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">
+              <h3 className="text-lg font-medium text-red-800">
                 There was an error rendering the diagram
               </h3>
-              <div className="mt-2 text-sm text-red-700">
+              <div className="mt-2 text-lg text-red-700">
                 <ul role="list" className="list-disc space-y-1 pl-5">
                   <li>Please try again or contact support</li>
                   <li>
-                    If you are the owner of this diagram, please try again or
-                    contact support to resolve the issue
+                    Copy the Mermaid code and try to render it in
+                    <a
+                      href="https://mermaid.live/edit"
+                      target="_blank"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {' '}
+                      Mermaid Live Editor
+                      <ArrowUpRightIcon
+                        className="inline-block h-4 w-4"
+                        aria-hidden="true"
+                      />
+                    </a>
                   </li>
                 </ul>
+              </div>
+
+              {/** Code Block to Show the mermaid code */}
+              <div className="mt-4">
+                <pre className="prose prose-neutral prose-lg max-w-lg overflow-x-auto rounded-lg bg-gray-100 p-4 text-sm text-gray-900 shadow-lg">
+                  <h3 className="text-lg font-medium text-gray-800">
+                    Mermaid Code
+                  </h3>
+                  <code>{diagramdata.mermaid_code}</code>
+                </pre>
               </div>
             </div>
           </div>
