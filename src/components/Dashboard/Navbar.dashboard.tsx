@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { PlusIcon, UserIcon } from '@heroicons/react/20/solid'
-import { cn, navigationOptions } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import a from 'next/link'
 
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
@@ -59,46 +59,9 @@ export default function DashboardNavbar() {
                   >
                     Dashboard
                   </a>
-                  {NavigationOptions.map((option) => (
-                    <a
-                      key={option.title}
-                      href={option.link}
-                      className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 transition-all duration-100 hover:scale-105 hover:border-b-2 hover:border-indigo-500 hover:text-indigo-500"
-                    >
-                      {option.title}
-                    </a>
-                  ))}
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Menu as="div" className="relative ml-3">
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {navigationOptions.map((option) => (
-                          <Menu.Item key={option.title}>
-                            {({ active }) => (
-                              <a
-                                href={option.link}
-                                className="block px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:scale-105 hover:rounded-md hover:bg-indigo-500 hover:text-lg hover:text-white focus:bg-indigo-500 focus:text-white"
-                              >
-                                {option.title}
-                              </a>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
                 <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                   {/* <button
                     type="button"
@@ -175,50 +138,6 @@ export default function DashboardNavbar() {
                   className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
                 >
                   Dashboard
-                </Disclosure.Button>
-              </a>
-              <a
-                href="/dashboard/flow-diagram"
-                className="text-indigo-700 hover:text-indigo-900"
-              >
-                <Disclosure.Button
-                  as="button"
-                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-                >
-                  Flow Diagrams
-                </Disclosure.Button>
-              </a>
-              <a
-                href="/dashboard/mermaid"
-                className="text-indigo-700 hover:text-indigo-900"
-              >
-                <Disclosure.Button
-                  as="button"
-                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-                >
-                  Complex Diagrams
-                </Disclosure.Button>
-              </a>
-              {/* <a
-                href="/dashboard/whiteboard"
-                className="text-indigo-700 hover:text-indigo-900"
-              >
-                <Disclosure.Button
-                  as="button"
-                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-                >
-                  Whiteboard
-                </Disclosure.Button>
-              </a> */}
-              <a
-                href="/dashboard/chart"
-                className="text-indigo-700 hover:text-indigo-900"
-              >
-                <Disclosure.Button
-                  as="button"
-                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-                >
-                  Charts
                 </Disclosure.Button>
               </a>
             </div>

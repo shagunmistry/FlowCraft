@@ -115,7 +115,7 @@ export default function DiagramSettingsBar({
                 {/* <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                   <Menu as="div" className="relative ml-4 flex-shrink-0">
                     <div>
-                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-md text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <img
@@ -142,7 +142,7 @@ export default function DiagramSettingsBar({
                                 href={item.href}
                                 className={cn(
                                   active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700',
+                                  'block px-4 py-2 text-md text-gray-700',
                                 )}
                               >
                                 {item.name}
@@ -161,9 +161,9 @@ export default function DiagramSettingsBar({
               >
                 <Menu as="div" className="relative ml-4 flex-shrink-0">
                   <div>
-                    <Menu.Button className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
-                      <span className="absolute -inset-1.5" />
-                      File
+                    <Menu.Button className="block w-fit rounded-md bg-gray-900 px-3 py-2 text-md font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
+                      {/* <span className="absolute -inset-1.5" /> */}
+                      Export
                     </Menu.Button>
                   </div>
                   <Transition
@@ -182,8 +182,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => createShareableLink()}
                           >
@@ -197,8 +197,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => downloadFlowDiagramAsPng()}
                           >
@@ -212,8 +212,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => copyFlowDiagramAsPng()}
                           >
@@ -227,8 +227,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => setIsHelpModalOpen(true)}
                           >
@@ -241,7 +241,7 @@ export default function DiagramSettingsBar({
                 </Menu>
                 <Menu as="div" className="relative ml-4 flex-shrink-0">
                   <div>
-                    <Menu.Button className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
+                    <Menu.Button className="block w-16 rounded-md bg-gray-900 px-3 py-2 text-md font-medium text-gray-300 text-white hover:bg-gray-700 hover:text-white">
                       <span className="absolute -inset-1.5" />
                       Edit
                     </Menu.Button>
@@ -262,8 +262,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md',
                             )}
                             onClick={() => setIsEditNodeModalOpen(true)}
                           >
@@ -277,8 +277,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md',
                             )}
                             onClick={() => setIsEditEdgeModalOpen(true)}
                           >
@@ -292,8 +292,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-red-200' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-red-500 text-white' : 'text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md',
                             )}
                             onClick={() => clearReactFlowDiagram()}
                           >
@@ -305,7 +305,7 @@ export default function DiagramSettingsBar({
                   </Transition>
                 </Menu>
 
-                <button className="block w-16 rounded-md px-3 py-2 text-sm font-medium text-white transition-all duration-200 ease-in-out">
+                <button className="block w-16 rounded-md px-3 py-2 text-md font-medium text-white transition-all duration-200 ease-in-out">
                   <GridToggle onChange={toggleGrid} />
                 </button>
               </nav>
@@ -319,8 +319,8 @@ export default function DiagramSettingsBar({
               <div className="space-y-1 px-2 pb-3 pt-2">
                 <Menu as="div" className="relative">
                   <div>
-                    <Menu.Button className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                      File
+                    <Menu.Button className="block rounded-md py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                      Export
                     </Menu.Button>
                   </div>
                   <Transition
@@ -339,8 +339,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600' : '',
+                              'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => createShareableLink()}
                           >
@@ -354,8 +354,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600' : '',
+                              'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => setIsHelpModalOpen(true)}
                           >
@@ -388,8 +388,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600' : '',
+                              'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => setIsEditNodeModalOpen(true)}
                           >
@@ -403,8 +403,8 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-400' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              active ? 'bg-indigo-600' : '',
+                              'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => setIsEditEdgeModalOpen(true)}
                           >
@@ -419,7 +419,7 @@ export default function DiagramSettingsBar({
                             whileTap={{ scale: 0.95 }}
                             className={cn(
                               active ? 'bg-red-200' : '',
-                              'block w-full rounded-md px-4 py-2 text-sm text-gray-700',
+                              'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => clearReactFlowDiagram()}
                           >
@@ -447,7 +447,7 @@ export default function DiagramSettingsBar({
                     <div className="text-base font-medium text-white">
                       {user.name}
                     </div>
-                    <div className="text-sm font-medium text-gray-400">
+                    <div className="text-md font-medium text-gray-400">
                       {user.email}
                     </div>
                   </div>

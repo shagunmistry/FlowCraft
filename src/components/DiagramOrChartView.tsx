@@ -201,14 +201,14 @@ export default function DiagramOrChartView({
     [nodes, edges],
   )
 
-  useEffect(() => {
-    console.log('DiagramOrChartView useEffect reset')
-    context.setMermaidData('')
-    context.setChartJsData({})
-    context.setNodes([])
-    context.setEdges([])
-    context.setTlDrawRecords([])
-  }, [type])
+  // useEffect(() => {
+  //   console.log('DiagramOrChartView useEffect reset')
+  //   context.setMermaidData('')
+  //   context.setChartJsData({})
+  //   context.setNodes([])
+  //   context.setEdges([])
+  //   context.setTlDrawRecords([])
+  // }, [type])
 
   useEffect(() => {
     console.log('context.type: ', context.type)
@@ -248,7 +248,12 @@ export default function DiagramOrChartView({
       console.log('Setting success dialog open to true', nodesWithStyle.length)
       setSuccessDialogOpen(true && !context.loading)
     } else if (context.type === 'Chart' && context.chartJsData) {
-      console.log('context.chartJsData', context.chartJsData)
+      console.log(
+        'context.chartJsData',
+        context.chartJsData,
+        'Chart Created: ',
+        chartCreated,
+      )
       const ctx = document.getElementById('myChart') as HTMLCanvasElement
 
       // if a chart was already created, destroy it
@@ -691,6 +696,13 @@ export default function DiagramOrChartView({
 
     setNodes(tempNodes)
     setEdges(tempEdges)
+
+    setNotification({
+      message: 'Image copied to clipboard',
+      title: 'Success',
+      type: 'success',
+    })
+    setOpenNotification(true)
   }
 
   const downloadMermaidDiagramAsPng = async () => {
@@ -763,28 +775,26 @@ export default function DiagramOrChartView({
         setOpen={setOpenNotification}
       />
 
-      <div className="mt-4">
-        {context.type === 'Flow Diagram' &&
-          context.nodes.length > 0 &&
-          context.edges.length > 0 && (
-            <DiagramSettingsBar
-              nodes={nodes}
-              edges={edges}
-              deleteNode={deleteNode}
-              addNode={addNode}
-              updateNodeLabel={updateNodeLabel}
-              updateEdgeLabel={updateEdgeLabel}
-              deleteEdge={deleteEdge}
-              clearReactFlowDiagram={clearReactFlowDiagram}
-              createShareableLink={createShareableLink}
-              toggleGrid={toggleGrid}
-              downloadFlowDiagramAsPng={downloadFlowDiagramAsPng}
-              copyFlowDiagramAsPng={copyFlowDiagramAsPng}
-            />
-          )}
-      </div>
-
       <StarRatingInput type={type} />
+
+      <div className="mt-4">
+        {context.type === 'Flow Diagram' && (
+          <DiagramSettingsBar
+            nodes={nodes}
+            edges={edges}
+            deleteNode={deleteNode}
+            addNode={addNode}
+            updateNodeLabel={updateNodeLabel}
+            updateEdgeLabel={updateEdgeLabel}
+            deleteEdge={deleteEdge}
+            clearReactFlowDiagram={clearReactFlowDiagram}
+            createShareableLink={createShareableLink}
+            toggleGrid={toggleGrid}
+            downloadFlowDiagramAsPng={downloadFlowDiagramAsPng}
+            copyFlowDiagramAsPng={copyFlowDiagramAsPng}
+          />
+        )}
+      </div>
 
       <div
         className={clsx(
@@ -843,7 +853,7 @@ export default function DiagramOrChartView({
                       (context.chartJsData && !context.chartJsData.type)
                     }
                   >
-                    Download Chart
+                    <ArrowDownTrayIcon className="h-6 w-6" />
                   </button>
                   <button
                     type="button"
@@ -854,10 +864,13 @@ export default function DiagramOrChartView({
                       (context.chartJsData && !context.chartJsData.type)
                     }
                   >
-                    Share
+                    <ShareIcon className="h-6 w-6" />
                   </button>
                 </span>
-                <canvas id="myChart"></canvas>
+                <canvas
+                  id="myChart"
+                  className="mx-auto my-4 max-h-96 max-w-7xl min-w-full"
+                ></canvas>
               </div>
             )}
             {checkIfMermaidDiagram(type) && (

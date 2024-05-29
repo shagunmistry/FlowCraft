@@ -107,7 +107,7 @@ export async function POST(req: Request) {
           headers: {
             'content-type': 'application/json',
           },
-          status: 400,
+          status: 401,
         },
       )
     }
@@ -119,76 +119,127 @@ export async function POST(req: Request) {
   const type = json.type as DiagramOrChartType | TempMermaidDiagramType
 
   let contextText = ''
+  let finalResult = ''
+
   if (type === 'Flow Diagram' || type === 'Chart') {
     contextText = await getEmbeddingForContext(type, contextText)
-  }
 
-  const assistantMessage1: ChatCompletionMessageParam = {
-    role: 'assistant',
-    content: getDiagramPrompt(type, contextText),
-  }
+    const assistantMessage1: ChatCompletionMessageParam = {
+      role: 'assistant',
+      content: getDiagramPrompt(type, contextText),
+    }
 
-  const assistantMessage3: ChatCompletionMessageParam = {
-    role: 'assistant',
-    content:
-      type === 'Flow Diagram'
-        ? promptForExampleCode
-        : type === 'Chart'
-          ? promptForChartJsExampleCode
-          : '',
-  }
+    const assistantMessage3: ChatCompletionMessageParam = {
+      role: 'assistant',
+      content:
+        type === 'Flow Diagram'
+          ? promptForExampleCode
+          : type === 'Chart'
+            ? promptForChartJsExampleCode
+            : '',
+    }
 
-  const userMessage: ChatCompletionMessageParam = {
-    role: 'user',
-    content:
-      type === 'Flow Diagram'
-        ? promptForUserMessage(diagramTitle, diagramDescription)
-        : type === 'Chart'
-          ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
-          : promptForUserMessageForMermaid(diagramTitle, diagramDescription),
-  }
+    const userMessage: ChatCompletionMessageParam = {
+      role: 'user',
+      content:
+        type === 'Flow Diagram'
+          ? promptForUserMessage(diagramTitle, diagramDescription)
+          : type === 'Chart'
+            ? promptForUserMessageForChartJs(diagramTitle, diagramDescription)
+            : promptForUserMessageForMermaid(diagramTitle, diagramDescription),
+    }
 
-  const userMessage2: ChatCompletionMessageParam = {
-    role: 'user',
-    content:
-      type === 'Flow Diagram'
-        ? promptForResponse
-        : type === 'Chart'
-          ? promptForChartJsResponse
-          : '',
-  }
+    const userMessage2: ChatCompletionMessageParam = {
+      role: 'user',
+      content:
+        type === 'Flow Diagram'
+          ? promptForResponse
+          : type === 'Chart'
+            ? promptForChartJsResponse
+            : '',
+    }
 
-  const arrayOfMessages = [
-    assistantMessage1,
-    assistantMessage3,
-    userMessage2,
-    userMessage,
-  ]
+    const arrayOfMessages = [
+      assistantMessage1,
+      assistantMessage3,
+      userMessage2,
+      userMessage,
+    ]
 
-  const res = await openAiModel.chat.completions.create({
-    model: OPEN_AI_MODEL,
-    messages: arrayOfMessages,
-    temperature: 0.8,
-    max_tokens: 2300,
-    response_format: { type: 'json_object' },
-  })
+    const res = await openAiModel.chat.completions.create({
+      model: OPEN_AI_MODEL,
+      messages: arrayOfMessages,
+      temperature: 0.8,
+      max_tokens: 2300,
+      response_format: { type: 'json_object' },
+    })
 
-  console.log('1. Response from OpenAI: ', res.choices[0].message.content)
-  if (res?.choices?.[0]?.message) {
-    // if the response includes ```json or ``` then we need to extract the json
-    // and return it as the result
-    const response = res.choices[0].message.content as string
-    const lowercasejsonMatch = response.match(/```json\n([\s\S]*?)\n```/)
-    const uppercasejsonMatch = response.match(/```JSON\n([\s\S]*?)\n```/)
-    const result = lowercasejsonMatch
-      ? lowercasejsonMatch[1]
-      : uppercasejsonMatch
-        ? uppercasejsonMatch[1]
-        : null
+    console.log('1. Response from OpenAI: ', res.choices[0].message.content)
+    if (res?.choices?.[0]?.message) {
+      // if the response includes ```json or ``` then we need to extract the json
+      // and return it as the result
+      const response = res.choices[0].message.content as string
+      const lowercasejsonMatch = response.match(/```json\n([\s\S]*?)\n```/)
+      const uppercasejsonMatch = response.match(/```JSON\n([\s\S]*?)\n```/)
+      const result = lowercasejsonMatch
+        ? lowercasejsonMatch[1]
+        : uppercasejsonMatch
+          ? uppercasejsonMatch[1]
+          : null
 
-    console.log('2. Response from OpenAI: ', result)
+      console.log('2. Response from OpenAI: ', result)
 
-    if (result) {
+      if (result) {
+        const { data: insertData, error: insertError } = await supabaseClient
+          .from('diagrams')
+          .insert([
+            {
+              title: diagramTitle,
+              description: diagramDescription,
+              type,
+              data: JSON.stringify(result),
+              created_at: new Date().toISOString(),
+              user_id: userData.user?.id,
+              private: true,
+            },
+          ])
+          .select('id')
+
+        if (insertError) {
+          console.error(
+            'Error inserting diagram data while generating diagram:',
+            insertError,
+          )
+          return new Response(
+            JSON.stringify({
+              error: 'Error inserting diagram data while generating diagram',
+            }),
+            {
+              headers: {
+                'content-type': 'application/json',
+              },
+              status: 401,
+            },
+          )
+        }
+
+        console.log('Insert Data: ', insertData)
+        console.log('Insert Error: ', insertError)
+        return new Response(
+          JSON.stringify({
+            result,
+            id: insertData[0].id,
+          }),
+          {
+            headers: {
+              'content-type': 'application/json',
+            },
+          },
+        )
+      }
+
+      console.log('3. Response from OpenAI: ', res.choices[0].message.content)
+
       const { data: insertData, error: insertError } = await supabaseClient
         .from('diagrams')
         .insert([
@@ -196,10 +247,9 @@ export async function POST(req: Request) {
             title: diagramTitle,
             description: diagramDescription,
             type,
-            data: JSON.stringify(result),
+            data: JSON.stringify(response),
             created_at: new Date().toISOString(),
             user_id: userData.user?.id,
-            private: true,
           },
         ])
         .select('id')
@@ -209,6 +259,7 @@ export async function POST(req: Request) {
           'Error inserting diagram data while generating diagram:',
           insertError,
         )
+
         return new Response(
           JSON.stringify({
             error: 'Error inserting diagram data while generating diagram',
@@ -222,11 +273,9 @@ export async function POST(req: Request) {
         )
       }
 
-      console.log('Insert Data: ', insertData)
-      console.log('Insert Error: ', insertError)
       return new Response(
         JSON.stringify({
-          result,
+          result: res.choices[0].message.content,
           id: insertData[0].id,
         }),
         {
@@ -236,45 +285,70 @@ export async function POST(req: Request) {
         },
       )
     }
+  } else {
+    const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
+    const res = await fetch(`${API_URL}/diagrams/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({
+        title: diagramTitle,
+        description: diagramDescription,
+        type,
+        source: 'ui',
+      }),
+    })
 
-    console.log('3. Response from OpenAI: ', res.choices[0].message.content)
+    if (res.status !== 200) {
+      return new Response(
+        JSON.stringify({
+          error: 'Failed to generate diagram',
+        }),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+          status: 500,
+        },
+      )
+    }
 
-    const { data: insertData, error: insertError } = await supabaseClient
+    const data = await res.json()
+
+    const mermaid_code = data.response.mermaid_code
+    const { data: insertData } = await supabaseClient
       .from('diagrams')
       .insert([
         {
           title: diagramTitle,
           description: diagramDescription,
           type,
-          data: JSON.stringify(response),
+          data: mermaid_code,
           created_at: new Date().toISOString(),
           user_id: userData.user?.id,
         },
       ])
       .select('id')
 
-    if (insertError) {
-      console.error(
-        'Error inserting diagram data while generating diagram:',
-        insertError,
-      )
-
+    if (!insertData) {
       return new Response(
         JSON.stringify({
-          error: 'Error inserting diagram data while generating diagram',
+          error: 'Failed to generate diagram',
         }),
         {
           headers: {
             'content-type': 'application/json',
           },
-          status: 401,
+          status: 500,
         },
       )
     }
 
     return new Response(
       JSON.stringify({
-        result: res.choices[0].message.content,
+        result: mermaid_code,
         id: insertData[0].id,
       }),
       {
