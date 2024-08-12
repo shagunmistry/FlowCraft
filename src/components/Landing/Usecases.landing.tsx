@@ -23,7 +23,7 @@ const useCases = [
   {
     name: 'Stakeholder Communication.',
     description:
-      'Use diagrams to communicate ideas and compltex concepts to stakeholders, clients, and team members.',
+      'Use diagrams to communicate ideas and complex concepts to stakeholders, clients, and team members.',
     icon: ArrowPathIcon,
   },
   {

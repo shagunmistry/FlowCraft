@@ -1,4 +1,3 @@
-
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -14,6 +13,36 @@ export type SharedDiagramResult = {
   data: string
   title: string
 }
+
+export const EXAMPLES = [
+  {
+    title: 'Order fulfillment Process Flow',
+    source: 'https://tailwindui.com/img/ecommerce-images/home-page-01-hero.jpg',
+    description:
+      'A flow diagram showing steps like order received, order processed, order shipped, and order delivered.',
+    markdown: `
+
+      # Order fulfillment Process Flow
+      The order fulfillment process is the backbone of any e-commerce business. It's the sequence of steps involved in receiving, processing, and delivering a customer's order. A well-optimized fulfillment process is crucial for customer satisfaction, operational efficiency, and overall business success.
+
+      ## Why is the order fulfillment process important?
+      1. **Visualization**: A flowchart provides a clear visual representation of the entire process, making it easy to understand the flow of activities and identify potential bottlenecks.
+      2. **Communication**: It serves as a common reference for all teams involved in the process (sales, inventory, shipping, customer service), ensuring everyone is on the same page.
+      3. **Optimization**: By analyzing the flowchart, you can identify areas for improvement, streamline operations, and reduce errors.
+      4. **Training**: It's a valuable tool for training new employees, helping them quickly grasp the steps involved in fulfilling orders.
+
+      ## Prompt Used
+      Create a flow diagram showing the steps involved in the order fulfillment process. The diagram should include the following steps:
+      - Receive Order (Online or Offline)
+      - Check Inventory Availability
+      - Process Payment
+      - Pack Order
+      - Ship Order
+      - Deliver Order
+      `,
+    id: 1,
+  },
+]
 
 export type DiagramOrChartType =
   | 'Whiteboard'
@@ -41,56 +70,6 @@ export enum DiagramType {
   ZenUML = 'zenuml',
   Sankey = 'sankey',
 }
-
-interface Option {
-  title: string
-  emoji: string
-  link: string // Replace with actual links to corresponding pages
-  source: string
-  description: string
-  badgeType?: 'popular' | 'new' | 'coming-soon' | 'experimental'
-}
-
-// export const navigationOptions: Option[] = [
-//   {
-//     title: 'Flow Diagram',
-//     emoji: '🔀',
-//     link: '/dashboard/flow-diagram',
-//     source:
-//       'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_diagram.jpg?alt=media&token=779cd4b2-3f5d-43e4-999e-369405c4aeff',
-//     description:
-//       'Flow diagrams are a great way to Visually represent processes, workflows, and algorithms with clear steps and decision points.',
-//     badgeType: 'popular',
-//   },
-//   {
-//     title: 'Complex Diagrams',
-//     emoji: '🧜‍♂️',
-//     link: '/dashboard/mermaid',
-//     source:
-//       'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2FMindmap_screenshot.png?alt=media&token=6ba9fbdf-df6e-49b2-bc71-7f9ce55d821d',
-//     description:
-//       'Create complex diagrams like sequence diagrams, user journeys, mind maps, and more!',
-//     badgeType: 'experimental',
-//   },
-//   // {
-//   //   title: 'Whiteboard',
-//   //   emoji: '🎨',
-//   //   link: '/dashboard/whiteboard',
-//   //   source:
-//   //     'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_whiteboard.jpg?alt=media&token=eb068b8d-bfcf-41bd-9b5d-986ad0ed235f',
-//   //   description:
-//   //     'Brainstorm visually using freehand drawing, shapes, and text. This is great for freeform thinking and collaboration.',
-//   // },
-//   {
-//     title: 'Chart',
-//     emoji: '📊',
-//     link: '/dashboard/chart',
-//     source:
-//       'https://firebasestorage.googleapis.com/v0/b/shagunresume.appspot.com/o/FlowCraft%2Fpexels_chart.jpg?alt=media&token=6223a617-0ef3-4dd2-8f40-1dfbee282773',
-//     description:
-//       'Communicate data insights effectively with various chart types like bar charts, line charts, and pie charts.',
-//   },
-// ]
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
