@@ -1,5 +1,4 @@
 import { PlayIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { DiagramData } from '@/lib/DiagramType.db'
@@ -7,10 +6,9 @@ import { DiagramData } from '@/lib/DiagramType.db'
 import { GET as _getDiagrams } from '@/app/api/get-diagrams/route'
 import { GET as _getShares } from '@/app/api/shares/route'
 import { Metadata } from 'next'
-import { cn, getShareableLinkUrl, SharedDiagramResult } from '@/lib/utils'
+import { getShareableLinkUrl, SharedDiagramResult } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
-import { Badge } from '@/components/Badge'
 import DashboardHeading from '@/components/Dashboard/Header.dashboard'
 
 const errorMessagePage =
@@ -191,12 +189,13 @@ export default async function Dashboard() {
                   Ready to get started?
                 </h2>
                 <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
-                  <a
+                  <Link
                     href="/dashboard/diagrams/new"
                     className="rounded-md bg-pink-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+                    // onClick={() => router.push('/dashboard/diagrams/new')}
                   >
                     Create Diagram
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

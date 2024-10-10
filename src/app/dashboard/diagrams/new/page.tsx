@@ -33,6 +33,7 @@ import { PresentationChartLineIcon } from '@heroicons/react/24/outline'
 import { track } from '@vercel/analytics'
 
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { useContext, useState } from 'react'
 
 enum StepsStatus {
@@ -238,7 +239,7 @@ const availableDiagrams: {
   },
 ]
 
-export default function NewDiagrampage() {
+export default function NewDiagramPage() {
   const context = useContext(DiagramContext)
 
   const [selectedDiagram, setSelectedDiagram] = useState<string | null>(null)
