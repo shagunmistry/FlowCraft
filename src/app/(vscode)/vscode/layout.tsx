@@ -26,10 +26,10 @@ export default function VsCodePageLaytout({
       <GoogleAnalytics gaId="AW-16550420965" />
 
       <main>
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="relative">{children}</div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
       <Analytics />
     </>
   )
