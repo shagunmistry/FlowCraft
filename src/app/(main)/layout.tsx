@@ -90,7 +90,7 @@ export default function MainLayout({
         <main>
           <div className="relative">{children}</div>
         </main>
-        <Footer />
+        {/* <Footer /> */}
 
         <Analytics />
       </DiagramContext.Provider>

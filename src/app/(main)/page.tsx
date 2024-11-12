@@ -8,6 +8,7 @@ import {
 
 import MainLanding from '@/components/Landing/Main.landing'
 import { Metadata } from 'next'
+import MaintenancePage from '@/components/MaintenancePage'
 
 const getEmbeddings = async () => {
   const reactFlowCodeDocs = await getReactCodeFlowJSONFile()
@@ -58,7 +59,12 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  await getEmbeddings()
+  // await getEmbeddings()
 
-  return <MainLanding />
+  // return <MainLanding />
+  return (
+    <>
+      <MaintenancePage />
+    </>
+  )
 }
