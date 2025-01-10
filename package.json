@@ -1,6 +1,6 @@
 {
-  "name": "tailwindui-transmit",
-  "version": "0.1.0",
+  "name": "flowcraft-shagunmistry",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -37,6 +37,7 @@
     "gpt3-tokenizer": "^1.1.5",
     "html-to-image": "^1.11.11",
     "lottie-react": "^2.4.0",
+    "lucide-react": "^0.469.0",
     "mermaid": "^10.9.0",
     "next": "13.4.16",
     "next-mdx-remote": "^4.4.1",

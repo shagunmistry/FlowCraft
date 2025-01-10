@@ -121,6 +121,10 @@ export async function POST(req: Request) {
   let contextText = ''
   let finalResult = ''
 
+  console.log('Type: ', type)
+  console.log('Title: ', diagramTitle)
+  console.log('Description: ', diagramDescription)
+
   if (type === 'Flow Diagram' || type === 'Chart') {
     contextText = await getEmbeddingForContext(type, contextText)
 
@@ -302,6 +306,7 @@ export async function POST(req: Request) {
     })
 
     if (res.status !== 200) {
+      console.error('Failed to generate diagram: ', await res.json())
       return new Response(
         JSON.stringify({
           error: 'Failed to generate diagram',
@@ -333,6 +338,7 @@ export async function POST(req: Request) {
       .select('id')
 
     if (!insertData) {
+      console.log('Failed: ', insertData)
       return new Response(
         JSON.stringify({
           error: 'Failed to generate diagram',

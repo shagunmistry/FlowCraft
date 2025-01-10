@@ -53,6 +53,8 @@ import clsx from 'clsx'
 import dagre from 'dagre'
 import ConnectionLineComponent from './ReactFlow/ConnectionLineComponent'
 import CodeEditorDialog from './Mermaid/CodeEditorDialog.mermaid'
+import MermaidViewer from './MermaidChartViewer'
+import VisualizationContainer from './VisualizationContainer'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
@@ -705,27 +707,53 @@ export default function DiagramOrChartView({
     setOpenNotification(true)
   }
 
-  const downloadMermaidDiagramAsPng = async () => {
-    const mermaidContainer = document.querySelector('.mermaid') as HTMLElement
+  interface DownloadMermaidDiagramAsPngParams {
+    svgContent: string
+    filename?: string
+  }
 
-    if (!mermaidContainer) {
-      console.error('mermaidContainer not found')
-      return
+  const downloadMermaidDiagramAsPng = ({
+    svgContent,
+    filename = 'diagram',
+  }: {
+    svgContent: string
+    filename?: string
+  }): void => {
+    // Create a clean SVG string
+    const parser = new DOMParser()
+    const svgDoc = parser.parseFromString(svgContent, 'image/svg+xml')
+    const svgElement = svgDoc.querySelector('svg')
+
+    // Ensure SVG has width and height
+    if (!svgElement?.hasAttribute('width')) {
+      svgElement?.setAttribute('width', '800')
+    }
+    if (!svgElement?.hasAttribute('height')) {
+      svgElement?.setAttribute('height', '600')
     }
 
-    const imageWidth = 1080
-    const imageHeight = 768
+    // Create clean SVG string
+    const serializer = new XMLSerializer()
+    if (!svgElement) {
+      console.error('SVG element not found')
+      return
+    }
+    const svgString = serializer.serializeToString(svgElement)
 
-    const dataUrl = await toPng(mermaidContainer, {
-      backgroundColor: '#FFFFFF',
-      width: imageWidth,
-      height: imageHeight,
-    })
+    // Create downloadable blob
+    const blob = new Blob([svgString], { type: 'image/svg+xml' })
+    const url = URL.createObjectURL(blob)
 
-    const fileName = context.title
-      ? context.title.replace(' ', '-')
-      : 'mermaid-diagram'
-    downloadImage(dataUrl, fileName)
+    // Create download link
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${filename}.svg`
+    document.body.appendChild(link)
+    link.click()
+
+    // Cleanup
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
   }
 
   const copyMermaidDiagramAsPng = async () => {
@@ -796,151 +824,32 @@ export default function DiagramOrChartView({
         )}
       </div>
 
-      <div
-        className={clsx(
-          'ml-auto mr-auto h-screen w-11/12 rounded-xl bg-gray-100 shadow-lg',
-          type !== 'Whiteboard' ? 'border-2 border-gray-500' : '',
-        )}
-      >
-        {context.loading ? (
-          <Loader />
-        ) : (
-          <>
-            {context.type === 'Flow Diagram' && (
-              <>
-                <ReactFlow
-                  attributionPosition="bottom-left"
-                  className="react-flow__container"
-                  connectionLineComponent={ConnectionLineComponent}
-                  connectionMode={ConnectionMode.Loose}
-                  defaultEdgeOptions={defaultEdgeOptions}
-                  defaultViewport={defaultViewport}
-                  edges={edges}
-                  edgeTypes={edgeTypes}
-                  fitView
-                  nodes={nodes}
-                  nodeTypes={nodeTypes}
-                  onConnect={onConnect}
-                  onEdgesChange={onEdgesChange}
-                  onEdgeUpdate={onEdgeUpdate}
-                  onNodesChange={onNodesChange}
-                  snapGrid={[25, 25]}
-                  snapToGrid={true}
-                >
-                  <Controls />
-                  {toggleReactFlowGird && (
-                    <Background
-                      color="#808080"
-                      gap={40}
-                      variant={BackgroundVariant.Cross}
-                    />
-                  )}
-                </ReactFlow>
-              </>
-            )}
-            {type === 'Whiteboard' && (
-              <Whiteboard inputJson={tlDrawInputJson} />
-            )}
-            {type === 'Chart' && (
-              <div className="mx-auto h-screen max-w-7xl items-center justify-center overflow-y-auto rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
-                <span className="isolate inline-flex rounded-md shadow-sm">
-                  <button
-                    type="button"
-                    className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                    onClick={donwloadChart}
-                    disabled={
-                      context.loading ||
-                      (context.chartJsData && !context.chartJsData.type)
-                    }
-                  >
-                    <ArrowDownTrayIcon className="h-6 w-6" />
-                  </button>
-                  <button
-                    type="button"
-                    className="relative ml-2 inline-flex items-center rounded-lg bg-indigo-700 p-2 px-3 py-2 text-sm font-semibold text-gray-900 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-800 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                    onClick={createShareableLink}
-                    disabled={
-                      context.loading ||
-                      (context.chartJsData && !context.chartJsData.type)
-                    }
-                  >
-                    <ShareIcon className="h-6 w-6" />
-                  </button>
-                </span>
-                <canvas
-                  id="myChart"
-                  className="mx-auto my-4 max-h-96 max-w-7xl min-w-full"
-                ></canvas>
-              </div>
-            )}
-            {checkIfMermaidDiagram(type) && (
-              <div className="mx-auto h-screen max-w-7xl items-center justify-center overflow-y-auto rounded-xl bg-white px-4 py-4 shadow-lg sm:px-6 lg:px-8">
-                <button
-                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                  onClick={downloadMermaidDiagramAsPng}
-                  disabled={
-                    isMermaidError || context.loading || mermaidSVG === ''
-                  }
-                >
-                  <ArrowDownTrayIcon className="h-6 w-6" />
-                </button>
-                <button
-                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                  onClick={copyMermaidDiagramAsPng}
-                  disabled={
-                    isMermaidError || context.loading || mermaidSVG === ''
-                  }
-                >
-                  {copied ? (
-                    <CheckCircleIcon className="h-6 w-6" />
-                  ) : (
-                    <DocumentDuplicateIcon className="h-6 w-6" />
-                  )}
-                </button>
-                <button
-                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                  onClick={createShareableLink}
-                  disabled={
-                    isMermaidError || context.loading || mermaidSVG === ''
-                  }
-                >
-                  <ShareIcon className="h-6 w-6" />
-                </button>
-                <button
-                  className="mx-2 ml-2 rounded-md bg-pink-500 p-2 text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                  onClick={editMermaidDiagramCode}
-                  disabled={
-                    isMermaidError || context.loading || mermaidSVG === ''
-                  }
-                >
-                  <PencilIcon className="h-6 w-6" />
-                </button>
-                {isMermaidError ? (
-                  <>
-                    <div className="text-center text-red-500">
-                      There was an error generating the diagram. Please try
-                      again later.
-                    </div>
-                    <CreateDiagramAtTopButton />
-                  </>
-                ) : mermaidSVG === '' || mermaidSVG === null ? (
-                  <>
-                    <div className="text-center text-red-500">
-                      No data to display
-                    </div>
-                    <CreateDiagramAtTopButton />
-                  </>
-                ) : (
-                  <div
-                    className="mermaid mx-auto h-full w-full p-4 text-center"
-                    dangerouslySetInnerHTML={{ __html: mermaidSVG }}
-                  ></div>
-                )}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      <VisualizationContainer
+        type={type}
+        context={context}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onEdgeUpdate={onEdgeUpdate}
+        defaultEdgeOptions={defaultEdgeOptions}
+        defaultViewport={defaultViewport}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        ConnectionLineComponent={ConnectionLineComponent}
+        toggleReactFlowGird={toggleReactFlowGird}
+        tlDrawInputJson={tlDrawInputJson}
+        donwloadChart={donwloadChart}
+        createShareableLink={createShareableLink}
+        mermaidSVG={mermaidSVG}
+        isMermaidError={isMermaidError}
+        downloadMermaidDiagramAsPng={downloadMermaidDiagramAsPng}
+        copyMermaidDiagramAsPng={copyMermaidDiagramAsPng}
+        editMermaidDiagramCode={editMermaidDiagramCode}
+        checkIfMermaidDiagram={checkIfMermaidDiagram}
+        Whiteboard={Whiteboard}
+      />
       <SuccessDialog
         buttonText="View Diagram"
         header="Success!"

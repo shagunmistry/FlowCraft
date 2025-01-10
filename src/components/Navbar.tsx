@@ -1,25 +1,12 @@
 'use client'
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
-import Image from 'next/image'
+import { Fragment, useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { ArrowDownCircleIcon } from '@heroicons/react/20/solid'
-
-const navigation = [
-  { name: 'Start Here', href: '/dashboard' },
-  { name: 'For Teachers', href: '/demos/teachers' },
-  { name: 'For Students', href: '/demos/students' },
-  { name: 'For Healthcare', href: '/demos/healthcare' },
-  { name: 'For Engineers', href: '/demos/engineers' },
-  { name: 'Blog', href: '/blogs' },
-  { name: 'Release Notes', href: '/release-notes' },
-  { name: 'Pricing', href: '/pricing' },
-  { name: 'Contact Us', href: '/support' },
-]
+import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
+import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const mainNavigation = [
   { name: 'Start Here', href: '/dashboard' },
@@ -38,126 +25,191 @@ const useCasesNavigation = [
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [useCasesOpen, setUseCasesOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <header className="bg-gray-100">
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
-        aria-label="Global"
-      >
-        <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">FlowCraft</span>
-            <Image
-              className="h-14 w-auto transform rounded-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl"
-              src={FlowCraftLogo}
-              alt="FlowCraft Logo"
-            />
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={cn(
+        'sticky top-0 z-50 backdrop-blur-lg transition-all duration-300',
+        scrolled ? 'bg-white/80 shadow-sm' : 'bg-white/0',
+      )}
+    >
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex lg:flex-1"
+        >
+          <Link href="/" className="group relative">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Image
+                className="h-12 w-auto rounded-xl"
+                src={FlowCraftLogo}
+                alt="FlowCraft Logo"
+                priority
+              />
+            </motion.div>
           </Link>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-indigo-300"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <div className="hidden lg:flex lg:gap-x-12">
-          <div className="space-x-4">
-            {mainNavigation.map((item) => (
-              <Link
+        </motion.div>
+
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex lg:gap-x-6">
+          <div className="flex items-center space-x-1">
+            {mainNavigation.map((item, index) => (
+              <motion.div
                 key={item.name}
-                href={item.href}
-                className="rounded-lg bg-indigo-500 px-3 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-pink-500"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
               >
-                {item.name}
-              </Link>
+                <Link
+                  href={item.href}
+                  className="rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
             ))}
-            <Menu as="a" className="">
-              <Menu.Button className="rounded-lg bg-indigo-500 px-3 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-pink-500">
-                <ArrowDownCircleIcon className="-mt-1 mr-3 inline-block h-5 w-5" />
-                Use Cases
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
+
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative"
+            >
+              <motion.button
+                onClick={() => setUseCasesOpen(!useCasesOpen)}
+                className="flex items-center rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
               >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {useCasesNavigation.map((item) => (
-                    <Menu.Item key={item.name}>
-                      {({ active }) => (
+                Use Cases
+                <motion.div
+                  animate={{ rotate: useCasesOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDownIcon className="ml-1 h-4 w-4" />
+                </motion.div>
+              </motion.button>
+
+              <AnimatePresence>
+                {useCasesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute right-0 mt-2 w-48 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5"
+                  >
+                    {useCasesNavigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block rounded-xl px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setMobileMenuOpen(true)}
+          className="rounded-full p-2 text-gray-700 lg:hidden"
+        >
+          <div className="space-y-1.5">
+            <motion.span className="block h-0.5 w-6 bg-gray-700" />
+            <motion.span className="block h-0.5 w-6 bg-gray-700" />
+          </div>
+        </motion.button>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 lg:hidden"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 20 }}
+              className="fixed inset-y-0 right-0 w-full bg-white px-6 py-6 sm:max-w-sm"
+            >
+              <div className="flex items-center justify-between">
+                <Link href="/">
+                  <Image
+                    className="h-12 w-auto"
+                    src={FlowCraftLogo}
+                    alt="FlowCraft Logo"
+                  />
+                </Link>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="rounded-full p-2"
+                >
+                  <XMarkIcon className="h-6 w-6 text-gray-700" />
+                </motion.button>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="mt-8 flow-root bg-white"
+              >
+                <div className="space-y-2">
+                  {[...mainNavigation, ...useCasesNavigation].map(
+                    (item, index) => (
+                      <motion.div
+                        key={item.name}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
                         <Link
                           href={item.href}
-                          className={cn(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm',
-                          )}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
                         >
                           {item.name}
                         </Link>
-                      )}
-                    </Menu.Item>
-                  ))}
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </div>
-        </div>
-      </nav>
-
-      <Dialog
-        as="div"
-        className="lg:hidden"
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-      >
-        <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-700 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">FlowCraft</span>
-              <Image
-                className="h-14 w-auto transform rounded-lg shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl"
-                src={FlowCraftLogo}
-                alt="FlowCraft Logo"
-              />
-            </Link>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="-mx-3 block rounded-lg bg-white px-3 py-2 text-base font-semibold leading-7 text-pink-700 hover:bg-gray-50 hover:text-gray-900"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Dialog.Panel>
-      </Dialog>
-    </header>
+                      </motion.div>
+                    ),
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   )
 }

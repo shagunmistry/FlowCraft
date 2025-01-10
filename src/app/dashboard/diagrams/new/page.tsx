@@ -35,6 +35,9 @@ import { track } from '@vercel/analytics'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { useContext, useState } from 'react'
+import FormStep from './FormStep'
+import DiagramSelectionGrid from './DiagramSelectionGrid'
+import ProgressStepper from './ProgressStepper'
 
 enum StepsStatus {
   Complete = 'complete',
@@ -430,88 +433,7 @@ export default function NewDiagramPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <nav aria-label="Progress">
-        <ol
-          role="list"
-          className="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0"
-        >
-          {steps.map((step, stepIdx) => (
-            <li key={step.name} className="relative md:flex md:flex-1">
-              {step.status === 'complete' ? (
-                <motion.div
-                  className="group flex w-full items-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  <span className="flex items-center px-6 py-4 text-sm font-medium">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
-                      <CheckIcon
-                        className="h-6 w-6 text-white"
-                        aria-hidden="true"
-                      />
-                    </span>
-                    <span className="ml-4 text-sm font-medium text-gray-900">
-                      {step.name}
-                    </span>
-                  </span>
-                </motion.div>
-              ) : step.status === 'current' ? (
-                <motion.div
-                  className="flex items-center px-6 py-4 text-sm font-medium"
-                  aria-current="step"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-indigo-600">
-                    <span className="text-indigo-600">{step.id}</span>
-                  </span>
-                  <span className="ml-4 text-sm font-medium text-indigo-600">
-                    {step.name}
-                  </span>
-                </motion.div>
-              ) : (
-                <motion.div className="group flex items-center">
-                  <span className="flex items-center px-6 py-4 text-sm font-medium">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300 group-hover:border-gray-400">
-                      <span className="text-gray-500 group-hover:text-gray-900">
-                        {step.id}
-                      </span>
-                    </span>
-                    <span className="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">
-                      {step.name}
-                    </span>
-                  </span>
-                </motion.div>
-              )}
-
-              {stepIdx !== steps.length - 1 ? (
-                <>
-                  {/* Arrow separator for lg screens and up */}
-                  <div
-                    className="absolute right-0 top-0 hidden h-full w-5 md:block"
-                    aria-hidden="true"
-                  >
-                    <svg
-                      className="h-full w-full text-gray-300"
-                      viewBox="0 0 22 80"
-                      fill="none"
-                      preserveAspectRatio="none"
-                    >
-                      <path
-                        d="M0 -2L20 40L0 82"
-                        vectorEffect="non-scaling-stroke"
-                        stroke="currentcolor"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      </nav>
+      {/* <ProgressStepper steps={steps} /> */}
 
       <section aria-labelledby="diagram-options" className="mt-8">
         {/** Prev Button */}
@@ -570,114 +492,16 @@ export default function NewDiagramPage() {
         {/** Show loader */}
         {currentStep === 0 && <PageLoader />}
 
-        {currentStep === 1 && (
-          <div className="overflow-hidden rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3 sm:gap-px">
-            {availableDiagrams.map((availableDiagram, diagramIdx) => (
-              <motion.div
-                onClick={() => handleDiagramSelection(availableDiagram.id)}
-                key={availableDiagram.title}
-                className={cn(
-                  'group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500',
-                )}
-                whileHover={{
-                  scale: 1.05,
-                  zIndex: 1,
-                  transition: { duration: 0.3 },
-                  boxShadow:
-                    '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.1)',
-                  borderRadius: '10px',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <>
-                  <span
-                    className={cn(
-                      availableDiagram.iconBackground,
-                      availableDiagram.iconForeground,
-                      'inline-flex rounded-lg p-3 ring-4 ring-white',
-                    )}
-                  >
-                    <availableDiagram.icon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </>
-                <div className="mt-8">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    <span className="absolute inset-0" aria-hidden="true" />
-                    {availableDiagram.title}
-                  </h3>
-                  <motion.p
-                    className="mt-1 text-sm leading-5 text-gray-500"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {availableDiagram.description}
-                  </motion.p>
-                </div>
-                <motion.span
-                  className="pointer-events-none absolute right-6 top-6 text-gray-300 group-hover:text-gray-400"
-                  aria-hidden="true"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  {selectedDiagram === availableDiagram.id ? (
-                    <CheckIcon
-                      className="h-6 w-6 text-indigo-600"
-                      aria-hidden="true"
-                    />
-                  ) : null}
-                </motion.span>
-              </motion.div>
-            ))}
-          </div>
-        )}
+        <DiagramSelectionGrid
+          availableDiagrams={availableDiagrams}
+          currentStep={currentStep}
+          handleDiagramSelection={handleDiagramSelection}
+          selectedDiagram={selectedDiagram}
+          key={currentStep}
+        />
 
         {/** Show the diagram title input box and description text area */}
-        {currentStep === 2 && (
-          <div>
-            <>
-              <label
-                htmlFor="diagram-title"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Diagram Title
-              </label>
-              <div className="my-6">
-                <div className="flex rounded-md shadow-md ring-1 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-lg">
-                  <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-                    Title:
-                  </span>
-                  <input
-                    type="text"
-                    name="diagram-title"
-                    id="diagram-title"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="Enter a title for your diagram"
-                  />
-                </div>
-              </div>
-            </>
-            <>
-              <label
-                htmlFor="diagram-description"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Description
-              </label>
-              <div className="mt-2">
-                <textarea
-                  rows={10}
-                  name="diagram-description"
-                  id="diagram-description"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={''}
-                />
-              </div>
-            </>
-          </div>
-        )}
+        <FormStep currentStep={currentStep} />
 
         {currentStep === 3 && (
           <>

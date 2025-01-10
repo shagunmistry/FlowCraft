@@ -1,203 +1,225 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { PlusIcon, UserIcon } from '@heroicons/react/20/solid'
-import { cn } from '@/lib/utils'
-import a from 'next/link'
+'use client'
 
-import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import Image from 'next/image'
-
-const RandomProfilePicColored = () => {
-  return <UserIcon className="h-6 w-6 text-indigo-500" aria-hidden="true" />
-}
+import { cn } from '@/lib/utils'
+import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
+import { UserIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const NavigationOptions = [
   { title: 'Flow Diagram', link: '/dashboard/flow-diagram' },
   { title: 'Complex Diagrams', link: '/dashboard/mermaid' },
-  // { title: 'Whiteboard', link: '/dashboard/whiteboard' },
   { title: 'Chart', link: '/dashboard/chart' },
 ]
 
+const ProfileMenu = [
+  { title: 'Help', link: '/support' },
+  { title: 'Sign out', link: '/auth/logout' },
+]
+
 export default function DashboardNavbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const closeMenus = () => {
+    setMobileMenuOpen(false)
+    setProfileOpen(false)
+  }
+
   return (
-    <Disclosure as="nav" className="bg-white shadow">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 justify-between">
-              <div className="flex">
-                <div className="-ml-2 mr-2 flex items-center md:hidden">
-                  {/* Mobile menu button */}
-                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                    <span className="absolute -inset-0.5" />
-                    <span className="sr-only">Open main menu</span>
-                    {open ? (
-                      <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Disclosure.Button>
-                </div>
-                <div className="flex flex-shrink-0 items-center">
-                  <a href="/dashboard">
-                    <Image
-                      className="h-8 w-auto"
-                      src={FlowCraftLogo}
-                      alt="FlowCraft"
-                      height={32}
-                      width={32}
-                    />
-                  </a>
-                </div>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={cn(
+        'fixed left-0 right-0 top-0 z-50 backdrop-blur-lg transition-all duration-300',
+        scrolled ? 'bg-white/80 shadow-sm' : 'bg-white/60',
+      )}
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo and Desktop Navigation */}
+          <div className="flex items-center space-x-8">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/dashboard" className="flex items-center">
+                <Image
+                  className="h-10 w-auto"
+                  src={FlowCraftLogo}
+                  alt="FlowCraft"
+                  priority
+                />
+              </Link>
+            </motion.div>
 
-                {/* Desktop navigation */}
-                <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  <a
-                    href="/dashboard"
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Dashboard
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                  {/* <button
-                    type="button"
-                    className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button> */}
-
-                  {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <Menu.Button className="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">Open user menu</span>
-                        <RandomProfilePicColored />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="/support"
-                              className={cn(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              Help
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="/auth/logout"
-                              className={cn(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              Sign out
-                            </a>
-                          )}
-                        </Menu.Item>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
-              </div>
+            <div className="hidden md:flex md:space-x-1">
+              <Link
+                href="/dashboard"
+                className="rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+              >
+                Dashboard
+              </Link>
+              {NavigationOptions.map((item) => (
+                <Link
+                  key={item.title}
+                  href={item.link}
+                  className="rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                >
+                  {item.title}
+                </Link>
+              ))}
             </div>
           </div>
 
-          {/* Mobile navigation */}
-          <Disclosure.Panel className="md:hidden">
-            <div className="space-y-1 pb-3 pt-2">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <a
-                href="/dashboard"
-                className="text-indigo-700 hover:text-indigo-900"
+          {/* Desktop Profile Menu */}
+          <div className="hidden md:flex md:items-center">
+            <motion.div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center rounded-full bg-gray-100 p-2 text-gray-700 transition-colors hover:bg-gray-200"
               >
-                <Disclosure.Button
-                  as="button"
-                  className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-indigo-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
-                >
-                  Dashboard
-                </Disclosure.Button>
-              </a>
+                <UserIcon className="h-5 w-5" />
+              </motion.button>
+
+              <AnimatePresence>
+                {profileOpen && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-40"
+                      onClick={() => setProfileOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ type: 'spring', duration: 0.2 }}
+                      className="absolute right-0 mt-2 w-48 origin-top-right rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5"
+                    >
+                      {ProfileMenu.map((item) => (
+                        <Link
+                          key={item.title}
+                          href={item.link}
+                          className="block rounded-xl px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+                          onClick={closeMenus}
+                        >
+                          {item.title}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setMobileMenuOpen(true)}
+            className="rounded-full p-2 text-gray-700 md:hidden"
+          >
+            <div className="space-y-1.5">
+              <motion.span className="block h-0.5 w-6 bg-gray-700" />
+              <motion.span className="block h-0.5 w-6 bg-gray-700" />
             </div>
-            <div className="border-t border-gray-200 pb-3 pt-4">
-              <div className="flex items-center px-4 sm:px-6">
-                {/* <div className="flex-shrink-0">
-                  <img
-                    className="h-10 w-10 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
-                </div> */}
-                {/* <div className="ml-3">
-                  <div className="text-base font-medium text-gray-800">
-                    Tom Cook
-                  </div>
-                  <div className="text-sm font-medium text-gray-500">
-                    tom@example.com
-                  </div>
-                </div> */}
-                {/* <button
-                  type="button"
-                  className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 md:hidden"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black"
+              onClick={closeMenus}
+            />
+
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 20 }}
+              className="fixed inset-y-0 right-0 w-full bg-white px-6 py-6 sm:max-w-sm"
+            >
+              <div className="flex items-center justify-between">
+                <Image
+                  className="h-10 w-auto"
+                  src={FlowCraftLogo}
+                  alt="FlowCraft"
+                />
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={closeMenus}
+                  className="rounded-full p-2"
                 >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button> */}
+                  <XMarkIcon className="h-6 w-6 text-gray-700" />
+                </motion.button>
               </div>
-              <div className="mt-3 space-y-1">
-                {/* <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
-                >
-                  Your Profile
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
-                >
-                  Settings
-                </Disclosure.Button> */}
-                <Disclosure.Button
-                  as="button"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
-                >
-                  <a
-                    className="rounded-lg bg-indigo-700 px-4 py-2 font-medium leading-5 text-white text-white shadow-xl hover:bg-pink-500"
-                    href="/auth/logout"
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-8 flow-root"
+              >
+                <div className="space-y-2">
+                  <Link
+                    href="/dashboard"
+                    className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                    onClick={closeMenus}
                   >
-                    Logout
-                  </a>
-                </Disclosure.Button>
-              </div>
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+                    Dashboard
+                  </Link>
+                  {NavigationOptions.map((item) => (
+                    <Link
+                      key={item.title}
+                      href={item.link}
+                      className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                      onClick={closeMenus}
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                  <div className="my-4 h-px bg-gray-200" />
+                  {ProfileMenu.map((item) => (
+                    <Link
+                      key={item.title}
+                      href={item.link}
+                      className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                      onClick={closeMenus}
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   )
 }
