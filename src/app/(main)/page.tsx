@@ -59,9 +59,9 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  await getEmbeddings()
+  // await getEmbeddings()
 
-  return <MainLanding />
+  // return <MainLanding />
   return (
     <>
       <MaintenancePage />
