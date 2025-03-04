@@ -2,7 +2,7 @@ import { type Metadata } from 'next'
 
 import '@/styles/tailwind.css'
 import Navbar from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
+import Footer from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/react'
 import { GoogleAnalytics } from '@next/third-parties/google'
 

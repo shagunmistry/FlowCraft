@@ -3,7 +3,7 @@
 import 'reactflow/dist/style.css'
 
 import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
-import { Footer } from '@/components/Footer'
+import Footer from '@/components/Footer'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'

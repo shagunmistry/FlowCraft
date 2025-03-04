@@ -6,18 +6,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
-import { UserIcon } from '@heroicons/react/20/solid'
-import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
-
-const NavigationOptions = [
-  { title: 'Flow Diagram', link: '/dashboard/flow-diagram' },
-  { title: 'Complex Diagrams', link: '/dashboard/mermaid' },
-  { title: 'Chart', link: '/dashboard/chart' },
-]
+import { UserIcon, PlusIcon } from '@heroicons/react/20/solid'
+import {
+  ChevronDownIcon,
+  XMarkIcon,
+  BellIcon,
+} from '@heroicons/react/24/outline'
 
 const ProfileMenu = [
-  { title: 'Help', link: '/support' },
-  { title: 'Sign out', link: '/auth/logout' },
+  { title: 'Account Settings', link: '/account/settings' },
+  { title: 'Your Creations', link: '/account/creations' },
+  { title: 'Help Center', link: '/support' },
+  { title: 'Sign Out', link: '/auth/logout' },
 ]
 
 export default function DashboardNavbar() {
@@ -33,6 +33,22 @@ export default function DashboardNavbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (profileOpen) {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (
+          e.target &&
+          !(e.target as Element).closest('.profile-menu-container')
+        ) {
+          setProfileOpen(false)
+        }
+      }
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }
+  }, [profileOpen])
+
   const closeMenus = () => {
     setMobileMenuOpen(false)
     setProfileOpen(false)
@@ -43,85 +59,133 @@ export default function DashboardNavbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={cn(
-        'fixed left-0 right-0 top-0 z-50 backdrop-blur-lg transition-all duration-300',
-        scrolled ? 'bg-white/80 shadow-sm' : 'bg-white/60',
+        'fixed left-0 right-0 top-0 z-50 backdrop-blur-xl transition-all duration-300',
+        scrolled
+          ? 'border-b border-slate-200/50 bg-white/90 shadow-sm'
+          : 'bg-white/60',
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo and Desktop Navigation */}
+        <div className="flex h-20 items-center justify-between">
+          {/* Logo and Dashboard Link */}
           <div className="flex items-center space-x-8">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/dashboard" className="flex items-center">
-                <Image
-                  className="h-10 w-auto"
-                  src={FlowCraftLogo}
-                  alt="FlowCraft"
-                  priority
-                />
-              </Link>
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative"
+            >
+              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-violet-100 to-indigo-100 opacity-0 blur transition duration-300 group-hover:opacity-100"></div>
+              <div className="relative">
+                <Link href="/dashboard" className="flex items-center">
+                  <Image
+                    className="h-12 w-auto"
+                    src={FlowCraftLogo}
+                    alt="FlowCraft"
+                    priority
+                  />
+                </Link>
+              </div>
             </motion.div>
 
-            <div className="hidden md:flex md:space-x-1">
+            <div className="hidden md:flex md:space-x-2">
               <Link
                 href="/dashboard"
-                className="rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                className="flex items-center rounded-full bg-gradient-to-r from-violet-50 to-indigo-50 px-5 py-2.5 text-sm font-medium text-slate-700 transition-all duration-300 hover:bg-gradient-to-r hover:from-violet-100 hover:to-indigo-100 hover:shadow-sm"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="mr-2 h-4 w-4 text-violet-600"
+                >
+                  <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+                  <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                </svg>
                 Dashboard
               </Link>
-              {NavigationOptions.map((item) => (
-                <Link
-                  key={item.title}
-                  href={item.link}
-                  className="rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
-                >
-                  {item.title}
-                </Link>
-              ))}
+
+              <Link
+                href="/diagrams/new"
+                className="flex items-center rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/40"
+              >
+                <PlusIcon className="mr-2 h-4 w-4" />
+                New Creation
+              </Link>
             </div>
           </div>
 
-          {/* Desktop Profile Menu */}
-          <div className="hidden md:flex md:items-center">
-            <motion.div className="relative">
+          {/* Desktop Actions Menu */}
+          <div className="hidden md:flex md:items-center md:space-x-4">
+            {/* TODO: Notifications */}
+            {/* <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative rounded-full bg-white p-2.5 text-slate-600 shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:text-violet-600 hover:shadow-md"
+            >
+              <BellIcon className="h-5 w-5" />
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-violet-600 text-[10px] font-bold text-white">
+                3
+              </span>
+            </motion.button> */}
+
+            {/* Profile Menu */}
+            <motion.div className="profile-menu-container relative">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center rounded-full bg-gray-100 p-2 text-gray-700 transition-colors hover:bg-gray-200"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setProfileOpen(!profileOpen)
+                }}
+                className="flex items-center rounded-full bg-white p-1.5 pr-3 text-slate-600 shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:text-violet-600 hover:shadow-md"
               >
-                <UserIcon className="h-5 w-5" />
+                <div className="mr-2 h-7 w-7 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-indigo-600">
+                  <UserIcon className="h-7 w-7 text-white" />
+                </div>
+                <span className="text-sm font-medium">Account</span>
+                <ChevronDownIcon
+                  className={cn(
+                    'ml-1 h-4 w-4 transition-transform duration-200',
+                    profileOpen ? 'rotate-180' : '',
+                  )}
+                />
               </motion.button>
 
               <AnimatePresence>
                 {profileOpen && (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="fixed inset-0 z-40"
-                      onClick={() => setProfileOpen(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ type: 'spring', duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-48 origin-top-right rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5"
-                    >
-                      {ProfileMenu.map((item) => (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    className="absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white p-1.5 shadow-xl ring-1 ring-black/5"
+                  >
+                    <div className="rounded-lg bg-gradient-to-r from-violet-50 to-indigo-50 p-3">
+                      <div className="text-sm font-medium text-slate-700">
+                        Alex Johnson
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        alex.johnson@example.com
+                      </div>
+                    </div>
+
+                    <div className="mt-1.5 space-y-1">
+                      {ProfileMenu.map((item, index) => (
                         <Link
                           key={item.title}
                           href={item.link}
-                          className="block rounded-xl px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+                          className={cn(
+                            'block rounded-lg px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700',
+                            index === ProfileMenu.length - 1 &&
+                              'text-red-500 hover:bg-red-50 hover:text-red-600',
+                          )}
                           onClick={closeMenus}
                         >
                           {item.title}
                         </Link>
                       ))}
-                    </motion.div>
-                  </>
+                    </div>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
@@ -131,11 +195,11 @@ export default function DashboardNavbar() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setMobileMenuOpen(true)}
-            className="rounded-full p-2 text-gray-700 md:hidden"
+            className="rounded-full p-2.5 text-slate-700 md:hidden"
           >
             <div className="space-y-1.5">
-              <motion.span className="block h-0.5 w-6 bg-gray-700" />
-              <motion.span className="block h-0.5 w-6 bg-gray-700" />
+              <motion.span className="block h-0.5 w-6 bg-slate-700" />
+              <motion.span className="block h-0.5 w-6 bg-slate-700" />
             </div>
           </motion.button>
         </div>
@@ -162,53 +226,83 @@ export default function DashboardNavbar() {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 20 }}
+              transition={{ type: 'spring', damping: 25 }}
               className="fixed inset-y-0 right-0 w-full bg-white px-6 py-6 sm:max-w-sm"
             >
               <div className="flex items-center justify-between">
                 <Image
-                  className="h-10 w-auto"
+                  className="h-12 w-auto"
                   src={FlowCraftLogo}
                   alt="FlowCraft"
                 />
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={closeMenus}
-                  className="rounded-full p-2"
+                  className="rounded-full p-2.5"
                 >
-                  <XMarkIcon className="h-6 w-6 text-gray-700" />
+                  <XMarkIcon className="h-6 w-6 text-slate-700" />
                 </motion.button>
+              </div>
+
+              <div className="mt-6 rounded-xl bg-gradient-to-r from-violet-50 to-indigo-50 p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-indigo-600">
+                    <UserIcon className="h-10 w-10 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-slate-700">
+                      Alex Johnson
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      alex.johnson@example.com
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-8 flow-root"
+                className="mt-6 flow-root"
               >
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <Link
                     href="/dashboard"
-                    className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                    className="flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700"
                     onClick={closeMenus}
                   >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="mr-3 h-5 w-5 text-violet-600"
+                    >
+                      <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+                      <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                    </svg>
                     Dashboard
                   </Link>
-                  {NavigationOptions.map((item) => (
+
+                  <Link
+                    href="/create/new"
+                    className="flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm"
+                    onClick={closeMenus}
+                  >
+                    <PlusIcon className="mr-3 h-5 w-5" />
+                    New Creation
+                  </Link>
+
+                  <div className="my-4 h-px bg-slate-200" />
+
+                  {ProfileMenu.map((item, index) => (
                     <Link
                       key={item.title}
                       href={item.link}
-                      className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
-                      onClick={closeMenus}
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
-                  <div className="my-4 h-px bg-gray-200" />
-                  {ProfileMenu.map((item) => (
-                    <Link
-                      key={item.title}
-                      href={item.link}
-                      className="block rounded-2xl px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                      className={cn(
+                        'flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700',
+                        index === ProfileMenu.length - 1 &&
+                          'text-red-500 hover:bg-red-50 hover:text-red-600',
+                      )}
                       onClick={closeMenus}
                     >
                       {item.title}
