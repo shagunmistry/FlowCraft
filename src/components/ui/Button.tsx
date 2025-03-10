@@ -72,9 +72,6 @@ export default function Button({
         {children}
         {icon && <span className="ml-1">{icon}</span>}
       </span>
-      {variant === 'primary' && (
-        <span className="absolute inset-0 -z-10 translate-y-full rounded-full bg-gradient-to-r from-indigo-600 to-fuchsia-600 transition-transform duration-300 group-hover:translate-y-0"></span>
-      )}
     </>
   )
 

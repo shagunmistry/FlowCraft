@@ -1,6 +1,8 @@
 import React from 'react'
-import { Check } from 'lucide-react'
+import { Brush, ChartArea, Check, NotebookPenIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { MicrophoneIcon } from '@heroicons/react/20/solid'
+import { OptionType } from '@/lib/utils'
 
 const DiagramOption = ({
   diagram,
@@ -75,134 +77,75 @@ const DiagramOption = ({
 }
 
 const DiagramSelectionGrid = ({
-  currentStep = 1,
   availableDiagrams = [],
   selectedDiagram,
   handleDiagramSelection,
+  _setSelectedOption,
 }: {
-  currentStep: number
   availableDiagrams: any[]
   selectedDiagram: string | null
   handleDiagramSelection: (id: string) => void
+  _setSelectedOption: (option: OptionType) => void
 }) => {
-  if (currentStep !== 1) return null
-
   const [hoveredCard, setHoveredCard] = React.useState<string | null>(null)
+
+  const availableOptions: OptionType[] = [
+    'Illustration',
+    'Infographic',
+    // 'Diagram',
+  ]
+
+  const [_selectedOption, setSelectedOption] = React.useState<OptionType>(null)
+
+  const handleOptionSelect = (option: OptionType) => {
+    setSelectedOption(option)
+    _setSelectedOption(option)
+  }
 
   return (
     <>
       <div className="mb-10">
-        <h3 className="mb-6 font-serif text-xl font-medium">
-          Choose output type
-        </h3>
+        <h3 className="mb-6 font-serif text-xl font-medium">Select One</h3>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {['Illustration', 'Infographic', 'Diagram'].map((type) => (
+          {availableOptions.map((type) => (
             <motion.div
               key={type}
               className={`cursor-pointer rounded-xl border-2 p-6 transition-all duration-300 ${
-                hoveredCard === type
+                hoveredCard === type || _selectedOption === type
                   ? 'border-indigo-500 shadow-md'
                   : 'border-slate-200'
-              }`}
+              } ${_selectedOption === type ? 'bg-indigo-50' : 'bg-white'}`}
               whileHover={{ y: -5 }}
               onHoverStart={() => setHoveredCard(type)}
               onHoverEnd={() => setHoveredCard(null)}
+              onClick={() => handleOptionSelect(type)}
             >
               <div className="mb-4 flex h-32 items-center justify-center">
                 {type === 'Illustration' && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    className="h-16 w-16 text-indigo-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"
-                    />
-                    <circle cx="6" cy="8" r="2" strokeWidth="1.5" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <Brush
+                    className="h-16 w-16 text-red-500"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 )}
                 {type === 'Infographic' && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    className="h-16 w-16 text-fuchsia-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M8 13v-1m4 1v-3m4 3V8M12 21l5-5-2.5-2.5L17 11l-3-3-2.5 2.5L8 7 3 12"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M3 9h18M3 20h18"
-                    />
-                  </svg>
+                  <NotebookPenIcon
+                    className="h-16 w-16 text-blue-500"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 )}
-                {type === 'Diagram' && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    className="h-16 w-16 text-purple-500"
-                  >
-                    <rect
-                      x="3"
-                      y="3"
-                      width="7"
-                      height="7"
-                      rx="1"
-                      strokeWidth="1.5"
-                    />
-                    <rect
-                      x="14"
-                      y="3"
-                      width="7"
-                      height="7"
-                      rx="1"
-                      strokeWidth="1.5"
-                    />
-                    <rect
-                      x="14"
-                      y="14"
-                      width="7"
-                      height="7"
-                      rx="1"
-                      strokeWidth="1.5"
-                    />
-                    <rect
-                      x="3"
-                      y="14"
-                      width="7"
-                      height="7"
-                      rx="1"
-                      strokeWidth="1.5"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M10 6.5h4M17.5 10v4M6.5 14v-4M10 17.5h4"
-                    />
-                  </svg>
-                )}
+                {/* {type === 'Diagram' && (
+                  <ChartArea
+                    className="h-16 w-16 text-green-500"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )} */}
               </div>
               <h4 className="mb-2 text-center font-serif text-lg font-medium">
                 {type}
@@ -212,8 +155,8 @@ const DiagramSelectionGrid = ({
                   'Vector graphics ideal for storytelling and decoration.'}
                 {type === 'Infographic' &&
                   'Data visualization with a narrative structure.'}
-                {type === 'Diagram' &&
-                  'Process flows, hierarchies and structured relationships.'}
+                {/* {type === 'Diagram' &&
+                  'Process flows, hierarchies and structured relationships.'} */}
               </p>
             </motion.div>
           ))}
@@ -236,21 +179,7 @@ const DiagramSelectionGrid = ({
               className="rounded-full bg-slate-100 p-2 text-slate-600 transition-colors hover:bg-slate-200"
               title="Voice input"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5"
-              >
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="23" />
-                <line x1="8" y1="23" x2="16" y2="23" />
-              </svg>
+              <MicrophoneIcon className="h-5 w-5" />
             </button>
             <button
               type="button"

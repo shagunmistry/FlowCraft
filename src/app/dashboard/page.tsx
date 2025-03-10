@@ -270,9 +270,6 @@ export default async function Dashboard() {
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Header Section */}
         <div className="mb-16 text-center">
-          <h1 className="bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 bg-clip-text font-serif text-5xl font-semibold tracking-tight text-transparent">
-            Welcome to FlowCraft
-          </h1>
           <p className="mt-4 text-xl font-medium text-indigo-700">
             {user.subscribed ? (
               <span className="inline-flex items-center">
@@ -293,10 +290,6 @@ export default async function Dashboard() {
             ) : (
               'Free Creator'
             )}
-          </p>
-          <p className="mt-3 text-lg text-indigo-500">
-            Hi {userData.user.email.split('@')[0]}, transform your ideas into
-            visual masterpieces
           </p>
         </div>
 

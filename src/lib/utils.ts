@@ -175,3 +175,7 @@ export const generateInviteCode = (length: number) => {
 export const getShareableLinkUrl = (id: string, origin: string) => {
   return `/shared/${id}`
 }
+
+// export type OptionType = 'Illustration' | 'Infographic' | 'Diagram' | null
+export type OptionType = 'Illustration' | 'Infographic' | null
+

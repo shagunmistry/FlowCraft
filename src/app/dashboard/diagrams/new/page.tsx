@@ -10,6 +10,7 @@ import {
   DiagramOrChartType,
   DiagramType,
   extractParsableJSON,
+  OptionType,
 } from '@/lib/utils'
 import {
   ArrowTrendingUpIcon,
@@ -38,26 +39,7 @@ import { useContext, useState } from 'react'
 import FormStep from './FormStep'
 import DiagramSelectionGrid from './DiagramSelectionGrid'
 import ProgressStepper from './ProgressStepper'
-
-enum StepsStatus {
-  Complete = 'complete',
-  Current = 'current',
-  Upcoming = 'upcoming',
-}
-
-const steps = [
-  {
-    id: 1,
-    name: 'Choose Diagram Type',
-    status: StepsStatus.Current,
-  },
-  {
-    id: 2,
-    name: 'Describe Your Diagram',
-    status: StepsStatus.Upcoming,
-  },
-  { id: 3, name: 'Preview & Export', status: StepsStatus.Upcoming },
-]
+import Button from '@/components/ui/Button'
 
 /** export enum DiagramType {
   FlowDiagram = 'Flow Diagram',
@@ -246,7 +228,8 @@ export default function NewDiagramPage() {
   const context = useContext(DiagramContext)
 
   const [selectedDiagram, setSelectedDiagram] = useState<string | null>(null)
-  const [currentStep, setCurrentStep] = useState<number>(1)
+  const [selectedOption, _setSelectedOption] =
+    useState<OptionType>('Infographic')
 
   const [diagramTitle, setDiagramTitle] = useState<string>('')
   const [diagramDescription, setDiagramDescription] = useState<string>('')
@@ -255,37 +238,22 @@ export default function NewDiagramPage() {
 
   const handleDiagramSelection = (diagramType: string) => {
     setSelectedDiagram(diagramType)
-
-    // Set current step's status to complete
-    steps[currentStep - 1].status = StepsStatus.Complete
   }
 
   const handleNextStep = () => {
-    if (currentStep === 1) {
-      if (!selectedDiagram) {
-        return
-      }
+    const title = document.getElementById('diagram-title') as HTMLInputElement
+    const description = document.getElementById(
+      'diagram-description',
+    ) as HTMLTextAreaElement
 
-      setCurrentStep((prev) => prev + 1)
+    setDiagramTitle(title.value)
+    setDiagramDescription(description.value)
+
+    if (!title.value || !description.value) {
+      return
     }
 
-    if (currentStep === 2) {
-      const title = document.getElementById('diagram-title') as HTMLInputElement
-      const description = document.getElementById(
-        'diagram-description',
-      ) as HTMLTextAreaElement
-
-      setDiagramTitle(title.value)
-      setDiagramDescription(description.value)
-
-      if (!title.value || !description.value) {
-        return
-      }
-
-      steps[currentStep - 1].status = StepsStatus.Complete
-
-      handleSubmit(title.value, description.value)
-    }
+    handleSubmit(title.value, description.value)
   }
 
   const handleSubmit = async (
@@ -303,13 +271,11 @@ export default function NewDiagramPage() {
       setError(
         'There was an error generating the diagram, please try creating again. We are sorry for the inconvenience.',
       )
-      setCurrentStep(2)
       return
     }
 
     try {
       setError('')
-      setCurrentStep(0)
       context.setChartJsData(null)
       context.setMermaidData('')
       context.setNodes([])
@@ -332,7 +298,6 @@ export default function NewDiagramPage() {
       })
         .catch((e) => {
           console.log('Error generating diagram: ', e)
-          setCurrentStep(2)
           setError(
             'There was an error generating the diagram, please try again',
           )
@@ -343,7 +308,6 @@ export default function NewDiagramPage() {
             setError(
               'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
             )
-            setCurrentStep(2)
             return
           }
 
@@ -365,8 +329,6 @@ export default function NewDiagramPage() {
 
             context.setMermaidData(cleanedUpMermaidData)
             context.setDiagramId(diagramJson.id)
-            setCurrentStep(3)
-            steps[currentStep].status = StepsStatus.Complete
 
             // Show the feedback modal after 10 seconds
             setTimeout(() => {
@@ -382,7 +344,6 @@ export default function NewDiagramPage() {
           const parseableJson = extractParsableJSON(whatToParse)
 
           if (parseableJson === null) {
-            setCurrentStep(0)
             handleSubmit(title, description, trialNumber + 1)
             return
           }
@@ -414,8 +375,6 @@ export default function NewDiagramPage() {
           }
 
           context.setDiagramId(diagramJson.id)
-          setCurrentStep(3)
-          steps[currentStep].status = StepsStatus.Complete
 
           // Show the feedback modal after 10 seconds
           setTimeout(() => {
@@ -424,7 +383,6 @@ export default function NewDiagramPage() {
         })
     } catch (e) {
       console.log('Error generating diagram: ', e)
-      setCurrentStep(2)
       setError(
         'There was an error generating the diagram, please try creating again. We are sorry for the inconvenience.',
       )
@@ -432,36 +390,10 @@ export default function NewDiagramPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto mt-20 max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       {/* <ProgressStepper steps={steps} /> */}
 
       <section aria-labelledby="diagram-options" className="mt-8">
-        {/** Prev Button */}
-        {currentStep > 1 && (
-          <div className="flex justify-start">
-            <button
-              type="button"
-              className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              onClick={() => {
-                setCurrentStep((prev) => prev - 1)
-                steps[currentStep - 1].status = StepsStatus.Current
-              }}
-            >
-              Previous
-            </button>
-          </div>
-        )}
-
-        <div className="flex justify-center">
-          {/** Step Title */}
-          <h2
-            id="diagram-options"
-            className="text-lg font-semibold leading-6 text-gray-900"
-          >
-            {(steps[currentStep - 1] && steps[currentStep - 1].name) || ''}
-          </h2>
-        </div>
-
         {/** Error Message */}
         {error && (
           <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
@@ -480,34 +412,27 @@ export default function NewDiagramPage() {
         )}
 
         <div className="flex justify-end">
-          <button
+          <Button
             type="button"
-            className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             onClick={handleNextStep}
           >
-            Next
-          </button>
+            Submit
+          </Button>
         </div>
-
-        {/** Show loader */}
-        {currentStep === 0 && <PageLoader />}
 
         <DiagramSelectionGrid
           availableDiagrams={availableDiagrams}
-          currentStep={currentStep}
           handleDiagramSelection={handleDiagramSelection}
           selectedDiagram={selectedDiagram}
-          key={currentStep}
+          _setSelectedOption={_setSelectedOption}
         />
 
-        {/** Show the diagram title input box and description text area */}
-        <FormStep currentStep={currentStep} />
-
-        {currentStep === 3 && (
+        {/* {currentStep === 3 && (
           <>
             <DiagramOrChartView type={selectedDiagram as any} />
           </>
-        )}
+        )} */}
       </section>
     </div>
   )

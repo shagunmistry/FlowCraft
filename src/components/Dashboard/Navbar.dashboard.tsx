@@ -104,13 +104,13 @@ export default function DashboardNavbar() {
                 Dashboard
               </Link>
 
-              <Link
-                href="/diagrams/new"
+              <a
+                href="/dashboard/diagrams/new"
                 className="flex items-center rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/40"
               >
                 <PlusIcon className="mr-2 h-4 w-4" />
                 New Creation
-              </Link>
+              </a>
             </div>
           </div>
 
