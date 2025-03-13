@@ -231,6 +231,8 @@ export default function NewDiagramPage() {
   const [selectedOption, _setSelectedOption] =
     useState<OptionType>('Infographic')
 
+  const [visionDescription, setVisionDescription] = useState<string>('')
+
   const [diagramTitle, setDiagramTitle] = useState<string>('')
   const [diagramDescription, setDiagramDescription] = useState<string>('')
 
@@ -240,39 +242,7 @@ export default function NewDiagramPage() {
     setSelectedDiagram(diagramType)
   }
 
-  const handleNextStep = () => {
-    const title = document.getElementById('diagram-title') as HTMLInputElement
-    const description = document.getElementById(
-      'diagram-description',
-    ) as HTMLTextAreaElement
-
-    setDiagramTitle(title.value)
-    setDiagramDescription(description.value)
-
-    if (!title.value || !description.value) {
-      return
-    }
-
-    handleSubmit(title.value, description.value)
-  }
-
-  const handleSubmit = async (
-    title: string,
-    description: string,
-    trialNumber: number = 0,
-  ) => {
-    context.setTitle(title)
-    context.setDescription(description)
-    context.setType(selectedDiagram as any)
-
-    console.log('Title: ', title, 'Description: ', description)
-
-    if (trialNumber > 2) {
-      setError(
-        'There was an error generating the diagram, please try creating again. We are sorry for the inconvenience.',
-      )
-      return
-    }
+  const handleSubmit = async () => {
 
     try {
       setError('')
@@ -281,106 +251,109 @@ export default function NewDiagramPage() {
       context.setNodes([])
       context.setEdges([])
 
-      if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
-        track('create', {
-          type: selectedDiagram,
-          title: title,
-        })
-      }
+      // if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+      //   track('create', {
+      //     type: selectedOption,
+      //     title: title,
+      //   })
+      // }
 
-      await fetch('/api/generate-diagram', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          type: selectedDiagram,
-        }),
-      })
-        .catch((e) => {
-          console.log('Error generating diagram: ', e)
-          setError(
-            'There was an error generating the diagram, please try again',
-          )
-        })
-        .then(async (diagram: any) => {
-          console.log('Diagram Response: ', diagram)
-          if (diagram.status === 401 || diagram.status === 400) {
-            setError(
-              'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
-            )
-            return
-          }
+      console.log('Vision Description: ', visionDescription)
+      console.log('Selected Option: ', selectedOption)
 
-          const diagramJson = await diagram.json()
-          console.log('Diagram JSON 2: ', diagramJson)
+      // await fetch('/api/generate-diagram', {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     title: title,
+      //     description: description,
+      //     type: selectedOption,
+      //   }),
+      // })
+      //   .catch((e) => {
+      //     console.log('Error generating diagram: ', e)
+      //     setError(
+      //       'There was an error generating the diagram, please try again',
+      //     )
+      //   })
+      //   .then(async (diagram: any) => {
+      //     console.log('Diagram Response: ', diagram)
+      //     if (diagram.status === 401 || diagram.status === 400) {
+      //       setError(
+      //         'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
+      //       )
+      //       return
+      //     }
 
-          if (
-            diagramJson.result &&
-            selectedDiagram !== 'Chart' &&
-            selectedDiagram !== 'Flow Diagram'
-          ) {
-            console.log('Setting Mermaid Data: ', diagramJson.result)
-            // remove the ``` from the start and end of the string
+      //     const diagramJson = await diagram.json()
+      //     console.log('Diagram JSON 2: ', diagramJson)
 
-            const cleanedUpMermaidData = diagramJson.result
-              .replace('```', '')
-              .replace('```', '')
-              .trim()
+      //     if (
+      //       diagramJson.result &&
+      //       selectedDiagram !== 'Chart' &&
+      //       selectedDiagram !== 'Flow Diagram'
+      //     ) {
+      //       console.log('Setting Mermaid Data: ', diagramJson.result)
+      //       // remove the ``` from the start and end of the string
 
-            context.setMermaidData(cleanedUpMermaidData)
-            context.setDiagramId(diagramJson.id)
+      //       const cleanedUpMermaidData = diagramJson.result
+      //         .replace('```', '')
+      //         .replace('```', '')
+      //         .trim()
 
-            // Show the feedback modal after 10 seconds
-            setTimeout(() => {
-              context.setFeedbackModalOpen(true)
-            }, 10000)
-            return
-          }
+      //       context.setMermaidData(cleanedUpMermaidData)
+      //       context.setDiagramId(diagramJson.id)
 
-          const whatToParse = diagramJson.result
-            ? diagramJson.result
-            : diagramJson.records
+      //       // Show the feedback modal after 10 seconds
+      //       setTimeout(() => {
+      //         context.setFeedbackModalOpen(true)
+      //       }, 10000)
+      //       return
+      //     }
 
-          const parseableJson = extractParsableJSON(whatToParse)
+      //     const whatToParse = diagramJson.result
+      //       ? diagramJson.result
+      //       : diagramJson.records
 
-          if (parseableJson === null) {
-            handleSubmit(title, description, trialNumber + 1)
-            return
-          }
+      //     const parseableJson = extractParsableJSON(whatToParse)
 
-          console.log(
-            'Diagram JSON: ',
-            JSON.parse(parseableJson),
-            'Type: ',
-            selectedDiagram,
-          )
+      //     if (parseableJson === null) {
+      //       handleSubmit(title, description, trialNumber + 1)
+      //       return
+      //     }
 
-          let diagramResult = JSON.parse(diagramJson.result)
-          console.log('Diagram Result: ', diagramResult)
+      //     console.log(
+      //       'Diagram JSON: ',
+      //       JSON.parse(parseableJson),
+      //       'Type: ',
+      //       selectedDiagram,
+      //     )
 
-          if (
-            diagramResult &&
-            diagramResult.nodes &&
-            diagramResult.edges &&
-            selectedDiagram === 'Flow Diagram'
-          ) {
-            context.setNodes(diagramResult.nodes)
-            context.setEdges(diagramResult.edges)
-          } else if (
-            diagramResult &&
-            diagramResult.data &&
-            selectedDiagram === 'Chart'
-          ) {
-            context.setChartJsData(diagramResult)
-          }
+      //     let diagramResult = JSON.parse(diagramJson.result)
+      //     console.log('Diagram Result: ', diagramResult)
 
-          context.setDiagramId(diagramJson.id)
+      //     if (
+      //       diagramResult &&
+      //       diagramResult.nodes &&
+      //       diagramResult.edges &&
+      //       selectedDiagram === 'Flow Diagram'
+      //     ) {
+      //       context.setNodes(diagramResult.nodes)
+      //       context.setEdges(diagramResult.edges)
+      //     } else if (
+      //       diagramResult &&
+      //       diagramResult.data &&
+      //       selectedDiagram === 'Chart'
+      //     ) {
+      //       context.setChartJsData(diagramResult)
+      //     }
 
-          // Show the feedback modal after 10 seconds
-          setTimeout(() => {
-            context.setFeedbackModalOpen(true)
-          }, 10000)
-        })
+      //     context.setDiagramId(diagramJson.id)
+
+      //     // Show the feedback modal after 10 seconds
+      //     setTimeout(() => {
+      //       context.setFeedbackModalOpen(true)
+      //     }, 10000)
+      //   })
     } catch (e) {
       console.log('Error generating diagram: ', e)
       setError(
@@ -415,7 +388,7 @@ export default function NewDiagramPage() {
           <Button
             type="button"
             className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            onClick={handleNextStep}
+            onClick={handleSubmit}
           >
             Submit
           </Button>
@@ -426,6 +399,7 @@ export default function NewDiagramPage() {
           handleDiagramSelection={handleDiagramSelection}
           selectedDiagram={selectedDiagram}
           _setSelectedOption={_setSelectedOption}
+          setVisionDescription={setVisionDescription}
         />
 
         {/* {currentStep === 3 && (

@@ -81,11 +81,13 @@ const DiagramSelectionGrid = ({
   selectedDiagram,
   handleDiagramSelection,
   _setSelectedOption,
+  setVisionDescription,
 }: {
   availableDiagrams: any[]
   selectedDiagram: string | null
   handleDiagramSelection: (id: string) => void
   _setSelectedOption: (option: OptionType) => void
+  setVisionDescription: (description: string) => void
 }) => {
   const [hoveredCard, setHoveredCard] = React.useState<string | null>(null)
 
@@ -172,6 +174,7 @@ const DiagramSelectionGrid = ({
             className="min-h-40 w-full rounded-xl border-2 border-slate-200 p-5 pr-20 text-lg transition-all duration-200 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             placeholder="Describe what you want to visualize... The more details you provide, the better!"
             rows={5}
+            onChange={(e) => setVisionDescription(e.target.value)}
           ></textarea>
           <div className="absolute bottom-4 right-4 flex space-x-2">
             <button
