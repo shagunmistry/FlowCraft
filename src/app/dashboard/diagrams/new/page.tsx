@@ -232,9 +232,10 @@ export default function NewDiagramPage() {
     useState<OptionType>('Infographic')
 
   const [visionDescription, setVisionDescription] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const [diagramTitle, setDiagramTitle] = useState<string>('')
-  const [diagramDescription, setDiagramDescription] = useState<string>('')
+  // const [diagramTitle, setDiagramTitle] = useState<string>('')
+  // const [diagramDescription, setDiagramDescription] = useState<string>('')
 
   const [error, setError] = useState<string>('')
 
@@ -243,8 +244,13 @@ export default function NewDiagramPage() {
   }
 
   const handleSubmit = async () => {
+    if (!visionDescription.trim()) {
+      setError('Please provide a description of your vision')
+      return
+    }
 
     try {
+      setIsLoading(true)
       setError('')
       context.setChartJsData(null)
       context.setMermaidData('')
@@ -261,104 +267,49 @@ export default function NewDiagramPage() {
       console.log('Vision Description: ', visionDescription)
       console.log('Selected Option: ', selectedOption)
 
-      // await fetch('/api/generate-diagram', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     title: title,
-      //     description: description,
-      //     type: selectedOption,
-      //   }),
-      // })
-      //   .catch((e) => {
-      //     console.log('Error generating diagram: ', e)
-      //     setError(
-      //       'There was an error generating the diagram, please try again',
-      //     )
-      //   })
-      //   .then(async (diagram: any) => {
-      //     console.log('Diagram Response: ', diagram)
-      //     if (diagram.status === 401 || diagram.status === 400) {
-      //       setError(
-      //         'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
-      //       )
-      //       return
-      //     }
+      const response = await fetch('/api/generate-visual', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: selectedOption,
+          description: visionDescription,
+        }),
+      })
 
-      //     const diagramJson = await diagram.json()
-      //     console.log('Diagram JSON 2: ', diagramJson)
+      if (!response.ok) {
+        if (response.status === 401) {
+          setError('Your session has expired. Please log in again.')
+          useRouter().push('/login')
+          return
+        }
+        throw new Error(`API returned status: ${response.status}`)
+      }
 
-      //     if (
-      //       diagramJson.result &&
-      //       selectedDiagram !== 'Chart' &&
-      //       selectedDiagram !== 'Flow Diagram'
-      //     ) {
-      //       console.log('Setting Mermaid Data: ', diagramJson.result)
-      //       // remove the ``` from the start and end of the string
+      const data = await response.json()
 
-      //       const cleanedUpMermaidData = diagramJson.result
-      //         .replace('```', '')
-      //         .replace('```', '')
-      //         .trim()
+      if (data.error) {
+        setError(data.error)
+        return
+      }
+      //todo: store the generated illustration or  in context
+      
+      // Show the feedback modal after 10 seconds
+      setTimeout(() => {
+        context.setFeedbackModalOpen(true)
+      }, 10000)
 
-      //       context.setMermaidData(cleanedUpMermaidData)
-      //       context.setDiagramId(diagramJson.id)
+      //redirect ti result page
+      useRouter().push(`/dashboard/diagrams/${data.user_id}`)
 
-      //       // Show the feedback modal after 10 seconds
-      //       setTimeout(() => {
-      //         context.setFeedbackModalOpen(true)
-      //       }, 10000)
-      //       return
-      //     }
-
-      //     const whatToParse = diagramJson.result
-      //       ? diagramJson.result
-      //       : diagramJson.records
-
-      //     const parseableJson = extractParsableJSON(whatToParse)
-
-      //     if (parseableJson === null) {
-      //       handleSubmit(title, description, trialNumber + 1)
-      //       return
-      //     }
-
-      //     console.log(
-      //       'Diagram JSON: ',
-      //       JSON.parse(parseableJson),
-      //       'Type: ',
-      //       selectedDiagram,
-      //     )
-
-      //     let diagramResult = JSON.parse(diagramJson.result)
-      //     console.log('Diagram Result: ', diagramResult)
-
-      //     if (
-      //       diagramResult &&
-      //       diagramResult.nodes &&
-      //       diagramResult.edges &&
-      //       selectedDiagram === 'Flow Diagram'
-      //     ) {
-      //       context.setNodes(diagramResult.nodes)
-      //       context.setEdges(diagramResult.edges)
-      //     } else if (
-      //       diagramResult &&
-      //       diagramResult.data &&
-      //       selectedDiagram === 'Chart'
-      //     ) {
-      //       context.setChartJsData(diagramResult)
-      //     }
-
-      //     context.setDiagramId(diagramJson.id)
-
-      //     // Show the feedback modal after 10 seconds
-      //     setTimeout(() => {
-      //       context.setFeedbackModalOpen(true)
-      //     }, 10000)
-      //   })
     } catch (e) {
-      console.log('Error generating diagram: ', e)
+      console.log('Error generating visual: ', e)
       setError(
         'There was an error generating the diagram, please try creating again. We are sorry for the inconvenience.',
       )
+    } finally {
+      setIsLoading(false)
     }
   }
 
