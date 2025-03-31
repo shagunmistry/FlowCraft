@@ -5,10 +5,11 @@ export async function POST(req: Request) {
     try {
         const supabaseClient = createClient()
         const token = req.headers.get('Authorization')!
-        const { data: userData, error: userDataError } = 
-            await supabaseClient.auth.getUser()
 
-        if (!userData) {
+        const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession()
+
+        if (sessionError || !session) {
+            console.error('Session error: ', sessionError)
             return new Response(
                 JSON.stringify({
                     error: 'Unauthorized - Please log in to generate a diagram'
@@ -22,18 +23,22 @@ export async function POST(req: Request) {
             )
         }
 
+        console.log('Access Token:', session.access_token)
+
         const body = await req.json()
         const { type, description } = body
 
         const endpoint = type === 'Illustration' ? 'Illustration' : 'Infographic'
 
         const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
-        const res = await fetch(`${API_URL}/${endpoint}`, {
+        const res = await fetch(`${API_URL}/v2/${endpoint.toLowerCase()}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `${token}`
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`,
             },
+            credentials: 'include',
             body: JSON.stringify({
                 prompt: description,
                 type: type.toLowerCase(),
@@ -41,10 +46,17 @@ export async function POST(req: Request) {
         })
 
         if (!res.ok) {
-            if (res.status === 401) {
+            const errorData = await res.text()
+            console.error('API Error Response:', {
+                status: res.status,
+                statusText: res.statusText,
+                body: errorData,
+                headers: Object.fromEntries(res.headers),
+            })
+            if (res.status === 401 || res.status === 403) {
                 return new Response(
                     JSON.stringify({
-                        error: 'Unauthorized - Please log in again',
+                        error: 'Authentication failed - Please log in again',
                     }),
                     {
                         status: 401,
@@ -55,7 +67,7 @@ export async function POST(req: Request) {
                 )
             }
 
-            throw new Error(`API Error: ${res.status}`)
+            throw new Error(`API Error: ${res.status} - ${errorData}`)
         }
 
         const data = await res.json()
@@ -69,6 +81,7 @@ export async function POST(req: Request) {
         console.error('Error generating visual:', error)
         return new Response(JSON.stringify({
             error: 'An error occurred while generating the visual',
+            details: error instanceof Error ? error.message : 'Unknown error',
         }),
             {
                 status: 500,
