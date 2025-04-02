@@ -289,12 +289,14 @@ export default function NewDiagramPage() {
 
       const data = await response.json()
 
+      console.log('Generate Visual API Response: ', data)
+
       if (data.error) {
         setError(data.error)
         return
       }
       //todo: store the generated illustration or  in context
-      
+
       // Show the feedback modal after 10 seconds
       setTimeout(() => {
         context.setFeedbackModalOpen(true)
@@ -302,7 +304,6 @@ export default function NewDiagramPage() {
 
       //redirect ti result page
       useRouter().push(`/dashboard/diagrams/${data.user_id}`)
-
     } catch (e) {
       console.log('Error generating visual: ', e)
       setError(
