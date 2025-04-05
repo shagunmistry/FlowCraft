@@ -1,246 +1,88 @@
 'use client'
 
-import DiagramOrChartView from '@/components/DiagramOrChartView'
-import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
-import PageLoader from '@/components/PageLoader'
-import StarRatingInput from '@/components/StarRatingInput'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import {
-  cn,
-  DiagramOrChartType,
-  DiagramType,
-  extractParsableJSON,
-  OptionType,
-} from '@/lib/utils'
-import {
-  ArrowTrendingUpIcon,
-  ArrowUpCircleIcon,
-  BriefcaseIcon,
-  BugAntIcon,
-  ChartPieIcon,
-  CheckIcon,
-  ClockIcon,
-  DocumentDuplicateIcon,
-  DocumentMagnifyingGlassIcon,
-  FireIcon,
-  ForwardIcon,
-  PresentationChartBarIcon,
-  PuzzlePieceIcon,
-  SparklesIcon,
-  Square2StackIcon,
-  UserGroupIcon,
-} from '@heroicons/react/20/solid'
-import { PresentationChartLineIcon } from '@heroicons/react/24/outline'
-import { track } from '@vercel/analytics'
-
-import { motion } from 'framer-motion'
+import { OptionType } from '@/lib/utils'
+import { BugAntIcon } from '@heroicons/react/20/solid'
+import { LinkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
-import { useContext, useState } from 'react'
-import FormStep from './FormStep'
+import { useContext, useState, useEffect, useRef } from 'react'
 import DiagramSelectionGrid from './DiagramSelectionGrid'
-import ProgressStepper from './ProgressStepper'
 import Button from '@/components/ui/Button'
 
-/** export enum DiagramType {
-  FlowDiagram = 'Flow Diagram',
-  Whiteboard = 'Whiteboard',
-  Chart = 'Chart',
-  FlowChart = 'flowchart',
-  SequenceDiagram = 'sequenceDiagram',
-  ClassDiagram = 'classDiagram',
-  StateDiagram = 'stateDiagram',
-  EntityRelationshipDiagram = 'erDiagram',
-  UserJourney = 'userJourney',
-  Gantt = 'gantt',
-  PieChart = 'pieChart',
-  QuadrantChart = 'quadrantChart',
-  RequirementDiagram = 'requirementDiagram',
-  GitGraph = 'gitGraph',
-  Mindmaps = 'mindmaps',
-  Timeline = 'timeline',
-  ZenUML = 'zenuml',
-  Sankey = 'sankey',
-} */
-const availableDiagrams: {
-  title: string
-  description: string
-  iconBackground: string
-  iconForeground: string
-  icon: any
-  id: DiagramOrChartType | TempMermaidDiagramType
-}[] = [
-  {
-    title: 'Flow Diagram',
-    description:
-      'A visual representation of the steps in a process. It helps to show how different parts of a task or project connect and flow together. Think of it like a map for a complex activity.',
-    iconBackground: 'bg-indigo-50',
-    iconForeground: 'text-indigo-600',
-    icon: CheckIcon,
-    id: 'Flow Diagram',
-  },
-  {
-    title: 'Chart',
-    description:
-      'A general term for visual representations of data, using bars, lines, points, or other shapes. Charts make data easier to understand and analyze.',
-    iconBackground: 'bg-yellow-50',
-    iconForeground: 'text-yellow-600',
-    icon: PresentationChartBarIcon,
-    id: 'Chart',
-  },
-  {
-    title: 'Flow Chart',
-    description:
-      'Very similar to a flow diagram, it uses specific symbols (rectangles, diamonds, etc.) to represent different types of actions in a process (decisions, tasks, inputs, outputs).',
-    iconBackground: 'bg-green-50',
-    iconForeground: 'text-green-600',
-    icon: ArrowUpCircleIcon,
-    id: 'flowchart',
-  },
-  {
-    title: 'Sequence Diagram',
-    description:
-      "Shows how different parts of a system interact with each other over time. It's like a comic strip for software, illustrating the order of messages or actions between components.",
-    iconBackground: 'bg-blue-50',
-    iconForeground: 'text-blue-600',
-    icon: ArrowTrendingUpIcon,
-    id: 'sequenceDiagram',
-  },
-  {
-    title: 'Class Diagram',
-    description:
-      'Used in software development, it provides a blueprint for the structure of a program. It defines the classes (types of objects), their properties, and how they relate to each other.',
-    iconBackground: 'bg-purple-50',
-    iconForeground: 'text-purple-600',
-    icon: DocumentMagnifyingGlassIcon,
-    id: 'classDiagram',
-  },
-  {
-    title: 'State Diagram',
-    description:
-      'Illustrates the different states an object can be in and how it transitions between those states. For instance, a traffic light might have states like "red," "yellow," and "green."',
-    iconBackground: 'bg-red-50',
-    iconForeground: 'text-red-600',
-    icon: PresentationChartLineIcon,
-    id: 'stateDiagram',
-  },
-  {
-    title: 'Entity Relationship Diagram',
-    description:
-      'Used in database design, it maps out the relationships between different entities (people, objects, concepts). It helps to define how data should be organized and stored.',
-    iconBackground: 'bg-indigo-50',
-    iconForeground: 'text-indigo-600',
-    icon: Square2StackIcon,
-    id: 'entityRelationshipDiagram',
-  },
-  {
-    title: 'User Journey',
-    description:
-      "A visual story of a user's experience interacting with a product or service. It highlights touchpoints, pain points, and opportunities for improvement.",
-    iconBackground: 'bg-gray-50',
-    iconForeground: 'text-gray-500',
-    icon: UserGroupIcon,
-    id: 'userJourney',
-  },
-  {
-    title: 'Gantt',
-    description:
-      "A horizontal bar chart that shows a project timeline. Each bar represents a task, and its length indicates the task's duration. It's helpful for planning and tracking project schedules.",
-    iconBackground: 'bg-yellow-50',
-    iconForeground: 'text-yellow-600',
-    icon: BugAntIcon,
-    id: 'gantt',
-  },
-  {
-    title: 'Pie Chart',
-    description:
-      'A circular chart divided into slices. Each slice represents a portion of a whole. Pie charts are used to show percentages or proportions.',
-    iconBackground: 'bg-green-50',
-    iconForeground: 'text-green-600',
-    icon: ChartPieIcon,
-    id: 'pieChart',
-  },
-  {
-    title: 'Quadrant Chart',
-    description:
-      "A grid divided into four sections. It's used to categorize items based on two criteria. For example, a quadrant chart might plot products based on their market share and growth rate.",
-    iconBackground: 'bg-blue-50',
-    iconForeground: 'text-blue-600',
-    icon: PuzzlePieceIcon,
-    id: 'quadrantChart',
-  },
-  {
-    title: 'Requirement Diagram',
-    description:
-      'Used to capture and organize the functional and non-functional requirements of a project. It helps to ensure that everyone has a clear understanding of what needs to be built.',
-    iconBackground: 'bg-purple-50',
-    iconForeground: 'text-purple-600',
-    icon: BriefcaseIcon,
-    id: 'requirementDiagram',
-  },
-  {
-    title: 'Git Graph',
-    description:
-      'Visualizes the history of a project in a version control system like Git. It shows branches, commits, merges, and other changes over time.',
-    iconBackground: 'bg-red-50',
-    iconForeground: 'text-red-600',
-    icon: SparklesIcon,
-    id: 'gitgraph',
-  },
-  {
-    title: 'Mindmaps',
-    description:
-      'A diagram used to visually organize information. It starts with a central idea and branches out into related concepts and subtopics. Great for brainstorming and note-taking.',
-    iconBackground: 'bg-indigo-50',
-    iconForeground: 'text-indigo-600',
-    icon: FireIcon,
-    id: 'mindmaps',
-  },
-  {
-    title: 'Timeline',
-    description:
-      'A visual representation of events in chronological order. It helps to understand the sequence of historical events or the steps in a project plan.',
-    iconBackground: 'bg-gray-50',
-    iconForeground: 'text-gray-500',
-    icon: ClockIcon,
-    id: 'timeline',
-  },
-  {
-    title: 'ZenUML',
-    description:
-      'A text-based way to create UML diagrams. You write simple descriptions, and ZenUML generates the corresponding diagram.',
-    iconBackground: 'bg-yellow-50',
-    iconForeground: 'text-yellow-600',
-    icon: DocumentDuplicateIcon,
-    id: 'zenuml',
-  },
-  {
-    title: 'Sankey',
-    description:
-      'Shows flows or transfers between different entities. The width of the arrows or bands indicates the magnitude of the flow. Often used to visualize energy flows or financial transactions.',
-    iconBackground: 'bg-green-50',
-    iconForeground: 'text-green-600',
-    icon: ForwardIcon,
-    id: 'sankey',
-  },
-]
+import { ZoomInIcon, ZoomOutIcon } from 'lucide-react'
+import { useLoading } from '@/lib/LoadingProvider'
 
 export default function NewDiagramPage() {
-  const context = useContext(DiagramContext)
+  const { showLoading, hideLoading } = useLoading()
 
-  const [selectedDiagram, setSelectedDiagram] = useState<string | null>(null)
+  const context = useContext(DiagramContext)
+  const router = useRouter()
+  const svgContainerRef = useRef(null)
+
   const [selectedOption, _setSelectedOption] =
     useState<OptionType>('Infographic')
+  const [visionDescription, setVisionDescription] = useState('')
+  const [colorPalette, setColorPalette] = useState('Brand colors (default)')
+  const [complexityLevel, setComplexityLevel] = useState('Medium (default)')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const [visionDescription, setVisionDescription] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  // New states for the generated content
+  const [svgCode, setSvgCode] = useState('')
+  const [visualPlan, setVisualPlan] = useState('')
+  const [diagramId, setDiagramId] = useState(null)
+  const [zoomLevel, setZoomLevel] = useState(1)
+  const [isGenerated, setIsGenerated] = useState(false)
 
-  // const [diagramTitle, setDiagramTitle] = useState<string>('')
-  // const [diagramDescription, setDiagramDescription] = useState<string>('')
+  // Update URL when diagram is generated
+  useEffect(() => {
+    if (diagramId) {
+      // Update URL without refreshing the page
+      window.history.pushState(
+        { diagramId: diagramId },
+        '',
+        `/diagram/${diagramId}`,
+      )
+    }
+  }, [diagramId])
 
-  const [error, setError] = useState<string>('')
+  // Copy link to clipboard
+  const copyLinkToClipboard = () => {
+    const url = window.location.href
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        // You could add a toast notification here
+        console.log('Link copied to clipboard')
+      })
+      .catch((err) => {
+        console.error('Could not copy link: ', err)
+      })
+  }
 
-  const handleDiagramSelection = (diagramType: string) => {
-    setSelectedDiagram(diagramType)
+  // Zoom in/out functions
+  const zoomIn = () => {
+    setZoomLevel((prev) => Math.min(prev + 0.2, 3))
+  }
+
+  const zoomOut = () => {
+    setZoomLevel((prev) => Math.max(prev - 0.2, 0.5))
+  }
+
+  const handleOptionTypeChange = (option: OptionType) => {
+    _setSelectedOption(option)
+  }
+
+  const handleVisionDescriptionChange = (description: string) => {
+    setVisionDescription(description)
+  }
+
+  const handleColorPaletteChange = (palette: string) => {
+    setColorPalette(palette)
+  }
+
+  const handleComplexityLevelChange = (level: string) => {
+    setComplexityLevel(level)
   }
 
   const handleSubmit = async () => {
@@ -250,6 +92,7 @@ export default function NewDiagramPage() {
     }
 
     try {
+      showLoading('Generating your diagram...', 'indigo')
       setIsLoading(true)
       setError('')
       context.setChartJsData(null)
@@ -257,15 +100,10 @@ export default function NewDiagramPage() {
       context.setNodes([])
       context.setEdges([])
 
-      // if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
-      //   track('create', {
-      //     type: selectedOption,
-      //     title: title,
-      //   })
-      // }
-
       console.log('Vision Description: ', visionDescription)
       console.log('Selected Option: ', selectedOption)
+      console.log('Color Palette: ', colorPalette)
+      console.log('Complexity Level: ', complexityLevel)
 
       const response = await fetch('/api/generate-visual', {
         method: 'POST',
@@ -275,13 +113,15 @@ export default function NewDiagramPage() {
         body: JSON.stringify({
           type: selectedOption,
           description: visionDescription,
+          colorPalette: colorPalette,
+          complexityLevel: complexityLevel,
         }),
       })
 
       if (!response.ok) {
         if (response.status === 401) {
           setError('Your session has expired. Please log in again.')
-          useRouter().push('/login')
+          router.push('/login')
           return
         }
         throw new Error(`API returned status: ${response.status}`)
@@ -291,19 +131,20 @@ export default function NewDiagramPage() {
 
       console.log('Generate Visual API Response: ', data)
 
-      if (data.error) {
+      if (!!data.error) {
         setError(data.error)
         return
       }
-      //todo: store the generated illustration or  in context
 
-      // Show the feedback modal after 10 seconds
-      setTimeout(() => {
-        context.setFeedbackModalOpen(true)
-      }, 10000)
+      const { svg_code, visual_plan, diagram_id } = data
 
-      //redirect ti result page
-      useRouter().push(`/dashboard/diagrams/${data.user_id}`)
+      console.log('SVG Code: ', svg_code)
+
+      // Set the states with the generated content
+      setSvgCode(svg_code)
+      setVisualPlan(visual_plan)
+      setDiagramId(diagram_id)
+      setIsGenerated(true)
     } catch (e) {
       console.log('Error generating visual: ', e)
       setError(
@@ -311,55 +152,128 @@ export default function NewDiagramPage() {
       )
     } finally {
       setIsLoading(false)
+      hideLoading()
     }
   }
 
   return (
     <div className="mx-auto mt-20 max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      {/* <ProgressStepper steps={steps} /> */}
-
-      <section aria-labelledby="diagram-options" className="mt-8">
-        {/** Error Message */}
-        {error && (
-          <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <BugAntIcon
-                  className="h-5 w-5 text-red-400"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
+      {/** Error Message */}
+      {error && (
+        <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <BugAntIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">{error}</p>
             </div>
           </div>
-        )}
-
-        <div className="flex justify-end">
-          <Button
-            type="button"
-            className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
         </div>
+      )}
 
-        <DiagramSelectionGrid
-          availableDiagrams={availableDiagrams}
-          handleDiagramSelection={handleDiagramSelection}
-          selectedDiagram={selectedDiagram}
-          _setSelectedOption={_setSelectedOption}
-          setVisionDescription={setVisionDescription}
-        />
+      {isGenerated ? (
+        <div className="mt-6 space-y-8">
+          {/* Generated content section */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Your Illustration
+            </h2>
+            <div className="flex items-center space-x-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  // Create a new illustration
+                  setIsGenerated(false)
+                  setVisionDescription('')
+                  setSvgCode('')
+                  setVisualPlan('')
+                  setDiagramId(null)
+                  setColorPalette('Brand colors (default)')
+                  setComplexityLevel('Medium (default)')
+                  // Update URL back to the create page
+                  window.history.pushState({}, '', '/illustrations/new')
+                }}
+                variant="secondary"
+                className="text-sm"
+              >
+                Create New
+              </Button>
+            </div>
+          </div>
 
-        {/* {currentStep === 3 && (
-          <>
-            <DiagramOrChartView type={selectedDiagram as any} />
-          </>
-        )} */}
-      </section>
+          {/* SVG Display with controls */}
+          <div className="overflow-hidden rounded-lg bg-white shadow">
+            <div className="flex items-center justify-between border-b bg-gray-50 p-4">
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={zoomOut}
+                  className="rounded-full p-1 transition-colors hover:bg-gray-200"
+                  title="Zoom out"
+                >
+                  <ZoomOutIcon className="h-5 w-5 text-gray-700" />
+                </button>
+                <span className="text-sm text-gray-600">
+                  {Math.round(zoomLevel * 100)}%
+                </span>
+                <button
+                  onClick={zoomIn}
+                  className="rounded-full p-1 transition-colors hover:bg-gray-200"
+                  title="Zoom in"
+                >
+                  <ZoomInIcon className="h-5 w-5 text-gray-700" />
+                </button>
+                <button
+                  onClick={copyLinkToClipboard}
+                  className="ml-2 rounded-full p-1 transition-colors hover:bg-gray-200"
+                  title="Copy link"
+                >
+                  <LinkIcon className="h-5 w-5 text-gray-700" />
+                </button>
+              </div>
+              <div className="flex items-center space-x-4 text-sm text-gray-500">
+                <span>Color: {colorPalette}</span>
+                <span>Complexity: {complexityLevel}</span>
+              </div>
+            </div>
+            <div
+              className="flex justify-center overflow-auto p-8"
+              style={{ maxHeight: '100vh' }}
+            >
+              <div
+                ref={svgContainerRef}
+                style={{
+                  transform: `scale(${zoomLevel})`,
+                  transformOrigin: 'center center',
+                  transition: 'transform 0.2s ease-in-out',
+                }}
+                dangerouslySetInnerHTML={{ __html: svgCode }}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Generating...' : 'Create Illustration'}
+            </Button>
+          </div>
+
+          <DiagramSelectionGrid
+            _setSelectedOption={handleOptionTypeChange}
+            setVisionDescription={handleVisionDescriptionChange}
+            setColorPalette={handleColorPaletteChange}
+            setComplexityLevel={handleComplexityLevelChange}
+          />
+        </>
+      )}
     </div>
   )
 }

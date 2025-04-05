@@ -1,95 +1,47 @@
 import React from 'react'
-import { Brush, ChartArea, Check, NotebookPenIcon } from 'lucide-react'
+import { Brush, ChevronDownIcon, NotebookPenIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { MicrophoneIcon } from '@heroicons/react/20/solid'
 import { OptionType } from '@/lib/utils'
-
-const DiagramOption = ({
-  diagram,
-  isSelected,
-  onSelect,
-}: {
-  diagram: any
-  isSelected: boolean
-  onSelect: (id: string) => void
-}) => {
-  return (
-    <motion.div
-      onClick={() => onSelect(diagram.id)}
-      className="group relative overflow-hidden rounded-2xl bg-white/80 p-6 backdrop-blur-xl transition-colors hover:bg-white"
-      whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.2 },
-      }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      {/* Selection Indicator */}
-      <motion.div
-        className={`absolute right-0 top-0 h-full w-1 ${
-          isSelected ? 'bg-blue-500' : 'bg-transparent'
-        }`}
-        initial={false}
-        animate={{ opacity: isSelected ? 1 : 0 }}
-        transition={{ duration: 0.2 }}
-      />
-
-      {/* Icon */}
-      <div className="relative">
-        <span className="inline-flex items-center justify-center rounded-xl bg-blue-50 p-3">
-          <diagram.icon className="h-6 w-6 text-blue-600" aria-hidden="true" />
-        </span>
-
-        {/* Check Icon */}
-        <motion.div
-          className="absolute -right-2 -top-2"
-          initial={{ scale: 0 }}
-          animate={{ scale: isSelected ? 1 : 0 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        >
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg">
-            <Check className="h-4 w-4" />
-          </span>
-        </motion.div>
-      </div>
-
-      {/* Content */}
-      <div className="mt-6 space-y-2">
-        <h3 className="text-lg font-medium text-gray-900">{diagram.title}</h3>
-        <motion.p
-          className="text-sm text-gray-500"
-          initial={{ opacity: 0.8 }}
-          whileHover={{ opacity: 1 }}
-        >
-          {diagram.description}
-        </motion.p>
-      </div>
-
-      {/* Interactive highlight overlay */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl border-2 border-blue-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isSelected ? 0.1 : 0 }}
-        whileHover={{ opacity: 0.05 }}
-      />
-    </motion.div>
-  )
-}
+import { Menu } from '@headlessui/react'
 
 const DiagramSelectionGrid = ({
-  availableDiagrams = [],
-  selectedDiagram,
-  handleDiagramSelection,
   _setSelectedOption,
   setVisionDescription,
+  setColorPalette,
+  setComplexityLevel,
 }: {
-  availableDiagrams: any[]
-  selectedDiagram: string | null
-  handleDiagramSelection: (id: string) => void
   _setSelectedOption: (option: OptionType) => void
   setVisionDescription: (description: string) => void
+  setColorPalette: (palette: string) => void
+  setComplexityLevel: (level: string) => void
 }) => {
   const [hoveredCard, setHoveredCard] = React.useState<string | null>(null)
+  const [colorDropdownOpen, setColorDropdownOpen] = React.useState(false)
+  const [complexityDropdownOpen, setComplexityDropdownOpen] =
+    React.useState(false)
+
+  const colorPaletteOptions = [
+    'Brand colors (default)',
+    'Monochromatic',
+    'Complementary',
+    'Analogous',
+    'Custom...',
+  ]
+
+  const complexityOptions = [
+    'Medium (default)',
+    'Simple',
+    'Detailed',
+    'Complex',
+  ]
+
+  const [selectedColorPalette, setSelectedColorPalette] = React.useState(
+    colorPaletteOptions[0],
+  )
+  const [selectedComplexity, setSelectedComplexity] = React.useState(
+    complexityOptions[0],
+  )
 
   const availableOptions: OptionType[] = [
     'Illustration',
@@ -103,6 +55,31 @@ const DiagramSelectionGrid = ({
     setSelectedOption(option)
     _setSelectedOption(option)
   }
+
+  const handleColorPaletteChange = (palette: string) => {
+    setSelectedColorPalette(palette)
+    setColorPalette(palette)
+    setColorDropdownOpen(false)
+  }
+
+  const handleComplexityChange = (level: string) => {
+    setSelectedComplexity(level)
+    setComplexityLevel(level)
+    setComplexityDropdownOpen(false)
+  }
+
+  // Close dropdowns when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      setColorDropdownOpen(false)
+      setComplexityDropdownOpen(false)
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
 
   return (
     <>
@@ -157,8 +134,6 @@ const DiagramSelectionGrid = ({
                   'Vector graphics ideal for storytelling and decoration.'}
                 {type === 'Infographic' &&
                   'Data visualization with a narrative structure.'}
-                {/* {type === 'Diagram' &&
-                  'Process flows, hierarchies and structured relationships.'} */}
               </p>
             </motion.div>
           ))}
@@ -209,7 +184,7 @@ const DiagramSelectionGrid = ({
         </div>
       </div>
 
-      {/* Advanced Options */}
+      {/* Advanced Options - Canva Style Dropdowns */}
       <div className="mb-10">
         <div className="mb-6 flex items-center">
           <h3 className="font-serif text-xl font-medium">Advanced options</h3>
@@ -219,28 +194,78 @@ const DiagramSelectionGrid = ({
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* Color Palette Dropdown - Canva Style */}
           <div>
             <label className="mb-2 block font-medium text-slate-700">
               Color palette
             </label>
-            <select className="w-full rounded-lg border-2 border-slate-200 p-3 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-              <option>Brand colors (default)</option>
-              <option>Monochromatic</option>
-              <option>Complementary</option>
-              <option>Analogous</option>
-              <option>Custom...</option>
-            </select>
+            <Menu as="div" className="relative w-full">
+              <Menu.Button className="flex w-full items-center justify-between rounded-lg border-2 border-slate-200 bg-white p-3 text-left text-slate-700 hover:bg-slate-50">
+                <span>{selectedColorPalette}</span>
+                <ChevronDownIcon
+                  className="ui-open:rotate-180 h-5 w-5 transform text-slate-500 transition-transform"
+                  aria-hidden="true"
+                />
+              </Menu.Button>
+
+              <Menu.Items className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
+                {colorPaletteOptions.map((option) => (
+                  <Menu.Item key={option}>
+                    {({ active }) => (
+                      <div
+                        className={`cursor-pointer px-4 py-2 ${
+                          active ? 'bg-indigo-50' : ''
+                        } ${
+                          selectedColorPalette === option
+                            ? 'bg-indigo-50 font-medium text-indigo-600'
+                            : 'text-slate-700'
+                        }`}
+                        onClick={() => setSelectedColorPalette(option)}
+                      >
+                        {option}
+                      </div>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu.Items>
+            </Menu>
           </div>
+
+          {/* Complexity Level Dropdown - Canva Style */}
           <div>
             <label className="mb-2 block font-medium text-slate-700">
               Complexity level
             </label>
-            <select className="w-full rounded-lg border-2 border-slate-200 p-3 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-              <option>Medium (default)</option>
-              <option>Simple</option>
-              <option>Detailed</option>
-              <option>Complex</option>
-            </select>
+            <Menu as="div" className="relative w-full">
+              <Menu.Button className="flex w-full items-center justify-between rounded-lg border-2 border-slate-200 bg-white p-3 text-left text-slate-700 hover:bg-slate-50">
+                <span>{selectedComplexity}</span>
+                <ChevronDownIcon
+                  className="ui-open:rotate-180 h-5 w-5 transform text-slate-500 transition-transform"
+                  aria-hidden="true"
+                />
+              </Menu.Button>
+
+              <Menu.Items className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
+                {complexityOptions.map((option) => (
+                  <Menu.Item key={option}>
+                    {({ active }) => (
+                      <div
+                        className={`cursor-pointer px-4 py-2 ${
+                          active ? 'bg-indigo-50' : ''
+                        } ${
+                          selectedComplexity === option
+                            ? 'bg-indigo-50 font-medium text-indigo-600'
+                            : 'text-slate-700'
+                        }`}
+                        onClick={() => setSelectedComplexity(option)}
+                      >
+                        {option}
+                      </div>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu.Items>
+            </Menu>
           </div>
         </div>
       </div>

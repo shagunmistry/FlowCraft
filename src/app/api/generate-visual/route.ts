@@ -28,11 +28,11 @@ export async function POST(req: Request) {
     console.log('Access Token:', session.access_token)
 
     const body = await req.json()
-    const { type, description } = body
+    const { type, description, colorPalette, complexityLevel } = body
 
     const endpoint = type === 'Illustration' ? 'Illustration' : 'Infographic'
-
     const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
+
     const res = await fetch(`${API_URL}/v2/${endpoint.toLowerCase()}`, {
       method: 'POST',
       headers: {
@@ -44,6 +44,12 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         prompt: description,
         type: type.toLowerCase(),
+        colorPalette: colorPalette
+          ? colorPalette.toLowerCase().replace(' (default)', '')
+          : 'brand colors',
+        complexityLevel: complexityLevel
+          ? complexityLevel.toLowerCase().replace(' (default)', '')
+          : 'medium',
       }),
     })
 
@@ -55,6 +61,7 @@ export async function POST(req: Request) {
         body: errorData,
         headers: Object.fromEntries(res.headers),
       })
+
       if (res.status === 401 || res.status === 403) {
         return new Response(
           JSON.stringify({
