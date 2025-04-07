@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { OptionType } from '@/lib/utils'
+import { OptionType, sanitizeSVG } from '@/lib/utils'
 import { BugAntIcon } from '@heroicons/react/20/solid'
 import { LinkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
@@ -30,9 +30,10 @@ export default function NewDiagramPage() {
   // New states for the generated content
   const [svgCode, setSvgCode] = useState('')
   const [visualPlan, setVisualPlan] = useState('')
-  const [diagramId, setDiagramId] = useState(null)
+  const [diagramId, setDiagramId] = useState<string | null>(null)
   const [zoomLevel, setZoomLevel] = useState(1)
   const [isGenerated, setIsGenerated] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
 
   // Update URL when diagram is generated
   useEffect(() => {
@@ -136,13 +137,20 @@ export default function NewDiagramPage() {
         return
       }
 
-      const { svg_code, visual_plan, diagram_id } = data
+      const diagram_id = data.diagram_id as string
 
-      console.log('SVG Code: ', svg_code)
+      if (selectedOption === 'Illustration') {
+        const imageUrl = data.image_url as string
+        setImageUrl(imageUrl)
+        setSvgCode('')
+      } else {
+        const svg_code = data.svg_code as string
+        let sanitizedSvgCode = sanitizeSVG(svg_code)
 
-      // Set the states with the generated content
-      setSvgCode(svg_code)
-      setVisualPlan(visual_plan)
+        // Set the states with the generated content
+        setSvgCode(sanitizedSvgCode.svgContent)
+      }
+
       setDiagramId(diagram_id)
       setIsGenerated(true)
     } catch (e) {
@@ -238,17 +246,40 @@ export default function NewDiagramPage() {
             </div>
             <div
               className="flex justify-center overflow-auto p-8"
-              style={{ maxHeight: '100vh' }}
+              style={{
+                maxHeight: '100vh',
+                maxWidth: '100vw',
+                height: '100%',
+                overflow: 'hidden',
+              }}
             >
-              <div
-                ref={svgContainerRef}
-                style={{
-                  transform: `scale(${zoomLevel})`,
-                  transformOrigin: 'center center',
-                  transition: 'transform 0.2s ease-in-out',
-                }}
-                dangerouslySetInnerHTML={{ __html: svgCode }}
-              />
+              {svgCode && (
+                <div
+                  ref={svgContainerRef}
+                  style={{
+                    transform: `scale(${zoomLevel})`,
+                    transformOrigin: 'center center',
+                    transition: 'transform 0.2s ease-in-out',
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                  }}
+                  dangerouslySetInnerHTML={{ __html: svgCode }}
+                />
+              )}
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt="Generated Illustration"
+                  style={{
+                    transform: `scale(${zoomLevel})`,
+                    transformOrigin: 'center center',
+                    transition: 'transform 0.2s ease-in-out',
+                    width: '100%',
+                    height: 'auto',
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -259,7 +290,6 @@ export default function NewDiagramPage() {
               type="button"
               className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={handleSubmit}
-              isLoading={isLoading}
               disabled={isLoading}
             >
               {isLoading ? 'Generating...' : 'Create Illustration'}

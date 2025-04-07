@@ -179,3 +179,47 @@ export const getShareableLinkUrl = (id: string, origin: string) => {
 // export type OptionType = 'Illustration' | 'Infographic' | 'Diagram' | null
 export type OptionType = 'Illustration' | 'Infographic' | null
 
+export function sanitizeSVG(svgString: string): {
+  svgContent: string
+  svgUrl: string
+} {
+  // 1. Remove any leading/trailing quotes and whitespace
+  let cleaned = svgString.trim()
+  if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+    cleaned = cleaned.slice(1, -1)
+  }
+
+  // 2. Unescape escaped characters
+  cleaned = cleaned
+    .replace(/\\"/g, '"') // Replace \" with "
+    .replace(/\\'/g, "'") // Replace \' with '
+    .replace(/\\\\/g, '\\') // Replace \\ with \
+    .replace(/\\n/g, '\n') // Replace \n with newline
+    .replace(/\\t/g, '\t') // Replace \t with tab
+
+  // 3. Decode any HTML entities
+  cleaned = cleaned
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+
+  // 4. Ensure proper XML formatting (for SVG)
+  // Check if we have XML declaration and add if missing
+  if (!cleaned.includes('<?xml')) {
+    // Only add if this is a complete SVG
+    if (cleaned.includes('<svg') && !cleaned.startsWith('<svg')) {
+      cleaned = '<?xml version="1.0" encoding="UTF-8"?>\n' + cleaned
+    }
+  }
+
+  // 5. Create a safe data URL for rendering
+  const svgBlob = new Blob([cleaned], { type: 'image/svg+xml' })
+  const svgUrl = URL.createObjectURL(svgBlob)
+
+  return {
+    svgContent: cleaned,
+    svgUrl: svgUrl,
+  }
+}
