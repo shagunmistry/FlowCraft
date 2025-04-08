@@ -1,4 +1,16 @@
 import { createClient } from '@/lib/supabase-auth/server'
+import { OptionType } from '@/lib/utils'
+
+const getEndpoint = (type: OptionType): string => {
+  switch (type) {
+    case 'Illustration':
+      return 'illustration'
+    case 'Infographic':
+      return 'infographic'
+    default:
+      return 'diagram'
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -30,10 +42,10 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { type, description, colorPalette, complexityLevel } = body
 
-    const endpoint = type === 'Illustration' ? 'Illustration' : 'Infographic'
+    const endpoint = getEndpoint(type)
     const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
 
-    const res = await fetch(`${API_URL}/v2/${endpoint.toLowerCase()}`, {
+    const res = await fetch(`${API_URL}/v2/${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

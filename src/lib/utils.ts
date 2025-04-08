@@ -177,7 +177,32 @@ export const getShareableLinkUrl = (id: string, origin: string) => {
 }
 
 // export type OptionType = 'Illustration' | 'Infographic' | 'Diagram' | null
-export type OptionType = 'Illustration' | 'Infographic' | null
+export type OptionType =
+  | 'Illustration'
+  | 'Infographic'
+  | 'Flowchart'
+  | 'Sequence Diagram'
+  | 'Class Diagram'
+  | 'State Diagram'
+  | 'Entity Relationship Diagram'
+  | 'User Journey'
+  | 'Gantt'
+  | 'Pie Chart'
+  | 'Quadrant Chart'
+  | 'Requirement Diagram'
+  | 'Gitgraph Diagram'
+  | 'C4 Diagram'
+  | 'Mindmaps'
+  | 'Timeline'
+  | 'ZenUML'
+  | 'Sankey'
+  | 'XY Chart'
+  | 'Block Diagram'
+  | 'Packet'
+  | 'Kanban'
+  | 'Architecture'
+  | 'Radar'
+  | null
 
 export function sanitizeSVG(svgString: string): {
   svgContent: string

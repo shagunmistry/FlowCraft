@@ -89,6 +89,23 @@ export default function NewDiagramPage() {
   const handleSubmit = async () => {
     if (!visionDescription.trim()) {
       setError('Please provide a description of your vision')
+      // Smooth scroll to the description input div
+      const descriptionInput = document.getElementById('vision-description')
+      if (descriptionInput) {
+        // Add highlight class
+        descriptionInput.classList.add('border-2', 'border-red-500')
+
+        // Scroll to the element
+        descriptionInput.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+
+        // Remove highlight class after 2 seconds
+        setTimeout(() => {
+          descriptionInput.classList.remove('border-2', 'border-red-500')
+        }, 2000)
+      }
       return
     }
 
@@ -106,53 +123,53 @@ export default function NewDiagramPage() {
       console.log('Color Palette: ', colorPalette)
       console.log('Complexity Level: ', complexityLevel)
 
-      const response = await fetch('/api/generate-visual', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: selectedOption,
-          description: visionDescription,
-          colorPalette: colorPalette,
-          complexityLevel: complexityLevel,
-        }),
-      })
+      // const response = await fetch('/api/generate-visual', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     type: selectedOption,
+      //     description: visionDescription,
+      //     colorPalette: colorPalette,
+      //     complexityLevel: complexityLevel,
+      //   }),
+      // })
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          setError('Your session has expired. Please log in again.')
-          router.push('/login')
-          return
-        }
-        throw new Error(`API returned status: ${response.status}`)
-      }
+      // if (!response.ok) {
+      //   if (response.status === 401) {
+      //     setError('Your session has expired. Please log in again.')
+      //     router.push('/login')
+      //     return
+      //   }
+      //   throw new Error(`API returned status: ${response.status}`)
+      // }
 
-      const data = await response.json()
+      // const data = await response.json()
 
-      console.log('Generate Visual API Response: ', data)
+      // console.log('Generate Visual API Response: ', data)
 
-      if (!!data.error) {
-        setError(data.error)
-        return
-      }
+      // if (!!data.error) {
+      //   setError(data.error)
+      //   return
+      // }
 
-      const diagram_id = data.diagram_id as string
+      // const diagram_id = data.diagram_id as string
 
-      if (selectedOption === 'Illustration') {
-        const imageUrl = data.image_url as string
-        setImageUrl(imageUrl)
-        setSvgCode('')
-      } else {
-        const svg_code = data.svg_code as string
-        let sanitizedSvgCode = sanitizeSVG(svg_code)
+      // if (selectedOption === 'Illustration') {
+      //   const imageUrl = data.image_url as string
+      //   setImageUrl(imageUrl)
+      //   setSvgCode('')
+      // } else {
+      //   const svg_code = data.svg_code as string
+      //   let sanitizedSvgCode = sanitizeSVG(svg_code)
 
-        // Set the states with the generated content
-        setSvgCode(sanitizedSvgCode.svgContent)
-      }
+      //   // Set the states with the generated content
+      //   setSvgCode(sanitizedSvgCode.svgContent)
+      // }
 
-      setDiagramId(diagram_id)
-      setIsGenerated(true)
+      // setDiagramId(diagram_id)
+      // setIsGenerated(true)
     } catch (e) {
       console.log('Error generating visual: ', e)
       setError(
@@ -297,7 +314,7 @@ export default function NewDiagramPage() {
           </div>
 
           <DiagramSelectionGrid
-            _setSelectedOption={handleOptionTypeChange}
+            setSelectedOption={handleOptionTypeChange}
             setVisionDescription={handleVisionDescriptionChange}
             setColorPalette={handleColorPaletteChange}
             setComplexityLevel={handleComplexityLevelChange}
