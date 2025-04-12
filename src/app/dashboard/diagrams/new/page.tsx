@@ -1,7 +1,7 @@
 'use client'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { OptionType, sanitizeSVG } from '@/lib/utils'
+import { OptionType, sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 import { BugAntIcon } from '@heroicons/react/20/solid'
 import { LinkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
@@ -11,13 +11,15 @@ import Button from '@/components/ui/Button'
 
 import { ZoomInIcon, ZoomOutIcon } from 'lucide-react'
 import { useLoading } from '@/lib/LoadingProvider'
+import mermaid from 'mermaid'
 
 export default function NewDiagramPage() {
   const { showLoading, hideLoading } = useLoading()
 
   const context = useContext(DiagramContext)
   const router = useRouter()
-  const svgContainerRef = useRef(null)
+  const svgContainerRef = useRef<HTMLDivElement>(null)
+  const mermaidContainerRef = useRef<HTMLDivElement>(null)
 
   const [selectedOption, _setSelectedOption] =
     useState<OptionType>('Infographic')
@@ -29,11 +31,44 @@ export default function NewDiagramPage() {
 
   // New states for the generated content
   const [svgCode, setSvgCode] = useState('')
+  const [mermaidCode, setMermaidCode] = useState('')
   const [visualPlan, setVisualPlan] = useState('')
   const [diagramId, setDiagramId] = useState<string | null>(null)
   const [zoomLevel, setZoomLevel] = useState(1)
   const [isGenerated, setIsGenerated] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+
+  // Initialize mermaid
+  useEffect(() => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+    })
+  }, [])
+
+  // Render mermaid diagram when code changes
+  useEffect(() => {
+    if (mermaidCode && mermaidContainerRef.current) {
+      try {
+        mermaidContainerRef.current.innerHTML = ''
+        mermaid
+          .render('mermaid-diagram', mermaidCode)
+          .then(({ svg }) => {
+            if (mermaidContainerRef.current) {
+              mermaidContainerRef.current.innerHTML = svg
+            }
+          })
+          .catch((error) => {
+            console.error('Mermaid rendering error:', error)
+            setError('There was an error rendering the mermaid diagram.')
+          })
+      } catch (error) {
+        console.error('Mermaid error:', error)
+        setError('There was an error processing the mermaid diagram.')
+      }
+    }
+  }, [mermaidCode, zoomLevel])
 
   // Update URL when diagram is generated
   useEffect(() => {
@@ -123,53 +158,63 @@ export default function NewDiagramPage() {
       console.log('Color Palette: ', colorPalette)
       console.log('Complexity Level: ', complexityLevel)
 
-      // const response = await fetch('/api/generate-visual', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     type: selectedOption,
-      //     description: visionDescription,
-      //     colorPalette: colorPalette,
-      //     complexityLevel: complexityLevel,
-      //   }),
-      // })
+      const response = await fetch('/api/generate-visual', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: selectedOption,
+          description: visionDescription,
+          colorPalette: colorPalette,
+          complexityLevel: complexityLevel,
+        }),
+      })
 
-      // if (!response.ok) {
-      //   if (response.status === 401) {
-      //     setError('Your session has expired. Please log in again.')
-      //     router.push('/login')
-      //     return
-      //   }
-      //   throw new Error(`API returned status: ${response.status}`)
-      // }
+      if (!response.ok) {
+        if (response.status === 401) {
+          setError('Your session has expired. Please log in again.')
+          router.push('/login')
+          return
+        }
+        throw new Error(`API returned status: ${response.status}`)
+      }
 
-      // const data = await response.json()
+      const data = await response.json()
 
-      // console.log('Generate Visual API Response: ', data)
+      console.log('Generate Visual API Response: ', data)
 
-      // if (!!data.error) {
-      //   setError(data.error)
-      //   return
-      // }
+      if (!!data.error) {
+        setError(data.error)
+        return
+      }
 
-      // const diagram_id = data.diagram_id as string
+      const diagram_id = data.diagram_id as string
 
-      // if (selectedOption === 'Illustration') {
-      //   const imageUrl = data.image_url as string
-      //   setImageUrl(imageUrl)
-      //   setSvgCode('')
-      // } else {
-      //   const svg_code = data.svg_code as string
-      //   let sanitizedSvgCode = sanitizeSVG(svg_code)
+      if (selectedOption === 'Illustration') {
+        const imageUrl = data.image_url as string
+        setImageUrl(imageUrl)
+        setSvgCode('')
+        setMermaidCode('')
+      } else if (selectedOption === 'Infographic') {
+        const code = data.code as string
+        let sanitizedSvgCode = sanitizeSVG(code)
 
-      //   // Set the states with the generated content
-      //   setSvgCode(sanitizedSvgCode.svgContent)
-      // }
+        // Set the states with the generated content
+        setSvgCode(sanitizedSvgCode.svgContent)
+        setMermaidCode('')
+      } else {
+        // it must be a Mermaid Diagram
+        const code = data.code as string
+        let sanitizedMermaidCode = sanitizeMermaid(code)
 
-      // setDiagramId(diagram_id)
-      // setIsGenerated(true)
+        setMermaidCode(sanitizedMermaidCode)
+        setSvgCode('')
+        setImageUrl('')
+      }
+
+      setDiagramId(diagram_id)
+      setIsGenerated(true)
     } catch (e) {
       console.log('Error generating visual: ', e)
       setError(
@@ -202,7 +247,7 @@ export default function NewDiagramPage() {
           {/* Generated content section */}
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900">
-              Your Illustration
+              Your {selectedOption}
             </h2>
             <div className="flex items-center space-x-4">
               <Button
@@ -212,6 +257,7 @@ export default function NewDiagramPage() {
                   setIsGenerated(false)
                   setVisionDescription('')
                   setSvgCode('')
+                  setMermaidCode('')
                   setVisualPlan('')
                   setDiagramId(null)
                   setColorPalette('Brand colors (default)')
@@ -227,7 +273,7 @@ export default function NewDiagramPage() {
             </div>
           </div>
 
-          {/* SVG Display with controls */}
+          {/* SVG/Mermaid Display with controls */}
           <div className="overflow-hidden rounded-lg bg-white shadow">
             <div className="flex items-center justify-between border-b bg-gray-50 p-4">
               <div className="flex items-center space-x-3">
@@ -282,6 +328,19 @@ export default function NewDiagramPage() {
                     display: 'block',
                   }}
                   dangerouslySetInnerHTML={{ __html: svgCode }}
+                />
+              )}
+              {mermaidCode && (
+                <div
+                  ref={mermaidContainerRef}
+                  style={{
+                    transform: `scale(${zoomLevel})`,
+                    transformOrigin: 'center center',
+                    transition: 'transform 0.2s ease-in-out',
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                  }}
                 />
               )}
               {imageUrl && (

@@ -38,6 +38,8 @@ type OptionsList = {
   type: OptionType
   icon: React.ReactNode
   description: string
+  badgeText?: string
+  badgeColor?: string
 }[]
 
 const DiagramSelectionGrid = ({
@@ -239,6 +241,8 @@ const DiagramSelectionGrid = ({
       type: 'Illustration',
       icon: <Brush className="h-12 w-12 text-red-500" strokeWidth={1.5} />,
       description: 'Vector graphics ideal for storytelling and decoration',
+      badgeText: 'New',
+      badgeColor: 'bg-red-100 text-red-800',
     },
     {
       type: 'Infographic',
@@ -248,14 +252,18 @@ const DiagramSelectionGrid = ({
           strokeWidth={1.5}
         />
       ),
-      description: 'Data visualization with a narrative structure',
+      description: 'Represent complex information visually',
+      badgeText: 'New',
+      badgeColor: 'bg-blue-100 text-blue-800',
     },
   ]
 
   // Create a complete array of all options
   const allDiagramOptions = [
     ...originalOptions,
-    ...Object.values(diagramOptions).flat(),
+    ...Object.values(diagramOptions)
+      .flat()
+      .sort((a, b) => (a.type as string).localeCompare(b.type as string)),
   ]
 
   // Handler for selecting a diagram option
@@ -316,7 +324,7 @@ const DiagramSelectionGrid = ({
           {(selectedCategory !== null
             ? diagramOptions[selectedCategory]
             : allDiagramOptions
-          ).map(({ type, icon, description }) => (
+          ).map(({ type, icon, description, badgeColor, badgeText }) => (
             <div
               key={type}
               className={`cursor-pointer rounded-xl border p-4 transition-all duration-200 hover:shadow-md ${
@@ -328,6 +336,17 @@ const DiagramSelectionGrid = ({
               onMouseLeave={() => setHoveredCard(null)}
               onClick={() => handleOptionSelect(type)}
             >
+              {/* Add this badge element below */}
+              {badgeText && (
+                <div className="mb-1 flex justify-end">
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs ${badgeColor || 'bg-gray-100 text-gray-800'}`}
+                  >
+                    {badgeText}
+                  </span>
+                </div>
+              )}
+
               <div className="mb-3 flex h-20 items-center justify-center">
                 {icon}
               </div>
@@ -343,7 +362,7 @@ const DiagramSelectionGrid = ({
       </div>
 
       {/* Vision Description */}
-      <div className="mb-8" id='vision-description'>
+      <div className="mb-8" id="vision-description">
         <h3 className="mb-3 text-lg font-medium text-slate-800">
           Describe your vision
         </h3>
@@ -448,16 +467,6 @@ const DiagramSelectionGrid = ({
             </Menu>
           </div>
         </div>
-      </div>
-
-      {/* Action Button */}
-      <div className="mt-8 flex justify-end">
-        <button
-          type="button"
-          className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Generate Diagram
-        </button>
       </div>
     </div>
   )

@@ -248,3 +248,23 @@ export function sanitizeSVG(svgString: string): {
     svgUrl: svgUrl,
   }
 }
+
+export function sanitizeMermaid(code: string): string {
+  // Remove leading/trailing whitespace and backticks
+  let cleaned = code.trim()
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.slice(3)
+  }
+  if (cleaned.endsWith('```')) {
+    cleaned = cleaned.slice(0, -3)
+  }
+
+  // Replace escaped characters
+  cleaned = cleaned
+    .replace(/\\`/g, '`') // Replace \` with `
+    .replace(/\\'/g, "'") // Replace \' with '
+    .replace(/\\\\/g, '\\') // Replace \\ with \
+    .replace(/\\n/g, '\n') // Replace \n with newline
+
+  return cleaned
+}
