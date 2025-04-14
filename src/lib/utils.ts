@@ -252,11 +252,42 @@ export function sanitizeSVG(svgString: string): {
 export function sanitizeMermaid(code: string): string {
   // Remove leading/trailing whitespace and backticks
   let cleaned = code.trim()
-  if (cleaned.startsWith('```')) {
-    cleaned = cleaned.slice(3)
+
+  // Remove surrounding quotes if present
+  if (
+    (cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+    (cleaned.startsWith("'") && cleaned.endsWith("'"))
+  ) {
+    cleaned = cleaned.slice(1, -1)
   }
-  if (cleaned.endsWith('```')) {
-    cleaned = cleaned.slice(0, -3)
+
+  // Remove code block markers if present
+  if (cleaned.startsWith('```')) {
+    const firstLineEnd = cleaned.indexOf('\n')
+    const firstLine = cleaned.substring(3, firstLineEnd).trim()
+
+    // Check if the first line is 'mermaid' or contains 'mermaid'
+    if (firstLine === 'mermaid' || firstLine.includes('mermaid')) {
+      // Remove the first line completely
+      cleaned = cleaned.substring(firstLineEnd + 1)
+    } else {
+      // Just remove the backticks
+      cleaned = cleaned.slice(3)
+    }
+
+    // Remove ending backticks if present
+    if (cleaned.endsWith('```')) {
+      cleaned = cleaned.slice(0, -3)
+    }
+  } else {
+    // No code block markers, but check if it starts with 'mermaid'
+    if (cleaned.startsWith('mermaid')) {
+      // Find the first newline
+      const firstLineEnd = cleaned.indexOf('\n')
+      if (firstLineEnd !== -1) {
+        cleaned = cleaned.substring(firstLineEnd + 1)
+      }
+    }
   }
 
   // Replace escaped characters
@@ -265,6 +296,7 @@ export function sanitizeMermaid(code: string): string {
     .replace(/\\'/g, "'") // Replace \' with '
     .replace(/\\\\/g, '\\') // Replace \\ with \
     .replace(/\\n/g, '\n') // Replace \n with newline
+    .trim() // Final trim to remove any extra whitespace
 
   return cleaned
 }

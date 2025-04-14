@@ -29,7 +29,7 @@ export default function NewDiagramPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // New states for the generated content
+  const [generatedTitle, setGeneratedTitle] = useState('')
   const [svgCode, setSvgCode] = useState('')
   const [mermaidCode, setMermaidCode] = useState('')
   const [visualPlan, setVisualPlan] = useState('')
@@ -38,7 +38,62 @@ export default function NewDiagramPage() {
   const [isGenerated, setIsGenerated] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
 
-  // Initialize mermaid
+  // region Dragging
+  const [isDragging, setIsDragging] = useState(false)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true)
+    setDragStart({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    })
+  }
+
+  // Function to handle dragging
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return
+
+    const newX = e.clientX - dragStart.x
+    const newY = e.clientY - dragStart.y
+
+    setPosition({
+      x: newX,
+      y: newY,
+    })
+  }
+
+  // Function to handle the end of dragging
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  // Setup and cleanup event listeners
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current
+
+      container.addEventListener('mousemove', handleMouseMove)
+      container.addEventListener('mouseup', handleMouseUp)
+      container.addEventListener('mouseleave', handleMouseUp)
+
+      return () => {
+        container.removeEventListener('mousemove', handleMouseMove)
+        container.removeEventListener('mouseup', handleMouseUp)
+        container.removeEventListener('mouseleave', handleMouseUp)
+      }
+    }
+  }, [isDragging, dragStart])
+
+  useEffect(() => {
+    setPosition({ x: 0, y: 0 })
+  }, [zoomLevel])
+
+  // endregion
+
+  // region Mermaid
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: true,
@@ -206,11 +261,20 @@ export default function NewDiagramPage() {
       } else {
         // it must be a Mermaid Diagram
         const code = data.code as string
+        console.log('Mermaid Code: ', code)
         let sanitizedMermaidCode = sanitizeMermaid(code)
+
+        console.log('Sanitized Mermaid Code: ', sanitizedMermaidCode)
 
         setMermaidCode(sanitizedMermaidCode)
         setSvgCode('')
         setImageUrl('')
+      }
+
+      const title = data.title as string
+      console.log('Generated Title: ', title)
+      if (!!title) {
+        setGeneratedTitle(title)
       }
 
       setDiagramId(diagram_id)
@@ -247,7 +311,7 @@ export default function NewDiagramPage() {
           {/* Generated content section */}
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900">
-              Your {selectedOption}
+              {generatedTitle || 'Your Generated ' + selectedOption}
             </h2>
             <div className="flex items-center space-x-4">
               <Button
@@ -301,6 +365,9 @@ export default function NewDiagramPage() {
                 >
                   <LinkIcon className="h-5 w-5 text-gray-700" />
                 </button>
+                <span className="ml-4 text-sm italic text-gray-500">
+                  Click and drag to move the illustration
+                </span>
               </div>
               <div className="flex items-center space-x-4 text-sm text-gray-500">
                 <span>Color: {colorPalette}</span>
@@ -308,39 +375,48 @@ export default function NewDiagramPage() {
               </div>
             </div>
             <div
-              className="flex justify-center overflow-auto p-8"
+              ref={containerRef}
+              className="flex cursor-move justify-center p-8"
               style={{
-                maxHeight: '100vh',
-                maxWidth: '100vw',
-                height: '100%',
-                overflow: 'hidden',
+                height: '70vh', // Changed from maxHeight to fixed height
+                width: '100%', // Using width instead of maxWidth
+                position: 'relative',
+                overflow: 'auto', // Changed from 'hidden' to 'auto' to allow scrolling when needed
               }}
             >
               {svgCode && (
                 <div
                   ref={svgContainerRef}
                   style={{
-                    transform: `scale(${zoomLevel})`,
+                    transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
                     transformOrigin: 'center center',
-                    transition: 'transform 0.2s ease-in-out',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.2s ease-in-out', // Remove transition during dragging
                     width: '100%',
                     height: 'auto',
                     display: 'block',
+                    position: 'absolute',
                   }}
                   dangerouslySetInnerHTML={{ __html: svgCode }}
+                  onMouseDown={handleMouseDown}
                 />
               )}
               {mermaidCode && (
                 <div
                   ref={mermaidContainerRef}
                   style={{
-                    transform: `scale(${zoomLevel})`,
+                    transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
                     transformOrigin: 'center center',
-                    transition: 'transform 0.2s ease-in-out',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.2s ease-in-out', // Remove transition during dragging
                     width: '100%',
                     height: 'auto',
                     display: 'block',
+                    position: 'absolute',
                   }}
+                  onMouseDown={handleMouseDown}
                 />
               )}
               {imageUrl && (
@@ -348,12 +424,16 @@ export default function NewDiagramPage() {
                   src={imageUrl}
                   alt="Generated Illustration"
                   style={{
-                    transform: `scale(${zoomLevel})`,
+                    transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
                     transformOrigin: 'center center',
-                    transition: 'transform 0.2s ease-in-out',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.2s ease-in-out', // Remove transition during dragging
                     width: '100%',
                     height: 'auto',
+                    position: 'absolute',
                   }}
+                  onMouseDown={handleMouseDown}
                 />
               )}
             </div>
