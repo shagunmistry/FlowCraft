@@ -1,30 +1,34 @@
+# Getting started
 
-## Getting started
+## Prerequisites
+- Node.js (v20.0 or later)
+    - If you don't have Node.js, you can download here: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 
-To get started with this template, first install the pnpm dependencies:
-
+## Installation
+1. Clone the repository from [Here](https://github.com/shagunmistry/FlowCraft)
+2. Navigate to the project directory
+3. Install the dependencies using npm
 ```bash
-pnpm install
+npm install
 ```
-
-Next, run the development server:
-
+4. Create a `.env` file in the root directory and add the following environment variables:
 ```bash
-pnpm run dev
+SUPABASE_PRIVATE_KEY
+SUPABASE_URL
+FLOWCRAFT_API_URL
+NEXT_PUBLIC_ROOT_DOMAIN
 ```
-
-Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
-
-
-# AWS SES
-## Configuration
-To test the validity of the SMPT endpoint, you can use the following command:
+5. Run the development server:
 ```bash
-openssl s_client -crlf -quiet -starttls smtp -connect email-smtp.us-east-1.amazonaws.com:587
+npm run dev
 ```
+    - If you are running the API locally, run this:
+        ```bash
+        npm run dev:local
+        ```
+6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the website.
 
-
-## Test Prompts
+# Test Prompts
 For Illustrations:
 
 "A cozy cottage in an enchanted forest with a winding path, mushrooms, and magical creatures peeking from behind trees"
@@ -110,3 +114,9 @@ For Infographics:
 22. **ZenUML**:
     "Create a ZenUML sequence diagram for a checkout process showing interactions between customer, cart, payment processor, and inventory system."
 
+# AWS SES
+## Configuration
+To test the validity of the SMPT endpoint, you can use the following command:
+```bash
+openssl s_client -crlf -quiet -starttls smtp -connect email-smtp.us-east-1.amazonaws.com:587
+```
