@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     console.log('Access Token:', session.access_token)
 
     const body = await req.json()
-    const { type, description, colorPalette, complexityLevel } = body
+    const { type, description, isPublic, colorPalette, complexityLevel } = body
 
     const endpoint = getEndpoint(type)
     const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
@@ -56,6 +56,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         prompt: description,
         type: type.toLowerCase(),
+        isPublic,
         colorPalette: colorPalette
           ? colorPalette.toLowerCase().replace(' (default)', '')
           : 'brand colors',

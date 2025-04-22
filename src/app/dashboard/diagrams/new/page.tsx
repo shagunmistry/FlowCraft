@@ -7,6 +7,7 @@ import { LinkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import { useContext, useState, useEffect, useRef } from 'react'
 import DiagramSelectionGrid from './DiagramSelectionGrid'
+import FormStep from './FormStep'
 import Button from '@/components/ui/Button'
 
 import { ZoomInIcon, ZoomOutIcon } from 'lucide-react'
@@ -37,6 +38,8 @@ export default function NewDiagramPage() {
   const [zoomLevel, setZoomLevel] = useState(1)
   const [isGenerated, setIsGenerated] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+  const [isPublic, setIsPublic] = useState(true)
+
 
   // region Dragging
   const [isDragging, setIsDragging] = useState(false)
@@ -221,6 +224,7 @@ export default function NewDiagramPage() {
         body: JSON.stringify({
           type: selectedOption,
           description: visionDescription,
+          isPublic: isPublic,
           colorPalette: colorPalette,
           complexityLevel: complexityLevel,
         }),
@@ -458,6 +462,7 @@ export default function NewDiagramPage() {
             setColorPalette={handleColorPaletteChange}
             setComplexityLevel={handleComplexityLevelChange}
           />
+          <FormStep isPublic={isPublic} setIsPublic={setIsPublic}/>
         </>
       )}
     </div>
