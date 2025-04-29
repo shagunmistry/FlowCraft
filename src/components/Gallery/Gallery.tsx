@@ -5,6 +5,10 @@ import { motion } from 'framer-motion';
 import DiagramOrChartView from '@/components/DiagramOrChartView';
 import { DiagramContext } from '@/lib/Contexts/DiagramContext';
 import PageLoader from '@/components/PageLoader';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-hot-toast';
+import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartIconSolid, BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
 
 interface PublicVisual {
   id: string;
@@ -16,9 +20,13 @@ interface PublicVisual {
   isPublic: boolean;
   previewUrl?: string;
   views?: number;
+  likes?: number;
+  isLiked?: boolean;
+  isSaved?: boolean;
 }
 
 export default function PublicGallery() {
+  const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('Newest');
   const [publicVisuals, setPublicVisuals] = useState<PublicVisual[]>([]);
@@ -48,11 +56,14 @@ export default function PublicGallery() {
           } catch (svgError) {
             console.error('Error processing SVG:', svgError);
           }
-          debugger;
+
           return {
             ...diagram,
             previewUrl,
             views: diagram.views || 0,
+            likes: diagram.likes || 0,
+            isLiked: diagram.isLiked || false,
+            isSaved: diagram.isSaved || false,
           };
         });
 
@@ -66,6 +77,119 @@ export default function PublicGallery() {
 
     fetchPublicVisuals();
   }, []);
+
+  const handleLike = async (visualId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!session) {
+      toast.error('Please sign in to like visuals');
+      return;
+    }
+
+    try {
+      const visualIndex = publicVisuals.findIndex(v => v.id === visualId);
+      if (visualIndex === -1) return;
+
+      const visual = publicVisuals[visualIndex];
+      const isCurrentlyLiked = visual.isLiked;
+      const newLikeCount = isCurrentlyLiked ? visual.likes! - 1 : visual.likes! + 1;
+
+      // Optimistic update
+      setPublicVisuals(prev => {
+        const newVisuals = [...prev];
+        newVisuals[visualIndex] = {
+          ...newVisuals[visualIndex],
+          isLiked: !isCurrentlyLiked,
+          likes: newLikeCount
+        };
+        return newVisuals;
+      });
+
+      const response = await fetch('/api/like-diagram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ diagramId: visualId, like: !isCurrentlyLiked }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update like');
+      }
+    } catch (error) {
+      console.error('Error liking visual:', error);
+      // Revert optimistic update
+      setPublicVisuals(prev => {
+        const newVisuals = [...prev];
+        const visualIndex = newVisuals.findIndex(v => v.id === visualId);
+        if (visualIndex !== -1) {
+          newVisuals[visualIndex] = {
+            ...newVisuals[visualIndex],
+            isLiked: !newVisuals[visualIndex].isLiked,
+            likes: newVisuals[visualIndex].isLiked ? newVisuals[visualIndex].likes! - 1 : newVisuals[visualIndex].likes! + 1
+          };
+        }
+        return newVisuals;
+      });
+      toast.error('Failed to update like');
+    }
+  };
+
+  const handleSave = async (visualId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!session) {
+      toast.error('Please sign in to save visuals');
+      return;
+    }
+
+    try {
+      const visualIndex = publicVisuals.findIndex(v => v.id === visualId);
+      if (visualIndex === -1) return;
+
+      const visual = publicVisuals[visualIndex];
+      const isCurrentlySaved = visual.isSaved;
+
+      // Optimistic update
+      setPublicVisuals(prev => {
+        const newVisuals = [...prev];
+        newVisuals[visualIndex] = {
+          ...newVisuals[visualIndex],
+          isSaved: !isCurrentlySaved
+        };
+        return newVisuals;
+      });
+
+      const response = await fetch('/api/save-diagram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ diagramId: visualId, save: !isCurrentlySaved }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update save');
+      }
+
+      toast.success(!isCurrentlySaved ? 'Visual saved to your collection!' : 'Visual removed from your collection');
+    } catch (error) {
+      console.error('Error saving visual:', error);
+      // Revert optimistic update
+      setPublicVisuals(prev => {
+        const newVisuals = [...prev];
+        const visualIndex = newVisuals.findIndex(v => v.id === visualId);
+        if (visualIndex !== -1) {
+          newVisuals[visualIndex] = {
+            ...newVisuals[visualIndex],
+            isSaved: !newVisuals[visualIndex].isSaved
+          };
+        }
+        return newVisuals;
+      });
+      toast.error('Failed to update save');
+    }
+  };
 
   const filteredVisuals = useMemo(() => {
     return publicVisuals
@@ -87,7 +211,7 @@ export default function PublicGallery() {
   const openVisualViewer = (visual: PublicVisual) => {
     setSelectedVisual(visual);
     setIsViewerOpen(true);
-    debugger;
+    
     fetch(`/api/get-public-diagrams/views_increment`, {
       method: 'POST',
       headers: {
@@ -126,6 +250,8 @@ export default function PublicGallery() {
                   <span>{new Date(selectedVisual.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                   <span className="text-gray-300">•</span>
                   <span>{(selectedVisual.views || 0) + 1} views</span>
+                  <span className="text-gray-300">•</span>
+                  <span>{selectedVisual.likes || 0} likes</span>
                 </div>
               </div>
 
@@ -139,6 +265,32 @@ export default function PublicGallery() {
                       loading="lazy"
                     />
                   </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={(e) => handleLike(selectedVisual.id, e)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                  >
+                    {selectedVisual.isLiked ? (
+                      <HeartIconSolid className="h-5 w-5 text-red-500" />
+                    ) : (
+                      <HeartIcon className="h-5 w-5 text-gray-600" />
+                    )}
+                    <span>{selectedVisual.likes || 0}</span>
+                  </button>
+
+                  <button
+                    onClick={(e) => handleSave(selectedVisual.id, e)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                  >
+                    {selectedVisual.isSaved ? (
+                      <BookmarkIconSolid className="h-5 w-5 text-blue-500" />
+                    ) : (
+                      <BookmarkIcon className="h-5 w-5 text-gray-600" />
+                    )}
+                    <span>{selectedVisual.isSaved ? 'Saved' : 'Save'}</span>
+                  </button>
                 </div>
 
                 {selectedVisual.description && (
@@ -189,10 +341,11 @@ export default function PublicGallery() {
               <button
                 key={filter}
                 onClick={() => setSelectedFilter(filter)}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all whitespace-nowrap ${selectedFilter === filter
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all whitespace-nowrap ${
+                  selectedFilter === filter
                     ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                  }`}
+                }`}
               >
                 {filter}
               </button>
@@ -227,18 +380,58 @@ export default function PublicGallery() {
                     className="w-full h-full object-contain p-4"
                     loading="lazy"
                   />
+                  <div className="absolute top-3 right-3 flex gap-2">
+                    <button
+                      onClick={(e) => handleLike(visual.id, e)}
+                      className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+                    >
+                      {visual.isLiked ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        >
+                          <HeartIconSolid className="h-5 w-5 text-red-500" />
+                        </motion.div>
+                      ) : (
+                        <HeartIcon className="h-5 w-5 text-gray-600" />
+                      )}
+                    </button>
+                    <button
+                      onClick={(e) => handleSave(visual.id, e)}
+                      className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+                    >
+                      {visual.isSaved ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        >
+                          <BookmarkIconSolid className="h-5 w-5 text-blue-500" />
+                        </motion.div>
+                      ) : (
+                        <BookmarkIcon className="h-5 w-5 text-gray-600" />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-800 truncate">{visual.title}</h3>
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-xs text-gray-500">{visual.type}</span>
-                    <span className="text-xs text-gray-400 flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      {visual.views || 0}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400 flex items-center">
+                        <HeartIcon className="h-4 w-4 mr-1" />
+                        {visual.likes || 0}
+                      </span>
+                      <span className="text-xs text-gray-400 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        {visual.views || 0}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -275,6 +468,40 @@ export default function PublicGallery() {
                     className="w-full h-full object-contain p-4"
                     loading="lazy"
                   />
+                  <div className="absolute top-3 right-3 flex gap-2">
+                    <button
+                      onClick={(e) => handleLike(visual.id, e)}
+                      className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+                    >
+                      {visual.isLiked ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        >
+                          <HeartIconSolid className="h-5 w-5 text-red-500" />
+                        </motion.div>
+                      ) : (
+                        <HeartIcon className="h-5 w-5 text-gray-600" />
+                      )}
+                    </button>
+                    <button
+                      onClick={(e) => handleSave(visual.id, e)}
+                      className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+                    >
+                      {visual.isSaved ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        >
+                          <BookmarkIconSolid className="h-5 w-5 text-blue-500" />
+                        </motion.div>
+                      ) : (
+                        <BookmarkIcon className="h-5 w-5 text-gray-600" />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className="p-4">
                   <h3 className="font-medium text-gray-800 truncate">{visual.title}</h3>
@@ -282,9 +509,15 @@ export default function PublicGallery() {
                     <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
                       {visual.type}
                     </span>
-                    <span className="text-xs text-gray-400">
-                      {new Date(visual.createdAt).toLocaleDateString()}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400 flex items-center">
+                        <HeartIcon className="h-3 w-3 mr-1" />
+                        {visual.likes || 0}
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        {new Date(visual.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
