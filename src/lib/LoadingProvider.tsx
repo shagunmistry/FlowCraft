@@ -3,8 +3,8 @@ import { createContext, useContext, useState } from 'react'
 import LoadingOverlay from './LoadingOverlay'
 
 const LoadingContext = createContext({
-  showLoading: (text: string = 'Loading', color: string = 'indigo') => {},
-  hideLoading: () => {},
+  showLoading: (text: string = 'Loading', color: string = 'indigo') => { },
+  hideLoading: () => { },
 })
 
 export const useLoading = () => useContext(LoadingContext)
