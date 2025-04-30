@@ -15,7 +15,7 @@ export default function Pricing() {
   return (
     <>
       <Navbar />
-      <PublicGallery />
+      <PublicGallery user_id={null} />
       <FAQs />
     </>
   )

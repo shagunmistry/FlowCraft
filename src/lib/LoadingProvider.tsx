@@ -1,7 +1,6 @@
 'use client'
 import { createContext, useContext, useState } from 'react'
 import LoadingOverlay from './LoadingOverlay'
-import { SessionProvider } from 'next-auth/react';
 
 const LoadingContext = createContext({
   showLoading: (text: string = 'Loading', color: string = 'indigo') => { },
@@ -30,17 +29,15 @@ export const LoadingProvider = ({
   }
 
   return (
-    <SessionProvider>
-      <LoadingContext.Provider value={{ showLoading, hideLoading }}>
-        {children}
-        <LoadingOverlay
-          isLoading={loading}
-          text={loadingText}
-          color={loadingColor}
-          fullScreen={true}
-          zIndex={100}
-        />
-      </LoadingContext.Provider>
-    </SessionProvider>
+    <LoadingContext.Provider value={{ showLoading, hideLoading }}>
+      {children}
+      <LoadingOverlay
+        isLoading={loading}
+        text={loadingText}
+        color={loadingColor}
+        fullScreen={true}
+        zIndex={100}
+      />
+    </LoadingContext.Provider>
   )
 }
