@@ -81,13 +81,13 @@ export default function GalleryCard({
           {visual.title}
         </h3>
         <div className="flex justify-between items-center mt-2">
-          {featured ? (
+          {/* {featured ? (
             <span className="text-xs text-gray-500">{visual.type}</span>
           ) : (
             <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
               {visual.type}
             </span>
-          )}
+          )} */}
           <div className="flex items-center gap-2">
             {featured ? (
               <>
