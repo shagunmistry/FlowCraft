@@ -462,7 +462,7 @@ export default function NewDiagramPage() {
             setColorPalette={handleColorPaletteChange}
             setComplexityLevel={handleComplexityLevelChange}
           />
-          <FormStep isPublic={isPublic} setIsPublic={setIsPublic}/>
+          <FormStep isPublic={isPublic} setIsPublic={setIsPublic} />
         </>
       )}
     </div>
