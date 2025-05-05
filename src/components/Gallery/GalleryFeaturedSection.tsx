@@ -3,7 +3,6 @@ import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid, BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
 import { PublicVisual } from './PublicVisualType';
 import GalleryCard from './GalleryCard';
-
 interface GalleryFeaturedSectionProps {
   visuals: PublicVisual[];
   onVisualClick: (visual: PublicVisual) => void;
@@ -25,9 +24,6 @@ export default function GalleryFeaturedSection({
     <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-800">Popular This Week</h2>
-        <button className="text-sm text-blue-600 hover:text-blue-800">
-          View all
-        </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {featuredVisuals.map((visual) => (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react';
 import {
   Brush,
   ChevronDownIcon,
@@ -21,10 +21,11 @@ import {
   Home,
   Compass,
   TimerIcon,
-} from 'lucide-react'
-import { MicrophoneIcon } from '@heroicons/react/20/solid'
-import { OptionType } from '@/lib/utils'
-import { Menu } from '@headlessui/react'
+} from 'lucide-react';
+import { MicrophoneIcon } from '@heroicons/react/20/solid';
+import { OptionType } from '@/lib/utils';
+import { Menu } from '@headlessui/react';
+import { HexColorPicker } from 'react-colorful';
 
 // Category definitions
 const DIAGRAM_CATEGORIES = {
@@ -32,15 +33,15 @@ const DIAGRAM_CATEGORIES = {
   DATA: 'Data Visualization',
   SOFTWARE: 'Software & Architecture',
   PLANNING: 'Planning & Tracking',
-}
+};
 
 type OptionsList = {
-  type: OptionType
-  icon: React.ReactNode
-  description: string
-  badgeText?: string
-  badgeColor?: string
-}[]
+  type: OptionType;
+  icon: React.ReactNode;
+  description: string;
+  badgeText?: string;
+  badgeColor?: string;
+}[];
 
 const DiagramSelectionGrid = ({
   setSelectedOption,
@@ -48,17 +49,18 @@ const DiagramSelectionGrid = ({
   setColorPalette,
   setComplexityLevel,
 }: {
-  setSelectedOption: (option: OptionType) => void
-  setVisionDescription: (description: string) => void
-  setColorPalette: (palette: string) => void
-  setComplexityLevel: (level: string) => void
+  setSelectedOption: (option: OptionType) => void;
+  setVisionDescription: (description: string) => void;
+  setColorPalette: (palette: string) => void;
+  setComplexityLevel: (level: string) => void;
 }) => {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<
     keyof typeof DIAGRAM_CATEGORIES | null
-  >(null)
-  const [selectedOptionState, setSelectedOptionState] =
-    useState<OptionType>(null)
+  >(null);
+  const [selectedOptionState, setSelectedOptionState] = useState<OptionType>(null);
+  const [showColorPicker, setShowColorPicker] = useState(true);
+  const [customColor, setCustomColor] = useState('#3b82f6');
 
   // Color palette options
   const colorPaletteOptions = [
@@ -67,40 +69,31 @@ const DiagramSelectionGrid = ({
     'Complementary',
     'Analogous',
     'Custom...',
-  ]
+  ];
 
   // Complexity options
-  const complexityOptions = [
-    'Medium (default)',
-    'Simple',
-    'Detailed',
-    'Complex',
-  ]
+  const complexityOptions = ['Medium (default)', 'Simple', 'Detailed', 'Complex'];
 
   const [selectedColorPalette, setSelectedColorPalette] = useState(
-    colorPaletteOptions[0],
-  )
+    colorPaletteOptions[0]
+  );
   const [selectedComplexity, setSelectedComplexity] = useState(
-    complexityOptions[0],
-  )
+    complexityOptions[0]
+  );
 
   // Diagram options organized by category
   const diagramOptions: {
-    [key in keyof typeof DIAGRAM_CATEGORIES]: OptionsList
+    [key in keyof typeof DIAGRAM_CATEGORIES]: OptionsList;
   } = {
-    [DIAGRAM_CATEGORIES.FLOW]: [
+    FLOW: [
       {
         type: 'Flowchart',
-        icon: (
-          <Share2 className="h-12 w-12 text-indigo-500" strokeWidth={1.5} />
-        ),
+        icon: <Share2 className="h-12 w-12 text-indigo-500" strokeWidth={1.5} />,
         description: 'Visualize process flows and decision paths',
       },
       {
         type: 'Sequence Diagram',
-        icon: (
-          <Activity className="h-12 w-12 text-blue-500" strokeWidth={1.5} />
-        ),
+        icon: <Activity className="h-12 w-12 text-blue-500" strokeWidth={1.5} />,
         description: 'Show interactions between components over time',
       },
       {
@@ -119,12 +112,10 @@ const DiagramSelectionGrid = ({
         description: 'Show components and their connections',
       },
     ],
-    [DIAGRAM_CATEGORIES.DATA]: [
+    DATA: [
       {
         type: 'Pie Chart',
-        icon: (
-          <PieChart className="h-12 w-12 text-pink-500" strokeWidth={1.5} />
-        ),
+        icon: <PieChart className="h-12 w-12 text-pink-500" strokeWidth={1.5} />,
         description: 'Display proportional data in circular segments',
       },
       {
@@ -134,16 +125,12 @@ const DiagramSelectionGrid = ({
       },
       {
         type: 'Sankey',
-        icon: (
-          <Share2 className="h-12 w-12 text-orange-500" strokeWidth={1.5} />
-        ),
+        icon: <Share2 className="h-12 w-12 text-orange-500" strokeWidth={1.5} />,
         description: 'Visualize flow quantities with width-variable arrows',
       },
       {
         type: 'XY Chart',
-        icon: (
-          <BarChart2 className="h-12 w-12 text-red-500" strokeWidth={1.5} />
-        ),
+        icon: <BarChart2 className="h-12 w-12 text-red-500" strokeWidth={1.5} />,
         description: 'Plot data points on two-dimensional grid',
       },
       {
@@ -152,19 +139,15 @@ const DiagramSelectionGrid = ({
         description: 'Compare multiple variables across axes',
       },
     ],
-    [DIAGRAM_CATEGORIES.SOFTWARE]: [
+    SOFTWARE: [
       {
         type: 'Class Diagram',
-        icon: (
-          <FileText className="h-12 w-12 text-violet-500" strokeWidth={1.5} />
-        ),
+        icon: <FileText className="h-12 w-12 text-violet-500" strokeWidth={1.5} />,
         description: 'Model object-oriented system structure',
       },
       {
         type: 'Entity Relationship Diagram',
-        icon: (
-          <Network className="h-12 w-12 text-emerald-500" strokeWidth={1.5} />
-        ),
+        icon: <Network className="h-12 w-12 text-emerald-500" strokeWidth={1.5} />,
         description: 'Map relationships between data entities',
       },
       {
@@ -174,16 +157,12 @@ const DiagramSelectionGrid = ({
       },
       {
         type: 'Gitgraph Diagram',
-        icon: (
-          <GitBranch className="h-12 w-12 text-gray-700" strokeWidth={1.5} />
-        ),
+        icon: <GitBranch className="h-12 w-12 text-gray-700" strokeWidth={1.5} />,
         description: 'Visualize Git branch and merge operations',
       },
       {
         type: 'C4 Diagram',
-        icon: (
-          <Layers className="h-12 w-12 text-purple-600" strokeWidth={1.5} />
-        ),
+        icon: <Layers className="h-12 w-12 text-purple-600" strokeWidth={1.5} />,
         description: 'Model software architecture at different levels',
       },
       {
@@ -202,26 +181,20 @@ const DiagramSelectionGrid = ({
         description: 'Text-based UML sequence diagrams',
       },
     ],
-    [DIAGRAM_CATEGORIES.PLANNING]: [
+    PLANNING: [
       {
         type: 'Gantt',
-        icon: (
-          <TimerIcon className="h-12 w-12 text-green-500" strokeWidth={1.5} />
-        ),
+        icon: <TimerIcon className="h-12 w-12 text-green-500" strokeWidth={1.5} />,
         description: 'Schedule project tasks and timelines',
       },
       {
         type: 'Mindmaps',
-        icon: (
-          <Network className="h-12 w-12 text-amber-500" strokeWidth={1.5} />
-        ),
+        icon: <Network className="h-12 w-12 text-amber-500" strokeWidth={1.5} />,
         description: 'Organize ideas in a hierarchical structure',
       },
       {
         type: 'Timeline',
-        icon: (
-          <TimerIcon className="h-12 w-12 text-blue-500" strokeWidth={1.5} />
-        ),
+        icon: <TimerIcon className="h-12 w-12 text-blue-500" strokeWidth={1.5} />,
         description: 'Visualize events in chronological order',
       },
       {
@@ -230,11 +203,7 @@ const DiagramSelectionGrid = ({
         description: 'Track work progress across different stages',
       },
     ],
-    FLOW: [],
-    DATA: [],
-    SOFTWARE: [],
-    PLANNING: [],
-  }
+  };
 
   const originalOptions: OptionsList = [
     {
@@ -246,17 +215,12 @@ const DiagramSelectionGrid = ({
     },
     {
       type: 'Infographic',
-      icon: (
-        <NotebookPenIcon
-          className="h-12 w-12 text-blue-500"
-          strokeWidth={1.5}
-        />
-      ),
+      icon: <NotebookPenIcon className="h-12 w-12 text-blue-500" strokeWidth={1.5} />,
       description: 'Represent complex information visually',
       badgeText: 'New',
       badgeColor: 'bg-blue-100 text-blue-800',
     },
-  ]
+  ];
 
   // Create a complete array of all options
   const allDiagramOptions = [
@@ -264,25 +228,38 @@ const DiagramSelectionGrid = ({
     ...Object.values(diagramOptions)
       .flat()
       .sort((a, b) => (a.type as string).localeCompare(b.type as string)),
-  ]
+  ];
 
   // Handler for selecting a diagram option
   const handleOptionSelect = (option: OptionType) => {
-    setSelectedOptionState(option)
-    setSelectedOption(option)
-  }
+    setSelectedOptionState(option);
+    setSelectedOption(option);
+  };
 
   // Handler for color palette change
   const handleColorPaletteChange = (palette: string) => {
-    setSelectedColorPalette(palette)
-    setColorPalette(palette)
-  }
+    if (palette === 'Custom...') {
+    //   setShowColorPicker(true);
+    // } else {
+      setSelectedColorPalette(palette);
+      setColorPalette(palette);
+      // setShowColorPicker(false);
+    }
+  };
+
+  // Handler for applying custom color
+  const handleCustomColorApply = () => {
+    const customPalette = `Custom (${customColor})`;
+    setSelectedColorPalette(customPalette);
+    setColorPalette(customPalette);
+    // setShowColorPicker(false);
+  };
 
   // Handler for complexity change
   const handleComplexityChange = (level: string) => {
-    setSelectedComplexity(level)
-    setComplexityLevel(level)
-  }
+    setSelectedComplexity(level);
+    setComplexityLevel(level);
+  };
 
   return (
     <div className="rounded-xl bg-white px-6 py-8 shadow-sm">
@@ -300,17 +277,15 @@ const DiagramSelectionGrid = ({
             All Types
           </button>
 
-          {Object.values(DIAGRAM_CATEGORIES).map((category) => (
+          {Object.entries(DIAGRAM_CATEGORIES).map(([key, category]) => (
             <button
-              key={category}
+              key={key}
               className={`whitespace-nowrap px-4 pb-2 text-base font-medium transition-all ${
-                selectedCategory === category
+                selectedCategory === key
                   ? 'border-b-2 border-indigo-600 text-indigo-600'
                   : 'text-slate-500 hover:text-slate-800'
               }`}
-              onClick={() =>
-                setSelectedCategory(category as keyof typeof DIAGRAM_CATEGORIES)
-              }
+              onClick={() => setSelectedCategory(key as keyof typeof DIAGRAM_CATEGORIES)}
             >
               {category}
             </button>
@@ -336,7 +311,6 @@ const DiagramSelectionGrid = ({
               onMouseLeave={() => setHoveredCard(null)}
               onClick={() => handleOptionSelect(type)}
             >
-              {/* Add this badge element below */}
               {badgeText && (
                 <div className="mb-1 flex justify-end">
                   <span
@@ -353,9 +327,7 @@ const DiagramSelectionGrid = ({
               <h4 className="mb-1 text-center font-medium text-slate-800">
                 {type}
               </h4>
-              <p className="text-center text-xs text-slate-500">
-                {description}
-              </p>
+              <p className="text-center text-xs text-slate-500">{description}</p>
             </div>
           ))}
         </div>
@@ -380,9 +352,7 @@ const DiagramSelectionGrid = ({
       <div className="mb-6">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center">
-            <h3 className="text-lg font-medium text-slate-800">
-              Advanced options
-            </h3>
+            <h3 className="text-lg font-medium text-slate-800">Advanced options</h3>
             <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
               Optional
             </span>
@@ -415,7 +385,7 @@ const DiagramSelectionGrid = ({
                         className={`cursor-pointer px-3 py-2 ${
                           active ? 'bg-indigo-50' : ''
                         } ${
-                          selectedColorPalette === option
+                          selectedColorPalette.startsWith(option)
                             ? 'bg-indigo-50 font-medium text-indigo-600'
                             : 'text-slate-700'
                         }`}
@@ -426,6 +396,31 @@ const DiagramSelectionGrid = ({
                     )}
                   </Menu.Item>
                 ))}
+                
+                {showColorPicker && (
+                  <div className="p-3 border-t border-slate-200">
+                    <HexColorPicker 
+                      color={customColor} 
+                      onChange={setCustomColor} 
+                      className="w-full mb-3"
+                    />
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div 
+                          className="w-6 h-6 rounded-full border border-slate-300 mr-2"
+                          style={{ backgroundColor: customColor }}
+                        />
+                        <span className="text-sm font-mono">{customColor}</span>
+                      </div>
+                      <button
+                        onClick={handleCustomColorApply}
+                        className="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
               </Menu.Items>
             </Menu>
           </div>
@@ -469,7 +464,7 @@ const DiagramSelectionGrid = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DiagramSelectionGrid
+export default DiagramSelectionGrid;
