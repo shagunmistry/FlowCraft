@@ -46,9 +46,9 @@ export default function GalleryViewer({
             <div className="mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{visual.title}</h2>
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">
+                {/* <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">
                   {visual.type}
-                </span>
+                </span> */}
                 <span>{new Date(visual.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 <span className="text-gray-300">•</span>
                 <span>{(visual.views || 0) + 1} views</span>
