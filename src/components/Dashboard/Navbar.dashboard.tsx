@@ -12,11 +12,12 @@ import {
   XMarkIcon,
   BellIcon,
 } from '@heroicons/react/24/outline'
+import { createClient } from '@/lib/supabase-auth/client'
 
 const ProfileMenu = [
-  { title: 'Account Settings', link: '/account/settings' },
-  { title: 'Your Creations', link: '/account/creations' },
-  { title: 'Help Center', link: '/support' },
+  // { title: 'Account Settings', link: '/account/settings' },
+  // { title: 'Your Creations', link: '/account/creations' },
+  // { title: 'Help Center', link: '/support' },
   { title: 'Sign Out', link: '/auth/logout' },
 ]
 
@@ -24,6 +25,23 @@ export default function DashboardNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [userName, setUserName] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const supabase = createClient()
+      const { data, error } = await supabase.auth.getUser()
+      
+      if (!error && data.user) {
+        const email = data.user.email || ''
+        setUserEmail(email)
+        setUserName(email.split('@')[0] || 'User')
+      }
+    }
+    
+    fetchUserData()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -178,10 +196,10 @@ export default function DashboardNavbar() {
                   >
                     <div className="rounded-lg bg-gradient-to-r from-violet-50 to-indigo-50 p-3">
                       <div className="text-sm font-medium text-slate-700">
-                        Alex Johnson
+                        {userName}
                       </div>
                       <div className="text-xs text-slate-500">
-                        alex.johnson@example.com
+                        {userEmail}
                       </div>
                     </div>
 
@@ -267,10 +285,10 @@ export default function DashboardNavbar() {
                   </div>
                   <div>
                     <div className="text-sm font-medium text-slate-700">
-                      Alex Johnson
+                      {userName}
                     </div>
                     <div className="text-xs text-slate-500">
-                      alex.johnson@example.com
+                      {userEmail}
                     </div>
                   </div>
                 </div>

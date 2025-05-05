@@ -61,6 +61,9 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       ) {
         console.log('Diagram Info:', diagramInfoFromApi.data)
 
+        console.log("Diagram Info Type:", diagramInfoFromApi.type)
+        console.log('Diagram Info Data:', diagramInfoFromApi.data)
+
         // Check if the first 3 characters are '```'
         if (diagramInfoFromApi.data.substring(0, 3) === '```') {
           const cleanedCode = diagramInfoFromApi.data
