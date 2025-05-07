@@ -1,6 +1,7 @@
 import { PublicVisual } from './PublicVisualType';
 import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid, BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
+import DiagramRenderer from './DiagramRenderer';
 
 interface GalleryViewerProps {
   user_id: string | null;
@@ -46,9 +47,9 @@ export default function GalleryViewer({
             <div className="mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{visual.title}</h2>
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                {/* <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">
+                <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">
                   {visual.type}
-                </span> */}
+                </span>
                 <span>{new Date(visual.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 <span className="text-gray-300">•</span>
                 <span>{(visual.views || 0) + 1} views</span>
@@ -60,12 +61,18 @@ export default function GalleryViewer({
             <div className="grid gap-8">
               <div className="border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
                 <div className="aspect-[4/3] flex items-center justify-center p-6">
-                  <img
+                        <DiagramRenderer
+                          type={visual.type}
+                          data={visual.data}
+                          imageUrl={visual.type === 'illustration' ? visual.image_url : undefined}
+                          className="w-full h-full p-4"
+                        />
+                  {/* <img
                     src={visual.previewUrl || '/default-diagram.png'}
                     alt={visual.title}
                     className="max-w-full max-h-full object-contain"
                     loading="lazy"
-                  />
+                  /> */}
                 </div>
               </div>
 
