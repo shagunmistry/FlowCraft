@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import mermaid from 'mermaid'
 
 export const OPEN_AI_MODEL = 'gpt-4o'
 
@@ -299,4 +300,13 @@ export function sanitizeMermaid(code: string): string {
     .trim() // Final trim to remove any extra whitespace
 
   return cleaned
+}
+
+export async function renderMermaidToSvg(mermaidCode: string): Promise<string> {
+  // Sanitize first
+  const cleanedCode = sanitizeMermaid(mermaidCode);
+  
+  // @ts-ignore - assuming mermaid is available globally
+  const { svg } = await mermaid.render('mermaid-diagram', cleanedCode);
+  return svg;
 }

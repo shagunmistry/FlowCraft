@@ -8,6 +8,7 @@ import GalleryGrid from './GalleryGrid';
 import GalleryViewer from './GalleryViewer';
 import PageLoader from '@/components/PageLoader';
 import { PublicVisual } from './PublicVisualType';
+import { sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 
 interface GalleryProps {
     user_id?: string | null; // Accept user_id as a prop
@@ -29,23 +30,12 @@ export default function Gallery({ user_id }: GalleryProps) {
                 const { diagrams } = await response.json();
 
                 const transformedDiagrams = diagrams.map((diagram: any) => {
-                    let previewUrl = '/default-diagram.png';
-
-                    try {
-                        if (diagram.data && typeof diagram.data === 'string') {
-                            const cleanedSvg = diagram.data
-                                .trim()
-                                .replace(/<\?xml.*?\?>/g, '')
-                                .replace(/<!--[\s\S]*?-->/g, '');
-                            previewUrl = `data:image/svg+xml;utf8,${encodeURIComponent(cleanedSvg)}`;
-                        }
-                    } catch (svgError) {
-                        console.error('Error processing SVG:', svgError);
-                    }
-
                     return {
                         ...diagram,
-                        previewUrl,
+                        previewUrl: diagram.type === 'illustration' ? diagram.image_url : 
+                                   diagram.type === 'infographic' ? `data:image/svg+xml;utf8,${encodeURIComponent(diagram.data)}` : 
+                                   '@/images/FlowCraftLogo_New.png',
+                        data: diagram.data,
                         views: diagram.views || 0,
                         likes: diagram.likes || 0,
                         isLiked: diagram.isLiked || false,

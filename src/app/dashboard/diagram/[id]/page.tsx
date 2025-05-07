@@ -1,10 +1,12 @@
 'use client'
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { useRouter } from 'next/navigation' // ✅ Use App Router version
+import { useRouter } from 'next/navigation'
 import PageLoader from '@/components/PageLoader'
 import dynamic from 'next/dynamic'
+import { OptionType, sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
+import mermaid from 'mermaid'
 
 const DiagramOrChartView = dynamic(() => import('@/components/DiagramOrChartView'), {
   ssr: false,
@@ -12,100 +14,131 @@ const DiagramOrChartView = dynamic(() => import('@/components/DiagramOrChartView
 
 export default function DiagramPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true)
-  const [svgContent, setSvgContent] = useState<string | null>(null)
   const diagramContext = useContext(DiagramContext)
-  const router = useRouter() // ✅ App Router hook
+  const router = useRouter()
+  const [imageUrl, setImageUrl] = useState('')
+  const [svgCode, setSvgCode] = useState('')
+  const [mermaidCode, setMermaidCode] = useState('')
+  const mermaidContainerRef = useRef<HTMLDivElement>(null)
+  const [mermaidInitialized, setMermaidInitialized] = useState(false)
 
+  // Initialize Mermaid once
   useEffect(() => {
-    const fetchDiagram = async () => {
-      setLoading(true)
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+    })
+    setMermaidInitialized(true)
+  }, [])
+
+  // Render Mermaid diagram when code changes
+  useEffect(() => {
+    if (mermaidInitialized && mermaidCode && mermaidContainerRef.current) {
+      const container = mermaidContainerRef.current
+      container.innerHTML = '' // Clear previous content
+      
       try {
-        const response = await fetch('/api/get-diagrams', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id: params.id }),
-        })
-
-        const { diagram } = await response.json()
-
-        if (!diagram || diagram.length === 0) {
-          setLoading(false)
-          router.push('/dashboard') // ✅ Still works with App Router's useRouter
-          return
-        }
-
-        const diagramInfoFromApi = diagram[0]
-
-        diagramContext.setTitle(diagramInfoFromApi.title)
-        diagramContext.setDescription(diagramInfoFromApi.description)
-        diagramContext.setType(diagramInfoFromApi.type)
-        diagramContext.setDiagramId(params.id)
-
-        if (diagramInfoFromApi.type === 'infographic') {
-          setSvgContent(diagramInfoFromApi.data)
-        } else if (diagramInfoFromApi.type === 'Flow Diagram') {
-          let parsedData = diagramInfoFromApi.data
-          if (typeof parsedData === 'string') {
-            parsedData = JSON.parse(parsedData)
-            if (typeof parsedData === 'string') {
-              parsedData = JSON.parse(parsedData)
-            }
-          }
-
-          const nodes = parsedData.nodes
-          const edges = parsedData.edges
-
-          diagramContext.setEdges(edges)
-          diagramContext.setNodes(nodes)
-        } else if (
-          diagramInfoFromApi.type !== 'Chart' &&
-          diagramInfoFromApi.type !== 'Whiteboard'
-        ) {
-          if (diagramInfoFromApi.data.substring(0, 3) === '```') {
-            const cleanedCode = diagramInfoFromApi.data
-              .replace(/```/g, '')
-              .replace(/```/g, '')
-            diagramContext.setMermaidData(cleanedCode)
-          } else {
-            let parsedData = JSON.parse(diagramInfoFromApi.data)
-            parsedData =
-              typeof parsedData === 'string' ? JSON.parse(parsedData) : parsedData
-            diagramContext.setMermaidData(parsedData.mermaid)
-          }
-        } else if (diagramInfoFromApi.type === 'Chart') {
-          let parsedData = JSON.parse(diagramInfoFromApi.data)
-          parsedData =
-            typeof parsedData === 'string' ? JSON.parse(parsedData) : parsedData
-          diagramContext.setChartJsData(parsedData)
-        }
-
-        setLoading(false)
+        mermaid
+          .render('mermaid-diagram', mermaidCode)
+          .then(({ svg }) => {
+            container.innerHTML = svg
+          })
+          .catch((error) => {
+            console.error('Mermaid rendering error:', error)
+            container.innerHTML = `<div class="text-red-500">Error rendering Mermaid diagram</div>`
+          })
       } catch (error) {
-        console.error('Error fetching diagram:', error)
-        setLoading(false)
-        router.push('/dashboard')
+        console.error('Mermaid error:', error)
+        container.innerHTML = `<div class="text-red-500">Error processing Mermaid diagram</div>`
       }
     }
+  }, [mermaidCode, mermaidInitialized])
 
+  const fetchDiagram = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/get-diagrams', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: params.id }),
+      })
+
+      const { diagram } = await response.json()
+
+      if (!diagram || diagram.length === 0) {
+        setLoading(false)
+        router.push('/dashboard')
+        return
+      }
+
+      const diagramInfoFromApi = diagram[0]
+
+      diagramContext.setTitle(diagramInfoFromApi.title)
+      diagramContext.setDescription(diagramInfoFromApi.description)
+      diagramContext.setType(diagramInfoFromApi.type)
+      diagramContext.setDiagramId(params.id)
+
+      if (diagramInfoFromApi.type === 'illustration') {
+        setImageUrl(diagramInfoFromApi.image_url)
+        setSvgCode('')
+        setMermaidCode('')
+      } else if (diagramInfoFromApi.type === 'infographic') {
+        const sanitizedSvgCode = sanitizeSVG(diagramInfoFromApi.data)
+        setSvgCode(sanitizedSvgCode.svgContent)
+        setMermaidCode('')
+        setImageUrl('')
+      } else {
+        const sanitizedMermaidCode = sanitizeMermaid(diagramInfoFromApi.data)
+        setMermaidCode(sanitizedMermaidCode)
+        setSvgCode('')
+        setImageUrl('')
+      }
+
+      setLoading(false)
+    } catch (error) {
+      console.error('Error fetching diagram:', error)
+      setLoading(false)
+      router.push('/dashboard')
+    }
+  }
+
+  useEffect(() => {
     fetchDiagram()
-  }, [params.id, diagramContext, router])
+  }, [params.id])
 
   if (loading) {
     return <PageLoader />
   }
 
-  if (svgContent) {
+  if (svgCode) {
     return (
       <div
-        dangerouslySetInnerHTML={{ __html: svgContent }}
+        dangerouslySetInnerHTML={{ __html: svgCode }}
         style={{ width: '100%', height: 'auto' }}
       />
     )
+  } else if (mermaidCode) {
+    return (
+      <div className="w-full h-full p-4">
+        <div
+          ref={mermaidContainerRef}
+          className="mermaid"
+          style={{ width: '100%', height: 'auto' }}
+        />
+      </div>
+    )
+  } else if (imageUrl) {
+    return (
+      <div className="max-w-full h-auto mx-auto">
+        <img src={imageUrl} alt="Diagram" style={{ maxWidth: '100%' }} />
+      </div>
+    )
   }
 
-  if (!!diagramContext.title && !!diagramContext.type) {
+  if (diagramContext.title && diagramContext.type) {
     return (
       <div>
         <DiagramOrChartView type={diagramContext.type} />

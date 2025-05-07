@@ -238,13 +238,13 @@ const DiagramSelectionGrid = ({
 
   // Handler for color palette change
   const handleColorPaletteChange = (palette: string) => {
-    if (palette === 'Custom...') {
+    // if (palette === 'Custom...') {
     //   setShowColorPicker(true);
     // } else {
       setSelectedColorPalette(palette);
       setColorPalette(palette);
       // setShowColorPicker(false);
-    }
+    // }
   };
 
   // Handler for applying custom color
@@ -252,7 +252,7 @@ const DiagramSelectionGrid = ({
     const customPalette = `Custom (${customColor})`;
     setSelectedColorPalette(customPalette);
     setColorPalette(customPalette);
-    // setShowColorPicker(false);
+    setShowColorPicker(false);
   };
 
   // Handler for complexity change
