@@ -27,7 +27,7 @@ const nextConfig = {
     NEXT_PUBLIC_MICROSOFT_CLARITY: "m7btrxqq27"
   },
   images: {
-    domains: ['firebasestorage.googleapis.com'],
+    domains: ['firebasestorage.googleapis.com', 'fllqlodhrvmnynkffoss.supabase.co'],
   },
 }
 export default withMDX(nextConfig)

@@ -851,7 +851,7 @@ export default function DiagramOrChartView({
         Whiteboard={Whiteboard}
       />
       <SuccessDialog
-        buttonText="View Diagram"
+        buttonText="View"
         header="Success!"
         message={`Yayy! Your ${type} has been generated! ${
           type === 'Flow Diagram'

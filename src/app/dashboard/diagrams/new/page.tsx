@@ -1,413 +1,470 @@
 'use client'
 
-import DiagramOrChartView from '@/components/DiagramOrChartView'
-import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
-import PageLoader from '@/components/PageLoader'
-import StarRatingInput from '@/components/StarRatingInput'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import {
-  cn,
-  DiagramOrChartType,
-  DiagramType,
-  extractParsableJSON,
-  OptionType,
-} from '@/lib/utils'
-import {
-  ArrowTrendingUpIcon,
-  ArrowUpCircleIcon,
-  BriefcaseIcon,
-  BugAntIcon,
-  ChartPieIcon,
-  CheckIcon,
-  ClockIcon,
-  DocumentDuplicateIcon,
-  DocumentMagnifyingGlassIcon,
-  FireIcon,
-  ForwardIcon,
-  PresentationChartBarIcon,
-  PuzzlePieceIcon,
-  SparklesIcon,
-  Square2StackIcon,
-  UserGroupIcon,
-} from '@heroicons/react/20/solid'
-import { PresentationChartLineIcon } from '@heroicons/react/24/outline'
-import { track } from '@vercel/analytics'
-
-import { motion } from 'framer-motion'
+import { OptionType, sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
+import { BugAntIcon } from '@heroicons/react/20/solid'
+import { LinkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
-import { useContext, useState } from 'react'
-import FormStep from './FormStep'
+import { useContext, useState, useEffect, useRef } from 'react'
 import DiagramSelectionGrid from './DiagramSelectionGrid'
-import ProgressStepper from './ProgressStepper'
+import FormStep from './FormStep'
 import Button from '@/components/ui/Button'
 
-/** export enum DiagramType {
-  FlowDiagram = 'Flow Diagram',
-  Whiteboard = 'Whiteboard',
-  Chart = 'Chart',
-  FlowChart = 'flowchart',
-  SequenceDiagram = 'sequenceDiagram',
-  ClassDiagram = 'classDiagram',
-  StateDiagram = 'stateDiagram',
-  EntityRelationshipDiagram = 'erDiagram',
-  UserJourney = 'userJourney',
-  Gantt = 'gantt',
-  PieChart = 'pieChart',
-  QuadrantChart = 'quadrantChart',
-  RequirementDiagram = 'requirementDiagram',
-  GitGraph = 'gitGraph',
-  Mindmaps = 'mindmaps',
-  Timeline = 'timeline',
-  ZenUML = 'zenuml',
-  Sankey = 'sankey',
-} */
-const availableDiagrams: {
-  title: string
-  description: string
-  iconBackground: string
-  iconForeground: string
-  icon: any
-  id: DiagramOrChartType | TempMermaidDiagramType
-}[] = [
-  {
-    title: 'Flow Diagram',
-    description:
-      'A visual representation of the steps in a process. It helps to show how different parts of a task or project connect and flow together. Think of it like a map for a complex activity.',
-    iconBackground: 'bg-indigo-50',
-    iconForeground: 'text-indigo-600',
-    icon: CheckIcon,
-    id: 'Flow Diagram',
-  },
-  {
-    title: 'Chart',
-    description:
-      'A general term for visual representations of data, using bars, lines, points, or other shapes. Charts make data easier to understand and analyze.',
-    iconBackground: 'bg-yellow-50',
-    iconForeground: 'text-yellow-600',
-    icon: PresentationChartBarIcon,
-    id: 'Chart',
-  },
-  {
-    title: 'Flow Chart',
-    description:
-      'Very similar to a flow diagram, it uses specific symbols (rectangles, diamonds, etc.) to represent different types of actions in a process (decisions, tasks, inputs, outputs).',
-    iconBackground: 'bg-green-50',
-    iconForeground: 'text-green-600',
-    icon: ArrowUpCircleIcon,
-    id: 'flowchart',
-  },
-  {
-    title: 'Sequence Diagram',
-    description:
-      "Shows how different parts of a system interact with each other over time. It's like a comic strip for software, illustrating the order of messages or actions between components.",
-    iconBackground: 'bg-blue-50',
-    iconForeground: 'text-blue-600',
-    icon: ArrowTrendingUpIcon,
-    id: 'sequenceDiagram',
-  },
-  {
-    title: 'Class Diagram',
-    description:
-      'Used in software development, it provides a blueprint for the structure of a program. It defines the classes (types of objects), their properties, and how they relate to each other.',
-    iconBackground: 'bg-purple-50',
-    iconForeground: 'text-purple-600',
-    icon: DocumentMagnifyingGlassIcon,
-    id: 'classDiagram',
-  },
-  {
-    title: 'State Diagram',
-    description:
-      'Illustrates the different states an object can be in and how it transitions between those states. For instance, a traffic light might have states like "red," "yellow," and "green."',
-    iconBackground: 'bg-red-50',
-    iconForeground: 'text-red-600',
-    icon: PresentationChartLineIcon,
-    id: 'stateDiagram',
-  },
-  {
-    title: 'Entity Relationship Diagram',
-    description:
-      'Used in database design, it maps out the relationships between different entities (people, objects, concepts). It helps to define how data should be organized and stored.',
-    iconBackground: 'bg-indigo-50',
-    iconForeground: 'text-indigo-600',
-    icon: Square2StackIcon,
-    id: 'entityRelationshipDiagram',
-  },
-  {
-    title: 'User Journey',
-    description:
-      "A visual story of a user's experience interacting with a product or service. It highlights touchpoints, pain points, and opportunities for improvement.",
-    iconBackground: 'bg-gray-50',
-    iconForeground: 'text-gray-500',
-    icon: UserGroupIcon,
-    id: 'userJourney',
-  },
-  {
-    title: 'Gantt',
-    description:
-      "A horizontal bar chart that shows a project timeline. Each bar represents a task, and its length indicates the task's duration. It's helpful for planning and tracking project schedules.",
-    iconBackground: 'bg-yellow-50',
-    iconForeground: 'text-yellow-600',
-    icon: BugAntIcon,
-    id: 'gantt',
-  },
-  {
-    title: 'Pie Chart',
-    description:
-      'A circular chart divided into slices. Each slice represents a portion of a whole. Pie charts are used to show percentages or proportions.',
-    iconBackground: 'bg-green-50',
-    iconForeground: 'text-green-600',
-    icon: ChartPieIcon,
-    id: 'pieChart',
-  },
-  {
-    title: 'Quadrant Chart',
-    description:
-      "A grid divided into four sections. It's used to categorize items based on two criteria. For example, a quadrant chart might plot products based on their market share and growth rate.",
-    iconBackground: 'bg-blue-50',
-    iconForeground: 'text-blue-600',
-    icon: PuzzlePieceIcon,
-    id: 'quadrantChart',
-  },
-  {
-    title: 'Requirement Diagram',
-    description:
-      'Used to capture and organize the functional and non-functional requirements of a project. It helps to ensure that everyone has a clear understanding of what needs to be built.',
-    iconBackground: 'bg-purple-50',
-    iconForeground: 'text-purple-600',
-    icon: BriefcaseIcon,
-    id: 'requirementDiagram',
-  },
-  {
-    title: 'Git Graph',
-    description:
-      'Visualizes the history of a project in a version control system like Git. It shows branches, commits, merges, and other changes over time.',
-    iconBackground: 'bg-red-50',
-    iconForeground: 'text-red-600',
-    icon: SparklesIcon,
-    id: 'gitgraph',
-  },
-  {
-    title: 'Mindmaps',
-    description:
-      'A diagram used to visually organize information. It starts with a central idea and branches out into related concepts and subtopics. Great for brainstorming and note-taking.',
-    iconBackground: 'bg-indigo-50',
-    iconForeground: 'text-indigo-600',
-    icon: FireIcon,
-    id: 'mindmaps',
-  },
-  {
-    title: 'Timeline',
-    description:
-      'A visual representation of events in chronological order. It helps to understand the sequence of historical events or the steps in a project plan.',
-    iconBackground: 'bg-gray-50',
-    iconForeground: 'text-gray-500',
-    icon: ClockIcon,
-    id: 'timeline',
-  },
-  {
-    title: 'ZenUML',
-    description:
-      'A text-based way to create UML diagrams. You write simple descriptions, and ZenUML generates the corresponding diagram.',
-    iconBackground: 'bg-yellow-50',
-    iconForeground: 'text-yellow-600',
-    icon: DocumentDuplicateIcon,
-    id: 'zenuml',
-  },
-  {
-    title: 'Sankey',
-    description:
-      'Shows flows or transfers between different entities. The width of the arrows or bands indicates the magnitude of the flow. Often used to visualize energy flows or financial transactions.',
-    iconBackground: 'bg-green-50',
-    iconForeground: 'text-green-600',
-    icon: ForwardIcon,
-    id: 'sankey',
-  },
-]
+import { ZoomInIcon, ZoomOutIcon } from 'lucide-react'
+import { useLoading } from '@/lib/LoadingProvider'
+import mermaid from 'mermaid'
 
 export default function NewDiagramPage() {
-  const context = useContext(DiagramContext)
+  const { showLoading, hideLoading } = useLoading()
 
-  const [selectedDiagram, setSelectedDiagram] = useState<string | null>(null)
+  const context = useContext(DiagramContext)
+  const router = useRouter()
+  const svgContainerRef = useRef<HTMLDivElement>(null)
+  const mermaidContainerRef = useRef<HTMLDivElement>(null)
+
   const [selectedOption, _setSelectedOption] =
     useState<OptionType>('Infographic')
+  const [visionDescription, setVisionDescription] = useState('')
+  const [colorPalette, setColorPalette] = useState('Brand colors (default)')
+  const [complexityLevel, setComplexityLevel] = useState('Medium (default)')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const [visionDescription, setVisionDescription] = useState<string>('')
+  const [generatedTitle, setGeneratedTitle] = useState('')
+  const [svgCode, setSvgCode] = useState('')
+  const [mermaidCode, setMermaidCode] = useState('')
+  const [visualPlan, setVisualPlan] = useState('')
+  const [diagramId, setDiagramId] = useState<string | null>(null)
+  const [zoomLevel, setZoomLevel] = useState(1)
+  const [isGenerated, setIsGenerated] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
+  const [isPublic, setIsPublic] = useState(true)
 
-  const [diagramTitle, setDiagramTitle] = useState<string>('')
-  const [diagramDescription, setDiagramDescription] = useState<string>('')
 
-  const [error, setError] = useState<string>('')
+  // region Dragging
+  const [isDragging, setIsDragging] = useState(false)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleDiagramSelection = (diagramType: string) => {
-    setSelectedDiagram(diagramType)
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true)
+    setDragStart({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    })
+  }
+
+  // Function to handle dragging
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return
+
+    const newX = e.clientX - dragStart.x
+    const newY = e.clientY - dragStart.y
+
+    setPosition({
+      x: newX,
+      y: newY,
+    })
+  }
+
+  // Function to handle the end of dragging
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  // Setup and cleanup event listeners
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current
+
+      container.addEventListener('mousemove', handleMouseMove)
+      container.addEventListener('mouseup', handleMouseUp)
+      container.addEventListener('mouseleave', handleMouseUp)
+
+      return () => {
+        container.removeEventListener('mousemove', handleMouseMove)
+        container.removeEventListener('mouseup', handleMouseUp)
+        container.removeEventListener('mouseleave', handleMouseUp)
+      }
+    }
+  }, [isDragging, dragStart])
+
+  useEffect(() => {
+    setPosition({ x: 0, y: 0 })
+  }, [zoomLevel])
+
+  // endregion
+
+  // region Mermaid
+  useEffect(() => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+    })
+  }, [])
+
+  // Render mermaid diagram when code changes
+  useEffect(() => {
+    if (mermaidCode && mermaidContainerRef.current) {
+      try {
+        mermaidContainerRef.current.innerHTML = ''
+        mermaid
+          .render('mermaid-diagram', mermaidCode)
+          .then(({ svg }) => {
+            if (mermaidContainerRef.current) {
+              mermaidContainerRef.current.innerHTML = svg
+            }
+          })
+          .catch((error) => {
+            console.error('Mermaid rendering error:', error)
+            setError('There was an error rendering the mermaid diagram.')
+          })
+      } catch (error) {
+        console.error('Mermaid error:', error)
+        setError('There was an error processing the mermaid diagram.')
+      }
+    }
+  }, [mermaidCode, zoomLevel])
+
+  // Update URL when diagram is generated
+  useEffect(() => {
+    if (diagramId) {
+      // Update URL without refreshing the page
+      window.history.pushState(
+        { diagramId: diagramId },
+        '',
+        `/diagram/${diagramId}`,
+      )
+    }
+  }, [diagramId])
+
+  // Copy link to clipboard
+  const copyLinkToClipboard = () => {
+    const url = window.location.href
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        // You could add a toast notification here
+        console.log('Link copied to clipboard')
+      })
+      .catch((err) => {
+        console.error('Could not copy link: ', err)
+      })
+  }
+
+  // Zoom in/out functions
+  const zoomIn = () => {
+    setZoomLevel((prev) => Math.min(prev + 0.2, 3))
+  }
+
+  const zoomOut = () => {
+    setZoomLevel((prev) => Math.max(prev - 0.2, 0.5))
+  }
+
+  const handleOptionTypeChange = (option: OptionType) => {
+    _setSelectedOption(option)
+  }
+
+  const handleVisionDescriptionChange = (description: string) => {
+    setVisionDescription(description)
+  }
+
+  const handleColorPaletteChange = (palette: string) => {
+    setColorPalette(palette)
+  }
+
+  const handleComplexityLevelChange = (level: string) => {
+    setComplexityLevel(level)
   }
 
   const handleSubmit = async () => {
+    if (!visionDescription.trim()) {
+      setError('Please provide a description of your vision')
+      // Smooth scroll to the description input div
+      const descriptionInput = document.getElementById('vision-description')
+      if (descriptionInput) {
+        // Add highlight class
+        descriptionInput.classList.add('border-2', 'border-red-500')
+
+        // Scroll to the element
+        descriptionInput.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+
+        // Remove highlight class after 2 seconds
+        setTimeout(() => {
+          descriptionInput.classList.remove('border-2', 'border-red-500')
+        }, 2000)
+      }
+      return
+    }
 
     try {
+      showLoading('Generating your diagram...', 'indigo')
+      setIsLoading(true)
       setError('')
       context.setChartJsData(null)
       context.setMermaidData('')
       context.setNodes([])
       context.setEdges([])
 
-      // if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
-      //   track('create', {
-      //     type: selectedOption,
-      //     title: title,
-      //   })
-      // }
-
       console.log('Vision Description: ', visionDescription)
       console.log('Selected Option: ', selectedOption)
+      console.log('Color Palette: ', colorPalette)
+      console.log('Complexity Level: ', complexityLevel)
 
-      // await fetch('/api/generate-diagram', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     title: title,
-      //     description: description,
-      //     type: selectedOption,
-      //   }),
-      // })
-      //   .catch((e) => {
-      //     console.log('Error generating diagram: ', e)
-      //     setError(
-      //       'There was an error generating the diagram, please try again',
-      //     )
-      //   })
-      //   .then(async (diagram: any) => {
-      //     console.log('Diagram Response: ', diagram)
-      //     if (diagram.status === 401 || diagram.status === 400) {
-      //       setError(
-      //         'You have reached the maximum number of diagrams you can create. Please subscribe to create more diagrams.',
-      //       )
-      //       return
-      //     }
+      const response = await fetch('/api/generate-visual', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: selectedOption,
+          description: visionDescription,
+          isPublic: isPublic,
+          colorPalette: colorPalette,
+          complexityLevel: complexityLevel,
+        }),
+      })
 
-      //     const diagramJson = await diagram.json()
-      //     console.log('Diagram JSON 2: ', diagramJson)
+      if (!response.ok) {
+        if (response.status === 401) {
+          setError('Your session has expired. Please log in again.')
+          router.push('/login')
+          return
+        }
+        throw new Error(`API returned status: ${response.status}`)
+      }
 
-      //     if (
-      //       diagramJson.result &&
-      //       selectedDiagram !== 'Chart' &&
-      //       selectedDiagram !== 'Flow Diagram'
-      //     ) {
-      //       console.log('Setting Mermaid Data: ', diagramJson.result)
-      //       // remove the ``` from the start and end of the string
+      const data = await response.json()
 
-      //       const cleanedUpMermaidData = diagramJson.result
-      //         .replace('```', '')
-      //         .replace('```', '')
-      //         .trim()
+      console.log('Generate Visual API Response: ', data)
 
-      //       context.setMermaidData(cleanedUpMermaidData)
-      //       context.setDiagramId(diagramJson.id)
+      if (!!data.error) {
+        setError(data.error)
+        return
+      }
 
-      //       // Show the feedback modal after 10 seconds
-      //       setTimeout(() => {
-      //         context.setFeedbackModalOpen(true)
-      //       }, 10000)
-      //       return
-      //     }
+      const diagram_id = data.diagram_id as string
 
-      //     const whatToParse = diagramJson.result
-      //       ? diagramJson.result
-      //       : diagramJson.records
+      if (selectedOption === 'Illustration') {
+        const imageUrl = data.image_url as string
+        setImageUrl(imageUrl)
+        setSvgCode('')
+        setMermaidCode('')
+      } else if (selectedOption === 'Infographic') {
+        const code = data.code as string
+        let sanitizedSvgCode = sanitizeSVG(code)
 
-      //     const parseableJson = extractParsableJSON(whatToParse)
+        // Set the states with the generated content
+        setSvgCode(sanitizedSvgCode.svgContent)
+        setMermaidCode('')
+      } else {
+        // it must be a Mermaid Diagram
+        const code = data.code as string
+        console.log('Mermaid Code: ', code)
+        let sanitizedMermaidCode = sanitizeMermaid(code)
 
-      //     if (parseableJson === null) {
-      //       handleSubmit(title, description, trialNumber + 1)
-      //       return
-      //     }
+        console.log('Sanitized Mermaid Code: ', sanitizedMermaidCode)
 
-      //     console.log(
-      //       'Diagram JSON: ',
-      //       JSON.parse(parseableJson),
-      //       'Type: ',
-      //       selectedDiagram,
-      //     )
+        setMermaidCode(sanitizedMermaidCode)
+        setSvgCode('')
+        setImageUrl('')
+      }
 
-      //     let diagramResult = JSON.parse(diagramJson.result)
-      //     console.log('Diagram Result: ', diagramResult)
+      const title = data.title as string
+      console.log('Generated Title: ', title)
+      if (!!title) {
+        setGeneratedTitle(title)
+      }
 
-      //     if (
-      //       diagramResult &&
-      //       diagramResult.nodes &&
-      //       diagramResult.edges &&
-      //       selectedDiagram === 'Flow Diagram'
-      //     ) {
-      //       context.setNodes(diagramResult.nodes)
-      //       context.setEdges(diagramResult.edges)
-      //     } else if (
-      //       diagramResult &&
-      //       diagramResult.data &&
-      //       selectedDiagram === 'Chart'
-      //     ) {
-      //       context.setChartJsData(diagramResult)
-      //     }
-
-      //     context.setDiagramId(diagramJson.id)
-
-      //     // Show the feedback modal after 10 seconds
-      //     setTimeout(() => {
-      //       context.setFeedbackModalOpen(true)
-      //     }, 10000)
-      //   })
+      setDiagramId(diagram_id)
+      setIsGenerated(true)
     } catch (e) {
-      console.log('Error generating diagram: ', e)
+      console.log('Error generating visual: ', e)
       setError(
         'There was an error generating the diagram, please try creating again. We are sorry for the inconvenience.',
       )
+    } finally {
+      setIsLoading(false)
+      hideLoading()
     }
   }
 
   return (
     <div className="mx-auto mt-20 max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      {/* <ProgressStepper steps={steps} /> */}
-
-      <section aria-labelledby="diagram-options" className="mt-8">
-        {/** Error Message */}
-        {error && (
-          <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <BugAntIcon
-                  className="h-5 w-5 text-red-400"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
+      {/** Error Message */}
+      {error && (
+        <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <BugAntIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">{error}</p>
             </div>
           </div>
-        )}
-
-        <div className="flex justify-end">
-          <Button
-            type="button"
-            className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
         </div>
+      )}
 
-        <DiagramSelectionGrid
-          availableDiagrams={availableDiagrams}
-          handleDiagramSelection={handleDiagramSelection}
-          selectedDiagram={selectedDiagram}
-          _setSelectedOption={_setSelectedOption}
-          setVisionDescription={setVisionDescription}
-        />
+      {isGenerated ? (
+        <div className="mt-6 space-y-8">
+          {/* Generated content section */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {generatedTitle || 'Your Generated ' + selectedOption}
+            </h2>
+            <div className="flex items-center space-x-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  // Create a new illustration
+                  setIsGenerated(false)
+                  setVisionDescription('')
+                  setSvgCode('')
+                  setMermaidCode('')
+                  setVisualPlan('')
+                  setDiagramId(null)
+                  setColorPalette('Brand colors (default)')
+                  setComplexityLevel('Medium (default)')
+                  // Update URL back to the create page
+                  window.history.pushState({}, '', '/illustrations/new')
+                }}
+                variant="secondary"
+                className="text-sm"
+              >
+                Create New
+              </Button>
+            </div>
+          </div>
 
-        {/* {currentStep === 3 && (
-          <>
-            <DiagramOrChartView type={selectedDiagram as any} />
-          </>
-        )} */}
-      </section>
+          {/* SVG/Mermaid Display with controls */}
+          <div className="overflow-hidden rounded-lg bg-white shadow">
+            <div className="flex items-center justify-between border-b bg-gray-50 p-4">
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={zoomOut}
+                  className="rounded-full p-1 transition-colors hover:bg-gray-200"
+                  title="Zoom out"
+                >
+                  <ZoomOutIcon className="h-5 w-5 text-gray-700" />
+                </button>
+                <span className="text-sm text-gray-600">
+                  {Math.round(zoomLevel * 100)}%
+                </span>
+                <button
+                  onClick={zoomIn}
+                  className="rounded-full p-1 transition-colors hover:bg-gray-200"
+                  title="Zoom in"
+                >
+                  <ZoomInIcon className="h-5 w-5 text-gray-700" />
+                </button>
+                <button
+                  onClick={copyLinkToClipboard}
+                  className="ml-2 rounded-full p-1 transition-colors hover:bg-gray-200"
+                  title="Copy link"
+                >
+                  <LinkIcon className="h-5 w-5 text-gray-700" />
+                </button>
+                <span className="ml-4 text-sm italic text-gray-500">
+                  Click and drag to move the illustration
+                </span>
+              </div>
+              <div className="flex items-center space-x-4 text-sm text-gray-500">
+                <span>Color: {colorPalette}</span>
+                <span>Complexity: {complexityLevel}</span>
+              </div>
+            </div>
+            <div
+              ref={containerRef}
+              className="flex cursor-move justify-center p-8"
+              style={{
+                height: '70vh', // Changed from maxHeight to fixed height
+                width: '100%', // Using width instead of maxWidth
+                position: 'relative',
+                overflow: 'auto', // Changed from 'hidden' to 'auto' to allow scrolling when needed
+              }}
+            >
+              {svgCode && (
+                <div
+                  ref={svgContainerRef}
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
+                    transformOrigin: 'center center',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.2s ease-in-out', // Remove transition during dragging
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                    position: 'absolute',
+                  }}
+                  dangerouslySetInnerHTML={{ __html: svgCode }}
+                  onMouseDown={handleMouseDown}
+                />
+              )}
+              {mermaidCode && (
+                <div
+                  ref={mermaidContainerRef}
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
+                    transformOrigin: 'center center',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.2s ease-in-out', // Remove transition during dragging
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                    position: 'absolute',
+                  }}
+                  onMouseDown={handleMouseDown}
+                />
+              )}
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt="Generated Illustration"
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${position.x}px, ${position.y}px)`,
+                    transformOrigin: 'center center',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.2s ease-in-out', // Remove transition during dragging
+                    width: '100%',
+                    height: 'auto',
+                    position: 'absolute',
+                  }}
+                  onMouseDown={handleMouseDown}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={handleSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Generating...' : 'Create Illustration'}
+            </Button>
+          </div>
+
+          <DiagramSelectionGrid
+            setSelectedOption={handleOptionTypeChange}
+            setVisionDescription={handleVisionDescriptionChange}
+            setColorPalette={handleColorPaletteChange}
+            setComplexityLevel={handleComplexityLevelChange}
+          />
+          <FormStep isPublic={isPublic} setIsPublic={setIsPublic}/>
+        </>
+      )}
     </div>
   )
 }

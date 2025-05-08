@@ -156,7 +156,7 @@ const DiagramCard = ({ diagram }: { diagram: any }) => (
         className="mt-4 inline-flex transform items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:from-fuchsia-700 hover:to-indigo-700 hover:shadow-lg hover:shadow-purple-300/40 group-hover:translate-y-[-2px]"
       >
         <PlayIcon className="mr-2 h-4 w-4" />
-        View Diagram
+        View
       </Link>
     </div>
   </div>
