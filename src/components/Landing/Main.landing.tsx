@@ -204,8 +204,8 @@ export default function MainLanding() {
               </motion.div>
             </div>
 
-            {/* Creative Output Showcase - Elegant Grid */}
-            <motion.div
+            {/* TODO : Creative Output Showcase - Elegant Grid */}
+            {/* <motion.div
               initial={{ y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
@@ -233,7 +233,7 @@ export default function MainLanding() {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </motion.div> */}
 
             {/* Style Selection Section */}
             <motion.div
@@ -278,7 +278,7 @@ export default function MainLanding() {
 
                   {/* Style Preview */}
                   <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-                    <div className="overflow-hidden rounded-2xl bg-white p-1 shadow-xl shadow-indigo-100/30">
+                    {/* TODO: <div className="overflow-hidden rounded-2xl bg-white p-1 shadow-xl shadow-indigo-100/30">
                       <Image
                         src={
                           illustrationStyles.find((s) => s.id === activeTab)
@@ -289,7 +289,7 @@ export default function MainLanding() {
                         height={400}
                         className="h-full w-full rounded-xl object-cover"
                       />
-                    </div>
+                    </div> */}
                     <div className="flex flex-col justify-center">
                       <h3 className="font-serif text-2xl font-medium text-slate-900">
                         {activeTab === 'playful' && 'Whimsical & Joyful'}
@@ -346,7 +346,7 @@ export default function MainLanding() {
             >
               <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-                  <div className="order-2 lg:order-1">
+                  {/* TODO: <div className="order-2 lg:order-1">
                     <div className="rounded-2xl bg-gradient-to-br from-fuchsia-50 to-indigo-50 p-1 shadow-xl">
                       <div className="overflow-hidden rounded-xl bg-white shadow-sm">
                         <Image
@@ -358,7 +358,7 @@ export default function MainLanding() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="order-1 lg:order-2">
                     <h3 className="font-serif text-sm uppercase tracking-[0.25em] text-fuchsia-600">
@@ -849,7 +849,8 @@ export default function MainLanding() {
                             />
                           </svg>
                         ),
-                        screenshot: '/step1-describe.jpg',
+                        screenshot:
+                          'https://fllqlodhrvmnynkffoss.supabase.co/storage/v1/object/public/flowcraft-data//DescribeYourVision.gif',
                       },
                       {
                         title: 'Choose Your Style',
@@ -871,12 +872,12 @@ export default function MainLanding() {
                             />
                           </svg>
                         ),
-                        screenshot: '/step2-style.jpg',
+                        screenshot: 'https://fllqlodhrvmnynkffoss.supabase.co/storage/v1/object/public/flowcraft-data//ColorOptions.gif',
                       },
                       {
-                        title: 'Review and Refine',
+                        title: 'Review',
                         description:
-                          "See your vision come to life in real-time. Make adjustments and refinements until it's perfect.",
+                          "See your vision come to life in real-time.",
                         icon: (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -893,30 +894,30 @@ export default function MainLanding() {
                             />
                           </svg>
                         ),
-                        screenshot: '/step3-refine.jpg',
+                        screenshot: 'https://fllqlodhrvmnynkffoss.supabase.co/storage/v1/object/public/flowcraft-data//Review.gif',
                       },
-                      {
-                        title: 'Download and Share',
-                        description:
-                          'Export your creation in high-resolution formats perfect for any use case—from presentations to social media.',
-                        icon: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="h-8 w-8"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                            />
-                          </svg>
-                        ),
-                        screenshot: '/step4-download.jpg',
-                      },
+                      // {
+                      //   title: 'Download and Share',
+                      //   description:
+                      //     'Export your creation in high-resolution formats perfect for any use case—from presentations to social media.',
+                      //   icon: (
+                      //     <svg
+                      //       xmlns="http://www.w3.org/2000/svg"
+                      //       fill="none"
+                      //       viewBox="0 0 24 24"
+                      //       strokeWidth={1.5}
+                      //       stroke="currentColor"
+                      //       className="h-8 w-8"
+                      //     >
+                      //       <path
+                      //         strokeLinecap="round"
+                      //         strokeLinejoin="round"
+                      //         d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                      //       />
+                      //     </svg>
+                      //   ),
+                      //   screenshot: '/step4-download.jpg',
+                      // },
                     ].map((step, idx) => (
                       <motion.div
                         key={idx}
@@ -952,15 +953,30 @@ export default function MainLanding() {
                           className={`mt-8 flex-1 ${idx % 2 === 0 ? 'lg:pl-16' : 'lg:pr-16'}`}
                         >
                           <div className="overflow-hidden rounded-2xl bg-white p-2 shadow-xl">
-                            <div className="rounded-xl bg-slate-100">
-                              <Image
-                                src={step.screenshot || '/placeholder-step.jpg'}
-                                alt={`Step ${idx + 1}: ${step.title}`}
-                                width={500}
-                                height={300}
-                                className="w-full rounded-xl object-cover"
-                              />
-                            </div>
+                            {step.screenshot?.endsWith('.mp4') ? (
+                              <div className="rounded-xl bg-slate-100">
+                                <video
+                                  src={step.screenshot}
+                                  controls
+                                  autoPlay
+                                  muted
+                                  loop
+                                  className="w-full rounded-xl object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="rounded-xl bg-slate-100">
+                                <Image
+                                  src={
+                                    step.screenshot || '/placeholder-step.jpg'
+                                  }
+                                  alt={`Step ${idx + 1}: ${step.title}`}
+                                  width={500}
+                                  height={300}
+                                  className="w-full rounded-xl object-cover"
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </motion.div>
