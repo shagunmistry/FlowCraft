@@ -8,9 +8,12 @@ import dynamic from 'next/dynamic'
 import { OptionType, sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 import mermaid from 'mermaid'
 
-const DiagramOrChartView = dynamic(() => import('@/components/DiagramOrChartView'), {
-  ssr: false,
-})
+const DiagramOrChartView = dynamic(
+  () => import('@/components/DiagramOrChartView'),
+  {
+    ssr: false,
+  },
+)
 
 export default function DiagramPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true)
@@ -37,7 +40,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     if (mermaidInitialized && mermaidCode && mermaidContainerRef.current) {
       const container = mermaidContainerRef.current
       container.innerHTML = '' // Clear previous content
-      
+
       try {
         mermaid
           .render('mermaid-diagram', mermaidCode)
@@ -122,7 +125,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     )
   } else if (mermaidCode) {
     return (
-      <div className="w-full h-full p-4">
+      <div className="h-full w-full p-4">
         <div
           ref={mermaidContainerRef}
           className="mermaid"
@@ -132,7 +135,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     )
   } else if (imageUrl) {
     return (
-      <div className="max-w-full h-auto mx-auto">
+      <div className="mx-auto h-auto max-w-full">
         <img src={imageUrl} alt="Diagram" style={{ maxWidth: '100%' }} />
       </div>
     )
