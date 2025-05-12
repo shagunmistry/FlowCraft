@@ -9,6 +9,7 @@ import GalleryViewer from './GalleryViewer';
 import PageLoader from '@/components/PageLoader';
 import { PublicVisual } from './PublicVisualType';
 import { sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
+import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 
 interface GalleryProps {
     user_id?: string | null; // Accept user_id as a prop
@@ -34,7 +35,7 @@ export default function Gallery({ user_id }: GalleryProps) {
                         ...diagram,
                         previewUrl: diagram.type === 'illustration' ? diagram.image_url : 
                                    diagram.type === 'infographic' ? `data:image/svg+xml;utf8,${encodeURIComponent(diagram.data)}` : 
-                                   '@/images/FlowCraftLogo_New.png',
+                                   FlowCraftLogo.src,
                         data: diagram.data,
                         views: diagram.views || 0,
                         likes: diagram.likes || 0,
