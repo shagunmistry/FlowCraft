@@ -14,6 +14,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  transpilePackages: ['mermaid', 'cytoscape'],
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   // Environment variables
   env: {
