@@ -71,7 +71,7 @@ export default function GalleryViewer({
                     src={visual.previewUrl || '/default-diagram.png'}
                     alt={visual.title}
                     className="max-w-full max-h-full object-contain"
-                    loading="lazy"
+                    loading="lazy" 
                   /> */}
                 </div>
               </div>
