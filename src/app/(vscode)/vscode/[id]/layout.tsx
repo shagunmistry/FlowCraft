@@ -2,7 +2,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import Navbar from '@/components/Navbar'
 
-import { Footer } from '@/components/Footer'
+import Footer from '@/components/Footer'
 import { useState } from 'react'
 
 import { VSCodeDiagramsContext } from '@/lib/Contexts/VSCodeContext'
