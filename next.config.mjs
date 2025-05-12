@@ -15,7 +15,7 @@ const nextConfig = {
     serverActions: true,
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  // Environment variables
+  // Environment variables 
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.SUPABASE_PRIVATE_KEY,
