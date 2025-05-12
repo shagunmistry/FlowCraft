@@ -14,16 +14,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
-  webpack: (config) => {
-    config.resolve = {
-      ...config.resolve,
-      alias: {
-        ...config.resolve.alias,
-        cytoscape: require.resolve('cytoscape/dist/cytoscape.cjs.js'),
-      },
-    }
-    return config
-  },
+  // transpilePackages: ['mermaid', 'cytoscape'],
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   // Environment variables
   env: {

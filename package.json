@@ -33,7 +33,6 @@
     "bufferutil": "^4.0.9",
     "chart.js": "^4.4.1",
     "clsx": "^1.2.1",
-    "cytoscape": "^3.32.0",
     "dagre": "^0.8.5",
     "elkjs": "^0.9.2",
     "encoding": "^0.1.13",
