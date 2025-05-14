@@ -36,11 +36,17 @@ export default function GalleryCard({
       onClick={onClick}
     >
       <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-        <DiagramRenderer
+        {/* <DiagramRenderer
           type={visual.type}
           data={visual.data}
           imageUrl={visual.type === 'illustration' ? visual.image_url : undefined}
           className="w-full h-full p-4"
+        /> */}
+        <img
+          src={visual.previewUrl || '/default-diagram.png'}
+          alt={visual.title}
+          className="max-w-full max-h-full object-contain"
+          loading="lazy"
         />
         <div className="absolute top-3 right-3 flex gap-2">
           <button
