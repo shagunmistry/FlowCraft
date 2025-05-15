@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface PublicVisual {
   id: string;
@@ -7,17 +7,22 @@ interface PublicVisual {
   type: string;
   description: string;
   views: number;
+  likes: number;
+  is_like: boolean;
+  is_save: boolean;
   createdAt: string;
   isPublic: boolean;
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
+    const userId = req.headers.get('User-Id');
     const response = await fetch(`${API_URL}/v2/public-diagrams`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'User-Id': userId || ''
       },
       next: { revalidate: 60 }, // Optional: Cache for 60 seconds
     });
@@ -35,6 +40,9 @@ export async function GET() {
       data: diagram.data,
       description: diagram.description,
       views: diagram.views,
+      likes: diagram.likes,
+      is_like: diagram.is_like,
+      is_save: diagram.is_save,
       type: diagram.type,
       createdAt: diagram.created_at,
       isPublic: diagram.is_public,

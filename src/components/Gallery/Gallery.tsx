@@ -8,7 +8,6 @@ import GalleryGrid from './GalleryGrid';
 import GalleryViewer from './GalleryViewer';
 import PageLoader from '@/components/PageLoader';
 import { PublicVisual } from './PublicVisualType';
-import { sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 
 interface GalleryProps {
@@ -27,7 +26,11 @@ export default function Gallery({ user_id }: GalleryProps) {
     useEffect(() => {
         const fetchPublicVisuals = async () => {
             try {
-                const response = await fetch('/api/get-public-diagrams');
+                const response = await fetch('/api/get-public-diagrams', {
+                    headers: {
+                        'User-Id': userId || ''
+                    }
+                });
                 const { diagrams } = await response.json();
 
                 const transformedDiagrams = diagrams.map((diagram: any) => {
@@ -39,8 +42,8 @@ export default function Gallery({ user_id }: GalleryProps) {
                         data: diagram.data,
                         views: diagram.views || 0,
                         likes: diagram.likes || 0,
-                        isLiked: diagram.isLiked || false,
-                        isSaved: diagram.isSaved || false,
+                        isLiked: diagram.is_like || false,
+                        isSaved: diagram.is_save || false,
                     };
                 });
 
