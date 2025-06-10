@@ -5,6 +5,7 @@ import Script from 'next/script'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 import MicrosoftClarity from '@/components/MicrosoftClarity'
+import { LoadingProvider } from '@/lib/LoadingProvider'
 
 export const metadata: Metadata = {
   title: {
@@ -37,7 +38,9 @@ export default function RootLayout({
       <GoogleAnalytics gaId="AW-16550420965" />
       <MicrosoftClarity />
       <body className="flex min-h-full">
-        <div className="w-full">{children}</div>
+        <LoadingProvider>
+          <div className="w-full">{children}</div>
+        </LoadingProvider>
       </body>
     </html>
   )
