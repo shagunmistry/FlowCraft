@@ -15,6 +15,7 @@ import {
 // Main navigation items for non-authenticated users
 const mainNavigation = [
   { name: 'Gallery', href: '/gallery' },
+  { name: 'Image Studio', href: '/image-studio' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Blog', href: '/blogs' },
   { name: 'Release Notes', href: '/release-notes' },

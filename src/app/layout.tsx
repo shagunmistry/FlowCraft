@@ -6,6 +6,7 @@ import Script from 'next/script'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import MicrosoftClarity from '@/components/MicrosoftClarity'
 import { LoadingProvider } from '@/lib/LoadingProvider'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: {
@@ -40,6 +41,16 @@ export default function RootLayout({
       <body className="flex min-h-full">
         <LoadingProvider>
           <div className="w-full">{children}</div>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+            }}
+          />
         </LoadingProvider>
       </body>
     </html>

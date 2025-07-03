@@ -306,8 +306,8 @@ export default async function Dashboard() {
             <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-white"></div>
             <div className="absolute -left-10 bottom-5 h-40 w-40 rounded-full bg-white"></div>
           </div>
-          <div className="relative z-10 flex flex-col items-center justify-between md:flex-row">
-            <div className="mb-6 md:mb-0">
+          <div className="relative z-10">
+            <div className="mb-8 text-center">
               <h2 className="font-serif text-3xl font-semibold">
                 Ready to create?
               </h2>
@@ -315,12 +315,20 @@ export default async function Dashboard() {
                 Transform your ideas into visual magic
               </p>
             </div>
-            <a
-              href="/dashboard/diagrams/new"
-              className="transform rounded-full bg-white px-8 py-3 text-base font-medium text-indigo-600 transition-all duration-300 hover:scale-105 hover:bg-fuchsia-50 hover:shadow-lg hover:shadow-purple-700/30"
-            >
-              Create New Diagram
-            </a>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <a
+                href="/dashboard/diagrams/new"
+                className="transform rounded-full bg-white px-8 py-3 text-center text-base font-medium text-indigo-600 transition-all duration-300 hover:scale-105 hover:bg-fuchsia-50 hover:shadow-lg hover:shadow-purple-700/30"
+              >
+                Create New Diagram
+              </a>
+              <a
+                href="/image-studio"
+                className="transform rounded-full bg-white px-8 py-3 text-center text-base font-medium text-fuchsia-600 transition-all duration-300 hover:scale-105 hover:bg-indigo-50 hover:shadow-lg hover:shadow-purple-700/30"
+              >
+                ✨ AI Image Studio
+              </a>
+            </div>
           </div>
         </div>
 
@@ -371,7 +379,7 @@ export default async function Dashboard() {
             Discover creative ways to transform your ideas into visual content
           </p>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
             <div className="rounded-2xl bg-gradient-to-r from-fuchsia-50 to-indigo-50 p-5 transition-all duration-300 hover:shadow-md">
               <h3 className="mb-2 font-serif text-lg font-medium text-indigo-700">
                 Visualization Tips
@@ -389,6 +397,18 @@ export default async function Dashboard() {
                 Explore pre-made templates to jumpstart your projects
               </p>
             </div>
+
+            <Link
+              href="/image-studio"
+              className="rounded-2xl bg-gradient-to-r from-fuchsia-50 to-pink-50 p-5 transition-all duration-300 hover:scale-105 hover:shadow-md"
+            >
+              <h3 className="mb-2 font-serif text-lg font-medium text-fuchsia-700">
+                ✨ AI Image Studio
+              </h3>
+              <p className="text-sm text-fuchsia-600">
+                Generate and edit images with AI-powered tools
+              </p>
+            </Link>
 
             <div className="rounded-2xl bg-gradient-to-r from-purple-50 to-fuchsia-50 p-5 transition-all duration-300 hover:shadow-md">
               <h3 className="mb-2 font-serif text-lg font-medium text-indigo-700">
