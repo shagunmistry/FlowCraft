@@ -161,7 +161,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   <div className="font-medium">Generate</div>
                   <div className="text-xs opacity-75">Create from text</div>
                 </button>
-                <button
+                {/* <button
                   onClick={() => setMode('edit')}
                   className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
                     mode === 'edit'
@@ -172,7 +172,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   <PencilSquareIcon className="w-6 h-6 mx-auto mb-2" />
                   <div className="font-medium">Edit</div>
                   <div className="text-xs opacity-75">Transform images</div>
-                </button>
+                </button> */}
               </div>
             </div>
 
