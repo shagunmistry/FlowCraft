@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         prompt: description,
         type: type.toLowerCase(),
-        isPublic,
+        private: !isPublic,
         colorPalette: colorPalette
           ? colorPalette.toLowerCase().replace(' (default)', '')
           : 'brand colors',

@@ -96,7 +96,8 @@ export default function GalleryViewer({
                   <DiagramRenderer
                     type={visual.type}
                     data={visual.data}
-                    imageUrl={visual.type === 'illustration' ? visual.image_url : undefined}
+                    imageUrl={visual.type === 'illustration' ? visual.image_url : 
+                             visual.type === 'generated_image' ? visual.data : undefined}
                     className="w-full h-full p-4"
                   />
                 </div>

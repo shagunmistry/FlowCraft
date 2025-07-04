@@ -31,6 +31,7 @@ export default function GalleryGrid({
         <h2 className="text-xl font-semibold text-gray-800">
           {selectedFilter === 'Newest' ? 'Recently Added' :
             selectedFilter === 'Trending' ? 'Most Viewed' :
+            selectedFilter === 'Generated Images' ? 'Generated Images' :
               `${selectedFilter} Diagrams`}
         </h2>
         

@@ -251,7 +251,7 @@ export function sanitizeSVG(svgString: string): {
 
 export function sanitizeMermaid(code: string): string {
   // Remove leading/trailing whitespace and backticks
-  let cleaned = code.trim()
+  let cleaned = code?.trim() || ''
 
   // Remove surrounding quotes if present
   if (

@@ -34,7 +34,7 @@ export default function DiagramRenderer({
 
     // Process diagram data based on type
     useEffect(() => {
-        if (type === 'illustration') {
+        if (type === 'illustration' || type === 'generated_image') {
             setSvgCode('')
             setMermaidCode('')
         } else if (type === 'infographic') {

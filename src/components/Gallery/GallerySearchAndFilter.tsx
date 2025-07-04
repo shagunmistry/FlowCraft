@@ -7,7 +7,7 @@ interface GallerySearchAndFilterProps {
   onFilterChange: (filter: string) => void;
 }
 
-const filters = ['Newest', 'Trending', 'Flow', 'Chart', 'Whiteboard', 'Mind Map'];
+const filters = ['Newest', 'Trending', 'Flow', 'Chart', 'Whiteboard', 'Mind Map', 'Generated Images'];
 
 export default function GallerySearchAndFilter({
   searchQuery,
