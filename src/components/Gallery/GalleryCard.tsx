@@ -16,6 +16,7 @@ const typeColors = {
   mermaid: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
   infographic: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
   illustration: { bg: 'bg-pink-50', text: 'text-pink-700', border: 'border-pink-200' },
+  generated_image: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
 };
 
 // Type icons
@@ -33,6 +34,11 @@ const typeIcons = {
   illustration: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+    </svg>
+  ),
+  generated_image: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
     </svg>
   ),
 };
@@ -69,7 +75,7 @@ export default function GalleryCard({
         <div className="flex items-center justify-between mb-3">
           <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${typeColor.bg} ${typeColor.text} ${typeColor.border}`}>
             {typeIcon}
-            <span className="capitalize">{visual.type}</span>
+            <span className="capitalize">{visual.type === 'generated_image' ? 'Generated Image' : visual.type}</span>
           </div>
           <div className="flex items-center gap-1">
             <button

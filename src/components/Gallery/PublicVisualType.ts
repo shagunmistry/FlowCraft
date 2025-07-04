@@ -3,7 +3,7 @@ export interface PublicVisual {
   title: string;
   data: string;
   description: string;
-  type: 'mermaid' | 'infographic' | 'illustration';
+  type: 'mermaid' | 'infographic' | 'illustration' | 'generated_image';
   createdAt: string;
   isPublic: boolean;
   previewUrl?: string;

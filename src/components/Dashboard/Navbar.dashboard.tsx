@@ -11,6 +11,7 @@ import {
   ChevronDownIcon,
   XMarkIcon,
   BellIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline'
 import { createClient } from '@/lib/supabase-auth/client'
 
@@ -134,7 +135,15 @@ export default function DashboardNavbar() {
                 >
                   <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 14.5V13H8v-2h3V7.5l4.5 4.5L11 16.5z" />
                 </svg>
-                Public
+                Showcase
+              </Link>
+
+              <Link
+                href="/image-studio"
+                className="flex items-center rounded-full bg-gradient-to-r from-fuchsia-50 to-pink-50 px-5 py-2.5 text-sm font-medium text-fuchsia-700 transition-all duration-300 hover:from-fuchsia-100 hover:to-pink-100 hover:shadow-sm"
+              >
+                <SparklesIcon className="mr-2 h-4 w-4 text-fuchsia-600" />
+                Image Studio
               </Link>
 
               <a
@@ -315,6 +324,15 @@ export default function DashboardNavbar() {
                       <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
                     </svg>
                     Dashboard
+                  </Link>
+
+                  <Link
+                    href="/image-studio"
+                    className="flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-700"
+                    onClick={closeMenus}
+                  >
+                    <SparklesIcon className="mr-3 h-5 w-5 text-fuchsia-600" />
+                    Image Studio
                   </Link>
 
                   <Link

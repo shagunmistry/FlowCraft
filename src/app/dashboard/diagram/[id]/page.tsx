@@ -103,6 +103,10 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         setImageUrl(diagramInfoFromApi.image_url)
         setSvgCode('')
         setMermaidCode('')
+      } else if (diagramInfoFromApi.type === 'generated_image') {
+        setImageUrl(diagramInfoFromApi.data)
+        setSvgCode('')
+        setMermaidCode('')
       } else if (diagramInfoFromApi.type === 'infographic') {
         const sanitizedSvgCode = sanitizeSVG(diagramInfoFromApi.data)
         setSvgCode(sanitizedSvgCode.svgContent)
@@ -160,7 +164,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       className="border-b border-slate-200/50 bg-white shadow-sm"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex flex-col gap-4 py-4 lg:flex-row lg:items-center lg:justify-between">
           {/* Left section - Back button and title */}
           <div className="flex items-center space-x-4">
             <motion.button
@@ -263,7 +267,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative flex-1 overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100"
+      className="relative flex-1 overflow-auto bg-gradient-to-br from-slate-50 to-slate-100"
     >
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -276,10 +280,10 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       </div>
 
       {/* Diagram content */}
-      <div className="relative flex h-full items-center justify-center p-8">
+      <div className="relative flex min-h-full items-center justify-center p-4 sm:p-8">
         <div
-          className="max-h-full max-w-full overflow-hidden rounded-2xl border border-slate-200/50 bg-white shadow-xl"
-          style={{ transform: `scale(${zoomLevel})` }}
+          className="w-full max-w-none overflow-auto rounded-2xl border border-slate-200/50 bg-white shadow-xl"
+          style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}
         >
           {children}
         </div>
@@ -306,7 +310,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         <DiagramContainer>
           <div
             dangerouslySetInnerHTML={{ __html: svgCode }}
-            className="max-h-full max-w-full"
+            className="w-full p-4 sm:p-8"
           />
         </DiagramContainer>
       </div>
@@ -316,10 +320,10 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       <div className="flex h-screen flex-col">
         <DiagramHeader />
         <DiagramContainer>
-          <div className="p-8">
+          <div className="w-full p-4 sm:p-8">
             <div
               ref={mermaidContainerRef}
-              className="mermaid max-h-full max-w-full"
+              className="mermaid w-full"
             />
           </div>
         </DiagramContainer>
@@ -330,11 +334,11 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       <div className="flex h-screen flex-col">
         <DiagramHeader />
         <DiagramContainer>
-          <div className="p-8">
+          <div className="w-full p-4 sm:p-8">
             <img
               src={imageUrl}
               alt="Diagram"
-              className="max-h-full max-w-full rounded-lg object-contain"
+              className="w-full h-auto rounded-lg object-contain"
             />
           </div>
         </DiagramContainer>
@@ -347,7 +351,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       <div className="flex h-screen flex-col">
         <DiagramHeader />
         <DiagramContainer>
-          <div className="h-full w-full">
+          <div className="w-full p-4 sm:p-8">
             <DiagramOrChartView type={diagramContext.type} />
           </div>
         </DiagramContainer>

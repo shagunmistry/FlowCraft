@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useMemo, useEffect, use } from 'react';
+import { useRouter } from 'next/navigation';
 import GalleryHeader from './GalleryHeader';
 import GallerySearchAndFilter from './GallerySearchAndFilter';
 import GalleryFeaturedSection from './GalleryFeaturedSection';
 import GalleryGrid from './GalleryGrid';
-import GalleryViewer from './GalleryViewer';
 import PageLoader from '@/components/PageLoader';
 import { PublicVisual } from './PublicVisualType';
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
@@ -16,12 +16,11 @@ interface GalleryProps {
 
 export default function Gallery({ user_id }: GalleryProps) {
     const userId = user_id || null; // Use the prop or set to null if not provided
+    const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('Newest');
     const [publicVisuals, setPublicVisuals] = useState<PublicVisual[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedVisual, setSelectedVisual] = useState<PublicVisual | null>(null);
-    const [isViewerOpen, setIsViewerOpen] = useState(false);
 
     useEffect(() => {
         const fetchPublicVisuals = async () => {
@@ -38,6 +37,7 @@ export default function Gallery({ user_id }: GalleryProps) {
                         ...diagram,
                         previewUrl: diagram.type === 'illustration' ? diagram.image_url : 
                                    diagram.type === 'infographic' ? `data:image/svg+xml;utf8,${encodeURIComponent(diagram.data)}` : 
+                                   diagram.type === 'generated_image' ? diagram.data :
                                    FlowCraftLogo.src,
                         data: diagram.data,
                         views: diagram.views || 0,
@@ -135,11 +135,15 @@ export default function Gallery({ user_id }: GalleryProps) {
             .filter((v) =>
                 v.title.toLowerCase().includes(searchQuery.toLowerCase())
             )
-            .filter((v) =>
-                selectedFilter === 'Newest' || selectedFilter === 'Trending'
-                    ? true
-                    : v.type.toLowerCase().includes(selectedFilter.toLowerCase())
-            )
+            .filter((v) => {
+                if (selectedFilter === 'Newest' || selectedFilter === 'Trending') {
+                    return true;
+                }
+                if (selectedFilter === 'Generated Images') {
+                    return v.type === 'generated_image';
+                }
+                return v.type.toLowerCase().includes(selectedFilter.toLowerCase());
+            })
             .sort((a, b) => {
                 if (selectedFilter === 'Trending') return (b.views || 0) - (a.views || 0);
                 if (selectedFilter === 'Newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -148,32 +152,12 @@ export default function Gallery({ user_id }: GalleryProps) {
     }, [searchQuery, selectedFilter, publicVisuals]);
 
     const openVisualViewer = (visual: PublicVisual) => {
-        setSelectedVisual(visual);
-        setIsViewerOpen(true);
-
-        fetch(`/api/get-public-diagrams/views_increment`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: visual.id }),
-        }).catch(console.error);
+        // Navigate to the individual showcase item page
+        router.push(`/dashboard/showcase/${visual.id}`);
     };
 
     if (loading) {
         return <PageLoader />;
-    }
-
-    if (isViewerOpen && selectedVisual) {
-        return (
-            <GalleryViewer
-                user_id={userId}
-                visual={selectedVisual}
-                onClose={() => setIsViewerOpen(false)}
-                onLike={handleLike}
-                onSave={handleSave}
-            />
-        );
     }
 
     return (
