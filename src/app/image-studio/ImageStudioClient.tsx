@@ -161,7 +161,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   <div className="font-medium">Generate</div>
                   <div className="text-xs opacity-75">Create from text</div>
                 </button>
-                {/* <button
+                <button
                   onClick={() => setMode('edit')}
                   className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
                     mode === 'edit'
@@ -172,7 +172,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   <PencilSquareIcon className="w-6 h-6 mx-auto mb-2" />
                   <div className="font-medium">Edit</div>
                   <div className="text-xs opacity-75">Transform images</div>
-                </button> */}
+                </button>
               </div>
             </div>
 
@@ -308,37 +308,93 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   >
                     <Download className="w-5 h-5" />
                   </button>
-                  <button
+                  {/* <button
                     className="p-2 text-gray-600 hover:text-fuchsia-600 transition-colors"
                     title="Share"
                   >
                     <ShareIcon className="w-5 h-5" />
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
             
             <div className="aspect-square bg-gray-50 rounded-2xl flex items-center justify-center overflow-hidden">
-              {generatedImage ? (
-                <motion.img
-                  src={generatedImage}
-                  alt="Generated"
-                  className="w-full h-full object-contain"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                />
-              ) : (
-                <div className="text-center space-y-4">
-                  <PhotoIcon className="w-16 h-16 text-gray-300 mx-auto" />
-                  <div>
-                    <p className="text-lg font-medium text-gray-500">Your image will appear here</p>
-                    <p className="text-sm text-gray-400">
-                      {mode === 'generate' ? 'Enter a prompt to get started' : 'Upload an image and add editing instructions'}
-                    </p>
-                  </div>
-                </div>
-              )}
+              <AnimatePresence mode="wait">
+                {isGenerating ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-center space-y-6"
+                  >
+                    <div className="relative">
+                      <div className="w-20 h-20 border-4 border-fuchsia-200 rounded-full animate-spin mx-auto">
+                        <div className="w-full h-full border-4 border-transparent border-t-fuchsia-600 rounded-full"></div>
+                      </div>
+                      <motion.div
+                        className="absolute inset-0 w-20 h-20 mx-auto"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      >
+                        <SparklesIcon className="w-8 h-8 text-fuchsia-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                      </motion.div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-lg font-medium text-gray-700">
+                        {mode === 'generate' ? 'Generating your image...' : 'Editing your image...'}
+                      </p>
+                      <motion.div
+                        className="flex justify-center space-x-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        {[0, 1, 2].map((i) => (
+                          <motion.div
+                            key={i}
+                            className="w-2 h-2 bg-fuchsia-400 rounded-full"
+                            animate={{ y: [0, -8, 0] }}
+                            transition={{
+                              duration: 0.8,
+                              repeat: Infinity,
+                              delay: i * 0.2,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        ))}
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ) : generatedImage ? (
+                  <motion.img
+                    key="generated"
+                    src={generatedImage}
+                    alt="Generated"
+                    className="w-full h-full object-contain"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                ) : (
+                  <motion.div
+                    key="placeholder"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-center space-y-4"
+                  >
+                    <PhotoIcon className="w-16 h-16 text-gray-300 mx-auto" />
+                    <div>
+                      <p className="text-lg font-medium text-gray-500">Your image will appear here</p>
+                      <p className="text-sm text-gray-400">
+                        {mode === 'generate' ? 'Enter a prompt to get started' : 'Upload an image and add editing instructions'}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
