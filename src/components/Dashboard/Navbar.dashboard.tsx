@@ -12,11 +12,12 @@ import {
   XMarkIcon,
   BellIcon,
 } from '@heroicons/react/24/outline'
+import { createClient } from '@/lib/supabase-auth/client'
 
 const ProfileMenu = [
-  { title: 'Account Settings', link: '/account/settings' },
-  { title: 'Your Creations', link: '/account/creations' },
-  { title: 'Help Center', link: '/support' },
+  // { title: 'Account Settings', link: '/account/settings' },
+  // { title: 'Your Creations', link: '/account/creations' },
+  // { title: 'Help Center', link: '/support' },
   { title: 'Sign Out', link: '/auth/logout' },
 ]
 
@@ -24,6 +25,23 @@ export default function DashboardNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [userName, setUserName] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const supabase = createClient()
+      const { data, error } = await supabase.auth.getUser()
+      
+      if (!error && data.user) {
+        const email = data.user.email || ''
+        setUserEmail(email)
+        setUserName(email.split('@')[0] || 'User')
+      }
+    }
+    
+    fetchUserData()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,6 +122,21 @@ export default function DashboardNavbar() {
                 Dashboard
               </Link>
 
+              <Link
+                href="/dashboard/showcase"
+                className="flex items-center rounded-full bg-gradient-to-r from-green-50 to-emerald-50 px-5 py-2.5 text-sm font-medium text-green-700 transition-all duration-300 hover:from-green-100 hover:to-emerald-100 hover:shadow-sm"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  className="mr-2 h-4 w-4 text-green-600"
+                >
+                  <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 14.5V13H8v-2h3V7.5l4.5 4.5L11 16.5z" />
+                </svg>
+                Public
+              </Link>
+
               <a
                 href="/dashboard/diagrams/new"
                 className="flex items-center rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/40"
@@ -112,6 +145,7 @@ export default function DashboardNavbar() {
                 New Creation
               </a>
             </div>
+
           </div>
 
           {/* Desktop Actions Menu */}
@@ -162,10 +196,10 @@ export default function DashboardNavbar() {
                   >
                     <div className="rounded-lg bg-gradient-to-r from-violet-50 to-indigo-50 p-3">
                       <div className="text-sm font-medium text-slate-700">
-                        Alex Johnson
+                        {userName}
                       </div>
                       <div className="text-xs text-slate-500">
-                        alex.johnson@example.com
+                        {userEmail}
                       </div>
                     </div>
 
@@ -177,7 +211,7 @@ export default function DashboardNavbar() {
                           className={cn(
                             'block rounded-lg px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700',
                             index === ProfileMenu.length - 1 &&
-                              'text-red-500 hover:bg-red-50 hover:text-red-600',
+                            'text-red-500 hover:bg-red-50 hover:text-red-600',
                           )}
                           onClick={closeMenus}
                         >
@@ -251,10 +285,10 @@ export default function DashboardNavbar() {
                   </div>
                   <div>
                     <div className="text-sm font-medium text-slate-700">
-                      Alex Johnson
+                      {userName}
                     </div>
                     <div className="text-xs text-slate-500">
-                      alex.johnson@example.com
+                      {userEmail}
                     </div>
                   </div>
                 </div>
@@ -301,7 +335,7 @@ export default function DashboardNavbar() {
                       className={cn(
                         'flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700',
                         index === ProfileMenu.length - 1 &&
-                          'text-red-500 hover:bg-red-50 hover:text-red-600',
+                        'text-red-500 hover:bg-red-50 hover:text-red-600',
                       )}
                       onClick={closeMenus}
                     >

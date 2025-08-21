@@ -129,11 +129,11 @@ const DecorativeElements = () => (
 
 // Diagram Card Component
 const DiagramCard = ({ diagram }: { diagram: any }) => (
-  <div className="group relative overflow-hidden rounded-3xl border border-purple-100 bg-white/90 p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
+  <div className="group relative h-full overflow-hidden rounded-3xl border border-purple-100 bg-white/90 p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
     <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600/5 to-indigo-600/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
     <div className="relative z-10 flex flex-col space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-serif text-xl font-medium text-indigo-900 transition-colors duration-300 group-hover:text-fuchsia-700">
+        <h3 className="font-serif text-xl min-h-[4.5rem] font-medium text-indigo-900 transition-colors duration-300 group-hover:text-fuchsia-700">
           {diagram.title}
         </h3>
         <span className="rounded-full bg-gradient-to-r from-fuchsia-100 to-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700">
@@ -156,7 +156,7 @@ const DiagramCard = ({ diagram }: { diagram: any }) => (
         className="mt-4 inline-flex transform items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:from-fuchsia-700 hover:to-indigo-700 hover:shadow-lg hover:shadow-purple-300/40 group-hover:translate-y-[-2px]"
       >
         <PlayIcon className="mr-2 h-4 w-4" />
-        View Diagram
+        View
       </Link>
     </div>
   </div>

@@ -177,5 +177,126 @@ export const getShareableLinkUrl = (id: string, origin: string) => {
 }
 
 // export type OptionType = 'Illustration' | 'Infographic' | 'Diagram' | null
-export type OptionType = 'Illustration' | 'Infographic' | null
+export type OptionType =
+  | 'Illustration'
+  | 'Infographic'
+  | 'Flowchart'
+  | 'Sequence Diagram'
+  | 'Class Diagram'
+  | 'State Diagram'
+  | 'Entity Relationship Diagram'
+  | 'User Journey'
+  | 'Gantt'
+  | 'Pie Chart'
+  | 'Quadrant Chart'
+  | 'Requirement Diagram'
+  | 'Gitgraph Diagram'
+  | 'C4 Diagram'
+  | 'Mindmaps'
+  | 'Timeline'
+  | 'ZenUML'
+  | 'Sankey'
+  | 'XY Chart'
+  | 'Block Diagram'
+  | 'Packet'
+  | 'Kanban'
+  | 'Architecture'
+  | 'Radar'
+  | null
 
+export function sanitizeSVG(svgString: string): {
+  svgContent: string
+  svgUrl: string
+} {
+  // 1. Remove any leading/trailing quotes and whitespace
+  let cleaned = svgString.trim()
+  if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+    cleaned = cleaned.slice(1, -1)
+  }
+
+  // 2. Unescape escaped characters
+  cleaned = cleaned
+    .replace(/\\"/g, '"') // Replace \" with "
+    .replace(/\\'/g, "'") // Replace \' with '
+    .replace(/\\\\/g, '\\') // Replace \\ with \
+    .replace(/\\n/g, '\n') // Replace \n with newline
+    .replace(/\\t/g, '\t') // Replace \t with tab
+
+  // 3. Decode any HTML entities
+  cleaned = cleaned
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+
+  // 4. Ensure proper XML formatting (for SVG)
+  // Check if we have XML declaration and add if missing
+  if (!cleaned.includes('<?xml')) {
+    // Only add if this is a complete SVG
+    if (cleaned.includes('<svg') && !cleaned.startsWith('<svg')) {
+      cleaned = '<?xml version="1.0" encoding="UTF-8"?>\n' + cleaned
+    }
+  }
+
+  // 5. Create a safe data URL for rendering
+  const svgBlob = new Blob([cleaned], { type: 'image/svg+xml' })
+  const svgUrl = URL.createObjectURL(svgBlob)
+
+  return {
+    svgContent: cleaned,
+    svgUrl: svgUrl,
+  }
+}
+
+export function sanitizeMermaid(code: string): string {
+  // Remove leading/trailing whitespace and backticks
+  let cleaned = code.trim()
+
+  // Remove surrounding quotes if present
+  if (
+    (cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+    (cleaned.startsWith("'") && cleaned.endsWith("'"))
+  ) {
+    cleaned = cleaned.slice(1, -1)
+  }
+
+  // Remove code block markers if present
+  if (cleaned.startsWith('```')) {
+    const firstLineEnd = cleaned.indexOf('\n')
+    const firstLine = cleaned.substring(3, firstLineEnd).trim()
+
+    // Check if the first line is 'mermaid' or contains 'mermaid'
+    if (firstLine === 'mermaid' || firstLine.includes('mermaid')) {
+      // Remove the first line completely
+      cleaned = cleaned.substring(firstLineEnd + 1)
+    } else {
+      // Just remove the backticks
+      cleaned = cleaned.slice(3)
+    }
+
+    // Remove ending backticks if present
+    if (cleaned.endsWith('```')) {
+      cleaned = cleaned.slice(0, -3)
+    }
+  } else {
+    // No code block markers, but check if it starts with 'mermaid'
+    if (cleaned.startsWith('mermaid')) {
+      // Find the first newline
+      const firstLineEnd = cleaned.indexOf('\n')
+      if (firstLineEnd !== -1) {
+        cleaned = cleaned.substring(firstLineEnd + 1)
+      }
+    }
+  }
+
+  // Replace escaped characters
+  cleaned = cleaned
+    .replace(/\\`/g, '`') // Replace \` with `
+    .replace(/\\'/g, "'") // Replace \' with '
+    .replace(/\\\\/g, '\\') // Replace \\ with \
+    .replace(/\\n/g, '\n') // Replace \n with newline
+    .trim() // Final trim to remove any extra whitespace
+
+  return cleaned
+}
