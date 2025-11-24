@@ -6,19 +6,19 @@ import { motion } from 'framer-motion'
 
 const variants = {
   primary: {
-    background: 'bg-gradient-to-r from-fuchsia-600 to-indigo-600',
-    hover: 'hover:shadow-fuchsia-200/50',
+    background: 'bg-gradient-to-r from-red-600 to-red-600',
+    hover: 'hover:shadow-red-200/50',
     text: 'text-white',
   },
   secondary: {
     background: 'bg-white',
-    hover: 'hover:border-fuchsia-200 hover:shadow-fuchsia-100/30',
+    hover: 'hover:border-red-200 hover:shadow-red-100/30',
     text: 'text-slate-800',
   },
   outline: {
-    background: 'bg-gradient-to-r from-fuchsia-50 to-indigo-50',
-    hover: 'hover:shadow-fuchsia-100/30',
-    text: 'text-fuchsia-700',
+    background: 'bg-gradient-to-r from-red-50 to-red-50',
+    hover: 'hover:shadow-red-100/30',
+    text: 'text-red-700',
   },
 }
 

@@ -190,7 +190,7 @@ export default function ComplexDiagramsPage() {
             return (
               <li
                 key={type}
-                className="relative flex transform justify-between gap-x-6 px-4 py-5 transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:bg-indigo-50 hover:shadow-lg sm:px-6"
+                className="relative flex transform justify-between gap-x-6 px-4 py-5 transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:bg-red-50 hover:shadow-lg sm:px-6"
                 onClick={() => {
                   setDiagramType(type as MermaidDiagramType)
                   setOpenOverview(true)
@@ -199,7 +199,7 @@ export default function ComplexDiagramsPage() {
                 <div className="flex min-w-0 gap-x-4">
                   <DiagramIcon type={type} />
                   <div className="min-w-0 flex-auto">
-                    <p className="text-lg font-semibold leading-6 text-indigo-500">
+                    <p className="text-lg font-semibold leading-6 text-red-500">
                       <span className="absolute inset-x-0 -top-px bottom-0" />
                       {DiagramOptions[type].title}
                     </p>

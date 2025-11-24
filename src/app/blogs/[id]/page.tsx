@@ -57,7 +57,7 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
     <div className="bg-gray-100 py-12">
       <nav className="mx-auto flex w-full max-w-3xl items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-indigo-700">{blog.title}</h1>
+          <h1 className="text-4xl font-bold text-red-700">{blog.title}</h1>
           <p className="mt-2 text-sm text-gray-500">
             {new Date(blog.published_at).toLocaleDateString()}
           </p>

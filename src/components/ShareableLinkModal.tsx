@@ -66,10 +66,10 @@ export default function ShareableLinksModal({
                         invite code to share it with others.
                       </p>
                       <div className="mt-3">
-                        <p className="text-sm font-semibold text-indigo-600">
+                        <p className="text-sm font-semibold text-red-600">
                           Link: {shareableLink}
                         </p>
-                        <p className="text-sm font-semibold text-indigo-600">
+                        <p className="text-sm font-semibold text-red-600">
                           Invite Code: {inviteCode}
                         </p>
                       </div>
@@ -86,7 +86,7 @@ export default function ShareableLinksModal({
                         scale: isCopied ? 0.7 : 1,
                       }}
                       transition={{ duration: 0.2 }}
-                      className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                       onClick={() => {
                         navigator.clipboard.writeText(shareableLink)
                         setIsCopied(true)

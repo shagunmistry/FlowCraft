@@ -121,7 +121,7 @@ export default function FeedbackDialog({
                           id="feedback"
                           name="feedback"
                           rows={4}
-                          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:border-indigo-500 focus-visible:ring-indigo-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:border-red-500 focus-visible:ring-red-500 sm:text-sm"
                           placeholder="What can we do better?"
                           required
                         />
@@ -139,7 +139,7 @@ export default function FeedbackDialog({
                           id="new-features"
                           name="new-features"
                           rows={4}
-                          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:border-indigo-500 focus-visible:ring-indigo-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:border-red-500 focus-visible:ring-red-500 sm:text-sm"
                           placeholder="Feature requests"
                         />
                       </div>
@@ -152,7 +152,7 @@ export default function FeedbackDialog({
                           aria-describedby="followup-description"
                           name="followup"
                           type="checkbox"
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
                         />
                       </div>
                       <div className="ml-3 text-sm leading-6">
@@ -167,7 +167,7 @@ export default function FeedbackDialog({
                     <div className="mt-5 sm:mt-6">
                       <button
                         type="submit"
-                        className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         disabled={submitting}
                       >
                         {submitting ? 'Submitting...' : 'Submit Feedback'}

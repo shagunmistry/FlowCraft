@@ -114,7 +114,7 @@ export default function EditNodesDiagramModal({
                                                         event.target.value,
                                                       )
                                                     }}
-                                                    className="mt-1 block w-full rounded-md border border-indigo-300 px-3 py-2 text-lg text-indigo-700 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                    className="mt-1 block w-full rounded-md border border-red-300 px-3 py-2 text-lg text-red-700 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                                                   />
 
                                                   <motion.button
@@ -149,7 +149,7 @@ export default function EditNodesDiagramModal({
                                             <motion.button
                                               whileHover={{ scale: 1.1 }}
                                               whileTap={{ scale: 0.9 }}
-                                              className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-base text-sm font-semibold text-white ring-1 ring-inset ring-green-300 hover:bg-indigo-900 hover:text-white"
+                                              className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-base text-sm font-semibold text-white ring-1 ring-inset ring-green-300 hover:bg-red-900 hover:text-white"
                                               onClick={() => {
                                                 addNode({
                                                   ...nodes[1],

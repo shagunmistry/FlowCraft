@@ -45,7 +45,7 @@ export default function AllDiagramsPage() {
       </div>
       <ul
         role="list"
-        className="mt-6 divide-y divide-indigo-400 overflow-visible shadow-md ring-1 ring-indigo-900/5 sm:rounded-xl"
+        className="mt-6 divide-y divide-red-400 overflow-visible shadow-md ring-1 ring-red-900/5 sm:rounded-xl"
       >
         {sharedLinks.map((sharedLink) => (
           <li
@@ -54,7 +54,7 @@ export default function AllDiagramsPage() {
           >
             <div className="flex min-w-0 gap-x-4">
               <div className="min-w-0 flex-auto">
-                <p className="text-md font-semibold leading-6 text-indigo-600">
+                <p className="text-md font-semibold leading-6 text-red-600">
                   <Link
                     href={getShareableLinkUrl(
                       sharedLink.id,
@@ -96,7 +96,7 @@ export default function AllDiagramsPage() {
             No diagrams shared yet.{' '}
             <Link
               href="/dashboard/flow-diagram"
-              className="text-indigo-600 hover:underline"
+              className="text-red-600 hover:underline"
             >
               Create one
             </Link>

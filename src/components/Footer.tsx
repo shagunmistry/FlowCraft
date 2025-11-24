@@ -60,16 +60,16 @@ const Footer = () => {
   // Decorative SVG elements for the magical theme
   const DecorativeElements = () => (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -bottom-6 left-20 h-24 w-24 rounded-full bg-gradient-to-r from-fuchsia-400 to-purple-500 opacity-20 blur-xl"></div>
-      <div className="absolute -bottom-10 right-1/4 h-32 w-32 rounded-full bg-gradient-to-r from-indigo-400 to-purple-600 opacity-20 blur-xl"></div>
-      <div className="absolute right-20 top-10 h-20 w-20 rounded-full bg-gradient-to-r from-purple-300 to-fuchsia-400 opacity-20 blur-xl"></div>
+      <div className="absolute -bottom-6 left-20 h-24 w-24 rounded-full bg-gradient-to-r from-red-400 to-purple-500 opacity-20 blur-xl"></div>
+      <div className="absolute -bottom-10 right-1/4 h-32 w-32 rounded-full bg-gradient-to-r from-red-400 to-purple-600 opacity-20 blur-xl"></div>
+      <div className="absolute right-20 top-10 h-20 w-20 rounded-full bg-gradient-to-r from-purple-300 to-red-400 opacity-20 blur-xl"></div>
     </div>
   )
 
   return (
     <footer className="relative overflow-hidden">
       {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-indigo-950 to-purple-950"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950 to-purple-950"></div>
 
       {/* Decorative elements */}
       <DecorativeElements />
@@ -81,7 +81,7 @@ const Footer = () => {
           <div className="mb-6 flex items-center">
             {/* FlowCraft logo - Using a placeholder */}
             <div className="relative h-12 w-48">
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-fuchsia-500 via-purple-500 to-indigo-500 opacity-70 blur-sm"></div>
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-500 via-purple-500 to-red-500 opacity-70 blur-sm"></div>
               <div className="relative flex h-full items-center justify-center">
                 <h2 className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text font-serif text-3xl font-bold tracking-wide text-transparent">
                   FlowCraft
@@ -106,13 +106,13 @@ const Footer = () => {
             >
               <a
                 href={item.href}
-                className="inline-block font-sans text-lg tracking-wide text-white transition duration-300 hover:text-fuchsia-200"
+                className="inline-block font-sans text-lg tracking-wide text-white transition duration-300 hover:text-red-200"
               >
                 {item.name}
               </a>
               {/* Animated underline for hover effect */}
               <div
-                className={`mt-1 h-0.5 origin-left transform bg-gradient-to-r from-fuchsia-400 to-indigo-400 transition-all duration-300 ${isHovered === item.name ? 'scale-x-100' : 'scale-x-0'}`}
+                className={`mt-1 h-0.5 origin-left transform bg-gradient-to-r from-red-400 to-red-400 transition-all duration-300 ${isHovered === item.name ? 'scale-x-100' : 'scale-x-0'}`}
               ></div>
             </div>
           ))}
@@ -129,7 +129,7 @@ const Footer = () => {
               rel="noopener noreferrer"
             >
               <span className="sr-only">{item.name}</span>
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-30"></div>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500 to-red-500 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-30"></div>
               <div className="relative transform transition-transform duration-300 hover:scale-110">
                 <item.icon className="h-8 w-8 text-white" aria-hidden="true" />
               </div>
@@ -143,7 +143,7 @@ const Footer = () => {
             onClick={() => setIsFeedbackOpen(true)}
             className="group relative inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-3 transition-all duration-300"
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 opacity-70 transition-opacity duration-300 group-hover:opacity-90"></span>
+            <span className="absolute inset-0 bg-gradient-to-r from-red-600 via-purple-600 to-red-600 opacity-70 transition-opacity duration-300 group-hover:opacity-90"></span>
             <span className="relative text-sm font-medium text-white">
               Share Feedback
             </span>
@@ -153,7 +153,7 @@ const Footer = () => {
         {/* Feedback modal */}
         {isFeedbackOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-            <div className="relative w-full max-w-md rounded-xl border border-purple-500/30 bg-gradient-to-b from-indigo-900 to-purple-900 p-8 shadow-2xl">
+            <div className="relative w-full max-w-md rounded-xl border border-purple-500/30 bg-gradient-to-b from-red-900 to-purple-900 p-8 shadow-2xl">
               <button
                 onClick={() => setIsFeedbackOpen(false)}
                 className="absolute right-3 top-3 text-purple-200 hover:text-white"
@@ -182,14 +182,14 @@ const Footer = () => {
                 <textarea
                   value={feedbackMessage}
                   onChange={(e) => setFeedbackMessage(e.target.value)}
-                  className="mb-4 w-full rounded-lg border border-purple-600/50 bg-purple-900/50 p-4 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                  className="mb-4 w-full rounded-lg border border-purple-600/50 bg-purple-900/50 p-4 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="Share your thoughts with us..."
                   rows={4}
                   required
                 />
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-3 text-white transition-all duration-300 hover:from-fuchsia-600 hover:to-indigo-600"
+                  className="w-full rounded-lg bg-gradient-to-r from-red-500 to-red-500 px-4 py-3 text-white transition-all duration-300 hover:from-red-600 hover:to-red-600"
                 >
                   Submit Feedback
                 </button>
@@ -214,7 +214,7 @@ const Footer = () => {
         {/* Copyright and additional info */}
         <div className="text-center">
           <p className="mb-4 font-serif text-sm text-purple-200">
-            &copy; 2024 FlowCraft. All rights reserved.
+            &copy; {new Date().getFullYear()} FlowCraft. All rights reserved.
           </p>
           <p className="mx-auto max-w-2xl text-xs text-purple-300/70">
             We improve our products and advertising by using Microsoft Clarity

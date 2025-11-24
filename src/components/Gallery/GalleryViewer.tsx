@@ -66,12 +66,12 @@ export default function GalleryViewer({
       <div className="max-w-5xl mx-auto p-4 md:p-8">
         <button
           onClick={onClose}
-          className="flex items-center gap-2 mb-8 px-4 py-2.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition-all duration-200 group border border-indigo-100 shadow-sm hover:shadow-indigo-100"
+          className="flex items-center gap-2 mb-8 px-4 py-2.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-200 group border border-red-100 shadow-sm hover:shadow-red-100"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-transform group-hover:-translate-x-1" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
           </svg>
-          <span className="font-medium text-indigo-700 group-hover:text-indigo-900">Back to Showcase</span>
+          <span className="font-medium text-red-700 group-hover:text-red-900">Back to Showcase</span>
         </button>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
@@ -79,7 +79,7 @@ export default function GalleryViewer({
             <div className="mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{visual.title}</h2>
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-medium">
+                <span className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-medium">
                   {visual.type}
                 </span>
                 <span>{new Date(visual.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>

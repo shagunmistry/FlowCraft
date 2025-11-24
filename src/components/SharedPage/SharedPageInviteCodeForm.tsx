@@ -150,7 +150,7 @@ export default function SharedDiagramInviteCodeForm({
     <div className="bg-gray-100">
       <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
         {!canAccess ? (
-          <div className="shadow-4xl relative isolate overflow-hidden bg-black px-6 py-24 text-center shadow-inner shadow-indigo-600 sm:rounded-3xl sm:px-16">
+          <div className="shadow-4xl relative isolate overflow-hidden bg-black px-6 py-24 text-center shadow-inner shadow-red-600 sm:rounded-3xl sm:px-16">
             <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
               You have been invited to view a FlowCraft document! 🎉
             </h2>
@@ -162,13 +162,13 @@ export default function SharedDiagramInviteCodeForm({
               <form className="w-full max-w-lg" onSubmit={hnadleSubmit}>
                 <div className="flex items-center py-2">
                   <input
-                    className="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-lg text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-lg text-gray-900 shadow-sm focus:border-red-500 focus:ring-red-500"
                     type="text"
                     placeholder="Invite code"
                   />
                   <button
                     type="submit"
-                    className="ml-4 inline-flex items-center justify-center rounded-md bg-indigo-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="ml-4 inline-flex items-center justify-center rounded-md bg-red-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                     disabled={isLoading}
                   >
                     {isLoading ? 'Loading...' : 'Access'}

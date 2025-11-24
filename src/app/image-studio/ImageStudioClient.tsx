@@ -122,7 +122,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-red-50">
       {/* Navigation */}
       <DashboardNavbar />
       
@@ -130,10 +130,10 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
       <div className="pt-20 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-fuchsia-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <SparklesIcon className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-fuchsia-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent mb-2">
               Image Studio
             </h1>
             <p className="text-lg text-gray-600">Generate and edit images with AI</p>
@@ -153,7 +153,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   onClick={() => setMode('generate')}
                   className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
                     mode === 'generate'
-                      ? 'border-fuchsia-500 bg-fuchsia-50 text-fuchsia-700'
+                      ? 'border-red-500 bg-red-50 text-red-700'
                       : 'border-gray-200 hover:border-gray-300 text-gray-700'
                   }`}
                 >
@@ -165,7 +165,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   onClick={() => setMode('edit')}
                   className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
                     mode === 'edit'
-                      ? 'border-fuchsia-500 bg-fuchsia-50 text-fuchsia-700'
+                      ? 'border-red-500 bg-red-50 text-red-700'
                       : 'border-gray-200 hover:border-gray-300 text-gray-700'
                   }`}
                 >
@@ -188,7 +188,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Upload Image</h3>
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer hover:border-fuchsia-400 hover:bg-fuchsia-50/50 transition-all duration-200"
+                    className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer hover:border-red-400 hover:bg-red-50/50 transition-all duration-200"
                   >
                     {inputImage ? (
                       <div className="space-y-3">
@@ -234,7 +234,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                     : 'Make this a 90s cartoon style, change the background to a beach...'
                 }
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -249,7 +249,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                       onClick={() => setAspectRatio(ratio.value)}
                       className={`p-3 rounded-xl border-2 transition-all duration-200 text-sm ${
                         aspectRatio === ratio.value
-                          ? 'border-fuchsia-500 bg-fuchsia-50 text-fuchsia-700'
+                          ? 'border-red-500 bg-red-50 text-red-700'
                           : 'border-gray-200 hover:border-gray-300 text-gray-700'
                       }`}
                     >
@@ -264,7 +264,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
             <motion.button
               onClick={handleGenerate}
               disabled={isGenerating || !prompt.trim() || (mode === 'edit' && !inputImage)}
-              className="w-full bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white py-4 px-6 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-red-600 to-red-600 text-white py-4 px-6 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -303,13 +303,13 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                 <div className="flex space-x-2">
                   <button
                     onClick={handleDownload}
-                    className="p-2 text-gray-600 hover:text-fuchsia-600 transition-colors"
+                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
                     title="Download"
                   >
                     <Download className="w-5 h-5" />
                   </button>
                   {/* <button
-                    className="p-2 text-gray-600 hover:text-fuchsia-600 transition-colors"
+                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
                     title="Share"
                   >
                     <ShareIcon className="w-5 h-5" />
@@ -330,15 +330,15 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                     className="text-center space-y-6"
                   >
                     <div className="relative">
-                      <div className="w-20 h-20 border-4 border-fuchsia-200 rounded-full animate-spin mx-auto">
-                        <div className="w-full h-full border-4 border-transparent border-t-fuchsia-600 rounded-full"></div>
+                      <div className="w-20 h-20 border-4 border-red-200 rounded-full animate-spin mx-auto">
+                        <div className="w-full h-full border-4 border-transparent border-t-red-600 rounded-full"></div>
                       </div>
                       <motion.div
                         className="absolute inset-0 w-20 h-20 mx-auto"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                       >
-                        <SparklesIcon className="w-8 h-8 text-fuchsia-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                        <SparklesIcon className="w-8 h-8 text-red-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                       </motion.div>
                     </div>
                     <div className="space-y-2">
@@ -354,7 +354,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                         {[0, 1, 2].map((i) => (
                           <motion.div
                             key={i}
-                            className="w-2 h-2 bg-fuchsia-400 rounded-full"
+                            className="w-2 h-2 bg-red-400 rounded-full"
                             animate={{ y: [0, -8, 0] }}
                             transition={{
                               duration: 0.8,
@@ -400,9 +400,9 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
         </div>
 
         {/* User Info Banner */}
-        <div className="mt-12 bg-gradient-to-r from-fuchsia-600 to-indigo-600 rounded-3xl p-8 text-center text-white">
+        <div className="mt-12 bg-gradient-to-r from-red-600 to-red-600 rounded-3xl p-8 text-center text-white">
           <h3 className="text-2xl font-bold mb-2">AI Image Studio</h3>
-          <p className="text-fuchsia-100 mb-4">
+          <p className="text-red-100 mb-4">
             Generate and edit unlimited images with our AI-powered studio.
           </p>
         </div>

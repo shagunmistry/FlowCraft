@@ -132,9 +132,9 @@ const StarRatingInput = ({
                 >
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                     <div className="sm:flex sm:items-start">
-                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                         <FaceSmileIcon
-                          className="h-6 w-6 text-indigo-600"
+                          className="h-6 w-6 text-red-600"
                           aria-hidden="true"
                         />
                       </div>
@@ -172,7 +172,7 @@ const StarRatingInput = ({
                               id="improved"
                               name="improved"
                               rows={3}
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                               defaultValue={''}
                             />
                           </div>
@@ -191,7 +191,7 @@ const StarRatingInput = ({
                               id="features"
                               name="features"
                               rows={3}
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                               defaultValue={''}
                             />
                           </div>
@@ -200,7 +200,7 @@ const StarRatingInput = ({
                       <div className="mt-5 sm:ml-10 sm:mt-4 sm:flex sm:pl-4">
                         <button
                           type="submit"
-                          className="text-md inline-flex w-full justify-center rounded-lg bg-indigo-600 px-3 py-2 font-semibold text-white shadow-lg transition-colors duration-150 ease-in-out hover:bg-pink-400 sm:w-auto"
+                          className="text-md inline-flex w-full justify-center rounded-lg bg-red-600 px-3 py-2 font-semibold text-white shadow-lg transition-colors duration-150 ease-in-out hover:bg-pink-400 sm:w-auto"
                         >
                           Leave feedback
                         </button>

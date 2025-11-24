@@ -16,7 +16,7 @@ export default function ReactFlowHelperButton() {
     <Panel position="top-left">
       <button
         type="button"
-        className="inline-flex items-center gap-x-1.5 rounded-full text-lg font-bold font-medium font-semibold text-black hover:bg-indigo-500 hover:bg-pink-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        className="inline-flex items-center gap-x-1.5 rounded-full text-lg font-bold font-medium font-semibold text-black hover:bg-red-500 hover:bg-pink-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
         onClick={handleEditButtonClick}
       >
         <QuestionMarkCircleIcon

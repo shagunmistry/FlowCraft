@@ -31,7 +31,7 @@ export default function TypeSelection({
               className={({ active }) =>
                 cn(
                   active
-                    ? 'border-indigo-600 ring-2 ring-indigo-600'
+                    ? 'border-red-600 ring-2 ring-red-600'
                     : 'border-gray-300',
                   'relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none',
                 )
@@ -45,7 +45,7 @@ export default function TypeSelection({
                         as="span"
                         className="block text-sm font-medium text-gray-900"
                       >
-                        <option.icon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
+                        <option.icon className="h-6 w-6 text-red-600" aria-hidden="true" />
                         {option.title}
                       </RadioGroup.Label>
                     </span>
@@ -53,14 +53,14 @@ export default function TypeSelection({
                   <CheckCircleIcon
                     className={cn(
                       !checked ? 'invisible' : '',
-                      'h-5 w-5 text-indigo-600',
+                      'h-5 w-5 text-red-600',
                     )}
                     aria-hidden="true"
                   />
                   <span
                     className={cn(
                       active ? 'border' : 'border-2',
-                      checked ? 'border-indigo-600' : 'border-transparent',
+                      checked ? 'border-red-600' : 'border-transparent',
                       'pointer-events-none absolute -inset-px rounded-lg',
                     )}
                     aria-hidden="true"

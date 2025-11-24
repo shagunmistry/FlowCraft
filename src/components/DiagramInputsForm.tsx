@@ -226,7 +226,7 @@ export default function DiagramInputsForm({
                 <StepLine />
                 <div className="group relative flex items-start">
                   <span className="flex h-9 items-center">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 group-hover:bg-red-800">
                       <p className="text-lg font-semibold text-white">1</p>
                     </span>
                   </span>
@@ -238,7 +238,7 @@ export default function DiagramInputsForm({
                       type="text"
                       name="title"
                       id="title"
-                      className="mt-2 block w-96 border-0 border-b-2 border-indigo-500 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="mt-2 block w-96 border-0 border-b-2 border-red-500 pt-2.5 text-lg font-medium text-black placeholder:text-gray-400 focus:border-pink-200 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="Enter Diagram Title"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
@@ -253,7 +253,7 @@ export default function DiagramInputsForm({
 
                 <div className="group relative flex items-start">
                   <span className="flex h-9 items-center">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 group-hover:bg-red-800">
                       <p className="text-lg font-semibold text-white">2</p>
                     </span>
                   </span>
@@ -283,7 +283,7 @@ export default function DiagramInputsForm({
               <>
                 <div className="group relative flex items-start">
                   <span className="flex h-9 items-center">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 group-hover:bg-red-800">
                       <p className="text-lg font-semibold text-white">3</p>
                     </span>
                   </span>
@@ -292,7 +292,7 @@ export default function DiagramInputsForm({
                       Generate
                     </span>
                     <button
-                      className="mt-4 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="mt-4 inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:bg-red-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                       onClick={handleSubmit}
                       disabled={
                         context.loading || !title || description.length < 10
