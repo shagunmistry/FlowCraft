@@ -89,7 +89,7 @@ export default function MainLanding() {
     <div className="min-h-screen bg-white text-gray-900 selection:bg-gray-100">
       <Navbar />
 
-      <main className="flex w-full flex-col items-center">
+      <main className="flex w-full flex-col items-center pt-16 lg:pt-[72px]">
         {/* --- HERO SECTION --- */}
         <section className="mx-auto w-full max-w-[1200px] px-6 pb-24 pt-32 text-center md:px-8">
           <motion.div

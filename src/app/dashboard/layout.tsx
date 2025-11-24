@@ -104,7 +104,7 @@ export default function DashboardLayout({
         >
           <main>
             <Navbar />
-            <div className="relative">{children}</div>
+            <div className="relative pt-16">{children}</div>
             <Footer />
           </main>
         </DiagramContext.Provider>

@@ -5,12 +5,11 @@ import {
   loginWithGithub,
   loginWithGoogle,
 } from '../login/actions'
-import Navbar from '@/components/Navbar'
+import PageWithNavbar from '@/components/PageWithNavbar'
 
 export default function SignUpPage() {
   return (
-    <>
-      <Navbar />
+    <PageWithNavbar>
       <AuthenticationForm
         login={login}
         signUp={signup}
@@ -18,6 +17,6 @@ export default function SignUpPage() {
         loginWithGoogle={loginWithGoogle}
         isLoginOrSignup="signup"
       />
-    </>
+    </PageWithNavbar>
   )
 }

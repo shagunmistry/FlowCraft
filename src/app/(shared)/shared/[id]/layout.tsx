@@ -53,7 +53,7 @@ export default function SharedDiagramsLayout({
       >
         <main>
           <Navbar />
-          <div className="relative">{children}</div>
+          <div className="relative pt-16 lg:pt-[72px]">{children}</div>
         </main>
         <Footer />
         <Analytics />

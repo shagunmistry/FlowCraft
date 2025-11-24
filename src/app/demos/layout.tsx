@@ -15,7 +15,7 @@ export default function MainLayout({
     <>
       <main>
         <Navbar />
-        <div className="relative">{children}</div>
+        <div className="relative pt-16 lg:pt-[72px]">{children}</div>
       </main>
       <Footer />
       <Analytics />

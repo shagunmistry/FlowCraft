@@ -19,7 +19,7 @@ export function ReleaseNotesLayout({
         height={100}
         className="mx-auto"
       /> */}
-      <main className="container prose prose mx-auto mb-7 sm:prose-lg md:prose-lg lg:prose-xl prose-img:mx-auto prose-img:w-96 prose-img:rounded-xl prose-img:shadow-lg">
+      <main className="container prose prose mx-auto mb-7 pt-16 sm:prose-lg md:prose-lg lg:prose-xl lg:pt-[72px] prose-img:mx-auto prose-img:w-96 prose-img:rounded-xl prose-img:shadow-lg">
         {children}
       </main>
       <Footer />

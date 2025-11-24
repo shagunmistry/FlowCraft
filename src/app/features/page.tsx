@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Navbar from '@/components/Navbar'
+import PageWithNavbar from '@/components/PageWithNavbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 
@@ -192,10 +192,9 @@ const diagramTypes = [
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <Navbar />
-
-      <main className="flex w-full flex-col items-center">
+    <PageWithNavbar>
+      <div className="min-h-screen bg-white text-gray-900">
+        <main className="flex w-full flex-col items-center">
         {/* Hero Section */}
         <section className="mx-auto w-full max-w-[1200px] px-6 pb-16 pt-32 text-center md:px-8">
           <motion.div
@@ -356,9 +355,10 @@ export default function FeaturesPage() {
             </div>
           </div>
         </section>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </PageWithNavbar>
   )
 }

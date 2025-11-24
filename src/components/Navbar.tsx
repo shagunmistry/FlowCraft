@@ -354,7 +354,7 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 lg:hidden"
+            className="fixed inset-0 z-50 lg:hidden overflow-visible"
           >
             {/* Backdrop */}
             <motion.div
@@ -368,7 +368,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+              className="fixed inset-y-0 right-0 z-50 w-full overflow-visible bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
             >
               <div className="flex items-center justify-between">
                 <Link
@@ -391,7 +391,7 @@ export default function Navbar() {
                 </button>
               </div>
 
-              <div className="mt-6 flow-root">
+              <div className="mt-6 flow-root bg-white">
                 <div className="-my-6 divide-y divide-gray-500/10">
                   {isAuthenticated ? (
                     <>

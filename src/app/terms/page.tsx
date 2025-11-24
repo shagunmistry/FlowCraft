@@ -1,10 +1,9 @@
 import Footer from '@/components/Footer'
-import Navbar from '@/components/Navbar'
+import PageWithNavbar from '@/components/PageWithNavbar'
 
 export default function Terms() {
   return (
-    <>
-      <Navbar />
+    <PageWithNavbar>
       <div className="prose mx-auto my-8">
         <h2>
           <strong>Terms and Conditions</strong>
@@ -322,6 +321,6 @@ export default function Terms() {
         </p>
       </div>
       <Footer />
-    </>
+    </PageWithNavbar>
   )
 }

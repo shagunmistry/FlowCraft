@@ -130,7 +130,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
       <Navbar />
 
       {/* Page Header */}
-      <div className="pb-8 pt-20">
+      <div className="pb-8 pt-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 to-red-600">

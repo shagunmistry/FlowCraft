@@ -1,7 +1,7 @@
 'use client'
 
 import FAQs from '@/components/FAQ'
-import Navbar from '@/components/Navbar'
+import PageWithNavbar from '@/components/PageWithNavbar'
 import PricingTemplate from '@/components/Pricing/Pricing'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
@@ -23,12 +23,11 @@ function PricingContent() {
 
 export default function Pricing() {
   return (
-    <>
-      <Navbar />
+    <PageWithNavbar>
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
         <PricingContent />
       </Suspense>
       <FAQs />
-    </>
+    </PageWithNavbar>
   )
 }

@@ -1,15 +1,14 @@
 'use client'
 
 import FAQs from '@/components/FAQ'
-import Navbar from '@/components/Navbar'
+import PageWithNavbar from '@/components/PageWithNavbar'
 import PublicGallery from '@/components/Gallery/Gallery'
 
 export default function Pricing() {
   return (
-    <>
-      <Navbar />
+    <PageWithNavbar>
       <PublicGallery user_id={null} />
       <FAQs />
-    </>
+    </PageWithNavbar>
   )
 }

@@ -1,10 +1,9 @@
 import Footer from '@/components/Footer'
-import Navbar from '@/components/Navbar'
+import PageWithNavbar from '@/components/PageWithNavbar'
 
 export default function PrivacyPolicyPage() {
   return (
-    <>
-      <Navbar />
+    <PageWithNavbar>
       <div className="prose mx-auto my-8">
         <h1>Privacy Policy</h1>
         <p>Last updated: March 16, 2024</p>
@@ -564,6 +563,6 @@ export default function PrivacyPolicyPage() {
         </ul>
       </div>
       <Footer />
-    </>
+    </PageWithNavbar>
   )
 }
