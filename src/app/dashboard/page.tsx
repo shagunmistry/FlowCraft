@@ -321,12 +321,12 @@ export default async function Dashboard() {
             href="/image-studio"
             icon={SparklesIcon}
           />
-          <CreateCard
+          {/* <CreateCard
             title="Templates"
             description="Start from a pre-built structure."
             href="/templates"
             icon={DocumentDuplicateIcon}
-          />
+          /> */}
         </section>
 
         {/* Stats Row */}
