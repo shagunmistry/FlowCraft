@@ -68,7 +68,7 @@ export default function BlogEditor() {
             type="text"
             name="title"
             id="title"
-            className="my-2.5 block w-full rounded-md border-indigo-300 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
+            className="my-2.5 block w-full rounded-md border-red-300 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
             placeholder="Title"
           />
           <label htmlFor="summary" className="sr-only">
@@ -78,7 +78,7 @@ export default function BlogEditor() {
             type="text"
             name="summary"
             id="summary"
-            className="text-md my-2.5 block w-full rounded-md border-indigo-300 pt-2.5 font-medium placeholder:text-pink-400 focus:ring-0"
+            className="text-md my-2.5 block w-full rounded-md border-red-300 pt-2.5 font-medium placeholder:text-pink-400 focus:ring-0"
             placeholder="Summary"
           />
           <label htmlFor="image_url" className="sr-only">
@@ -88,7 +88,7 @@ export default function BlogEditor() {
             type="text"
             name="image_url"
             id="image_url"
-            className="text-md my-2.5 block w-full rounded-md border-indigo-300 pt-2.5 font-medium placeholder:text-indigo-400 focus:ring-0"
+            className="text-md my-2.5 block w-full rounded-md border-red-300 pt-2.5 font-medium placeholder:text-red-400 focus:ring-0"
             placeholder="Image URL"
           />
           <label htmlFor="content" className="sr-only">
@@ -98,7 +98,7 @@ export default function BlogEditor() {
             rows={10}
             name="content"
             id="content"
-            className="my-2.5 block w-full resize-none rounded-lg border-indigo-500 py-0 text-gray-900 shadow-lg placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+            className="my-2.5 block w-full resize-none rounded-lg border-red-500 py-0 text-gray-900 shadow-lg placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
             placeholder="Write your blog post content here"
             defaultValue={''}
           />
@@ -122,7 +122,7 @@ export default function BlogEditor() {
             <div className="flex-shrink-0">
               <button
                 type="submit"
-                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
               >
                 Create
               </button>

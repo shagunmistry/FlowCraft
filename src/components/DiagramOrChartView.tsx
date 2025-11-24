@@ -67,7 +67,7 @@ const Loader = () => {
         minutes.
       </div>
       <div className="mx-auto mt-10 w-1/4">
-        <Cog6ToothIcon className="mx-auto h-20 w-20 animate-spin text-indigo-600" />
+        <Cog6ToothIcon className="mx-auto h-20 w-20 animate-spin text-red-600" />
       </div>
     </>
   )
@@ -76,7 +76,7 @@ const Loader = () => {
 const GoToTopButton = () => {
   return (
     <button
-      className="fixed bottom-10 left-10 rounded-full bg-pink-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:bg-indigo-600"
+      className="fixed bottom-10 left-10 rounded-full bg-pink-500 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:bg-red-600"
       onClick={() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }}

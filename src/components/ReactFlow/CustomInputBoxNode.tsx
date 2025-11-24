@@ -65,7 +65,7 @@ function CustomInputBoxNode(props: any) {
       <Handle type="target" position={Position.Top} id={props.id} />
       <Handle type="target" position={Position.Bottom} id={props.id} />
       <motion.div
-        className="input-box-node relative w-64 max-w-xs rounded-lg bg-indigo-500 p-4 opacity-80 shadow-lg"
+        className="input-box-node relative w-64 max-w-xs rounded-lg bg-red-500 p-4 opacity-80 shadow-lg"
         whileHover={{ scale: 0.95 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
@@ -83,7 +83,7 @@ function CustomInputBoxNode(props: any) {
             >
               <Menu as="div" className="relative">
                 <div>
-                  <Menu.Button className="flex items-center rounded-full bg-indigo-100 text-indigo-400 hover:text-indigo-600">
+                  <Menu.Button className="flex items-center rounded-full bg-red-100 text-red-400 hover:text-red-600">
                     <span className="sr-only">Open options</span>
                     <Cog6ToothIcon className="h-5 w-5" aria-hidden="true" />
                   </Menu.Button>
@@ -104,8 +104,8 @@ function CustomInputBoxNode(props: any) {
                         {({ active }) => (
                           <button
                             className={`${
-                              active ? 'bg-indigo-100' : ''
-                            } flex w-full justify-between px-4 py-2 text-sm text-indigo-700`}
+                              active ? 'bg-red-100' : ''
+                            } flex w-full justify-between px-4 py-2 text-sm text-red-700`}
                             onClick={() => setIsEditing(true)}
                           >
                             <PencilIcon
@@ -119,8 +119,8 @@ function CustomInputBoxNode(props: any) {
                         {({ active }) => (
                           <button
                             className={`${
-                              active ? 'bg-indigo-100' : ''
-                            } flex w-full justify-between px-4 py-2 text-sm text-indigo-700`}
+                              active ? 'bg-red-100' : ''
+                            } flex w-full justify-between px-4 py-2 text-sm text-red-700`}
                             onClick={() => deleteNode()}
                           >
                             <TrashIcon className="h-5 w-5" aria-hidden="true" />

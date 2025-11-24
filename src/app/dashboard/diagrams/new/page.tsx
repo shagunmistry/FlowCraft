@@ -39,6 +39,13 @@ export default function NewDiagramPage() {
   const [isGenerated, setIsGenerated] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
   const [isPublic, setIsPublic] = useState(true)
+  const [usageData, setUsageData] = useState<{
+    subscribed: boolean
+    diagrams_created: number
+    free_limit: number
+    can_create: boolean
+    remaining: number
+  } | null>(null)
 
 
   // region Dragging
@@ -95,6 +102,22 @@ export default function NewDiagramPage() {
   }, [zoomLevel])
 
   // endregion
+
+  // Fetch usage data on mount
+  useEffect(() => {
+    const fetchUsage = async () => {
+      try {
+        const response = await fetch('/api/usage')
+        if (response.ok) {
+          const data = await response.json()
+          setUsageData(data)
+        }
+      } catch (error) {
+        console.error('Error fetching usage:', error)
+      }
+    }
+    fetchUsage()
+  }, [])
 
   // region Mermaid
   useEffect(() => {
@@ -202,8 +225,16 @@ export default function NewDiagramPage() {
       return
     }
 
+    // Check usage limits before creating
+    if (usageData && !usageData.can_create) {
+      setError(
+        `You've reached your free limit of ${usageData.free_limit} creations. Upgrade to Pro for unlimited access!`,
+      )
+      return
+    }
+
     try {
-      showLoading('Generating your diagram...', 'indigo')
+      showLoading('Generating your diagram...', 'red')
       setIsLoading(true)
       setError('')
       context.setChartJsData(null)
@@ -234,6 +265,14 @@ export default function NewDiagramPage() {
         if (response.status === 401) {
           setError('Your session has expired. Please log in again.')
           router.push('/login')
+          return
+        }
+        if (response.status === 402) {
+          const errorData = await response.json()
+          setError(
+            errorData.detail ||
+              'You have reached your creation limit. Please upgrade to Pro for unlimited creations.',
+          )
           return
         }
         throw new Error(`API returned status: ${response.status}`)
@@ -296,6 +335,30 @@ export default function NewDiagramPage() {
 
   return (
     <div className="mx-auto mt-20 max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      {/** Usage Banner */}
+      {usageData && !usageData.subscribed && (
+        <div className="mb-4 rounded-lg bg-blue-50 p-4 border border-blue-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-blue-900">
+                Free Plan: {usageData.diagrams_created}/{usageData.free_limit} creations used
+              </p>
+              <p className="mt-1 text-xs text-blue-700">
+                {usageData.remaining} creation{usageData.remaining !== 1 ? 's' : ''} remaining
+              </p>
+            </div>
+            {usageData.remaining <= 2 && (
+              <a
+                href="/pricing"
+                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              >
+                Upgrade to Pro
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
       {/** Error Message */}
       {error && (
         <div className="mt-4 border-l-4 border-red-400 bg-red-50 p-4">
@@ -305,6 +368,14 @@ export default function NewDiagramPage() {
             </div>
             <div className="ml-3">
               <p className="text-sm text-red-700">{error}</p>
+              {error.includes('limit') && (
+                <a
+                  href="/pricing"
+                  className="mt-2 inline-block text-sm font-semibold text-red-600 underline hover:text-red-800"
+                >
+                  View Pricing Plans
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -448,7 +519,7 @@ export default function NewDiagramPage() {
           <div className="flex justify-end">
             <Button
               type="button"
-              className="inline-flex items-center rounded-md border border-transparent bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               onClick={handleSubmit}
               disabled={isLoading}
             >

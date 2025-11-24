@@ -98,7 +98,7 @@ export default function CodeEditorDialog({
                         onChange={(e) => {
                           _setCode(e.target.value)
                         }}
-                        className="mt-2 block h-72 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 font-mono text-sm text-gray-900 shadow-sm focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100"
+                        className="mt-2 block h-72 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 font-mono text-sm text-gray-900 shadow-sm focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100"
                       />
                     </div>
                   </div>
@@ -125,7 +125,7 @@ export default function CodeEditorDialog({
                               href="http://mermaid.js.org/syntax/flowchart.html"
                               target="_blank"
                               rel="noreferrer"
-                              className="font-semibold text-indigo-600 underline hover:text-indigo-500"
+                              className="font-semibold text-red-600 underline hover:text-red-500"
                             >
                               Mermaid Documentation
                             </a>
@@ -138,8 +138,8 @@ export default function CodeEditorDialog({
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-                    focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
+                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 
+                    focus-visible:outline-offset-2 focus-visible:outline-red-600 sm:col-start-2"
                     onClick={handleSubmit}
                   >
                     Submit

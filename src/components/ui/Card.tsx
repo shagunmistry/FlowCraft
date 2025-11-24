@@ -7,17 +7,17 @@ const variants = {
   default: {
     background: 'bg-white',
     shadow: 'shadow-xl',
-    hover: 'hover:shadow-2xl hover:shadow-fuchsia-100/50',
+    hover: 'hover:shadow-2xl hover:shadow-red-100/50',
   },
   gradient: {
-    background: 'bg-gradient-to-br from-fuchsia-50 to-indigo-50',
-    shadow: 'shadow-xl shadow-fuchsia-100/30',
-    hover: 'hover:shadow-2xl hover:shadow-indigo-100/50',
+    background: 'bg-gradient-to-br from-red-50 to-red-50',
+    shadow: 'shadow-xl shadow-red-100/30',
+    hover: 'hover:shadow-2xl hover:shadow-red-100/50',
   },
   elevated: {
     background: 'bg-white',
-    shadow: 'shadow-2xl shadow-fuchsia-100/50',
-    hover: 'hover:shadow-2xl hover:shadow-indigo-100/50',
+    shadow: 'shadow-2xl shadow-red-100/50',
+    hover: 'hover:shadow-2xl hover:shadow-red-100/50',
   },
 }
 
@@ -54,7 +54,7 @@ export default function Card({
   const content = (
     <>
       {decorativeElement && (
-        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-fuchsia-50 to-indigo-50 opacity-0 transition-all duration-500 group-hover:opacity-100"></div>
+        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-red-50 to-red-50 opacity-0 transition-all duration-500 group-hover:opacity-100"></div>
       )}
       <div className="relative z-10">{children}</div>
     </>

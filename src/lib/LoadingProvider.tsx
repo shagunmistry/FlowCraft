@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from 'react'
 import LoadingOverlay from './LoadingOverlay'
 
 const LoadingContext = createContext({
-  showLoading: (text: string = 'Loading', color: string = 'indigo') => { },
+  showLoading: (text: string = 'Loading', color: string = 'red') => { },
   hideLoading: () => { },
 })
 
@@ -16,9 +16,9 @@ export const LoadingProvider = ({
 }) => {
   const [loading, setLoading] = useState(false)
   const [loadingText, setLoadingText] = useState('Loading')
-  const [loadingColor, setLoadingColor] = useState<any>('indigo')
+  const [loadingColor, setLoadingColor] = useState<any>('red')
 
-  const showLoading = (text = 'Loading', color = 'indigo') => {
+  const showLoading = (text = 'Loading', color = 'red') => {
     setLoadingText(text)
     setLoadingColor(color)
     setLoading(true)

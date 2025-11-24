@@ -73,7 +73,7 @@ export default function DiagramSettingsBar({
     <>
       <Disclosure
         as="header"
-        className="mx-auto mb-4 w-11/12 rounded-lg bg-indigo-700"
+        className="mx-auto mb-4 w-11/12 rounded-lg bg-red-700"
       >
         {({ open }) => (
           <>
@@ -182,7 +182,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              active ? 'bg-red-600 text-white' : 'text-gray-700',
                               'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => createShareableLink()}
@@ -197,7 +197,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              active ? 'bg-red-600 text-white' : 'text-gray-700',
                               'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => downloadFlowDiagramAsPng()}
@@ -212,7 +212,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              active ? 'bg-red-600 text-white' : 'text-gray-700',
                               'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => copyFlowDiagramAsPng()}
@@ -227,7 +227,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              active ? 'bg-red-600 text-white' : 'text-gray-700',
                               'block w-full rounded-md px-4 py-2 text-md ',
                             )}
                             onClick={() => setIsHelpModalOpen(true)}
@@ -262,7 +262,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              active ? 'bg-red-600 text-white' : 'text-gray-700',
                               'block w-full rounded-md px-4 py-2 text-md',
                             )}
                             onClick={() => setIsEditNodeModalOpen(true)}
@@ -277,7 +277,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600 text-white' : 'text-gray-700',
+                              active ? 'bg-red-600 text-white' : 'text-gray-700',
                               'block w-full rounded-md px-4 py-2 text-md',
                             )}
                             onClick={() => setIsEditEdgeModalOpen(true)}
@@ -339,7 +339,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600' : '',
+                              active ? 'bg-red-600' : '',
                               'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => createShareableLink()}
@@ -354,7 +354,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600' : '',
+                              active ? 'bg-red-600' : '',
                               'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => setIsHelpModalOpen(true)}
@@ -388,7 +388,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600' : '',
+                              active ? 'bg-red-600' : '',
                               'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => setIsEditNodeModalOpen(true)}
@@ -403,7 +403,7 @@ export default function DiagramSettingsBar({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              active ? 'bg-indigo-600' : '',
+                              active ? 'bg-red-600' : '',
                               'block w-full rounded-md px-4 py-2 text-md text-gray-700',
                             )}
                             onClick={() => setIsEditEdgeModalOpen(true)}

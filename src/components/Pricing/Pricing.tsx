@@ -24,7 +24,7 @@ const includedFeatures = [
 const DecorativeElement = ({ className }: { className?: string }) => (
   <motion.div
     className={cn(
-      'absolute rounded-full bg-gradient-to-r from-fuchsia-300 to-indigo-300 opacity-70 blur-xl',
+      'absolute rounded-full bg-gradient-to-r from-red-300 to-red-300 opacity-70 blur-xl',
       className,
     )}
     animate={{
@@ -107,6 +107,14 @@ export default function PricingTemplate({
       return
     }
 
+    if(data && data.user && data.user.subscribed) {
+      // User is already subscribed
+      setNotificationMessage('You are already subscribed to a plan.')
+      setNotificationType('success')
+      setOpenNotification(true)
+      return
+    }
+
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
     )
@@ -163,7 +171,7 @@ export default function PricingTemplate({
   }
 
   return (
-    <div className="relative isolate overflow-hidden bg-gradient-to-br from-fuchsia-50 via-purple-50 to-indigo-50 px-6 py-24 sm:py-16 lg:px-8">
+    <div className="relative isolate overflow-hidden bg-gradient-to-br from-red-50 via-purple-50 to-red-50 px-6 py-24 sm:py-16 lg:px-8">
       {/* Decorative elements */}
       <DecorativeElement className="-right-20 -top-20 h-64 w-64" />
       <DecorativeElement className="-left-32 bottom-40 h-80 w-80" />
@@ -176,13 +184,13 @@ export default function PricingTemplate({
       >
         {sourcePage === 'landing' ? (
           <>
-            <p className="mt-2 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 bg-clip-text font-serif text-5xl font-bold tracking-tight text-transparent sm:text-6xl">
+            <p className="mt-2 bg-gradient-to-r from-red-600 via-purple-600 to-red-600 bg-clip-text font-serif text-5xl font-bold tracking-tight text-transparent sm:text-6xl">
               Simple, transparent pricing.
             </p>
           </>
         ) : (
           <>
-            <h2 className="bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 bg-clip-text font-serif text-3xl font-bold text-transparent">
+            <h2 className="bg-gradient-to-r from-red-600 via-purple-600 to-red-600 bg-clip-text font-serif text-3xl font-bold text-transparent">
               {PricingHeaderMessage(sourcePage)}
             </h2>
           </>
@@ -231,7 +239,7 @@ export default function PricingTemplate({
                 for work, school, or personal projects.
               </p>
               <div className="mt-10 flex items-center gap-x-4">
-                <h4 className="flex-none text-sm font-semibold leading-6 text-fuchsia-600">
+                <h4 className="flex-none text-sm font-semibold leading-6 text-red-600">
                   What's included
                 </h4>
                 <div className="h-px flex-auto bg-purple-100" />
@@ -250,7 +258,7 @@ export default function PricingTemplate({
                       transition: { type: 'spring', stiffness: 300 },
                     }}
                   >
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-500">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-purple-500">
                       <CheckIcon
                         className="h-4 w-4 text-white"
                         aria-hidden="true"
@@ -278,7 +286,7 @@ export default function PricingTemplate({
                     }}
                   >
                     <p className="mt-6 flex items-baseline justify-center gap-x-2">
-                      <span className="bg-gradient-to-r from-fuchsia-600 to-purple-600 bg-clip-text font-serif text-6xl font-bold tracking-tight text-transparent">
+                      <span className="bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text font-serif text-6xl font-bold tracking-tight text-transparent">
                         ${yearly ? '48.00' : '5.00'}
                       </span>
                       <span className="text-sm font-semibold leading-6 tracking-wide text-purple-700">
@@ -296,11 +304,11 @@ export default function PricingTemplate({
                         onClick={() =>
                           handleGoingToCheckout('tier-hobby', yearly)
                         }
-                        className="mt-8 block w-full rounded-xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 px-4 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+                        className="mt-8 block w-full rounded-xl bg-gradient-to-r from-red-600 via-purple-600 to-red-600 px-4 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl"
                       >
                         <span className="relative z-10">Get Started</span>
                         <motion.div
-                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-fuchsia-500 via-purple-500 to-indigo-500 opacity-0"
+                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500 via-purple-500 to-red-500 opacity-0"
                           whileHover={{ opacity: 1 }}
                           transition={{ duration: 0.3 }}
                         />
@@ -310,7 +318,7 @@ export default function PricingTemplate({
                     <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }}>
                       <Link
                         href="/login"
-                        className="mt-8 block w-full rounded-xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 px-4 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+                        className="mt-8 block w-full rounded-xl bg-gradient-to-r from-red-600 via-purple-600 to-red-600 px-4 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl"
                       >
                         Get Started
                       </Link>

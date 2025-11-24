@@ -3,19 +3,18 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 type ColorOptions =
-  | 'indigo'
+  | 'red'
   | 'blue'
   | 'teal'
   | 'purple'
   | 'pink'
   | 'green'
-  | 'red'
   | 'orange'
 
 const LoadingOverlay = ({
   isLoading = false,
   text = 'Loading',
-  color = 'indigo' as ColorOptions,
+  color = 'red' as ColorOptions,
   backgroundColor = 'white',
   fullScreen = false,
   zIndex = 50,
@@ -40,16 +39,15 @@ const LoadingOverlay = ({
 
   // Color mapping for Tailwind classes
   const colorMap = {
-    indigo: 'bg-indigo-600',
+    red: 'bg-red-600',
     blue: 'bg-blue-600',
     teal: 'bg-teal-600',
     purple: 'bg-purple-600',
     pink: 'bg-pink-600',
     green: 'bg-green-600',
-    red: 'bg-red-600',
     orange: 'bg-orange-600',
   }
-  const colorClass = colorMap[color as ColorOptions] || 'bg-indigo-600'
+  const colorClass = colorMap[color as ColorOptions] || 'bg-red-600'
 
   const bgClass =
     backgroundColor === 'transparent' ? 'bg-transparent' : 'bg-white'

@@ -16,9 +16,8 @@ import {
 import { createClient } from '@/lib/supabase-auth/client'
 
 const ProfileMenu = [
-  // { title: 'Account Settings', link: '/account/settings' },
-  // { title: 'Your Creations', link: '/account/creations' },
-  // { title: 'Help Center', link: '/support' },
+  { title: 'Settings', link: '/dashboard/settings' },
+  { title: 'Help Center', link: '/support' },
   { title: 'Sign Out', link: '/auth/logout' },
 ]
 
@@ -93,7 +92,7 @@ export default function DashboardNavbar() {
               whileTap={{ scale: 0.98 }}
               className="group relative"
             >
-              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-violet-100 to-indigo-100 opacity-0 blur transition duration-300 group-hover:opacity-100"></div>
+              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-violet-100 to-red-100 opacity-0 blur transition duration-300 group-hover:opacity-100"></div>
               <div className="relative">
                 <Link href="/dashboard" className="flex items-center">
                   <Image
@@ -109,7 +108,7 @@ export default function DashboardNavbar() {
             <div className="hidden md:flex md:space-x-2">
               <Link
                 href="/dashboard"
-                className="flex items-center rounded-full bg-gradient-to-r from-violet-50 to-indigo-50 px-5 py-2.5 text-sm font-medium text-slate-700 transition-all duration-300 hover:bg-gradient-to-r hover:from-violet-100 hover:to-indigo-100 hover:shadow-sm"
+                className="flex items-center rounded-full bg-gradient-to-r from-violet-50 to-red-50 px-5 py-2.5 text-sm font-medium text-slate-700 transition-all duration-300 hover:bg-gradient-to-r hover:from-violet-100 hover:to-red-100 hover:shadow-sm"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -140,15 +139,15 @@ export default function DashboardNavbar() {
 
               <Link
                 href="/image-studio"
-                className="flex items-center rounded-full bg-gradient-to-r from-fuchsia-50 to-pink-50 px-5 py-2.5 text-sm font-medium text-fuchsia-700 transition-all duration-300 hover:from-fuchsia-100 hover:to-pink-100 hover:shadow-sm"
+                className="flex items-center rounded-full bg-gradient-to-r from-red-50 to-pink-50 px-5 py-2.5 text-sm font-medium text-red-700 transition-all duration-300 hover:from-red-100 hover:to-pink-100 hover:shadow-sm"
               >
-                <SparklesIcon className="mr-2 h-4 w-4 text-fuchsia-600" />
+                <SparklesIcon className="mr-2 h-4 w-4 text-red-600" />
                 Image Studio
               </Link>
 
               <a
                 href="/dashboard/diagrams/new"
-                className="flex items-center rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/40"
+                className="flex items-center rounded-full bg-gradient-to-r from-violet-600 to-red-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/40"
               >
                 <PlusIcon className="mr-2 h-4 w-4" />
                 New Creation
@@ -182,7 +181,7 @@ export default function DashboardNavbar() {
                 }}
                 className="flex items-center rounded-full bg-white p-1.5 pr-3 text-slate-600 shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:text-violet-600 hover:shadow-md"
               >
-                <div className="mr-2 h-7 w-7 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-indigo-600">
+                <div className="mr-2 h-7 w-7 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-red-600">
                   <UserIcon className="h-7 w-7 text-white" />
                 </div>
                 <span className="text-sm font-medium">Account</span>
@@ -203,7 +202,7 @@ export default function DashboardNavbar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     className="absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white p-1.5 shadow-xl ring-1 ring-black/5"
                   >
-                    <div className="rounded-lg bg-gradient-to-r from-violet-50 to-indigo-50 p-3">
+                    <div className="rounded-lg bg-gradient-to-r from-violet-50 to-red-50 p-3">
                       <div className="text-sm font-medium text-slate-700">
                         {userName}
                       </div>
@@ -287,9 +286,9 @@ export default function DashboardNavbar() {
                 </motion.button>
               </div>
 
-              <div className="mt-6 rounded-xl bg-gradient-to-r from-violet-50 to-indigo-50 p-4">
+              <div className="mt-6 rounded-xl bg-gradient-to-r from-violet-50 to-red-50 p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-indigo-600">
+                  <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-red-600">
                     <UserIcon className="h-10 w-10 text-white" />
                   </div>
                   <div>
@@ -328,16 +327,16 @@ export default function DashboardNavbar() {
 
                   <Link
                     href="/image-studio"
-                    className="flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-700"
+                    className="flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-700"
                     onClick={closeMenus}
                   >
-                    <SparklesIcon className="mr-3 h-5 w-5 text-fuchsia-600" />
+                    <SparklesIcon className="mr-3 h-5 w-5 text-red-600" />
                     Image Studio
                   </Link>
 
                   <Link
                     href="/create/new"
-                    className="flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm"
+                    className="flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-red-600 px-4 py-3 text-base font-medium text-white shadow-sm"
                     onClick={closeMenus}
                   >
                     <PlusIcon className="mr-3 h-5 w-5" />

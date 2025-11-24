@@ -20,7 +20,7 @@ function getIcon(type: 'success' | 'error' | 'warning' | 'info') {
     case 'warning':
       return <ExclamationTriangleIcon className="h-6 w-6 text-yellow-100" />
     case 'info':
-      return <InformationCircleIcon className="h-6 w-6 text-indigo-100" />
+      return <InformationCircleIcon className="h-6 w-6 text-red-100" />
     default:
       return <InformationCircleIcon className="h-6 w-6 text-gray-100" />
   }
@@ -44,7 +44,7 @@ export default function SimpleNotification({
       {/* Global notification live region, render this permanently at the end of the document */}
       <div
         aria-live="assertive"
-        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6 z-5000"
       >
         <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
@@ -63,7 +63,7 @@ export default function SimpleNotification({
                 type === 'success' && 'bg-green-500',
                 type === 'error' && 'bg-red-500',
                 type === 'warning' && 'bg-yellow-500',
-                type === 'info' && 'bg-indigo-500',
+                type === 'info' && 'bg-red-500',
                 'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5',
               )}
             >
@@ -77,7 +77,7 @@ export default function SimpleNotification({
                   <div className="ml-4 flex flex-shrink-0">
                     <button
                       type="button"
-                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                       onClick={() => {
                         setOpen(false)
                       }}

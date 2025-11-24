@@ -46,6 +46,8 @@ async function getUserDataFromTable(
     subscribed: boolean
     date_subscribed: string
     date_cancelled: string | null
+    diagrams_created: number
+    free_limit: number
   } | null
 }> {
   const sbClient = createClient()
@@ -84,12 +86,12 @@ async function getUserDataFromTable(
 
 const SectionHeader = ({ title, link }: { title: string; link: string }) => (
   <div className="flex items-center justify-between py-6">
-    <h2 className="bg-gradient-to-r from-fuchsia-600 to-indigo-600 bg-clip-text font-serif text-2xl font-medium text-transparent">
+    <h2 className="bg-gradient-to-r from-red-600 to-red-600 bg-clip-text font-serif text-2xl font-medium text-transparent">
       {title}
     </h2>
     <a
       href={link}
-      className="inline-flex items-center text-sm font-medium text-indigo-600 transition-all duration-300 hover:translate-x-1 hover:text-fuchsia-600"
+      className="inline-flex items-center text-sm font-medium text-red-600 transition-all duration-300 hover:translate-x-1 hover:text-red-600"
     >
       View All
       <svg className="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -110,8 +112,8 @@ const StatsCard = ({
   stat: { id: number; name: string; value: number }
 }) => (
   <div className="overflow-hidden rounded-3xl border border-purple-100 bg-white/90 p-6 shadow-lg backdrop-blur-xl transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
-    <dt className="text-sm font-medium text-indigo-500">{stat.name}</dt>
-    <dd className="mt-2 bg-gradient-to-r from-fuchsia-600 to-indigo-600 bg-clip-text font-serif text-4xl font-semibold tracking-tight text-transparent">
+    <dt className="text-sm font-medium text-red-500">{stat.name}</dt>
+    <dd className="mt-2 bg-gradient-to-r from-red-600 to-red-600 bg-clip-text font-serif text-4xl font-semibold tracking-tight text-transparent">
       {stat.value}
     </dd>
   </div>
@@ -120,28 +122,28 @@ const StatsCard = ({
 // Floating decorative elements component
 const DecorativeElements = () => (
   <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-    <div className="animate-float-slow absolute right-20 top-20 h-32 w-32 rounded-full bg-gradient-to-r from-fuchsia-400/20 to-indigo-400/20"></div>
-    <div className="animate-float absolute left-10 top-60 h-20 w-20 rounded-full bg-gradient-to-r from-purple-400/20 to-fuchsia-400/20"></div>
-    <div className="animate-float-slow absolute bottom-40 right-40 h-40 w-40 rounded-full bg-gradient-to-r from-indigo-400/20 to-purple-400/20"></div>
-    <div className="animate-float-reverse absolute bottom-20 left-20 h-24 w-24 rounded-full bg-gradient-to-r from-fuchsia-400/20 to-purple-400/20"></div>
+    <div className="animate-float-slow absolute right-20 top-20 h-32 w-32 rounded-full bg-gradient-to-r from-red-400/20 to-red-400/20"></div>
+    <div className="animate-float absolute left-10 top-60 h-20 w-20 rounded-full bg-gradient-to-r from-purple-400/20 to-red-400/20"></div>
+    <div className="animate-float-slow absolute bottom-40 right-40 h-40 w-40 rounded-full bg-gradient-to-r from-red-400/20 to-purple-400/20"></div>
+    <div className="animate-float-reverse absolute bottom-20 left-20 h-24 w-24 rounded-full bg-gradient-to-r from-red-400/20 to-purple-400/20"></div>
   </div>
 )
 
 // Diagram Card Component
 const DiagramCard = ({ diagram }: { diagram: any }) => (
   <div className="group relative h-full overflow-hidden rounded-3xl border border-purple-100 bg-white/90 p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
-    <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600/5 to-indigo-600/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 to-red-600/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
     <div className="relative z-10 flex flex-col space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-serif text-xl min-h-[4.5rem] font-medium text-indigo-900 transition-colors duration-300 group-hover:text-fuchsia-700">
+        <h3 className="font-serif text-xl min-h-[4.5rem] font-medium text-red-900 transition-colors duration-300 group-hover:text-red-700">
           {diagram.title}
         </h3>
-        <span className="rounded-full bg-gradient-to-r from-fuchsia-100 to-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700">
+        <span className="rounded-full bg-gradient-to-r from-red-100 to-red-100 px-3 py-1 text-xs font-medium text-red-700">
           {diagram.type}
         </span>
       </div>
 
-      <div className="text-sm text-indigo-500">
+      <div className="text-sm text-red-500">
         <time dateTime={diagram.created_at}>
           {new Date(diagram.created_at).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -153,7 +155,7 @@ const DiagramCard = ({ diagram }: { diagram: any }) => (
 
       <Link
         href={`/dashboard/diagram/${diagram.id}`}
-        className="mt-4 inline-flex transform items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:from-fuchsia-700 hover:to-indigo-700 hover:shadow-lg hover:shadow-purple-300/40 group-hover:translate-y-[-2px]"
+        className="mt-4 inline-flex transform items-center justify-center rounded-full bg-gradient-to-r from-red-600 to-red-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:from-red-700 hover:to-red-700 hover:shadow-lg hover:shadow-purple-300/40 group-hover:translate-y-[-2px]"
       >
         <PlayIcon className="mr-2 h-4 w-4" />
         View
@@ -174,12 +176,12 @@ const SharedDiagramCard = ({
     href={`${baseUrl}/share/${share.id}`}
     className="group relative overflow-hidden rounded-3xl border border-purple-100 bg-white/90 p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:scale-[1.03] hover:shadow-xl"
   >
-    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/5 to-fuchsia-600/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 to-red-600/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
     <div className="relative z-10 flex flex-col space-y-3">
-      <h3 className="font-serif text-xl font-medium text-indigo-900 transition-colors duration-300 group-hover:text-fuchsia-700">
+      <h3 className="font-serif text-xl font-medium text-red-900 transition-colors duration-300 group-hover:text-red-700">
         {share.title}
       </h3>
-      <p className="text-sm text-indigo-500">
+      <p className="text-sm text-red-500">
         {new Date(share.created_at).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
@@ -187,10 +189,10 @@ const SharedDiagramCard = ({
         })}
       </p>
       <div className="mt-2 flex items-center space-x-2">
-        <span className="text-sm font-medium text-indigo-600">
+        <span className="text-sm font-medium text-red-600">
           Invite Code:
         </span>
-        <code className="rounded-md border border-purple-100 bg-gradient-to-r from-fuchsia-50 to-indigo-50 px-3 py-1.5 font-mono text-sm text-indigo-600">
+        <code className="rounded-md border border-purple-100 bg-gradient-to-r from-red-50 to-red-50 px-3 py-1.5 font-mono text-sm text-red-600">
           {share.invite_code}
         </code>
       </div>
@@ -264,17 +266,17 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="relative mt-12 min-h-screen overflow-hidden bg-gradient-to-b from-purple-50 via-white to-fuchsia-50 px-6 py-12">
+    <div className="relative mt-12 min-h-screen overflow-hidden bg-gradient-to-b from-purple-50 via-white to-red-50 px-6 py-12">
       <DecorativeElements />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Header Section */}
         <div className="mb-16 text-center">
-          <p className="mt-4 text-xl font-medium text-indigo-700">
+          <p className="mt-4 text-xl font-medium text-red-700">
             {user.subscribed ? (
               <span className="inline-flex items-center">
                 <svg
-                  className="mr-2 h-5 w-5 text-fuchsia-500"
+                  className="mr-2 h-5 w-5 text-red-500"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -285,12 +287,27 @@ export default async function Dashboard() {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Pro Creator
+                Pro Creator - Unlimited Creations
               </span>
             ) : (
-              'Free Creator'
+              <span className="inline-flex flex-col items-center">
+                <span>Free Creator</span>
+                <span className="mt-2 text-sm text-red-500">
+                  {user.diagrams_created || 0}/{user.free_limit || 5} creations used
+                </span>
+              </span>
             )}
           </p>
+          {!user.subscribed && (user.diagrams_created || 0) >= (user.free_limit || 5) && (
+            <div className="mt-4 rounded-lg bg-red-50 p-4 border border-red-200">
+              <p className="text-sm text-red-800">
+                You've reached your free creation limit.
+                <a href="/pricing" className="ml-1 font-semibold underline hover:text-red-900">
+                  Upgrade to Pro
+                </a> for unlimited creations and private diagrams!
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Stats Grid */}
@@ -301,7 +318,7 @@ export default async function Dashboard() {
         </div>
 
         {/* Create New Section */}
-        <div className="relative mb-16 overflow-hidden rounded-3xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 p-8 text-white shadow-xl">
+        <div className="relative mb-16 overflow-hidden rounded-3xl bg-gradient-to-r from-red-600 via-purple-600 to-red-600 p-8 text-white shadow-xl">
           <div className="absolute inset-0 overflow-hidden opacity-10">
             <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-white"></div>
             <div className="absolute -left-10 bottom-5 h-40 w-40 rounded-full bg-white"></div>
@@ -311,20 +328,20 @@ export default async function Dashboard() {
               <h2 className="font-serif text-3xl font-semibold">
                 Ready to create?
               </h2>
-              <p className="mt-2 text-fuchsia-100">
+              <p className="mt-2 text-red-100">
                 Transform your ideas into visual magic
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <a
                 href="/dashboard/diagrams/new"
-                className="transform rounded-full bg-white px-8 py-3 text-center text-base font-medium text-indigo-600 transition-all duration-300 hover:scale-105 hover:bg-fuchsia-50 hover:shadow-lg hover:shadow-purple-700/30"
+                className="transform rounded-full bg-white px-8 py-3 text-center text-base font-medium text-red-600 transition-all duration-300 hover:scale-105 hover:bg-red-50 hover:shadow-lg hover:shadow-purple-700/30"
               >
                 Create New Diagram
               </a>
               <a
                 href="/image-studio"
-                className="transform rounded-full bg-white px-8 py-3 text-center text-base font-medium text-fuchsia-600 transition-all duration-300 hover:scale-105 hover:bg-indigo-50 hover:shadow-lg hover:shadow-purple-700/30"
+                className="transform rounded-full bg-white px-8 py-3 text-center text-base font-medium text-red-600 transition-all duration-300 hover:scale-105 hover:bg-red-50 hover:shadow-lg hover:shadow-purple-700/30"
               >
                 ✨ AI Image Studio
               </a>
@@ -372,49 +389,49 @@ export default async function Dashboard() {
 
         {/* Inspiration Section */}
         <div className="overflow-hidden rounded-3xl border border-purple-100 bg-white/90 p-8 shadow-lg backdrop-blur-xl">
-          <h2 className="mb-4 bg-gradient-to-r from-fuchsia-600 to-indigo-600 bg-clip-text font-serif text-2xl font-medium text-transparent">
+          <h2 className="mb-4 bg-gradient-to-r from-red-600 to-red-600 bg-clip-text font-serif text-2xl font-medium text-transparent">
             Get Inspired
           </h2>
-          <p className="mb-6 text-indigo-700">
+          <p className="mb-6 text-red-700">
             Discover creative ways to transform your ideas into visual content
           </p>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            <div className="rounded-2xl bg-gradient-to-r from-fuchsia-50 to-indigo-50 p-5 transition-all duration-300 hover:shadow-md">
-              <h3 className="mb-2 font-serif text-lg font-medium text-indigo-700">
+            <div className="rounded-2xl bg-gradient-to-r from-red-50 to-red-50 p-5 transition-all duration-300 hover:shadow-md">
+              <h3 className="mb-2 font-serif text-lg font-medium text-red-700">
                 Visualization Tips
               </h3>
-              <p className="text-sm text-indigo-600">
+              <p className="text-sm text-red-600">
                 Learn the best practices for effective visual storytelling
               </p>
             </div>
 
-            <div className="rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 p-5 transition-all duration-300 hover:shadow-md">
-              <h3 className="mb-2 font-serif text-lg font-medium text-indigo-700">
+            <div className="rounded-2xl bg-gradient-to-r from-red-50 to-purple-50 p-5 transition-all duration-300 hover:shadow-md">
+              <h3 className="mb-2 font-serif text-lg font-medium text-red-700">
                 Template Gallery
               </h3>
-              <p className="text-sm text-indigo-600">
+              <p className="text-sm text-red-600">
                 Explore pre-made templates to jumpstart your projects
               </p>
             </div>
 
             <Link
               href="/image-studio"
-              className="rounded-2xl bg-gradient-to-r from-fuchsia-50 to-pink-50 p-5 transition-all duration-300 hover:scale-105 hover:shadow-md"
+              className="rounded-2xl bg-gradient-to-r from-red-50 to-pink-50 p-5 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
-              <h3 className="mb-2 font-serif text-lg font-medium text-fuchsia-700">
+              <h3 className="mb-2 font-serif text-lg font-medium text-red-700">
                 ✨ AI Image Studio
               </h3>
-              <p className="text-sm text-fuchsia-600">
+              <p className="text-sm text-red-600">
                 Generate and edit images with AI-powered tools
               </p>
             </Link>
 
-            <div className="rounded-2xl bg-gradient-to-r from-purple-50 to-fuchsia-50 p-5 transition-all duration-300 hover:shadow-md">
-              <h3 className="mb-2 font-serif text-lg font-medium text-indigo-700">
+            <div className="rounded-2xl bg-gradient-to-r from-purple-50 to-red-50 p-5 transition-all duration-300 hover:shadow-md">
+              <h3 className="mb-2 font-serif text-lg font-medium text-red-700">
                 Community Showcase
               </h3>
-              <p className="text-sm text-indigo-600">
+              <p className="text-sm text-red-600">
                 See what other creators are building with FlowCraft
               </p>
             </div>

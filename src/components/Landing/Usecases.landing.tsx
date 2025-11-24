@@ -65,7 +65,7 @@ export default function UsecasesForLanding() {
             <div key={feature.name} className="relative pl-9">
               <dt className="inline font-semibold text-pink-500">
                 <feature.icon
-                  className="absolute left-1 top-1 h-5 w-5 text-indigo-600"
+                  className="absolute left-1 top-1 h-5 w-5 text-red-600"
                   aria-hidden="true"
                 />
                 {feature.name}

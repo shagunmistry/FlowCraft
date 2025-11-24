@@ -251,7 +251,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-200/40"
+              className="rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-200/40"
               title="Download diagram"
             >
               <DownloadIcon className="mr-2 inline h-4 w-4" />
@@ -375,7 +375,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         </p>
         <Link
           href="/dashboard"
-          className="inline-flex items-center rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2 text-white transition-all hover:shadow-lg"
+          className="inline-flex items-center rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-white transition-all hover:shadow-lg"
         >
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
           Back to Dashboard

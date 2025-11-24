@@ -107,7 +107,7 @@ export default function EditEdgesOnDiagramModal({
                                                         event.target.value,
                                                       )
                                                     }}
-                                                    className="mt-1 block w-full rounded-md border border-indigo-300 px-3 py-2 text-lg text-indigo-700 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                    className="mt-1 block w-full rounded-md border border-red-300 px-3 py-2 text-lg text-red-700 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                                                   />
                                                   <motion.button
                                                     type="button"

@@ -192,7 +192,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
           </p>
           <button
             onClick={() => router.push('/dashboard/showcase')}
-            className="inline-flex items-center rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2 text-white transition-all hover:shadow-lg"
+            className="inline-flex items-center rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-white transition-all hover:shadow-lg"
           >
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Back to Showcase
@@ -318,7 +318,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-200/40"
+                className="rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-200/40"
                 title="Download diagram"
               >
                 <ArrowDownTrayIcon className="mr-2 inline h-4 w-4" />

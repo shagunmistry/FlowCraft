@@ -31,14 +31,14 @@ const steps: {
 
 export default function HowToUseSteps() {
   return (
-    <div className="mt-10 lg:border-b lg:border-t lg:border-indigo-200">
+    <div className="mt-10 lg:border-b lg:border-t lg:border-red-200">
       <nav
         className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         aria-label="Progress"
       >
         <ol
           role="list"
-          className="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-indigo-200"
+          className="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-red-200"
         >
           {steps.map((step, stepIdx) => (
             <li key={step.id} className="relative overflow-hidden lg:flex-1">
@@ -46,7 +46,7 @@ export default function HowToUseSteps() {
                 className={cn(
                   stepIdx === 0 ? 'rounded-t-md border-b-0' : '',
                   stepIdx === steps.length - 1 ? 'rounded-b-md border-t-0' : '',
-                  'overflow-hidden border border-indigo-200 lg:border-0',
+                  'overflow-hidden border border-red-200 lg:border-0',
                 )}
               >
                 <>

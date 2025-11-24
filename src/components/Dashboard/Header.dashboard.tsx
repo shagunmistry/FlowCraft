@@ -52,9 +52,9 @@ export default function DashboardHeading({
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">
               {subscribed ? (
-                <span className="inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium text-indigo-500 ring-1 ring-inset ring-gray-200">
+                <span className="inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium text-red-500 ring-1 ring-inset ring-gray-200">
                   <svg
-                    className="h-1.5 w-1.5 fill-indigo-500"
+                    className="h-1.5 w-1.5 fill-red-500"
                     viewBox="0 0 6 6"
                     aria-hidden="true"
                   >
@@ -73,7 +73,7 @@ export default function DashboardHeading({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 divide-y divide-indigo-200 border-t border-indigo-200 bg-gray-100 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+        <div className="grid grid-cols-1 divide-y divide-red-200 border-t border-red-200 bg-gray-100 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
           {stats.map((stat) => (
             <motion.div
               key={stat.name}
@@ -82,8 +82,8 @@ export default function DashboardHeading({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <span className="text-indigo-900">{stat.value}</span>{' '}
-              <span className="text-indigo-600">{stat.name}</span>
+              <span className="text-red-900">{stat.value}</span>{' '}
+              <span className="text-red-600">{stat.name}</span>
             </motion.div>
           ))}
         </div>
