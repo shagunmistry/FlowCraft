@@ -46,6 +46,8 @@ async function getUserDataFromTable(
     subscribed: boolean
     date_subscribed: string
     date_cancelled: string | null
+    diagrams_created: number
+    free_limit: number
   } | null
 }> {
   const sbClient = createClient()

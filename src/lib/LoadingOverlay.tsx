@@ -9,7 +9,6 @@ type ColorOptions =
   | 'purple'
   | 'pink'
   | 'green'
-  | 'red'
   | 'orange'
 
 const LoadingOverlay = ({
@@ -46,7 +45,6 @@ const LoadingOverlay = ({
     purple: 'bg-purple-600',
     pink: 'bg-pink-600',
     green: 'bg-green-600',
-    red: 'bg-red-600',
     orange: 'bg-orange-600',
   }
   const colorClass = colorMap[color as ColorOptions] || 'bg-red-600'
