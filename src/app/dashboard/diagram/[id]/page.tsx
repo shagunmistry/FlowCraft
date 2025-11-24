@@ -153,7 +153,9 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     setZoomLevel((prev) => {
       const step = 25
       const next = direction === 'in' ? prev + step : prev - step
-      return Math.min(Math.max(next, 25), 300) // Clamp between 25% and 300%
+      const newZoom = Math.min(Math.max(next, 25), 300) // Clamp between 25% and 300%
+      console.log('Zoom changed:', prev, '->', newZoom)
+      return newZoom
     })
   }
 
@@ -167,6 +169,11 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     const containerRect = container.getBoundingClientRect()
     const contentRect = content.getBoundingClientRect()
 
+    // Get the original (unscaled) content dimensions
+    const currentScale = zoomLevel / 100
+    const originalWidth = contentRect.width / currentScale
+    const originalHeight = contentRect.height / currentScale
+
     // Calculate padding (accounting for the p-20 on the container)
     const padding = 160 // 80px on each side (20 * 4 = 80px in Tailwind)
 
@@ -175,8 +182,8 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
     const availableHeight = containerRect.height - padding
 
     // Calculate scale needed to fit content
-    const scaleX = availableWidth / contentRect.width
-    const scaleY = availableHeight / contentRect.height
+    const scaleX = availableWidth / originalWidth
+    const scaleY = availableHeight / originalHeight
 
     // Use the smaller scale to ensure content fits in both dimensions
     const optimalScale = Math.min(scaleX, scaleY, 1) // Don't zoom in beyond 100%
@@ -223,7 +230,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
   return (
     <div className="flex h-screen w-full flex-col overflow-hidden bg-[#F5F5F7]">
       {/* 1. Header (Floating Glass Effect) */}
-      <header className="absolute left-0 right-0 top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200/50 bg-white/60 px-6 backdrop-blur-xl transition-all">
+      <header className="flex h-16 items-center justify-between border-b border-gray-200/50 bg-white/60 px-6 backdrop-blur-xl transition-all mt-20">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.push('/dashboard')}
@@ -270,7 +277,10 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       </header>
 
       {/* 2. Main Canvas */}
-      <main ref={mainRef} className="relative flex-1 overflow-auto">
+      <main
+        ref={mainRef}
+        className="relative flex flex-1 items-center justify-center overflow-auto pt-80"
+      >
         {/* Dot Grid Pattern */}
         <div
           className="pointer-events-none absolute inset-0 z-0 opacity-[0.4]"
@@ -280,19 +290,21 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
           }}
         />
 
-        <motion.div
+        <div
           ref={contentRef}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} // Apple-style spring
           style={{
             transform: `scale(${zoomLevel / 100})`,
             transformOrigin: 'center center',
           }}
-          className="relative overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-transform duration-200 ease-out"
+          className="relative z-10 inline-block transition-transform duration-200 ease-out"
         >
-          {/* Content Renderer */}
-          <div className="min-h-[400px] min-w-[400px] p-8 md:p-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} // Apple-style spring
+            className="overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5"
+          >
+            <div className="min-h-[400px] min-w-[400px] p-8 md:p-12">
             {svgCode && (
               <div
                 dangerouslySetInnerHTML={{ __html: svgCode }}
@@ -303,7 +315,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
             {mermaidCode ? (
               <div
                 ref={mermaidContainerRef}
-                className="mermaid flex w-full justify-center"
+                className="mermaid flex w-full justify-center pt-20"
               />
             ) : null}
 
@@ -316,12 +328,11 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
             )}
 
             {!svgCode && !mermaidCode && !imageUrl && diagramMeta?.type && (
-              <DiagramOrChartView
-                type={diagramMeta.type as DiagramOrChartType}
-              />
+              <DiagramOrChartView type={diagramMeta.type as DiagramOrChartType} />
             )}
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </main>
 
       {/* 3. Floating Toolbar (Bottom Center) */}

@@ -1,20 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   UserCircleIcon,
-  ShieldCheckIcon,
+  CreditCardIcon,
   TrashIcon,
-  ArrowLeftIcon,
-  CalendarIcon,
-  CheckCircleIcon,
-  XCircleIcon,
+  ChevronLeftIcon,
+  CalendarDaysIcon,
+  CheckBadgeIcon,
+  ExclamationCircleIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline'
-import PageLoader from '@/components/PageLoader'
 import toast from 'react-hot-toast'
+import clsx from 'clsx'
 
+// --- Types ---
 interface UserSettings {
   email: string
   user_id: string
@@ -26,6 +28,91 @@ interface UserSettings {
   }
   created_at: string
 }
+
+// --- UI Components ---
+
+const Section = ({
+  title,
+  children,
+  className,
+}: {
+  title?: string
+  children: React.ReactNode
+  className?: string
+}) => (
+  <section className={clsx('mb-8', className)}>
+    {title && (
+      <h3 className="px-4 pb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+        {title}
+      </h3>
+    )}
+    <div className="divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+      {children}
+    </div>
+  </section>
+)
+
+const Row = ({
+  label,
+  value,
+  icon: Icon,
+  action,
+  className,
+}: {
+  label: string
+  value?: string | React.ReactNode
+  icon?: any
+  action?: React.ReactNode
+  className?: string
+}) => (
+  <div
+    className={clsx(
+      'flex min-h-[3.5rem] items-center justify-between p-4',
+      className,
+    )}
+  >
+    <div className="flex items-center gap-3">
+      {Icon && <Icon className="h-5 w-5 text-zinc-400" />}
+      <span className="text-sm font-medium text-zinc-900">{label}</span>
+    </div>
+    <div className="flex items-center gap-3">
+      {value && <span className="text-sm text-zinc-500">{value}</span>}
+      {action}
+    </div>
+  </div>
+)
+
+const Button = ({
+  children,
+  onClick,
+  variant = 'secondary',
+  disabled,
+  className,
+}: any) => {
+  const base =
+    'px-4 py-1.5 rounded-full text-sm font-medium transition-all active:scale-95 disabled:opacity-50'
+  const variants = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm',
+    secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200',
+    danger: 'bg-red-50 text-red-600 hover:bg-red-100',
+    outline: 'border border-zinc-200 text-zinc-600 hover:bg-zinc-50',
+  }
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={clsx(
+        base,
+        variants[variant as keyof typeof variants],
+        className,
+      )}
+    >
+      {children}
+    </button>
+  )
+}
+
+// --- Main Page ---
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -43,14 +130,10 @@ export default function SettingsPage() {
       setLoading(true)
       const response = await fetch('/api/settings')
       const data = await response.json()
-
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(data.error || 'Failed to fetch settings')
-      }
-
       setSettings(data.settings)
     } catch (error: any) {
-      console.error('Error fetching settings:', error)
       toast.error(error.message || 'Failed to load settings')
     } finally {
       setLoading(false)
@@ -60,20 +143,13 @@ export default function SettingsPage() {
   const handleDeleteAccount = async () => {
     try {
       setDeleting(true)
-      const response = await fetch('/api/settings', {
-        method: 'DELETE',
-      })
-
+      const response = await fetch('/api/settings', { method: 'DELETE' })
       const data = await response.json()
-
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(data.error || 'Failed to delete account')
-      }
-
       toast.success('Account deleted successfully')
       router.push('/login')
     } catch (error: any) {
-      console.error('Error deleting account:', error)
       toast.error(error.message || 'Failed to delete account')
     } finally {
       setDeleting(false)
@@ -89,269 +165,219 @@ export default function SettingsPage() {
     })
   }
 
+  // --- Loading State ---
   if (loading) {
-    return <PageLoader />
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-50">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-blue-600" />
+          <p className="text-sm font-medium text-zinc-500">
+            Loading settings...
+          </p>
+        </div>
+      </div>
+    )
   }
 
+  // --- Error State ---
   if (!settings) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="text-center">
-          <p className="text-slate-600">Failed to load settings</p>
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="mt-4 text-violet-600 hover:text-violet-700"
-          >
-            Back to Dashboard
-          </button>
+      <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
+        <div className="max-w-sm text-center">
+          <ExclamationCircleIcon className="mx-auto mb-3 h-10 w-10 text-zinc-300" />
+          <h2 className="font-semibold text-zinc-900">
+            Unable to load settings
+          </h2>
+          <p className="mb-4 mt-1 text-sm text-zinc-500">
+            We couldn't retrieve your account information at this time.
+          </p>
+          <Button onClick={() => router.push('/dashboard')} variant="outline">
+            Return to Dashboard
+          </Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      {/* Header */}
+    <main className="min-h-screen bg-zinc-50 pt-14">
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
+          <button
+            onClick={() => router.push('/dashboard')}
+            className="-ml-2 flex items-center gap-1 rounded-lg px-2 py-1 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600"
+          >
+            <ChevronLeftIcon className="h-5 w-5" />
+            <span className="text-sm font-medium">Dashboard</span>
+          </button>
+          <h1 className="text-base font-semibold text-zinc-900">Settings</h1>
+          <div className="w-16" /> {/* Spacer for visual balance */}
+        </div>
+      </header>
+
+      {/* Main Content */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="border-b border-slate-200 bg-white/80 backdrop-blur-sm"
+        className="mx-auto max-w-3xl px-4 py-8"
       >
-        <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8 mt-20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="flex items-center space-x-2 text-slate-600 transition-colors hover:text-violet-600"
-              >
-                <ArrowLeftIcon className="h-5 w-5" />
-                <span className="text-sm font-medium">Back</span>
-              </button>
-              <div className="hidden h-6 w-px bg-slate-300 sm:block"></div>
-              <h1 className="text-2xl font-bold text-slate-900">Account Settings</h1>
-            </div>
+        {/* Profile Header */}
+        <div className="mb-8 flex items-center gap-4 px-2">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-200 text-zinc-400">
+            <UserCircleIcon className="h-10 w-10" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-zinc-900">
+              {settings.email}
+            </h2>
+            <p className="text-sm text-zinc-500">
+              Member since {new Date(settings.created_at).getFullYear()}
+            </p>
           </div>
         </div>
-      </motion.div>
 
-      {/* Content */}
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="space-y-6">
-          {/* Account Information Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-          >
-            <div className="border-b border-slate-200 bg-slate-50/50 px-6 py-4">
-              <div className="flex items-center space-x-3">
-                <UserCircleIcon className="h-6 w-6 text-violet-600" />
-                <h2 className="text-lg font-semibold text-slate-900">
-                  Account Information
-                </h2>
-              </div>
-            </div>
-            <div className="space-y-6 px-6 py-6">
-              <div className="grid gap-6 md:grid-cols-2">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">
-                    Email Address
-                  </label>
-                  <div className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-700">
-                    {settings.email}
-                  </div>
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">
-                    User ID
-                  </label>
-                  <div className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 font-mono text-xs text-slate-600">
-                    {settings.user_id}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">
-                  <CalendarIcon className="mr-1 inline h-4 w-4" />
-                  Account Created
-                </label>
-                <div className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-slate-700">
-                  {formatDate(settings.created_at)}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+        {/* Account Details */}
+        <Section title="Account">
+          <Row label="Email" value={settings.email} />
+          <Row
+            label="User ID"
+            value={
+              <code className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-xs text-zinc-600">
+                {settings.user_id}
+              </code>
+            }
+          />
+          <Row
+            label="Joined"
+            value={formatDate(settings.created_at)}
+            icon={CalendarDaysIcon}
+          />
+        </Section>
 
-          {/* Subscription Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-          >
-            <div className="border-b border-slate-200 bg-slate-50/50 px-6 py-4">
-              <div className="flex items-center space-x-3">
-                <ShieldCheckIcon className="h-6 w-6 text-violet-600" />
-                <h2 className="text-lg font-semibold text-slate-900">
-                  Subscription
-                </h2>
-              </div>
-            </div>
-            <div className="px-6 py-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50/50 p-4">
-                  <div className="flex-1">
-                    <h3 className="text-sm font-medium text-slate-900">
-                      Current Plan
-                    </h3>
-                    <div className="mt-2 flex items-center space-x-2">
-                      <span className="inline-flex items-center rounded-full bg-gradient-to-r from-violet-100 to-red-100 px-3 py-1 text-sm font-semibold text-violet-700">
-                        {settings.subscription.plan || 'Free'}
-                      </span>
-                      {settings.subscription.subscribed ? (
-                        <span className="inline-flex items-center text-sm text-green-600">
-                          <CheckCircleIcon className="mr-1 h-4 w-4" />
-                          Active
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center text-sm text-slate-500">
-                          <XCircleIcon className="mr-1 h-4 w-4" />
-                          Inactive
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => router.push('/dashboard/pricing')}
-                    className="rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-200/50"
-                  >
-                    Upgrade Plan
-                  </button>
-                </div>
-
-                {settings.subscription.subscribed && (
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-4">
-                      <label className="mb-1 block text-xs font-medium text-slate-500">
-                        Subscribed Since
-                      </label>
-                      <div className="text-sm font-medium text-slate-700">
-                        {formatDate(settings.subscription.date_subscribed)}
-                      </div>
-                    </div>
-                    <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-4">
-                      <label className="mb-1 block text-xs font-medium text-slate-500">
-                        Cancellation Date
-                      </label>
-                      <div className="text-sm font-medium text-slate-700">
-                        {settings.subscription.date_cancelled
-                          ? formatDate(settings.subscription.date_cancelled)
-                          : 'Not cancelled'}
-                      </div>
-                    </div>
-                  </div>
+        {/* Subscription */}
+        <Section title="Subscription">
+          <Row
+            label="Current Plan"
+            value={
+              <span
+                className={clsx(
+                  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+                  settings.subscription.subscribed
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'bg-zinc-100 text-zinc-600',
                 )}
-              </div>
-            </div>
-          </motion.div>
+              >
+                {settings.subscription.plan || 'Free Plan'}
+              </span>
+            }
+            icon={CreditCardIcon}
+          />
 
-          {/* Danger Zone */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="overflow-hidden rounded-2xl border border-red-200 bg-white shadow-sm"
-          >
-            <div className="border-b border-red-200 bg-red-50/50 px-6 py-4">
-              <div className="flex items-center space-x-3">
-                <TrashIcon className="h-6 w-6 text-red-600" />
-                <h2 className="text-lg font-semibold text-red-900">
-                  Danger Zone
-                </h2>
-              </div>
-            </div>
-            <div className="px-6 py-6">
-              <div className="rounded-lg border border-red-200 bg-red-50/50 p-4">
-                <h3 className="text-sm font-medium text-red-900">
-                  Delete Account
-                </h3>
-                <p className="mt-1 mb-4 text-sm text-red-700">
-                  Permanently delete your account and all associated data. This
-                  action cannot be undone.
-                </p>
-                {!showDeleteConfirm ? (
-                  <button
-                    onClick={() => setShowDeleteConfirm(true)}
-                    className="rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-50"
-                  >
-                    Delete Account
-                  </button>
+          {/* <Row
+            label="Status"
+            value={
+              <div className="flex items-center gap-1.5">
+                {settings.subscription.subscribed ? (
+                  <>
+                    <CheckBadgeIcon className="h-4 w-4 text-green-500" />
+                    <span className="font-medium text-green-700">Active</span>
+                  </>
                 ) : (
-                  <div className="space-y-3">
-                    <p className="text-sm font-medium text-red-900">
-                      Are you absolutely sure? This action cannot be undone.
-                    </p>
-                    <div className="flex space-x-3">
-                      <button
-                        onClick={handleDeleteAccount}
-                        disabled={deleting}
-                        className="inline-flex items-center rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
-                      >
-                        {deleting ? (
-                          <>
-                            <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                            Deleting...
-                          </>
-                        ) : (
-                          'Yes, Delete My Account'
-                        )}
-                      </button>
-                      <button
-                        onClick={() => setShowDeleteConfirm(false)}
-                        disabled={deleting}
-                        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
+                  <span className="text-zinc-500">Inactive</span>
                 )}
               </div>
-            </div>
-          </motion.div>
+            }
+            action={
+              <Button
+                onClick={() => router.push('/pricing')}
+                variant="primary"
+                className="ml-2"
+              >
+                {settings.subscription.subscribed ? 'Manage' : 'Upgrade'}
+              </Button>
+            }
+          /> */}
 
-          {/* Info Notice */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="rounded-lg border border-blue-200 bg-blue-50 p-4"
-          >
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-blue-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-blue-700">
-                  Additional profile customization features (name, bio, avatar,
-                  preferences) will be available in a future update.
-                </p>
-              </div>
+          {settings.subscription.subscribed && (
+            <>
+              <Row
+                label="Subscribed Since"
+                value={formatDate(settings.subscription.date_subscribed)}
+              />
+              {settings.subscription.date_cancelled && (
+                <Row
+                  label="Expires On"
+                  value={formatDate(settings.subscription.date_cancelled)}
+                  className="text-amber-600"
+                />
+              )}
+            </>
+          )}
+        </Section>
+
+        {/* Preferences / Info Placeholder */}
+        <Section title="Preferences">
+          <div className="flex gap-3 p-4">
+            <div className="mt-0.5">
+              <ArrowRightOnRectangleIcon className="h-5 w-5 text-zinc-400" />
             </div>
-          </motion.div>
+            <div>
+              <p className="text-sm font-medium text-zinc-900">
+                More settings coming soon
+              </p>
+              <p className="mt-0.5 text-xs text-zinc-500">
+                Profile customization features will be available in a future
+                update.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        {/* Danger Zone */}
+        <div className="mt-10 px-2">
+          {!showDeleteConfirm ? (
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="mx-auto flex items-center gap-2 text-sm font-medium text-red-600 transition-colors hover:text-red-700"
+            >
+              <TrashIcon className="h-4 w-4" />
+              Delete Account
+            </button>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mx-auto max-w-sm rounded-xl border border-red-100 bg-red-50 p-4 text-center"
+            >
+              <h3 className="mb-1 text-sm font-semibold text-red-900">
+                Delete Account?
+              </h3>
+              <p className="mb-4 text-xs text-red-700">
+                This action is permanent and cannot be undone. All your data
+                will be lost.
+              </p>
+              <div className="flex items-center justify-center gap-3">
+                <Button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  variant="secondary"
+                  className="border border-zinc-200 bg-white hover:bg-zinc-50"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDeleteAccount}
+                  disabled={deleting}
+                  variant="danger"
+                  className="border-transparent bg-red-600 text-white hover:bg-red-700"
+                >
+                  {deleting ? 'Deleting...' : 'Confirm Delete'}
+                </Button>
+              </div>
+            </motion.div>
+          )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </main>
   )
 }
