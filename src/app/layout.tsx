@@ -1,6 +1,7 @@
 import { type Metadata } from 'next'
 
 import '@/styles/tailwind.css'
+import '@xyflow/react/dist/style.css'
 import Script from 'next/script'
 
 import { GoogleAnalytics } from '@next/third-parties/google'

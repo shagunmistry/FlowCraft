@@ -2,12 +2,13 @@
 
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import ReactFlow, {
+import {
+  ReactFlow,
   Controls,
   Background,
   BackgroundVariant,
   ConnectionMode,
-} from 'reactflow'
+} from '@xyflow/react'
 import { ArrowDownIcon, ShareIcon } from 'lucide-react'
 import MermaidViewer from './MermaidChartViewer'
 import { DiagramOrChartType } from '@/lib/utils'
@@ -66,7 +67,7 @@ const FlowDiagram = ({
   onNodesChange,
   onEdgesChange,
   onConnect,
-  onEdgeUpdate,
+  onReconnect,
   defaultEdgeOptions,
   defaultViewport,
   nodeTypes,
@@ -79,7 +80,7 @@ const FlowDiagram = ({
   onNodesChange: (nodes: any[]) => void
   onEdgesChange: (edges: any[]) => void
   onConnect: (params: any) => void
-  onEdgeUpdate: (oldEdge: any, newConnection: any) => void
+  onReconnect: (oldEdge: any, newConnection: any) => void
   defaultEdgeOptions: any
   defaultViewport: any
   nodeTypes: any
@@ -101,7 +102,7 @@ const FlowDiagram = ({
     nodeTypes={nodeTypes}
     onConnect={onConnect}
     onEdgesChange={onEdgesChange}
-    onEdgeUpdate={onEdgeUpdate}
+    onReconnect={onReconnect}
     onNodesChange={onNodesChange}
     snapGrid={[25, 25]}
     snapToGrid={true}
@@ -158,7 +159,7 @@ const VisualizationContainer = ({
   onNodesChange,
   onEdgesChange,
   onConnect,
-  onEdgeUpdate,
+  onReconnect,
   defaultEdgeOptions,
   defaultViewport,
   nodeTypes,
@@ -183,7 +184,7 @@ const VisualizationContainer = ({
   onNodesChange: (nodes: any[]) => void
   onEdgesChange: (edges: any[]) => void
   onConnect: (params: any) => void
-  onEdgeUpdate: (oldEdge: any, newConnection: any) => void
+  onReconnect: (oldEdge: any, newConnection: any) => void
   defaultEdgeOptions: any
   defaultViewport: any
   nodeTypes: any
@@ -218,7 +219,7 @@ const VisualizationContainer = ({
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onEdgeUpdate={onEdgeUpdate}
+          onReconnect={onReconnect}
           defaultEdgeOptions={defaultEdgeOptions}
           defaultViewport={defaultViewport}
           nodeTypes={nodeTypes}

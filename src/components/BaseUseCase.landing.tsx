@@ -2,7 +2,7 @@
 import { StarIcon } from '@heroicons/react/20/solid'
 import Image, { StaticImageData } from 'next/image'
 
-import ReactFlow, { Controls, EdgeTypes, MiniMap } from 'reactflow'
+import { ReactFlow, Controls, type EdgeTypes, MiniMap } from '@xyflow/react'
 import CustomEdge from './ReactFlow/CustomEdge'
 
 const edgeTypes: EdgeTypes = {

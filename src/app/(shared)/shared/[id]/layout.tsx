@@ -4,11 +4,11 @@ import Navbar from '@/components/Navbar'
 
 import Footer from '@/components/Footer'
 import { useState } from 'react'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 
 import { SharedDiagramContext } from '@/lib/Contexts/SharedDiagramContext'
 
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import { DiagramOrChartType } from '@/lib/utils'
 

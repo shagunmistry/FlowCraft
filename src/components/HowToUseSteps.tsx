@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { CheckIcon } from '@heroicons/react/20/solid'
-import ReactFlow, { MiniMap } from 'reactflow'
+import { ReactFlow, MiniMap } from '@xyflow/react'
 
 const steps: {
   id: string

@@ -1,5 +1,5 @@
 import CustomInputBoxNode from '@/components/ReactFlow/CustomInputBoxNode'
-import { EdgeTypes } from 'reactflow'
+import { type EdgeTypes } from '@xyflow/react'
 import SimpleFloatingEdge from '@/components/ReactFlow/SimpleFloatingEdge'
 
 export const defaultEdgeOptions = {

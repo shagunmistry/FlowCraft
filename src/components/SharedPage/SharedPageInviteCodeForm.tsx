@@ -2,12 +2,13 @@
 
 import { useContext, useState } from 'react'
 import { DiagramOrChartType } from '@/lib/utils'
-import ReactFlow, {
+import {
+  ReactFlow,
   Background,
   BackgroundVariant,
   Controls,
   useNodesState,
-} from 'reactflow'
+} from '@xyflow/react'
 import { SharedDiagramContext } from '@/lib/Contexts/SharedDiagramContext'
 import {
   defaultEdgeOptions,

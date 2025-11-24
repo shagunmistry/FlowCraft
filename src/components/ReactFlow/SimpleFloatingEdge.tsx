@@ -5,7 +5,7 @@ import {
   EdgeLabelRenderer,
   useReactFlow,
   getSimpleBezierPath,
-} from 'reactflow'
+} from '@xyflow/react'
 
 import { getEdgeParams } from './Utils'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
@@ -15,10 +15,16 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }: any) {
   const { setEdges } = useReactFlow()
   const { edges, setEdges: setContextEdges } = useContext(DiagramContext)
   const sourceNode = useStore(
-    useCallback((store) => store.nodeInternals.get(source), [source]),
+    useCallback(
+      (store) => store.nodes.find((node) => node.id === source),
+      [source],
+    ),
   )
   const targetNode = useStore(
-    useCallback((store) => store.nodeInternals.get(target), [target]),
+    useCallback(
+      (store) => store.nodes.find((node) => node.id === target),
+      [target],
+    ),
   )
 
   if (!sourceNode || !targetNode) {

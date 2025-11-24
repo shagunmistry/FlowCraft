@@ -3,7 +3,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import Navbar from '@/components/Navbar'
 
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 import Footer from '@/components/Footer'
 
 export default function MainLayout({

@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
-import ReactFlow from 'reactflow'
+import { ReactFlow } from '@xyflow/react'
 
 const benefits = [
   'Competitive salaries',

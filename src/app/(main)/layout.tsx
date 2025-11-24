@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 
 import { Analytics } from '@vercel/analytics/react'
 import { DiagramOrChartType } from '@/lib/utils'

@@ -12,13 +12,12 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
-  updateEdge,
+  type Edge,
+  type Node,
   MarkerType,
-  Edge,
-  Node,
-} from 'reactflow'
+  useReactFlow,
+} from '@xyflow/react'
 import mermaid from 'mermaid'
-import 'reactflow/dist/style.css'
 import Chart from 'chart.js/auto'
 import { toPng } from 'html-to-image'
 import dagre from 'dagre'
@@ -129,8 +128,8 @@ export default function DiagramOrChartView({
   const context = useContext(DiagramContext)
 
   // State
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
   const [toggleReactFlowGrid, setToggleReactFlowGrid] = useState<boolean>(true)
   const [mermaidSVG, setMermaidSVG] = useState<string | null>('')
   const [openShareableLinkModal, setOpenShareableLinkModal] =
@@ -193,10 +192,17 @@ export default function DiagramOrChartView({
     [setEdges],
   )
 
-  const onEdgeUpdate = useCallback(
-    (oldEdge: any, newConnection: any) =>
-      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
-    [],
+  const onReconnect = useCallback(
+    (oldEdge: Edge, newConnection: any) => {
+      setEdges((els) =>
+        els.map((edge) =>
+          edge.id === oldEdge.id
+            ? { ...edge, source: newConnection.source, target: newConnection.target }
+            : edge
+        )
+      )
+    },
+    [setEdges],
   )
 
   // Consolidate Initialization Logic
@@ -486,7 +492,7 @@ export default function DiagramOrChartView({
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               onConnect={onConnect}
-              onEdgeUpdate={onEdgeUpdate}
+              onReconnect={onReconnect}
               defaultEdgeOptions={defaultEdgeOptions}
               defaultViewport={defaultViewport}
               nodeTypes={nodeTypes}

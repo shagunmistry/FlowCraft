@@ -1,5 +1,5 @@
 import { Fragment, memo, useCallback, useContext, useState } from 'react'
-import { Handle, Position, useReactFlow } from 'reactflow'
+import { Handle, Position, useReactFlow } from '@xyflow/react'
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { Cog6ToothIcon, PencilIcon, TrashIcon } from '@heroicons/react/20/solid'

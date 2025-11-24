@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 import { DiagramOrChartType } from '../utils'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 

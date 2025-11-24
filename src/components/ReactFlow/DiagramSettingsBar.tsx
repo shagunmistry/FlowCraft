@@ -8,7 +8,7 @@ import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 
 import { motion } from 'framer-motion'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 import EditNodesDiagramModal from '../EditNodesDiagramModal'
 import EditEdgesOnDiagramModal from './Modals/EditEdgesOnDiagramModal'
 import ReactFlowHelper from './ReactFlowHelper'

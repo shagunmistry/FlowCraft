@@ -1,5 +1,5 @@
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { Edge, Node, Panel, updateEdge } from 'reactflow'
+import { type Edge, type Node, Panel } from '@xyflow/react'
 import EditNodesDiagramModal from '../EditNodesDiagramModal'
 import { useState } from 'react'
 import { track } from '@vercel/analytics'

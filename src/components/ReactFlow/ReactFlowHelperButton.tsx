@@ -1,4 +1,4 @@
-import { Panel } from 'reactflow'
+import { Panel } from '@xyflow/react'
 import { useState } from 'react'
 import { track } from '@vercel/analytics'
 import ReactFlowHelper from './ReactFlowHelper'

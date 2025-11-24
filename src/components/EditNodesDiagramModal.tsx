@@ -1,7 +1,7 @@
 'use client'
 import { Fragment, useContext, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 import { TrashIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 

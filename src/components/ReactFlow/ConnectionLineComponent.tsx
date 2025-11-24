@@ -1,5 +1,5 @@
 import React from 'react'
-import { internalsSymbol, getSimpleBezierPath, useNodes } from 'reactflow'
+import { internalsSymbol, getSimpleBezierPath, useNodes } from '@xyflow/react'
 
 export default ({ fromNode, toX, toY }: any) => {
   const handleBounds = useNodes().flatMap((node: any) => {

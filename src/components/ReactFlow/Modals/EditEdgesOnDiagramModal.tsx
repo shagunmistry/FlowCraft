@@ -2,7 +2,7 @@
 import { Fragment, useContext, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { motion } from 'framer-motion'
 

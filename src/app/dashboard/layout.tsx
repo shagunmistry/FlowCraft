@@ -1,6 +1,6 @@
 'use client'
 
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 
 import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
 import Footer from '@/components/Footer'
@@ -10,7 +10,7 @@ import { WhiteboardContext } from '@/lib/Contexts/WhiteboardContext'
 import { exampleFlowDiagramPrompts } from '@/lib/Examples/ExamplePrompts'
 import { DiagramOrChartType } from '@/lib/utils'
 import { useEffect, useState } from 'react'
-import { Edge, Node } from 'reactflow'
+import { type Edge, type Node } from '@xyflow/react'
 import FeedbackDialog from '@/components/FeedbackDialog'
 
 export default function DashboardLayout({
