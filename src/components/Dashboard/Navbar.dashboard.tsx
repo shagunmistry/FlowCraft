@@ -10,15 +10,15 @@ import { UserIcon, PlusIcon } from '@heroicons/react/20/solid'
 import {
   ChevronDownIcon,
   XMarkIcon,
-  BellIcon,
   SparklesIcon,
+  Bars3Icon,
 } from '@heroicons/react/24/outline'
 import { createClient } from '@/lib/supabase-auth/client'
 
 const ProfileMenu = [
   { title: 'Settings', link: '/dashboard/settings' },
   { title: 'Help Center', link: '/support' },
-  { title: 'Sign Out', link: '/auth/logout' },
+  { title: 'Sign Out', link: '/auth/logout', danger: true },
 ]
 
 export default function DashboardNavbar() {
@@ -32,26 +32,24 @@ export default function DashboardNavbar() {
     const fetchUserData = async () => {
       const supabase = createClient()
       const { data, error } = await supabase.auth.getUser()
-      
+
       if (!error && data.user) {
         const email = data.user.email || ''
         setUserEmail(email)
         setUserName(email.split('@')[0] || 'User')
       }
     }
-    
     fetchUserData()
   }, [])
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY > 10)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     if (profileOpen) {
       const handleClickOutside = (e: MouseEvent) => {
@@ -76,152 +74,112 @@ export default function DashboardNavbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        'fixed left-0 right-0 top-0 z-50 backdrop-blur-xl transition-all duration-300',
+        'fixed left-0 right-0 top-0 z-50 border-b transition-all duration-300',
         scrolled
-          ? 'border-b border-slate-200/50 bg-white/90 shadow-sm'
-          : 'bg-white/60',
+          ? 'border-gray-200/80 bg-white/80 shadow-sm backdrop-blur-xl supports-[backdrop-filter]:bg-white/60'
+          : 'border-transparent bg-white/70 backdrop-blur-lg',
       )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          {/* Logo and Dashboard Link */}
-          <div className="flex items-center space-x-8">
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="group relative"
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Left: Logo & Nav */}
+          <div className="flex items-center gap-x-8">
+            <Link
+              href="/dashboard"
+              className="flex-shrink-0 outline-none"
+              aria-label="Go to Dashboard"
             >
-              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-violet-100 to-red-100 opacity-0 blur transition duration-300 group-hover:opacity-100"></div>
-              <div className="relative">
-                <Link href="/dashboard" className="flex items-center">
-                  <Image
-                    className="h-12 w-auto"
-                    src={FlowCraftLogo}
-                    alt="FlowCraft"
-                    priority
-                  />
-                </Link>
-              </div>
-            </motion.div>
-
-            <div className="hidden md:flex md:space-x-2">
-              <Link
-                href="/dashboard"
-                className="flex items-center rounded-full bg-gradient-to-r from-violet-50 to-red-50 px-5 py-2.5 text-sm font-medium text-slate-700 transition-all duration-300 hover:bg-gradient-to-r hover:from-violet-100 hover:to-red-100 hover:shadow-sm"
+              <motion.div
+                whileHover={{ opacity: 0.8 }}
+                whileTap={{ scale: 0.97 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="mr-2 h-4 w-4 text-violet-600"
-                >
-                  <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
-                  <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
-                </svg>
-                Dashboard
-              </Link>
+                <Image
+                  className="h-10 w-auto"
+                  src={FlowCraftLogo}
+                  alt="FlowCraft Logo"
+                  priority
+                />
+              </motion.div>
+            </Link>
 
-              <Link
-                href="/dashboard/showcase"
-                className="flex items-center rounded-full bg-gradient-to-r from-green-50 to-emerald-50 px-5 py-2.5 text-sm font-medium text-green-700 transition-all duration-300 hover:from-green-100 hover:to-emerald-100 hover:shadow-sm"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  className="mr-2 h-4 w-4 text-green-600"
-                >
-                  <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 14.5V13H8v-2h3V7.5l4.5 4.5L11 16.5z" />
-                </svg>
-                Showcase
-              </Link>
-
-              <Link
-                href="/image-studio"
-                className="flex items-center rounded-full bg-gradient-to-r from-red-50 to-pink-50 px-5 py-2.5 text-sm font-medium text-red-700 transition-all duration-300 hover:from-red-100 hover:to-pink-100 hover:shadow-sm"
-              >
-                <SparklesIcon className="mr-2 h-4 w-4 text-red-600" />
+            <div className="hidden md:flex md:items-center md:gap-x-1">
+              <NavLink href="/dashboard">Dashboard</NavLink>
+              <NavLink href="/dashboard/showcase">Showcase</NavLink>
+              <NavLink href="/image-studio">
+                <SparklesIcon className="mr-1.5 h-4 w-4" />
                 Image Studio
-              </Link>
-
-              <a
-                href="/dashboard/diagrams/new"
-                className="flex items-center rounded-full bg-gradient-to-r from-violet-600 to-red-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/40"
-              >
-                <PlusIcon className="mr-2 h-4 w-4" />
-                New Creation
-              </a>
+              </NavLink>
             </div>
-
           </div>
 
-          {/* Desktop Actions Menu */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            {/* TODO: Notifications */}
-            {/* <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative rounded-full bg-white p-2.5 text-slate-600 shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:text-violet-600 hover:shadow-md"
-            >
-              <BellIcon className="h-5 w-5" />
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-violet-600 text-[10px] font-bold text-white">
-                3
-              </span>
-            </motion.button> */}
+          {/* Right: Actions & Profile */}
+          <div className="flex items-center gap-x-4">
+            {/* CTA Button */}
+            <div className="hidden md:block">
+              <Link
+                href="/dashboard/diagrams/new"
+                className="flex items-center rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-transform hover:scale-105 hover:bg-gray-800 active:scale-95"
+              >
+                <PlusIcon className="mr-1.5 h-4 w-4 text-gray-300" />
+                New Creation
+              </Link>
+            </div>
 
-            {/* Profile Menu */}
-            <motion.div className="profile-menu-container relative">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+            {/* Profile Dropdown */}
+            <div className="profile-menu-container relative hidden md:block">
+              <button
                 onClick={(e) => {
                   e.stopPropagation()
                   setProfileOpen(!profileOpen)
                 }}
-                className="flex items-center rounded-full bg-white p-1.5 pr-3 text-slate-600 shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:text-violet-600 hover:shadow-md"
+                className="flex items-center gap-x-2 rounded-full border border-gray-200 bg-white py-1.5 pl-1.5 pr-3 transition-colors hover:border-gray-300 focus:outline-none"
+                aria-label="Open user menu"
               >
-                <div className="mr-2 h-7 w-7 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-red-600">
-                  <UserIcon className="h-7 w-7 text-white" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100">
+                  <UserIcon className="h-4 w-4 text-gray-500" />
                 </div>
-                <span className="text-sm font-medium">Account</span>
+                <span className="text-sm font-medium text-gray-700">
+                  {userName}
+                </span>
                 <ChevronDownIcon
                   className={cn(
-                    'ml-1 h-4 w-4 transition-transform duration-200',
+                    'h-3 w-3 text-gray-400 transition-transform duration-200',
                     profileOpen ? 'rotate-180' : '',
                   )}
                 />
-              </motion.button>
+              </button>
 
               <AnimatePresence>
                 {profileOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    className="absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white p-1.5 shadow-xl ring-1 ring-black/5"
+                    initial={{ opacity: 0, scale: 0.95, y: 4 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 4 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-xl bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
                   >
-                    <div className="rounded-lg bg-gradient-to-r from-violet-50 to-red-50 p-3">
-                      <div className="text-sm font-medium text-slate-700">
+                    <div className="px-4 py-3">
+                      <p className="truncate text-sm font-medium text-gray-900">
                         {userName}
-                      </div>
-                      <div className="text-xs text-slate-500">
+                      </p>
+                      <p className="truncate text-xs text-gray-500">
                         {userEmail}
-                      </div>
+                      </p>
                     </div>
-
-                    <div className="mt-1.5 space-y-1">
-                      {ProfileMenu.map((item, index) => (
+                    <div className="py-1">
+                      {ProfileMenu.map((item) => (
                         <Link
                           key={item.title}
                           href={item.link}
-                          className={cn(
-                            'block rounded-lg px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700',
-                            index === ProfileMenu.length - 1 &&
-                            'text-red-500 hover:bg-red-50 hover:text-red-600',
-                          )}
                           onClick={closeMenus}
+                          className={cn(
+                            'group flex items-center rounded-lg px-4 py-2 text-sm transition-colors',
+                            item.danger
+                              ? 'text-red-600 hover:bg-red-50'
+                              : 'text-gray-700 hover:bg-gray-50',
+                          )}
                         >
                           {item.title}
                         </Link>
@@ -230,24 +188,24 @@ export default function DashboardNavbar() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setMobileMenuOpen(true)}
-            className="rounded-full p-2.5 text-slate-700 md:hidden"
-          >
-            <div className="space-y-1.5">
-              <motion.span className="block h-0.5 w-6 bg-slate-700" />
-              <motion.span className="block h-0.5 w-6 bg-slate-700" />
             </div>
-          </motion.button>
+
+            {/* Mobile Toggle */}
+            <div className="flex md:hidden">
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                aria-label="Open main menu"
+              >
+                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -256,115 +214,138 @@ export default function DashboardNavbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 md:hidden"
           >
+            {/* Backdrop */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black"
+              className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm"
               onClick={closeMenus}
             />
 
+            {/* Drawer */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25 }}
-              className="fixed inset-y-0 right-0 w-full bg-white px-6 py-6 sm:max-w-sm"
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
             >
               <div className="flex items-center justify-between">
-                <Image
-                  className="h-12 w-auto"
-                  src={FlowCraftLogo}
-                  alt="FlowCraft"
-                />
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
+                <Link href="/dashboard" onClick={closeMenus}>
+                  <Image
+                    className="h-8 w-auto"
+                    src={FlowCraftLogo}
+                    alt="FlowCraft"
+                  />
+                </Link>
+                <button
+                  type="button"
+                  className="-m-2.5 rounded-md p-2.5 text-gray-700"
                   onClick={closeMenus}
-                  className="rounded-full p-2.5"
                 >
-                  <XMarkIcon className="h-6 w-6 text-slate-700" />
-                </motion.button>
+                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
               </div>
 
-              <div className="mt-6 rounded-xl bg-gradient-to-r from-violet-50 to-red-50 p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="h-10 w-10 overflow-hidden rounded-full bg-gradient-to-br from-violet-500 to-red-600">
-                    <UserIcon className="h-10 w-10 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-slate-700">
-                      {userName}
-                    </div>
-                    <div className="text-xs text-slate-500">
-                      {userEmail}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-6 flow-root"
-              >
-                <div className="space-y-1.5">
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700"
-                    onClick={closeMenus}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="mr-3 h-5 w-5 text-violet-600"
-                    >
-                      <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
-                      <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
-                    </svg>
-                    Dashboard
-                  </Link>
-
-                  <Link
-                    href="/image-studio"
-                    className="flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-700"
-                    onClick={closeMenus}
-                  >
-                    <SparklesIcon className="mr-3 h-5 w-5 text-red-600" />
-                    Image Studio
-                  </Link>
-
-                  <Link
-                    href="/create/new"
-                    className="flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-red-600 px-4 py-3 text-base font-medium text-white shadow-sm"
-                    onClick={closeMenus}
-                  >
-                    <PlusIcon className="mr-3 h-5 w-5" />
-                    New Creation
-                  </Link>
-
-                  <div className="my-4 h-px bg-slate-200" />
-
-                  {ProfileMenu.map((item, index) => (
-                    <Link
-                      key={item.title}
-                      href={item.link}
-                      className={cn(
-                        'flex items-center rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700',
-                        index === ProfileMenu.length - 1 &&
-                        'text-red-500 hover:bg-red-50 hover:text-red-600',
-                      )}
+              <div className="mt-6 flow-root">
+                <div className="-my-6 divide-y divide-gray-500/10">
+                  <div className="space-y-2 py-6">
+                    <MobileNavLink href="/dashboard" onClick={closeMenus}>
+                      Dashboard
+                    </MobileNavLink>
+                    <MobileNavLink
+                      href="/dashboard/showcase"
                       onClick={closeMenus}
                     >
-                      {item.title}
+                      Showcase
+                    </MobileNavLink>
+                    <MobileNavLink href="/image-studio" onClick={closeMenus}>
+                      <span className="flex items-center gap-2">
+                        <SparklesIcon className="h-4 w-4" /> Image Studio
+                      </span>
+                    </MobileNavLink>
+                  </div>
+
+                  <div className="space-y-4 py-6">
+                    <div className="flex items-center gap-x-3 px-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                        <UserIcon className="h-5 w-5 text-gray-500" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-gray-900">
+                          {userName}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {userEmail}
+                        </span>
+                      </div>
+                    </div>
+
+                    {ProfileMenu.map((item) => (
+                      <Link
+                        key={item.title}
+                        href={item.link}
+                        onClick={closeMenus}
+                        className={cn(
+                          '-mx-3 block rounded-lg px-3 py-2.5 text-base font-medium leading-7 hover:bg-gray-50',
+                          item.danger ? 'text-red-600' : 'text-gray-900',
+                        )}
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
+
+                    <Link
+                      href="/create/new"
+                      onClick={closeMenus}
+                      className="mt-4 flex w-full items-center justify-center rounded-lg bg-black px-3 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-800"
+                    >
+                      New Creation
                     </Link>
-                  ))}
+                  </div>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </motion.nav>
+  )
+}
+
+// Helper components for cleaner code
+function NavLink({
+  href,
+  children,
+}: {
+  href: string
+  children: React.ReactNode
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
+    >
+      {children}
+    </Link>
+  )
+}
+
+function MobileNavLink({
+  href,
+  onClick,
+  children,
+}: {
+  href: string
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+    >
+      {children}
+    </Link>
   )
 }

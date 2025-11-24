@@ -208,6 +208,8 @@ const VisualizationContainer = ({
       return <Loader />
     }
 
+    console.log('Context...', context);
+
     if (context.type === 'Flow Diagram') {
       return (
         <FlowDiagram
@@ -241,20 +243,20 @@ const VisualizationContainer = ({
       )
     }
 
-    if (checkIfMermaidDiagram(type)) {
-      return (
-        <MermaidViewer
-          title={context.title}
-          mermaidSVG={mermaidSVG}
-          isMermaidError={isMermaidError}
-          isLoading={context.loading}
-          onDownload={downloadMermaidDiagramAsPng}
-          onCopy={copyMermaidDiagramAsPng}
-          onShare={createShareableLink}
-          onEdit={editMermaidDiagramCode}
-        />
-      )
-    }
+    // if (checkIfMermaidDiagram(type)) {
+    //   return (
+    //     <MermaidViewer
+    //       title={context.title}
+    //       mermaidSVG={mermaidSVG}
+    //       isMermaidError={isMermaidError}
+    //       isLoading={context.loading}
+    //       onDownload={downloadMermaidDiagramAsPng}
+    //       onCopy={copyMermaidDiagramAsPng}
+    //       onShare={createShareableLink}
+    //       onEdit={editMermaidDiagramCode}
+    //     />
+    //   )
+    // }
 
     return null
   }

@@ -1,24 +1,28 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
 const Footer = () => {
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
   const [feedbackMessage, setFeedbackMessage] = useState('')
-  const [isHovered, setIsHovered] = useState<string | null>(null)
 
-  // Navigation items from original code
-  const footerNavigation = {
-    main: [
+  // Organized navigation for better column layout
+  const navigation = {
+    product: [
       { name: 'Get Started', href: '/' },
-      { name: 'Blogs', href: '/blogs' },
-      { name: 'Release Notes', href: '/release-notes' },
       { name: 'Pricing', href: '/pricing' },
+      { name: 'Release Notes', href: '/release-notes' },
+    ],
+    resources: [
+      { name: 'Blogs', href: '/blogs' },
+      { name: 'Support', href: '/support' },
       { name: 'Contact Us', href: '/support' },
     ],
     legal: [
-      { name: 'Privacy', href: '/privacy-policy' },
-      { name: 'Terms', href: '/terms' },
+      { name: 'Privacy Policy', href: '/privacy-policy' },
+      { name: 'Terms of Service', href: '/terms' },
     ],
     social: [
       {
@@ -46,184 +50,186 @@ const Footer = () => {
     ],
   }
 
-  // Feedback form handler
   const handleFeedbackSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Simulate sending feedback
     setTimeout(() => {
       setIsFeedbackOpen(false)
       setFeedbackMessage('')
-      alert('Thank you for your feedback!')
     }, 500)
   }
 
-  // Decorative SVG elements for the magical theme
-  const DecorativeElements = () => (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -bottom-6 left-20 h-24 w-24 rounded-full bg-gradient-to-r from-red-400 to-purple-500 opacity-20 blur-xl"></div>
-      <div className="absolute -bottom-10 right-1/4 h-32 w-32 rounded-full bg-gradient-to-r from-red-400 to-purple-600 opacity-20 blur-xl"></div>
-      <div className="absolute right-20 top-10 h-20 w-20 rounded-full bg-gradient-to-r from-purple-300 to-red-400 opacity-20 blur-xl"></div>
-    </div>
-  )
-
   return (
-    <footer className="relative overflow-hidden">
-      {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950 to-purple-950"></div>
+    <footer
+      className="border-t border-gray-100 bg-white"
+      aria-labelledby="footer-heading"
+    >
+      <h2 id="footer-heading" className="sr-only">
+        Footer
+      </h2>
 
-      {/* Decorative elements */}
-      <DecorativeElements />
-
-      {/* Main content */}
-      <div className="relative mx-auto max-w-md px-6 py-16 sm:max-w-3xl lg:max-w-7xl lg:px-8">
-        {/* Logo area */}
-        <div className="mb-12 flex flex-col items-center">
-          <div className="mb-6 flex items-center">
-            {/* FlowCraft logo - Using a placeholder */}
-            <div className="relative h-12 w-48">
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-500 via-purple-500 to-red-500 opacity-70 blur-sm"></div>
-              <div className="relative flex h-full items-center justify-center">
-                <h2 className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text font-serif text-3xl font-bold tracking-wide text-transparent">
-                  FlowCraft
-                </h2>
-              </div>
+      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
+        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          {/* Brand Column */}
+          <div className="space-y-4">
+            <Link href="/" className="block">
+              <span className="sr-only">FlowCraft</span>
+              <span className="text-xl font-bold tracking-tight text-gray-900">
+                FlowCraft
+              </span>
+            </Link>
+            <p className="max-w-xs text-sm leading-6 text-gray-500">
+              Transform your ideas into stunning visual content with the power
+              of AI.
+            </p>
+            <div className="flex space-x-4 pt-2">
+              {navigation.social.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-400 transition-colors hover:text-gray-900"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="sr-only">{item.name}</span>
+                  <item.icon className="h-5 w-5" aria-hidden="true" />
+                </a>
+              ))}
             </div>
           </div>
-          <p className="max-w-md text-center text-sm font-light text-purple-200">
-            Transform your ideas into stunning visual content with the power of
-            AI
-          </p>
-        </div>
 
-        {/* Main navigation links */}
-        <nav className="mb-12 grid grid-cols-1 gap-y-8 text-center sm:grid-cols-3 sm:gap-x-8 md:flex md:justify-center md:space-x-10">
-          {footerNavigation.main.map((item) => (
-            <div
-              key={item.name}
-              className="relative"
-              onMouseEnter={() => setIsHovered(item.name)}
-              onMouseLeave={() => setIsHovered(null)}
-            >
-              <a
-                href={item.href}
-                className="inline-block font-sans text-lg tracking-wide text-white transition duration-300 hover:text-red-200"
-              >
-                {item.name}
-              </a>
-              {/* Animated underline for hover effect */}
-              <div
-                className={`mt-1 h-0.5 origin-left transform bg-gradient-to-r from-red-400 to-red-400 transition-all duration-300 ${isHovered === item.name ? 'scale-x-100' : 'scale-x-0'}`}
-              ></div>
-            </div>
-          ))}
-        </nav>
-
-        {/* Social links with animation */}
-        <div className="mb-12 flex justify-center space-x-8">
-          {footerNavigation.social.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="group relative"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="sr-only">{item.name}</span>
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500 to-red-500 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-30"></div>
-              <div className="relative transform transition-transform duration-300 hover:scale-110">
-                <item.icon className="h-8 w-8 text-white" aria-hidden="true" />
+          {/* Navigation Columns */}
+          <div className="mt-12 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  Product
+                </h3>
+                <ul role="list" className="mt-4 space-y-3">
+                  {navigation.product.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        className="text-sm leading-6 text-gray-500 transition-colors hover:text-gray-900"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </a>
-          ))}
-        </div>
-
-        {/* Feedback button with modal */}
-        <div className="mb-12 flex justify-center">
-          <button
-            onClick={() => setIsFeedbackOpen(true)}
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-3 transition-all duration-300"
-          >
-            <span className="absolute inset-0 bg-gradient-to-r from-red-600 via-purple-600 to-red-600 opacity-70 transition-opacity duration-300 group-hover:opacity-90"></span>
-            <span className="relative text-sm font-medium text-white">
-              Share Feedback
-            </span>
-          </button>
-        </div>
-
-        {/* Feedback modal */}
-        {isFeedbackOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-            <div className="relative w-full max-w-md rounded-xl border border-purple-500/30 bg-gradient-to-b from-red-900 to-purple-900 p-8 shadow-2xl">
-              <button
-                onClick={() => setIsFeedbackOpen(false)}
-                className="absolute right-3 top-3 text-purple-200 hover:text-white"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-
-              <h3 className="mb-6 text-center font-serif text-xl text-white">
-                We'd Love Your Feedback
-              </h3>
-
-              <form onSubmit={handleFeedbackSubmit}>
-                <textarea
-                  value={feedbackMessage}
-                  onChange={(e) => setFeedbackMessage(e.target.value)}
-                  className="mb-4 w-full rounded-lg border border-purple-600/50 bg-purple-900/50 p-4 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  placeholder="Share your thoughts with us..."
-                  rows={4}
-                  required
-                />
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  Resources
+                </h3>
+                <ul role="list" className="mt-4 space-y-3">
+                  {navigation.resources.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        className="text-sm leading-6 text-gray-500 transition-colors hover:text-gray-900"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  Legal
+                </h3>
+                <ul role="list" className="mt-4 space-y-3">
+                  {navigation.legal.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        className="text-sm leading-6 text-gray-500 transition-colors hover:text-gray-900"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  Feedback
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-gray-500">
+                  Help us improve FlowCraft.
+                </p>
                 <button
-                  type="submit"
-                  className="w-full rounded-lg bg-gradient-to-r from-red-500 to-red-500 px-4 py-3 text-white transition-all duration-300 hover:from-red-600 hover:to-red-600"
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className="mt-4 rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
                 >
-                  Submit Feedback
+                  Share Feedback
                 </button>
-              </form>
+              </div>
             </div>
           </div>
-        )}
-
-        {/* Legal links */}
-        <div className="mb-8 flex justify-center space-x-12">
-          {footerNavigation.legal.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-sm text-purple-200 transition-colors duration-300 hover:text-white"
-            >
-              {item.name}
-            </a>
-          ))}
         </div>
 
-        {/* Copyright and additional info */}
-        <div className="text-center">
-          <p className="mb-4 font-serif text-sm text-purple-200">
+        {/* Bottom Bar */}
+        <div className="mt-12 border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between lg:mt-16">
+          <p className="text-xs leading-5 text-gray-400">
             &copy; {new Date().getFullYear()} FlowCraft. All rights reserved.
           </p>
-          <p className="mx-auto max-w-2xl text-xs text-purple-300/70">
-            We improve our products and advertising by using Microsoft Clarity
-            to see how you use our website. By using our site, you agree that we
-            and Microsoft can collect and use this data. Our privacy policy
-            explains how we use your data and cookies.
+          <p className="mt-4 max-w-sm text-xs leading-5 text-gray-400 sm:mt-0 sm:text-right">
+            We improve our products using Microsoft Clarity. By using our site,
+            you agree to our data collection practices.
           </p>
         </div>
       </div>
+
+      {/* Feedback Modal */}
+      {isFeedbackOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-gray-500/30 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsFeedbackOpen(false)}
+          />
+          <div className="relative w-full max-w-md transform rounded-xl bg-white p-6 shadow-2xl ring-1 ring-black/5 transition-all">
+            <div className="mb-5 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-gray-900">
+                Share your feedback
+              </h3>
+              <button
+                onClick={() => setIsFeedbackOpen(false)}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <XMarkIcon className="h-5 w-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleFeedbackSubmit}>
+              <textarea
+                value={feedbackMessage}
+                onChange={(e) => setFeedbackMessage(e.target.value)}
+                className="min-h-[120px] w-full rounded-lg border-gray-200 bg-gray-50 p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:ring-gray-900"
+                placeholder="What's on your mind?"
+                required
+              />
+              <div className="mt-4 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsFeedbackOpen(false)}
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-gray-900 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-800"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </footer>
   )
 }

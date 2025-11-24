@@ -1,386 +1,379 @@
 'use client'
+
 import { useContext, useEffect, useState, useRef } from 'react'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useRouter } from 'next/navigation'
-import PageLoader from '@/components/PageLoader'
 import dynamic from 'next/dynamic'
-import { sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
+import { DiagramOrChartType, sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 import mermaid from 'mermaid'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ArrowLeftIcon,
+  ChevronLeftIcon,
   ShareIcon,
   HeartIcon,
-  EyeIcon,
+  ArrowDownTrayIcon,
+  MagnifyingGlassPlusIcon,
+  MagnifyingGlassMinusIcon,
+  ArrowsPointingOutIcon,
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
-import { DownloadIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react'
 
+// Dynamic imports to save initial bundle size
 const DiagramOrChartView = dynamic(
   () => import('@/components/DiagramOrChartView'),
-  {
-    ssr: false,
-  },
+  { ssr: false },
+)
+
+// A clean, minimal loader component specific to this view
+const CanvasLoader = () => (
+  <div className="flex h-screen w-full flex-col items-center justify-center bg-[#F5F5F7]">
+    <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-black"></div>
+    <p className="mt-4 animate-pulse text-sm font-medium text-gray-500">
+      Loading Canvas...
+    </p>
+  </div>
 )
 
 export default function DiagramPage({ params }: { params: { id: string } }) {
-  const [loading, setLoading] = useState(true)
-  const diagramContext = useContext(DiagramContext)
   const router = useRouter()
+  const diagramContext = useContext(DiagramContext)
+
+  // State
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [zoomLevel, setZoomLevel] = useState(100)
+  const [isLiked, setIsLiked] = useState(false)
+
+  // Data State
   const [imageUrl, setImageUrl] = useState('')
   const [svgCode, setSvgCode] = useState('')
-  const [mermaidCode, setMermaidCode] = useState('')
-  const mermaidContainerRef = useRef<HTMLDivElement>(null)
-  const [mermaidInitialized, setMermaidInitialized] = useState(false)
-  const [zoomLevel, setZoomLevel] = useState(1)
-  const [isLiked, setIsLiked] = useState(false)
-  const [diagramData, setDiagramData] = useState<any>(null)
+  const [mermaidCode, setMermaidCode] = useState<string | null>(null)
+  const [diagramMeta, setDiagramMeta] = useState<{
+    title: string
+    type: string
+  } | null>(null)
 
-  // Initialize Mermaid once
+  // Refs
+  const mermaidContainerRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const mainRef = useRef<HTMLDivElement>(null)
+
+  // 1. Initialize Mermaid
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: true,
-      theme: 'default',
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ffffff',
+        primaryTextColor: '#000000',
+        primaryBorderColor: '#000000',
+        lineColor: '#333333',
+        secondaryColor: '#f4f4f5',
+        tertiaryColor: '#fff',
+      },
       securityLevel: 'loose',
+      fontFamily: 'Inter, system-ui, sans-serif',
     })
-    setMermaidInitialized(true)
   }, [])
 
-  // Render Mermaid diagram when code changes
+  // 2. Fetch Data
   useEffect(() => {
-    if (mermaidInitialized && mermaidCode && mermaidContainerRef.current) {
-      const container = mermaidContainerRef.current
-      container.innerHTML = '' // Clear previous content
-
+    const fetchDiagram = async () => {
+      setLoading(true)
       try {
-        mermaid
-          .render('mermaid-diagram', mermaidCode)
-          .then(({ svg }) => {
-            container.innerHTML = svg
-          })
-          .catch((error) => {
-            console.error('Mermaid rendering error:', error)
-            container.innerHTML = `<div class="text-red-500 p-4 text-center">Error rendering diagram</div>`
-          })
-      } catch (error) {
-        console.error('Mermaid error:', error)
-        container.innerHTML = `<div class="text-red-500 p-4 text-center">Error processing diagram</div>`
-      }
-    }
-  }, [mermaidCode, mermaidInitialized])
+        const response = await fetch('/api/get-diagrams', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: params.id }),
+        })
 
-  const fetchDiagram = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch('/api/get-diagrams', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: params.id }),
-      })
+        const { diagram } = await response.json()
 
-      const { diagram } = await response.json()
+        if (!diagram || diagram.length === 0) {
+          setError(true)
+          return
+        }
 
-      if (!diagram || diagram.length === 0) {
+        const data = diagram[0]
+        setDiagramMeta({ title: data.title, type: data.type })
+
+        // Context updates (optional if you want to keep context in sync)
+        diagramContext.setTitle(data.title)
+        diagramContext.setDiagramId(params.id)
+        diagramContext.setType(data.type)
+
+        // Type handling
+        if (['illustration', 'generated_image'].includes(data.type)) {
+          setImageUrl(data.type === 'illustration' ? data.image_url : data.data)
+        } else if (data.type === 'infographic') {
+          setSvgCode(sanitizeSVG(data.data).svgContent)
+        } else if (data.type.toLowerCase() === 'flow diagram') {
+          const parsedData = JSON.parse(JSON.parse(data.data))
+          const nodes = parsedData.nodes
+          const edges = parsedData.edges
+
+          diagramContext.setEdges(edges)
+          diagramContext.setNodes(nodes)
+        } else {
+          setMermaidCode(sanitizeMermaid(data.data))
+        }
+      } catch (err) {
+        console.error(err)
+        setError(true)
+      } finally {
         setLoading(false)
-        router.push('/dashboard')
-        return
       }
-
-      const diagramInfoFromApi = diagram[0]
-      setDiagramData(diagramInfoFromApi)
-
-      diagramContext.setTitle(diagramInfoFromApi.title)
-      diagramContext.setDescription(diagramInfoFromApi.description)
-      diagramContext.setType(diagramInfoFromApi.type)
-      diagramContext.setDiagramId(params.id)
-
-      if (diagramInfoFromApi.type === 'illustration') {
-        setImageUrl(diagramInfoFromApi.image_url)
-        setSvgCode('')
-        setMermaidCode('')
-      } else if (diagramInfoFromApi.type === 'generated_image') {
-        setImageUrl(diagramInfoFromApi.data)
-        setSvgCode('')
-        setMermaidCode('')
-      } else if (diagramInfoFromApi.type === 'infographic') {
-        const sanitizedSvgCode = sanitizeSVG(diagramInfoFromApi.data)
-        setSvgCode(sanitizedSvgCode.svgContent)
-        setMermaidCode('')
-        setImageUrl('')
-      } else {
-        const sanitizedMermaidCode = sanitizeMermaid(diagramInfoFromApi.data)
-        setMermaidCode(sanitizedMermaidCode)
-        setSvgCode('')
-        setImageUrl('')
-      }
-
-      setLoading(false)
-    } catch (error) {
-      console.error('Error fetching diagram:', error)
-      setLoading(false)
-      router.push('/dashboard')
     }
-  }
-
-  const handleZoomIn = () => {
-    setZoomLevel((prev) => Math.min(prev * 1.2, 3))
-  }
-
-  const handleZoomOut = () => {
-    setZoomLevel((prev) => Math.max(prev / 1.2, 0.5))
-  }
-
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      // You might want to show a toast notification here
-    } catch (err) {
-      console.error('Failed to copy: ', err)
-    }
-  }
-
-  const handleLike = () => {
-    setIsLiked(!isLiked)
-    // Here you would typically make an API call to like/unlike the diagram
-  }
-
-  useEffect(() => {
     fetchDiagram()
   }, [params.id])
 
-  if (loading) {
-    return <PageLoader />
+  // 3. Render Mermaid when code is present
+  useEffect(() => {
+    if (!loading && mermaidCode && mermaidContainerRef.current) {
+      const container = mermaidContainerRef.current
+      container.innerHTML = ''
+      const id = `mermaid-${Date.now()}`
+
+      try {
+        mermaid.render(id, mermaidCode).then(({ svg }) => {
+          container.innerHTML = svg
+        })
+      } catch (e) {
+        console.error('Mermaid render error', e)
+        container.innerHTML = `<div class="p-4 text-sm text-gray-500 bg-gray-50 rounded border">Unable to render diagram syntax.</div>`
+      }
+    }
+  }, [mermaidCode, loading])
+
+  // Actions
+  const handleZoom = (direction: 'in' | 'out') => {
+    setZoomLevel((prev) => {
+      const step = 25
+      const next = direction === 'in' ? prev + step : prev - step
+      return Math.min(Math.max(next, 25), 300) // Clamp between 25% and 300%
+    })
   }
 
-  const DiagramHeader = () => (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="border-b border-slate-200/50 bg-white shadow-sm"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
-        <div className="flex flex-col gap-4 py-4 lg:flex-row lg:items-center lg:justify-between">
-          {/* Left section - Back button and title */}
-          <div className="flex items-center space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => router.push('/dashboard')}
-              className="flex items-center space-x-2 text-slate-600 transition-colors hover:text-violet-600"
-            >
-              <ArrowLeftIcon className="h-5 w-5" />
-              <span className="text-sm font-medium">Back to Dashboard</span>
-            </motion.button>
+  const handleFitToScreen = () => {
+    if (!contentRef.current || !mainRef.current) return
 
-            <div className="hidden h-6 w-px bg-slate-300 sm:block"></div>
+    const container = mainRef.current
+    const content = contentRef.current
 
-            <div className="flex items-center space-x-3">
-              <Image
-                src={FlowCraftLogo}
-                alt="FlowCraft"
-                className="h-8 w-8 rounded-lg"
-              />
-              <div>
-                <h1 className="text-lg font-semibold text-slate-900">
-                  {diagramContext.title || 'Untitled Diagram'}
-                </h1>
-                <p className="text-sm text-slate-500">
-                  {diagramContext.type} • Created with FlowCraft
-                </p>
-              </div>
-            </div>
-          </div>
+    // Get dimensions
+    const containerRect = container.getBoundingClientRect()
+    const contentRect = content.getBoundingClientRect()
 
-          {/* Right section - Actions */}
-          <div className="flex items-center space-x-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleZoomOut}
-              className="rounded-lg border border-slate-200 p-2 transition-colors hover:border-slate-300 hover:bg-slate-50"
-              title="Zoom out"
-            >
-              <ZoomOutIcon className="h-4 w-4 text-slate-600" />
-            </motion.button>
+    // Calculate padding (accounting for the p-20 on the container)
+    const padding = 160 // 80px on each side (20 * 4 = 80px in Tailwind)
 
-            <span className="min-w-[60px] text-center text-sm text-slate-600">
-              {Math.round(zoomLevel * 100)}%
-            </span>
+    // Available space
+    const availableWidth = containerRect.width - padding
+    const availableHeight = containerRect.height - padding
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleZoomIn}
-              className="rounded-lg border border-slate-200 p-2 transition-colors hover:border-slate-300 hover:bg-slate-50"
-              title="Zoom in"
-            >
-              <ZoomInIcon className="h-4 w-4 text-slate-600" />
-            </motion.button>
+    // Calculate scale needed to fit content
+    const scaleX = availableWidth / contentRect.width
+    const scaleY = availableHeight / contentRect.height
 
-            <div className="mx-2 h-6 w-px bg-slate-300"></div>
+    // Use the smaller scale to ensure content fits in both dimensions
+    const optimalScale = Math.min(scaleX, scaleY, 1) // Don't zoom in beyond 100%
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleLike}
-              className="rounded-lg p-2 transition-colors hover:bg-rose-50"
-              title="Like diagram"
-            >
-              {isLiked ? (
-                <HeartSolidIcon className="h-5 w-5 text-rose-500" />
-              ) : (
-                <HeartIcon className="h-5 w-5 text-slate-400 hover:text-rose-500" />
-              )}
-            </motion.button>
+    // Convert to percentage and clamp between 25% and 300%
+    const newZoom = Math.round(Math.min(Math.max(optimalScale * 100, 25), 300))
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleShare}
-              className="rounded-lg p-2 transition-colors hover:bg-blue-50"
-              title="Share diagram"
-            >
-              <ShareIcon className="h-5 w-5 text-slate-400 hover:text-blue-500" />
-            </motion.button>
+    setZoomLevel(newZoom)
+  }
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-200/40"
-              title="Download diagram"
-            >
-              <DownloadIcon className="mr-2 inline h-4 w-4" />
-              Download
-            </motion.button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
+  const handleDownload = async () => {
+    // Basic implementation - expansion depends on requirement (html2canvas or svg export)
+    alert('Download started...')
+  }
 
-  const DiagramContainer = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="relative flex-1 overflow-auto bg-gradient-to-br from-slate-50 to-slate-100"
-    >
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000' fill-opacity='0.1'%3E%3Cpath d='m0 40 0-40 40 0c0 0 0 40 0 40z'/%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href)
+    alert('Link copied to clipboard')
+  }
 
-      {/* Diagram content */}
-      <div className="relative flex min-h-full items-center justify-center p-4 sm:p-8">
-        <div
-          className="w-full max-w-none overflow-auto rounded-2xl border border-slate-200/50 bg-white shadow-xl"
-          style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}
+  // --- Render ---
+
+  if (loading) return <CanvasLoader />
+
+  if (error) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-[#F5F5F7] text-center">
+        <h2 className="text-lg font-semibold text-gray-900">
+          Diagram Not Found
+        </h2>
+        <p className="mt-2 text-sm text-gray-500">
+          The project you are looking for has been moved or deleted.
+        </p>
+        <Link
+          href="/dashboard"
+          className="mt-6 rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
         >
-          {children}
-        </div>
-      </div>
-
-      {/* FlowCraft watermark */}
-      <div className="absolute bottom-4 right-4 flex items-center space-x-2 rounded-full bg-white/80 px-3 py-2 shadow-lg backdrop-blur-sm">
-        <Image
-          src={FlowCraftLogo}
-          alt="FlowCraft"
-          className="h-5 w-5 rounded"
-        />
-        <span className="text-xs font-medium text-slate-600">
-          Powered by FlowCraft
-        </span>
-      </div>
-    </motion.div>
-  )
-
-  if (svgCode) {
-    return (
-      <div className="flex h-screen flex-col">
-        <DiagramHeader />
-        <DiagramContainer>
-          <div
-            dangerouslySetInnerHTML={{ __html: svgCode }}
-            className="w-full p-4 sm:p-8"
-          />
-        </DiagramContainer>
-      </div>
-    )
-  } else if (mermaidCode) {
-    return (
-      <div className="flex h-screen flex-col">
-        <DiagramHeader />
-        <DiagramContainer>
-          <div className="w-full p-4 sm:p-8">
-            <div
-              ref={mermaidContainerRef}
-              className="mermaid w-full"
-            />
-          </div>
-        </DiagramContainer>
-      </div>
-    )
-  } else if (imageUrl) {
-    return (
-      <div className="flex h-screen flex-col">
-        <DiagramHeader />
-        <DiagramContainer>
-          <div className="w-full p-4 sm:p-8">
-            <img
-              src={imageUrl}
-              alt="Diagram"
-              className="w-full h-auto rounded-lg object-contain"
-            />
-          </div>
-        </DiagramContainer>
-      </div>
-    )
-  }
-
-  if (diagramContext.title && diagramContext.type) {
-    return (
-      <div className="flex h-screen flex-col">
-        <DiagramHeader />
-        <DiagramContainer>
-          <div className="w-full p-4 sm:p-8">
-            <DiagramOrChartView type={diagramContext.type} />
-          </div>
-        </DiagramContainer>
+          Go to Dashboard
+        </Link>
       </div>
     )
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-slate-50">
-      <div className="text-center">
-        <Image
-          src={FlowCraftLogo}
-          alt="FlowCraft"
-          className="mx-auto mb-4 h-16 w-16 rounded-xl"
+    <div className="flex h-screen w-full flex-col overflow-hidden bg-[#F5F5F7]">
+      {/* 1. Header (Floating Glass Effect) */}
+      <header className="absolute left-0 right-0 top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200/50 bg-white/60 px-6 backdrop-blur-xl transition-all">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => router.push('/dashboard')}
+            className="group flex items-center justify-center rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-black"
+            aria-label="Back"
+          >
+            <ChevronLeftIcon className="h-5 w-5" />
+          </button>
+
+          <div className="h-6 w-px bg-gray-200"></div>
+
+          <div className="flex flex-col">
+            <h1 className="text-sm font-semibold text-gray-900">
+              {diagramMeta?.title || 'Untitled'}
+            </h1>
+            <span className="text-xs capitalize text-gray-500">
+              {diagramMeta?.type?.replace('_', ' ')}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <ActionButton
+            icon={isLiked ? HeartSolidIcon : HeartIcon}
+            active={isLiked}
+            onClick={() => setIsLiked(!isLiked)}
+            label="Like"
+          />
+          <ActionButton icon={ShareIcon} onClick={handleShare} label="Share" />
+          <ActionButton
+            icon={ArrowDownTrayIcon}
+            onClick={handleDownload}
+            label="Download"
+          />
+
+          <div className="ml-2 border-l border-gray-200 pl-2">
+            <Image
+              src={FlowCraftLogo}
+              alt="Logo"
+              className="h-8 w-8 opacity-80"
+            />
+          </div>
+        </div>
+      </header>
+
+      {/* 2. Main Canvas */}
+      <main ref={mainRef} className="relative flex-1 overflow-auto">
+        {/* Dot Grid Pattern */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 opacity-[0.4]"
+          style={{
+            backgroundImage: 'radial-gradient(#cfcfcf 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
         />
-        <h2 className="mb-2 text-xl font-semibold text-slate-700">
-          Diagram not found
-        </h2>
-        <p className="mb-4 text-slate-500">
-          The diagram you're looking for doesn't exist.
-        </p>
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center rounded-lg bg-gradient-to-r from-violet-600 to-red-600 px-4 py-2 text-white transition-all hover:shadow-lg"
+
+        <motion.div
+          ref={contentRef}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} // Apple-style spring
+          style={{
+            transform: `scale(${zoomLevel / 100})`,
+            transformOrigin: 'center center',
+          }}
+          className="relative overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-transform duration-200 ease-out"
         >
-          <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          Back to Dashboard
-        </Link>
+          {/* Content Renderer */}
+          <div className="min-h-[400px] min-w-[400px] p-8 md:p-12">
+            {svgCode && (
+              <div
+                dangerouslySetInnerHTML={{ __html: svgCode }}
+                className="svg-container h-full w-full"
+              />
+            )}
+
+            {mermaidCode ? (
+              <div
+                ref={mermaidContainerRef}
+                className="mermaid flex w-full justify-center"
+              />
+            ) : null}
+
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Diagram"
+                className="max-h-[80vh] w-auto rounded object-contain"
+              />
+            )}
+
+            {!svgCode && !mermaidCode && !imageUrl && diagramMeta?.type && (
+              <DiagramOrChartView
+                type={diagramMeta.type as DiagramOrChartType}
+              />
+            )}
+          </div>
+        </motion.div>
+      </main>
+
+      {/* 3. Floating Toolbar (Bottom Center) */}
+      <div className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1 rounded-full border border-gray-200 bg-white/90 p-1.5 shadow-xl shadow-gray-200/50 backdrop-blur-md">
+        <ToolButton
+          onClick={() => handleZoom('out')}
+          icon={MagnifyingGlassMinusIcon}
+          label="Zoom Out"
+        />
+        <span className="w-16 select-none text-center font-mono text-xs font-medium text-gray-600">
+          {zoomLevel}%
+        </span>
+        <ToolButton
+          onClick={() => handleZoom('in')}
+          icon={MagnifyingGlassPlusIcon}
+          label="Zoom In"
+        />
+        <div className="mx-1 h-4 w-px bg-gray-200"></div>
+        <ToolButton
+          onClick={handleFitToScreen}
+          icon={ArrowsPointingOutIcon}
+          label="Fit to Screen"
+        />
       </div>
     </div>
   )
 }
+
+// --- Subcomponents for Consistency ---
+
+const ActionButton = ({ icon: Icon, onClick, active, label }: any) => (
+  <button
+    onClick={onClick}
+    className={`rounded-full p-2 transition-all duration-200 ${
+      active
+        ? 'bg-red-50 text-red-500'
+        : 'text-gray-500 hover:bg-gray-100 hover:text-black'
+    }`}
+    title={label}
+    aria-label={label}
+  >
+    <Icon className="h-5 w-5" />
+  </button>
+)
+
+const ToolButton = ({ icon: Icon, onClick, label }: any) => (
+  <button
+    onClick={onClick}
+    className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-black hover:text-white active:scale-95"
+    title={label}
+    aria-label={label}
+  >
+    <Icon className="h-4 w-4" />
+  </button>
+)
