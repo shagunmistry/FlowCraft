@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase-auth/server'
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
   try {
     const supabaseClient = createClient()

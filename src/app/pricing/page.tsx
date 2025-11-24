@@ -4,8 +4,9 @@ import FAQs from '@/components/FAQ'
 import Navbar from '@/components/Navbar'
 import PricingTemplate from '@/components/Pricing/Pricing'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function Pricing() {
+function PricingContent() {
   const searchParams = useSearchParams()
   const sourcePage = searchParams.get('sourcePage') as
     | 'landing'
@@ -13,12 +14,20 @@ export default function Pricing() {
     | 'mermaid'
     | 'chart'
   return (
+    <PricingTemplate
+      sourcePage={sourcePage || 'landing'}
+      shouldGoToCheckout={sourcePage !== 'landing'}
+    />
+  )
+}
+
+export default function Pricing() {
+  return (
     <>
       <Navbar />
-      <PricingTemplate
-        sourcePage={sourcePage || 'landing'}
-        shouldGoToCheckout={sourcePage !== 'landing'}
-      />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+        <PricingContent />
+      </Suspense>
       <FAQs />
     </>
   )

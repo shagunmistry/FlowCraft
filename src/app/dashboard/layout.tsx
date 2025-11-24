@@ -2,7 +2,7 @@
 
 import 'reactflow/dist/style.css'
 
-import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard'
+import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
@@ -103,7 +103,7 @@ export default function DashboardLayout({
           }}
         >
           <main>
-            <DashboardNavbar />
+            <Navbar />
             <div className="relative">{children}</div>
             <Footer />
           </main>

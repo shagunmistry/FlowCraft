@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
-import DashboardNavbar from '../Dashboard/Navbar.dashboard'
 import Navbar from '../Navbar'
 
 // Minimalist Icons (Stroke based, no fill)
@@ -88,7 +87,7 @@ export default function MainLanding() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 selection:bg-gray-100">
-      {authenticated ? <DashboardNavbar /> : <Navbar />}
+      <Navbar />
 
       <main className="flex w-full flex-col items-center">
         {/* --- HERO SECTION --- */}
@@ -112,31 +111,9 @@ export default function MainLanding() {
               variants={itemVariants}
               className="mt-8 max-w-2xl text-xl leading-relaxed text-gray-500"
             >
-              Create professional diagrams, illustrations, and
-              infographics instantly. No design skills required.
+              Create professional diagrams, illustrations, and infographics
+              instantly. No design skills required.
             </motion.p>
-
-            {/* Input Simulation */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-10 w-full max-w-lg"
-            >
-              <div className="group relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                  <MagicIcon className="h-5 w-5 text-gray-400" />
-                </div>
-                <div className="block w-full rounded-full border border-gray-200 bg-gray-50 py-4 pl-12 pr-4 text-gray-900 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 sm:text-sm">
-                  <span className="select-none italic text-gray-500">
-                    "{placeholders[placeholderIndex]}"
-                  </span>
-                </div>
-                <div className="absolute inset-y-1 right-1">
-                  <button className="flex h-full items-center justify-center rounded-full bg-gray-900 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800">
-                    Generate
-                  </button>
-                </div>
-              </div>
-            </motion.div>
 
             {/* CTA Buttons */}
             <motion.div
@@ -242,7 +219,7 @@ export default function MainLanding() {
 
                 <Link
                   href={authenticated ? '/create' : '/login'}
-                  className="mt-8 flex translate-y-2 transform items-center rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="mt-8 flex translate-y-2 transform items-center rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white opacity-0 transition-all duration-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 group-hover:translate-y-0 group-hover:opacity-100"
                 >
                   Create <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

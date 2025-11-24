@@ -11,9 +11,6 @@ const withMDX = createMDX({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   // transpilePackages: ['mermaid', 'cytoscape'],
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   // Environment variables

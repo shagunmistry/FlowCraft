@@ -1,35 +1,30 @@
 import { ApifyData, generateEmbeddings } from '@/lib/openai'
 import { DOCUMENTS_FOR_CHARTJS_TABLE, getChartJsJSONFile } from '@/lib/supabase'
+import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {
   const docs = await getChartJsJSONFile()
 
   if (!docs) {
-    return {
-      status: 500,
-      body: JSON.stringify({
-        error: 'Could not fetch JSON file data',
-      }),
-    }
+    return NextResponse.json(
+      { error: 'Could not fetch JSON file data' },
+      { status: 500 }
+    )
   }
 
   try {
     await generateEmbeddings(docs as ApifyData[], DOCUMENTS_FOR_CHARTJS_TABLE)
 
-    return {
-      status: 200,
-      body: JSON.stringify({
-        message: 'Embeddings generated',
-      }),
-    }
+    return NextResponse.json(
+      { message: 'Embeddings generated' },
+      { status: 200 }
+    )
   } catch (e) {
     console.log('Error generating embeddings: ', e)
 
-    return {
-      status: 500,
-      body: JSON.stringify({
-        error: 'Could not generate embeddings',
-      }),
-    }
+    return NextResponse.json(
+      { error: 'Could not generate embeddings' },
+      { status: 500 }
+    )
   }
 }
