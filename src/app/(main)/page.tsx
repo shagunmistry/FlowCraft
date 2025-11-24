@@ -1,6 +1,7 @@
 import MainLanding from '@/components/Landing/Main.landing'
 import { Metadata } from 'next'
 import MaintenancePage from '@/components/MaintenancePage'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'FlowCraft',
@@ -9,8 +10,12 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-
-  return <MainLanding />
+  return (
+    <>
+      <MainLanding />
+      <Footer />
+    </>
+  )
   return (
     <>
       <MaintenancePage />

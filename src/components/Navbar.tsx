@@ -17,6 +17,7 @@ import {
 import { createClient } from '@/lib/supabase-auth/client'
 
 const mainNavigation = [
+  { name: 'Features', href: '/features' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Image Studio', href: '/image-studio' },
   { name: 'Pricing', href: '/pricing' },
@@ -24,11 +25,11 @@ const mainNavigation = [
 ]
 
 const useCasesNavigation = [
-  { name: 'For Executives', href: '/demos/executives' },
-  { name: 'For Designers', href: '/demos/designers' },
+  // { name: 'For Executives', href: '/demos/executives' },
+  // { name: 'For Designers', href: '/demos/designers' },
   { name: 'For Healthcare', href: '/demos/healthcare' },
   { name: 'For Engineers', href: '/demos/engineers' },
-  { name: 'For Educators', href: '/demos/educators' },
+  // { name: 'For Educators', href: '/demos/educators' },
 ]
 
 const authenticatedNavigation = [

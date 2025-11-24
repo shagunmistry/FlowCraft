@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         'Content-Type': 'application/json',
         'User-Id': userId || ''
       },
-      // next: { revalidate: 60 }, // Optional: Cache for 60 seconds
+      cache: 'no-store',
     });
 
     if (!response.ok) {

@@ -1,16 +1,20 @@
 import { createClient } from '@/lib/supabase-auth/server'
 import { NextRequest } from 'next/server'
+import { authenticateRequest } from '@/lib/api-key-auth'
 
 /**
  * This function is the route to get all diagrams for a user
+ * Supports both session and API key authentication
  * @returns {Response}
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   const supabase = createClient()
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    return new Response(JSON.stringify({ error: 'Not authenticated' }), {
+  // Authenticate using either API key or session
+  const authResult = await authenticateRequest(request)
+
+  if (!authResult.authenticated || !authResult.userId) {
+    return new Response(JSON.stringify({ error: authResult.error || 'Not authenticated' }), {
       status: 401,
       headers: {
         'Content-Type': 'application/json',
@@ -21,7 +25,7 @@ export async function GET() {
   const { data: diagramsData, error: diagramsError } = await supabase
     .from('diagrams')
     .select('*')
-    .eq('user_id', data.user.id)
+    .eq('user_id', authResult.userId)
 
   if (diagramsError) {
     return new Response(JSON.stringify({ error: diagramsError.message }), {
@@ -42,16 +46,19 @@ export async function GET() {
 
 /**
  * This function is the route to get a diagram by id
- * @param req 
- * @returns 
+ * Supports both session and API key authentication
+ * @param req
+ * @returns
  */
 export async function POST(req: NextRequest) {
   const { id } = await req.json()
   const supabase = createClient()
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    return new Response(JSON.stringify({ error: 'Not authenticated' }), {
+  // Authenticate using either API key or session
+  const authResult = await authenticateRequest(req)
+
+  if (!authResult.authenticated || !authResult.userId) {
+    return new Response(JSON.stringify({ error: authResult.error || 'Not authenticated' }), {
       status: 401,
       headers: {
         'Content-Type': 'application/json',

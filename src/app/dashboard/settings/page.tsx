@@ -15,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 import clsx from 'clsx'
+import ApiKeyManager from '@/components/ApiKeys/ApiKeyManager'
 
 // --- Types ---
 interface UserSettings {
@@ -134,6 +135,10 @@ export default function SettingsPage() {
         throw new Error(data.error || 'Failed to fetch settings')
       setSettings(data.settings)
     } catch (error: any) {
+      if (error && error.toString().includes('Unauthorized')) {
+        router.push('/login')
+        return
+      }
       toast.error(error.message || 'Failed to load settings')
     } finally {
       setLoading(false)
@@ -314,6 +319,13 @@ export default function SettingsPage() {
               )}
             </>
           )}
+        </Section>
+
+        {/* API Keys Section */}
+        <Section title="Developer">
+          <div className="p-4">
+            <ApiKeyManager />
+          </div>
         </Section>
 
         {/* Preferences / Info Placeholder */}

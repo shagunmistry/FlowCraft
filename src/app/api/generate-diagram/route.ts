@@ -14,25 +14,25 @@ import { DiagramOrChartType } from '@/lib/utils'
 import { createClient } from '@/lib/supabase-auth/server'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
 import { getDiagramPrompt } from '@/lib/Examples/GetDiagramPrompt'
+import { authenticateRequest } from '@/lib/api-key-auth'
+import { NextRequest } from 'next/server'
 
 import { OPEN_AI_MODEL } from '@/lib/utils'
 
 export const maxDuration = 200
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const supabaseClient = createClient()
-  const { data: userData, error: userDataError } =
-    await supabaseClient.auth.getUser()
 
-  if (userDataError) {
-    console.error(
-      'Error getting user data while generating diagram:',
-      userDataError,
-    )
+  // Authenticate using either API key or session
+  const authResult = await authenticateRequest(req)
+
+  if (!authResult.authenticated || !authResult.userId) {
+    console.error('Authentication failed:', authResult.error)
 
     return new Response(
       JSON.stringify({
-        error: 'Error getting user data while generating diagram',
+        error: authResult.error || 'Not authenticated',
       }),
       {
         headers: {
@@ -43,18 +43,31 @@ export async function POST(req: Request) {
     )
   }
 
+  const userId = authResult.userId
+
   // Check if the user exists in the users table, if not, insert them
   const { data: userDataFromDB } = await supabaseClient
     .from('users')
     .select('*')
-    .eq('user_id', userData.user?.id)
+    .eq('user_id', userId)
 
   if (userDataFromDB?.length === 0 || !userDataFromDB) {
+    // Get user email from auth.users if not using API key
+    let userEmail = null
+    if (!authResult.isApiKey) {
+      const { data: authUserData } = await supabaseClient.auth.getUser()
+      userEmail = authUserData?.user?.email || null
+    } else {
+      // For API key auth, fetch email from auth.users table
+      const { data: authData } = await supabaseClient.auth.admin.getUserById(userId)
+      userEmail = authData?.user?.email || null
+    }
+
     const { data: insertUserData, error: insertUserError } =
       await supabaseClient.from('users').insert([
         {
-          id: userData.user?.id,
-          email: userData.user?.email,
+          id: userId,
+          email: userEmail,
           created_at: new Date().toISOString(),
         },
       ])
@@ -77,7 +90,7 @@ export async function POST(req: Request) {
       await supabaseClient
         .from('diagrams')
         .select()
-        .eq('user_id', userData.user?.id)
+        .eq('user_id', userId)
 
     if (userDiagramsError) {
       console.error(
@@ -203,7 +216,7 @@ export async function POST(req: Request) {
               type,
               data: JSON.stringify(result),
               created_at: new Date().toISOString(),
-              user_id: userData.user?.id,
+              user_id: userId,
               private: true,
             },
           ])
@@ -253,7 +266,7 @@ export async function POST(req: Request) {
             type,
             data: JSON.stringify(response),
             created_at: new Date().toISOString(),
-            user_id: userData.user?.id,
+            user_id: userId,
           },
         ])
         .select('id')
@@ -332,7 +345,7 @@ export async function POST(req: Request) {
           type,
           data: mermaid_code,
           created_at: new Date().toISOString(),
-          user_id: userData.user?.id,
+          user_id: userId,
         },
       ])
       .select('id')
@@ -372,7 +385,7 @@ export async function POST(req: Request) {
       type,
       data: `Failed to generate diagram`,
       created_at: new Date().toISOString(),
-      user_id: userData.user?.id,
+      user_id: userId,
     },
   ])
   return new Response(

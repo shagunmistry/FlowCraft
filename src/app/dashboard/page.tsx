@@ -24,7 +24,11 @@ export const metadata: Metadata = {
 
 // --- Data Fetching Logic (Unchanged) ---
 async function getDiagrams() {
-  const data = await _getDiagrams()
+  // Create a mock NextRequest for server-side call
+  const mockRequest = new Request('http://localhost:3000/api/get-diagrams', {
+    method: 'GET',
+  })
+  const data = await _getDiagrams(mockRequest as any)
   if (data.status === 200) {
     const result = await data.json()
     return { diagrams: result.diagrams }
