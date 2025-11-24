@@ -15,7 +15,10 @@ export async function POST(req: Request) {
 
   if (error || !diagramData) {
     console.error('Error getting user', error)
-    return { status: 401, body: { error: 'Unauthorized' } }
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized' }),
+      { status: 401 }
+    )
   }
 
   const inviteCode = generateInviteCode(7)

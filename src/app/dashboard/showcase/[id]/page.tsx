@@ -333,7 +333,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative flex-1 overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100"
+        className="relative flex-1 overflow-scroll bg-gradient-to-br from-slate-50 to-slate-100"
       >
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -348,7 +348,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
         {/* Diagram content */}
         <div className="relative flex h-full items-center justify-center p-8">
           <div
-            className="max-h-full max-w-full overflow-hidden rounded-2xl border border-slate-200/50 bg-white shadow-xl"
+            className="max-h-full max-w-full overflow-scroll rounded-2xl border border-slate-200/50 bg-white shadow-xl"
             style={{ transform: `scale(${zoomLevel})` }}
           >
             <DiagramRenderer 

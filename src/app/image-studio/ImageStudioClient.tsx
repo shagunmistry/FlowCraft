@@ -16,7 +16,7 @@ import {
 import { WandIcon, Download } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { User } from '@supabase/supabase-js';
-import DashboardNavbar from '@/components/Dashboard/Navbar.dashboard';
+import Navbar from '@/components/Navbar';
 
 type ImageMode = 'generate' | 'edit';
 
@@ -124,7 +124,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-red-50">
       {/* Navigation */}
-      <DashboardNavbar />
+      <Navbar />
       
       {/* Page Header */}
       <div className="pt-20 pb-8">

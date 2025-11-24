@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
-import DashboardNavbar from '../Dashboard/Navbar.dashboard'
 import Navbar from '../Navbar'
 
 // Minimalist Icons (Stroke based, no fill)
@@ -88,7 +87,7 @@ export default function MainLanding() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 selection:bg-gray-100">
-      {authenticated ? <DashboardNavbar /> : <Navbar />}
+      <Navbar />
 
       <main className="flex w-full flex-col items-center">
         {/* --- HERO SECTION --- */}
