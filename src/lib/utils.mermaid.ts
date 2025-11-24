@@ -16,6 +16,7 @@ export const MermaidDiagramTypes = [
   'Timeline',
   'Zenuml',
   'Sankey',
+  'Treemap',
 ]
 
 export type MermaidDiagramType =
@@ -34,6 +35,7 @@ export type MermaidDiagramType =
   | 'Timeline'
   | 'Zenuml'
   | 'Sankey'
+  | 'Treemap'
 
 export enum MermaidDiagramEnums {
   FlowChart = 'Flowchart',
@@ -51,6 +53,7 @@ export enum MermaidDiagramEnums {
   Timeline = 'timeline',
   Zenuml = 'zenuml',
   Sankey = 'sankey',
+  Treemap = 'treemap',
 }
 
 export const getMermaidDiagramTitle = (type: TempMermaidDiagramType) => {
@@ -85,6 +88,8 @@ export const getMermaidDiagramTitle = (type: TempMermaidDiagramType) => {
       return 'ZenUML'
     case 'sankey':
       return 'Sankey Diagram'
+    case 'treemap':
+      return 'Treemap'
     default:
       return 'Diagram'
   }

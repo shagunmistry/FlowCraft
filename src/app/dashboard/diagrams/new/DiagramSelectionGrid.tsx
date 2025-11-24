@@ -21,6 +21,7 @@ import {
   Home,
   Compass,
   TimerIcon,
+  TreeDeciduous,
 } from 'lucide-react'
 import { MicrophoneIcon } from '@heroicons/react/20/solid'
 import { OptionType } from '@/lib/utils'
@@ -153,6 +154,13 @@ const DiagramSelectionGrid = ({
         type: 'Radar',
         icon: <Compass className="h-12 w-12 text-teal-500" strokeWidth={1.5} />,
         description: 'Compare multiple variables across axes',
+      },
+      {
+        type: 'Treemap',
+        icon: (
+          <TreeDeciduous className="h-12 w-12 text-green-600" strokeWidth={1.5} />
+        ),
+        description: 'Visualize hierarchical data with nested rectangles',
       },
     ],
     SOFTWARE: [

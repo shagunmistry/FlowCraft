@@ -202,6 +202,7 @@ export type OptionType =
   | 'Kanban'
   | 'Architecture'
   | 'Radar'
+  | 'Treemap'
   | null
 
 export function sanitizeSVG(svgString: string): {

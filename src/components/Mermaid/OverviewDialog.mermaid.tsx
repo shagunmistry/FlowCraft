@@ -23,6 +23,7 @@ export type TempMermaidDiagramType =
   | 'timeline'
   | 'zenuml'
   | 'sankey'
+  | 'treemap'
 
 const getDescription = (type: TempMermaidDiagramType) => {
   switch (type) {
@@ -56,6 +57,8 @@ const getDescription = (type: TempMermaidDiagramType) => {
       return 'Model data flows and transformations with a focus on data quality (Beta).'
     case 'sankey':
       return 'Visualize complex relationships between flows or stocks, often used to represent material or energy flows (Beta).'
+    case 'treemap':
+      return 'Display hierarchical data using nested rectangles, where each rectangle size represents its value.'
     default:
       return 'Description not available.'
   }
