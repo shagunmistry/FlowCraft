@@ -65,10 +65,8 @@ export default function AuthenticationForm({
 
     const res = (await login(formData)) as any
 
-    if (res === undefined) {
-      window.location.href = '/dashboard'
-    }
-
+    // If redirect() was called in the server action, res will be undefined
+    // and Next.js will handle the navigation automatically
     if (res && res.error) {
       setErrorMessage('Username or password is incorrect.')
       setShowError(true)
