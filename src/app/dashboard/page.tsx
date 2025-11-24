@@ -261,7 +261,11 @@ export default async function Dashboard() {
   stats[3].value = user.subscribed
     ? 999
     : (user.free_limit || 5) - (user.diagrams_created || 0)
-  if (user.subscribed) stats[3].name = 'Pro Access'
+  if (user.subscribed) {
+    stats[3].name = 'Pro Access'
+  } else {
+    stats[3].name = 'Left This Month'
+  }
 
   return (
     <main className="min-h-screen bg-gray-50/50 pb-20 pt-24">

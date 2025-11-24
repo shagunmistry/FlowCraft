@@ -7,37 +7,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import SimpleNotification from '../SimpleNotification'
 import { loadStripe } from '@stripe/stripe-js'
-import { motion, AnimatePresence } from 'framer-motion'
-import Card from '@/components/ui/Card'
+import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 
 type PricingPageSource = 'landing' | 'dashboard' | 'mermaid' | 'chart'
-
-const includedFeatures = [
-  '20 Diagrams per month',
-  'Access to Complex Diagram generation',
-  'Export and Share',
-  'Priority Customer support',
-]
-
-// Decorative element component
-const DecorativeElement = ({ className }: { className?: string }) => (
-  <motion.div
-    className={cn(
-      'absolute rounded-full bg-gradient-to-r from-red-300 to-red-300 opacity-70 blur-xl',
-      className,
-    )}
-    animate={{
-      scale: [1, 1.05, 1],
-      opacity: [0.5, 0.7, 0.5],
-    }}
-    transition={{
-      duration: 8,
-      repeat: Infinity,
-      repeatType: 'reverse',
-    }}
-  />
-)
 
 const PricingHeaderMessage = (sourcePage: PricingPageSource) => {
   switch (sourcePage) {
@@ -84,7 +57,7 @@ export default function PricingTemplate({
   }
 
   const handleGoingToCheckout = async (
-    id: 'tier-pro' | 'tier-hobby',
+    id: 'tier-pro' | 'tier-hobby' | 'tier-teams',
     isYearly: boolean,
   ) => {
     console.log('Going to checkout', id)
@@ -171,183 +144,183 @@ export default function PricingTemplate({
   }
 
   return (
-    <div className="relative isolate overflow-hidden bg-gradient-to-br from-red-50 via-purple-50 to-red-50 px-6 py-24 sm:py-16 lg:px-8">
-      {/* Decorative elements */}
-      <DecorativeElement className="-right-20 -top-20 h-64 w-64" />
-      <DecorativeElement className="-left-32 bottom-40 h-80 w-80" />
-      <DecorativeElement className="-bottom-20 right-1/4 h-72 w-72" />
-
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 mx-auto max-w-2xl text-center lg:max-w-4xl"
-      >
-        {sourcePage === 'landing' ? (
-          <>
-            <p className="mt-2 bg-gradient-to-r from-red-600 via-purple-600 to-red-600 bg-clip-text font-serif text-5xl font-bold tracking-tight text-transparent sm:text-6xl">
-              Simple, transparent pricing.
-            </p>
-          </>
-        ) : (
-          <>
-            <h2 className="bg-gradient-to-r from-red-600 via-purple-600 to-red-600 bg-clip-text font-serif text-3xl font-bold text-transparent">
-              {PricingHeaderMessage(sourcePage)}
-            </h2>
-          </>
-        )}
-      </motion.div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="relative z-10 mx-auto mt-4 max-w-2xl text-center text-lg leading-8 text-purple-700"
-      >
-        We offer monthly and yearly affordable plans to fit your creative needs.
-      </motion.p>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.3 }}
-        className="relative z-10 mt-8 flex justify-center"
-      >
-        <SwitchButton
-          enabled={yearly}
-          setEnabled={setYearly}
-          message="Yearly saves you 20%! 🎉"
-        />
-      </motion.div>
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 mx-auto mt-16 max-w-3xl sm:mt-20 lg:mx-0 lg:flex lg:max-w-none"
-      >
-        <Card className="overflow-hidden rounded-3xl border-0 shadow-xl ring-1 ring-purple-200">
-          <div className="flex flex-col lg:flex-row">
-            <motion.div
-              variants={itemVariants}
-              className="p-8 sm:p-10 lg:flex-auto"
-            >
-              <h3 className="font-serif text-3xl font-bold tracking-tight text-gray-900">
-                Hobby Membership
-              </h3>
-              <p className="mt-6 text-base leading-7 text-gray-700">
-                Perfect for individual users and small teams who create diagrams
-                for work, school, or personal projects.
+    <div className="min-h-screen bg-gray-50/50 px-6 py-24 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          {sourcePage === 'landing' ? (
+            <>
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                Simple, transparent pricing
+              </h1>
+              <p className="mt-4 text-lg text-gray-600">
+                Choose the plan that fits your needs. All plans include core features.
               </p>
-              <div className="mt-10 flex items-center gap-x-4">
-                <h4 className="flex-none text-sm font-semibold leading-6 text-red-600">
-                  What's included
-                </h4>
-                <div className="h-px flex-auto bg-purple-100" />
-              </div>
-              <ul
-                role="list"
-                className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-700 sm:grid-cols-2 sm:gap-6"
-              >
-                {includedFeatures.map((feature) => (
-                  <motion.li
-                    key={feature}
-                    className="flex items-center gap-x-3"
-                    variants={itemVariants}
-                    whileHover={{
-                      x: 5,
-                      transition: { type: 'spring', stiffness: 300 },
-                    }}
-                  >
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-purple-500">
+            </>
+          ) : (
+            <>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+                {PricingHeaderMessage(sourcePage)}
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                Select a plan to continue using FlowCraft
+              </p>
+            </>
+          )}
+        </motion.div>
+
+        {/* Billing Toggle */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="mt-8 flex justify-center"
+        >
+          <div className="rounded-full bg-white p-1 shadow-sm ring-1 ring-gray-200">
+            <SwitchButton
+              enabled={yearly}
+              setEnabled={setYearly}
+              message="Save 17% with annual billing"
+            />
+          </div>
+        </motion.div>
+
+        {/* Pricing Tiers Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-6 sm:mt-16 lg:grid-cols-3"
+        >
+          {tiers.map((tier) => (
+            <motion.div
+              key={tier.id}
+              variants={itemVariants}
+              whileHover={{ y: -4 }}
+              className={cn(
+                'relative flex flex-col rounded-2xl bg-white p-8 shadow-sm transition-all duration-300',
+                tier.featured
+                  ? 'border-2 border-gray-900 ring-1 ring-gray-900/5 hover:shadow-lg'
+                  : 'border border-gray-200 hover:border-gray-300 hover:shadow-md',
+              )}
+            >
+              {tier.featured && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center rounded-full bg-gray-900 px-3 py-1 text-xs font-medium text-white">
+                    Most Popular
+                  </span>
+                </div>
+              )}
+
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold tracking-tight text-gray-900">
+                  {tier.name}
+                </h3>
+                <p className="mt-2 text-sm text-gray-500">{tier.description}</p>
+
+                <div className="mt-6 flex items-baseline gap-x-1">
+                  <span className="text-4xl font-bold tracking-tight text-gray-900">
+                    {yearly ? tier.price.annually : tier.price.monthly}
+                  </span>
+                  <span className="text-sm font-medium text-gray-500">
+                    {yearly ? '/year' : '/month'}
+                  </span>
+                </div>
+
+                {/* Features */}
+                <ul role="list" className="mt-8 space-y-3">
+                  {tier.mainFeatures.map((feature) => (
+                    <li key={feature} className="flex items-start gap-x-3">
                       <CheckIcon
-                        className="h-4 w-4 text-white"
+                        className="h-5 w-5 flex-none text-gray-900"
                         aria-hidden="true"
                       />
-                    </span>
-                    <span className="font-medium">{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+                      <span className="text-sm text-gray-600">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <motion.div
-              variants={itemVariants}
-              className="p-8 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0"
-            >
-              <div className="flex h-full flex-col justify-center rounded-2xl bg-gradient-to-br from-white to-purple-50 py-10 text-center shadow-lg">
-                <div className="mx-auto max-w-xs px-8">
-                  <motion.div
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{
-                      duration: 0.5,
-                      type: 'spring',
-                      stiffness: 300,
-                    }}
+              {/* CTA Button */}
+              <div className="mt-8">
+                {tier.id === 'tier-teams' ? (
+                  <Link
+                    href="/support"
+                    className="block w-full rounded-full border border-gray-300 bg-white px-6 py-3 text-center text-sm font-medium text-gray-900 transition-colors hover:bg-gray-50"
                   >
-                    <p className="mt-6 flex items-baseline justify-center gap-x-2">
-                      <span className="bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text font-serif text-6xl font-bold tracking-tight text-transparent">
-                        ${yearly ? '48.00' : '5.00'}
-                      </span>
-                      <span className="text-sm font-semibold leading-6 tracking-wide text-purple-700">
-                        USD
-                      </span>
-                    </p>
-                    <p className="mt-1 text-sm text-purple-700">
-                      {yearly ? 'per year' : 'per month'}
-                    </p>
-                  </motion.div>
-
-                  {shouldGoToCheckout ? (
-                    <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }}>
-                      <Button
-                        onClick={() =>
-                          handleGoingToCheckout('tier-hobby', yearly)
-                        }
-                        className="mt-8 block w-full rounded-xl bg-gradient-to-r from-red-600 via-purple-600 to-red-600 px-4 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl"
-                      >
-                        <span className="relative z-10">Get Started</span>
-                        <motion.div
-                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500 via-purple-500 to-red-500 opacity-0"
-                          whileHover={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      </Button>
-                    </motion.div>
-                  ) : (
-                    <motion.div whileHover={{ y: -3 }} whileTap={{ y: 0 }}>
-                      <Link
-                        href="/login"
-                        className="mt-8 block w-full rounded-xl bg-gradient-to-r from-red-600 via-purple-600 to-red-600 px-4 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl"
-                      >
-                        Get Started
-                      </Link>
-                    </motion.div>
-                  )}
-
-                  <div className="mt-6 flex items-center justify-center gap-x-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-purple-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <p className="text-sm font-medium text-purple-700">
-                      Instant access to all features
-                    </p>
-                  </div>
-                </div>
+                    {tier.cta}
+                  </Link>
+                ) : shouldGoToCheckout ? (
+                  <Button
+                    onClick={() =>
+                      handleGoingToCheckout(
+                        tier.id as 'tier-hobby' | 'tier-pro',
+                        yearly,
+                      )
+                    }
+                    className={cn(
+                      'block w-full rounded-full px-6 py-3 text-sm font-medium transition-all',
+                      tier.featured
+                        ? 'bg-gray-900 text-white hover:bg-gray-800'
+                        : 'bg-gray-900 text-white hover:bg-gray-800',
+                    )}
+                  >
+                    {tier.cta}
+                  </Button>
+                ) : (
+                  <Link
+                    href={tier.href}
+                    className={cn(
+                      'block w-full rounded-full px-6 py-3 text-center text-sm font-medium transition-all',
+                      tier.featured
+                        ? 'bg-gray-900 text-white hover:bg-gray-800'
+                        : 'bg-gray-900 text-white hover:bg-gray-800',
+                    )}
+                  >
+                    {tier.cta}
+                  </Link>
+                )}
               </div>
             </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Additional Info Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mx-auto mt-16 max-w-2xl text-center"
+        >
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+            <p className="text-sm font-medium text-gray-900">
+              All plans include
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
+              <span className="flex items-center gap-x-2">
+                <CheckIcon className="h-4 w-4 text-gray-900" />
+                Export diagrams
+              </span>
+              <span className="flex items-center gap-x-2">
+                <CheckIcon className="h-4 w-4 text-gray-900" />
+                Share & collaborate
+              </span>
+              <span className="flex items-center gap-x-2">
+                <CheckIcon className="h-4 w-4 text-gray-900" />
+                Customer support
+              </span>
+              <span className="flex items-center gap-x-2">
+                <CheckIcon className="h-4 w-4 text-gray-900" />
+                Regular updates
+              </span>
+            </div>
           </div>
-        </Card>
-      </motion.div>
+        </motion.div>
+      </div>
 
       <SimpleNotification
         message={notificationMessage}

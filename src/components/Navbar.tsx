@@ -55,6 +55,7 @@ export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userName, setUserName] = useState('')
   const [userEmail, setUserEmail] = useState('')
+  const [isSubscribed, setIsSubscribed] = useState(false)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -66,6 +67,17 @@ export default function Navbar() {
         const email = data.user.email || ''
         setUserEmail(email)
         setUserName(email.split('@')[0] || 'User')
+
+        // Fetch subscription status
+        try {
+          const response = await fetch('/api/usage')
+          if (response.ok) {
+            const usageData = await response.json()
+            setIsSubscribed(usageData.subscribed || false)
+          }
+        } catch (err) {
+          console.error('Failed to fetch subscription status:', err)
+        }
       }
     }
     checkAuth()
@@ -214,6 +226,18 @@ export default function Navbar() {
           <div className="flex items-center gap-x-4">
             {isAuthenticated ? (
               <>
+                {/* Upgrade Button (only for non-subscribed users) */}
+                {!isSubscribed && (
+                  <div className="hidden md:block">
+                    <Link
+                      href="/pricing"
+                      className="flex items-center rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:from-indigo-500 hover:to-purple-500 hover:shadow-md active:scale-95"
+                    >
+                      Upgrade
+                    </Link>
+                  </div>
+                )}
+
                 {/* New Creation Button */}
                 <div className="hidden md:block">
                   <Link

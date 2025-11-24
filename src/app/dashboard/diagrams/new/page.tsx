@@ -23,6 +23,7 @@ import { OptionType, sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 import { useLoading } from '@/lib/LoadingProvider'
 import DiagramSelectionGrid from './DiagramSelectionGrid'
 import FormStep from './FormStep'
+import UpgradePrompt from '@/components/UpgradePrompt'
 
 // --- UI Components (Apple Style) ---
 
@@ -97,7 +98,7 @@ const UsageBadge = ({ usage }: { usage: any }) => {
           usage.remaining <= 1 ? 'text-amber-600' : 'text-zinc-600',
         )}
       >
-        {usage.remaining} remaining
+        {usage.remaining} left this month
       </span>
       {usage.remaining <= 2 && (
         <a href="/pricing" className="ml-1 text-blue-600 hover:underline">
@@ -426,6 +427,16 @@ export default function NewDiagramPage() {
           </div>
           <UsageBadge usage={usageData} />
         </header>
+
+        {/* Upgrade Prompt */}
+        {usageData && !usageData.subscribed && usageData.diagrams_created >= 3 && (
+          <div className="mb-6">
+            <UpgradePrompt
+              currentUsage={usageData.diagrams_created}
+              limit={usageData.free_limit}
+            />
+          </div>
+        )}
 
         {/* Error State */}
         <AnimatePresence>
