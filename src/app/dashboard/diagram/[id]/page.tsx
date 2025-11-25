@@ -230,7 +230,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
   return (
     <div className="flex h-screen w-full flex-col overflow-hidden bg-[#F5F5F7]">
       {/* 1. Header (Floating Glass Effect) */}
-      <header className="flex h-16 items-center justify-between border-b border-gray-200/50 bg-white/60 px-6 backdrop-blur-xl transition-all mt-20">
+      <header className="flex h-16 items-center justify-between border-b border-gray-200/50 bg-white/60 px-6 backdrop-blur-xl transition-all">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.push('/dashboard')}

@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
 
-import '@/styles/tailwind.css'
+// import '@/styles/tailwind.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/react'
@@ -23,6 +23,7 @@ export default function VsCodePageLaytout({
 }) {
   return (
     <>
+      <Navbar />
       <GoogleAnalytics gaId="AW-16550420965" />
 
       <main>

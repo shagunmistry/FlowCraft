@@ -1,17 +1,16 @@
 'use client'
 
 import mermaid from 'mermaid'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import PageLoader from '@/components/PageLoader'
-import { XCircleIcon } from '@heroicons/react/24/outline'
-import FeedbackDialog from '@/components/FeedbackDialog'
 import {
-  ArrowDownTrayIcon,
-  ArrowUpRightIcon,
-  CheckCircleIcon,
-  CheckIcon,
+  XCircleIcon,
   ClipboardIcon,
-} from '@heroicons/react/20/solid'
+  CheckIcon,
+} from '@heroicons/react/24/outline'
+import FeedbackDialog from '@/components/FeedbackDialog'
+import VisualizationContainer from '@/components/VisualizationContainer'
+import { ArrowUpRightIcon } from '@heroicons/react/20/solid'
 
 type DiagramData = {
   description: string
@@ -39,10 +38,54 @@ export default function VSCodeDiagramPage({
   const [loading, setLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [title, setTitle] = useState('')
+  const [mermaidSVG, setMermaidSVG] = useState<string | null>(null)
 
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
-
+  // State for copy button feedback
   const [isCopied, setIsCopied] = useState(false)
+
+  // Create a context-like object for VisualizationContainer
+  const contextData = useMemo(
+    () => ({
+      type: 'flowchart', // Mermaid diagram type
+      title: title || diagramdata.title,
+      description: diagramdata.description,
+      loading: loading,
+      mermaidData: diagramdata.mermaid_code,
+    }),
+    [title, diagramdata, loading],
+  )
+
+  const checkIfMermaidDiagram = (type: string | null) => {
+    return (
+      type === 'flowchart' ||
+      type === 'classDiagram' ||
+      type === 'sequenceDiagram'
+    )
+  }
+
+  const handleDownloadSVG = () => {
+    if (!mermaidSVG) return
+    const blob = new Blob([mermaidSVG], { type: 'image/svg+xml' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${diagramdata.title}.svg`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handleCopyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(diagramdata.mermaid_code)
+      setIsCopied(true)
+      setTimeout(() => {
+        setIsCopied(false)
+      }, 2000) // Reset status after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+    }
+  }
 
   useEffect(() => {
     const getDiagram = async () => {
@@ -67,12 +110,21 @@ export default function VSCodeDiagramPage({
 
       const diagramData = data.response as DiagramData
 
-      const mermaid_code = diagramData.mermaid_code.replace(/```/g, '')
+      console.log('Fetched diagram data:', diagramData)
+
+      const mermaid_code = diagramData.mermaid_code
+        .replace(/```/g, '')
+        .replace(/mermaid/g, '')
+        .trim()
+
+      console.log('Mermaid code to be parsed:', mermaid_code)
 
       const isValid = await mermaid.parse(mermaid_code).catch((err) => {
         console.error('Error parsing Mermaid code:', err)
         return false
       })
+
+      console.log('Mermaid code validity:', isValid)
 
       if (isValid === undefined || !isValid || isValid === null) {
         console.error('Invalid Mermaid code')
@@ -110,8 +162,11 @@ export default function VSCodeDiagramPage({
         theme: 'forest',
       })
 
-      diagramData.mermaid_code = svg
+      // Store original mermaid code separately
+      const originalMermaidCode = diagramData.mermaid_code
+      diagramData.mermaid_code = originalMermaidCode
 
+      setMermaidSVG(svg)
       setDiagramData(diagramData)
 
       const title = diagramData.title
@@ -145,123 +200,134 @@ export default function VSCodeDiagramPage({
     window.location.replace(`/error?message=Diagram not found`)
   }
 
-  const copyMermaidCode = () => {
-    console.log('Diagram data:', diagramdata)
-    const code = diagramdata.mermaid_code
-
-    navigator.clipboard.writeText(code).then(
-      function () {
-        console.log('Async: Copying to clipboard was successful!')
-        setIsCopied(true)
-        setTimeout(() => {
-          setIsCopied(false)
-        }, 3000)
-      },
-      function (err) {
-        console.error('Async: Could not copy text: ', err)
-        setIsCopied(false)
-      },
-    )
-  }
-
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100">
-      <div className="px-6 py-12 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+    <main className="flex min-h-screen w-full flex-col items-center bg-white text-zinc-900 selection:bg-black selection:text-white">
+      {/* Header Section */}
+      <header className="w-full max-w-5xl px-6 py-16 text-center lg:px-8">
+        <div className="mx-auto flex flex-col items-center justify-center space-y-6">
+          <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl lg:text-6xl">
             {title}
-          </h2>
-          <span className="text-md inline-flex items-center rounded-md bg-green-50 px-2 py-1 font-medium text-green-800 ring-1 ring-inset ring-green-600/20">
-            Difficulty Level: {diagramdata.difficulty.toUpperCase()}
-          </span>
+          </h1>
+
+          <div className="flex items-center space-x-2">
+            <span className="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-50 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-zinc-600 shadow-sm">
+              Difficulty: {diagramdata.difficulty}
+            </span>
+          </div>
         </div>
-      </div>
+      </header>
 
-      <span className="isolate inline-flex rounded-md shadow-sm">
-        <button
-          className="mx-4 inline-flex items-center gap-x-1.5 rounded-md bg-red-600 px-2.5 py-1.5 text-lg font-semibold text-white shadow-lg hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:opacity-50"
-          onClick={() => {
-            const svg = diagramdata.mermaid_code
-            const blob = new Blob([svg], { type: 'image/svg+xml' })
-            const url = URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = `${diagramdata.title}.svg`
-            a.click()
-          }}
-          disabled={isError}
-        >
-          <ArrowDownTrayIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-          Download SVG
-        </button>
-        <button
-          type="button"
-          className="inline-flex items-center gap-x-2 rounded-md bg-red-600 px-3.5 py-2.5 text-lg font-semibold text-white shadow-lg hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-          onClick={copyMermaidCode}
-        >
-          <ClipboardIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-          Copy Code
-          {isCopied ? (
-            <CheckCircleIcon
-              className="-mr-0.5 h-5 w-5 text-green-500"
-              aria-hidden="true"
+      {/* Main Content Area */}
+      <article className="w-full flex-1 px-4 pb-20 lg:px-8">
+        {!loading && !isError && (
+          <div className="mx-auto h-[600px] w-full max-w-7xl overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/30 shadow-sm transition-all duration-300 hover:shadow-md">
+            <VisualizationContainer
+              type="flowchart"
+              context={contextData}
+              nodes={[]}
+              edges={[]}
+              onNodesChange={() => {}}
+              onEdgesChange={() => {}}
+              onConnect={() => {}}
+              onEdgeUpdate={() => {}}
+              defaultEdgeOptions={{}}
+              defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+              nodeTypes={{}}
+              edgeTypes={{}}
+              ConnectionLineComponent={null}
+              toggleReactFlowGird={false}
+              tlDrawInputJson=""
+              donwloadChart={() => {}}
+              createShareableLink={() => {}}
+              mermaidSVG={mermaidSVG}
+              isMermaidError={isError}
+              downloadMermaidDiagramAsPng={handleDownloadSVG}
+              copyMermaidDiagramAsPng={() => {}}
+              editMermaidDiagramCode={() => {}}
+              checkIfMermaidDiagram={checkIfMermaidDiagram}
+              Whiteboard={null}
             />
-          ) : null}
-        </button>
-      </span>
-      {isError && (
-        <div className="my-12 rounded-xl bg-red-50 p-4 shadow-sm">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <XCircleIcon
-                className="h-12 w-12 text-red-400"
-                aria-hidden="true"
-              />
-            </div>
-            <div className="ml-3">
-              <h3 className="text-lg font-medium text-red-800">
-                There was an error rendering the diagram
-              </h3>
-              <div className="mt-2 text-lg text-red-700">
-                <ul role="list" className="list-disc space-y-1 pl-5">
-                  <li>Please try again or contact support</li>
-                  <li>
-                    Copy the Mermaid code and try to render it in
-                    <a
-                      href="https://mermaid.live/edit"
-                      target="_blank"
-                      className="text-blue-500 hover:underline"
-                    >
-                      {' '}
-                      Mermaid Live Editor
-                      <ArrowUpRightIcon
-                        className="inline-block h-4 w-4"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  </li>
-                </ul>
-              </div>
+          </div>
+        )}
 
-              {/** Code Block to Show the mermaid code */}
-              <div className="mt-4">
-                <pre className="prose prose-neutral prose-lg max-w-lg overflow-x-auto rounded-lg bg-gray-100 p-4 text-sm text-gray-900 shadow-lg">
-                  <h3 className="text-lg font-medium text-gray-800">
-                    Mermaid Code
-                  </h3>
-                  <code>{diagramdata.mermaid_code}</code>
-                </pre>
+        {/* Error State - Minimalist Design */}
+        {isError && (
+          <div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-zinc-200 bg-zinc-50 p-8 shadow-sm">
+            <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
+              <div className="flex-shrink-0">
+                <XCircleIcon
+                  className="h-10 w-10 text-zinc-400"
+                  aria-hidden="true"
+                />
+              </div>
+              <div className="mt-4 w-full sm:ml-6 sm:mt-0">
+                <h3 className="text-lg font-semibold text-zinc-900">
+                  Rendering Error
+                </h3>
+                <div className="mt-2 text-sm text-zinc-600">
+                  <p>We encountered an issue visualizing this diagram.</p>
+                  <ul
+                    role="list"
+                    className="mt-2 list-inside list-disc space-y-1"
+                  >
+                    <li>Please refresh or contact support.</li>
+                    <li>
+                      <a
+                        href="https://mermaid.live/edit"
+                        target="_blank"
+                        className="inline-flex items-center font-medium text-black underline decoration-zinc-300 underline-offset-4 transition-colors hover:decoration-black"
+                      >
+                        Debug in Mermaid Live Editor
+                        <ArrowUpRightIcon
+                          className="ml-1 h-3 w-3"
+                          aria-hidden="true"
+                        />
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                {/** Code Block with Copy Button */}
+                <div className="mt-6">
+                  <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-inner">
+                    <div className="mb-2 flex items-center justify-between">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                        Raw Source
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={handleCopyCode}
+                        className="inline-flex items-center rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2"
+                      >
+                        {isCopied ? (
+                          <>
+                            <CheckIcon
+                              className="mr-1.5 h-3.5 w-3.5 text-green-600"
+                              aria-hidden="true"
+                            />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <ClipboardIcon
+                              className="mr-1.5 h-3.5 w-3.5 text-zinc-400"
+                              aria-hidden="true"
+                            />
+                            Copy Code
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <pre className="overflow-x-auto rounded-lg border border-zinc-100 bg-zinc-50 p-3 font-mono text-xs text-zinc-600">
+                      <code>{diagramdata.mermaid_code}</code>
+                    </pre>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-      {!isError && (
-        <div
-          className="mermaid mx-auto mb-8 w-3/4 rounded-lg p-4"
-          dangerouslySetInnerHTML={{ __html: diagramdata.mermaid_code }}
-        ></div>
-      )}
+        )}
+      </article>
 
       <FeedbackDialog
         header="Code Diagram Feedback"
@@ -269,6 +335,6 @@ export default function VSCodeDiagramPage({
         setOpen={setIsFeedbackOpen}
         open={isFeedbackOpen}
       />
-    </div>
+    </main>
   )
 }
