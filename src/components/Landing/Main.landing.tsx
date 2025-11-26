@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
@@ -61,12 +61,21 @@ const itemVariants = {
 export default function MainLanding() {
   const [authenticated, setAuthenticated] = useState(false)
   const [placeholderIndex, setPlaceholderIndex] = useState(0)
+  const [wordIndex, setWordIndex] = useState(0)
 
   const placeholders = [
     'Timeline of AI breakthroughs',
     'An astronaut riding a unicorn',
     'Startup growth map',
     'Sustainable energy comparison',
+  ]
+
+  const rotatingWords = [
+    'Diagrams',
+    'Illustrations',
+    'Charts',
+    'Infographics',
+    'Visuals',
   ]
 
   useEffect(() => {
@@ -82,6 +91,13 @@ export default function MainLanding() {
     const interval = setInterval(() => {
       setPlaceholderIndex((prev) => (prev + 1) % placeholders.length)
     }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length)
+    }, 2000)
     return () => clearInterval(interval)
   }, [])
 
@@ -102,7 +118,27 @@ export default function MainLanding() {
               variants={itemVariants}
               className="mx-auto max-w-4xl text-5xl font-semibold leading-[1.1] tracking-tight text-gray-900 md:text-7xl"
             >
-              Visual storytelling.
+              Text to{' '}
+              <span className="relative inline-block min-w-[300px] text-left md:min-w-[400px]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={wordIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="inline-block bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent"
+                  >
+                    {rotatingWords[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+                <motion.span
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                  className="absolute -right-1 top-0 inline-block h-[0.9em] w-[3px] bg-gray-900 md:-right-2"
+                  style={{ transform: 'translateY(0.1em)' }}
+                />
+              </span>
               <br />
               <span className="text-gray-400">Simply described.</span>
             </motion.h1>
