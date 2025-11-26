@@ -11,7 +11,7 @@ export const tiers = [
     href: '/login',
     featured: false,
     description: 'Perfect for individual users',
-    price: { monthly: '$7', annually: '$70' },
+    price: { monthly: '$8', annually: '$70' },
     mainFeatures: [
       `${DiagramsAllowed} AI-generated Diagrams per month`,
       'Access to Complex Diagrams (UML, Sankey, Mindmaps)',

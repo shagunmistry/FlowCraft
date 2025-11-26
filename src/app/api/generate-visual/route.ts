@@ -1,6 +1,9 @@
 import { createClient } from '@/lib/supabase-auth/server'
 import { OptionType } from '@/lib/utils'
 
+// Set maximum execution time to 300 seconds (5 minutes) for Vercel Pro
+export const maxDuration = 300
+
 const getEndpoint = (type: OptionType): string => {
   switch (type) {
     case 'Illustration':
