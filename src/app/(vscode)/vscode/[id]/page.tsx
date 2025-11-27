@@ -308,6 +308,7 @@ export default function VSCodeDiagramPage({
                     language="mermaid"
                     showLineNumbers={true}
                     wrapLongLines={true}
+                    theme="graphite"
                     title={`Mermaid Code ${title ? `- ${title}` : ''}`}
                   />
                 </div>
