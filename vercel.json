@@ -3,5 +3,6 @@
     "src/app/api/generate-visual/route.ts": {
       "maxDuration": 300
     }
-  }
+  },
+  "buildCommand": "next build"
 }
