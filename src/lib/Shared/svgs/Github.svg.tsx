@@ -4,7 +4,7 @@ export default function GithubSVG({
 }: {
   className?: string
   props?: any
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <svg
       className={className}
