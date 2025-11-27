@@ -37,8 +37,8 @@ import {
 // Internal Components (Preserved imports)
 import SuccessDialog from './SuccessDialog'
 import { nodeStyle } from '@/lib/react-flow.code'
-import Whiteboard from './Whiteboard/Whiteboard'
-import { scenarios } from '@/components/Whiteboard/scenarios'
+// import Whiteboard from './Whiteboard/Whiteboard'
+// import { scenarios } from '@/components/Whiteboard/scenarios'
 import { DiagramOrChartType } from '@/lib/utils'
 import ShareableLinksModal from './ShareableLinkModal'
 import SimpleNotification from './SimpleNotification'
@@ -139,9 +139,7 @@ export default function DiagramOrChartView({
     link: '',
     inviteCode: '',
   })
-  const [tlDrawInputJson, setTlDrawInputJson] = useState<string>(
-    JSON.stringify(scenarios.house_buying_process),
-  )
+  const [tlDrawInputJson, setTlDrawInputJson] = useState<string>('')
   const [chartCreated, setChartCreated] = useState<boolean>(false)
   const [successDialogOpen, setSuccessDialogOpen] = useState<boolean>(false)
   const [openMermaidEditor, setOpenMermaidEditor] = useState<boolean>(false)
@@ -246,22 +244,22 @@ export default function DiagramOrChartView({
       }
     }
 
-    const handleWhiteboard = () => {
-      if (!context.tlDrawRecords?.length) return
-      // (Simplified logic for brevity - keeping original transform logic)
-      const records = context.tlDrawRecords.map((record: any) => ({
-        ...record,
-        parentId: 'page:page',
-        isLocked: false,
-        props: {
-          ...record.props,
-          [record.type === 'geo' ? 'url' : 'font']:
-            record.type === 'geo' ? '' : 'draw',
-        },
-      }))
-      scenarios.house_buying_process.records = records
-      setTlDrawInputJson(JSON.stringify(scenarios.house_buying_process))
-    }
+    // const handleWhiteboard = () => {
+    //   if (!context.tlDrawRecords?.length) return
+    //   // (Simplified logic for brevity - keeping original transform logic)
+    //   const records = context.tlDrawRecords.map((record: any) => ({
+    //     ...record,
+    //     parentId: 'page:page',
+    //     isLocked: false,
+    //     props: {
+    //       ...record.props,
+    //       [record.type === 'geo' ? 'url' : 'font']:
+    //         record.type === 'geo' ? '' : 'draw',
+    //     },
+    //   }))
+    //   scenarios.house_buying_process.records = records
+    //   setTlDrawInputJson(JSON.stringify(scenarios.house_buying_process))
+    // }
 
     const handleMermaid = () => {
       if (context.mermaidData && !context.loading) {
@@ -281,9 +279,9 @@ export default function DiagramOrChartView({
       case 'Chart':
         handleChart()
         break
-      case 'Whiteboard':
-        handleWhiteboard()
-        break
+      // case 'Whiteboard':
+      //   handleWhiteboard()
+      //   break
       default:
         if (checkIfMermaidDiagram(context.type)) handleMermaid()
     }
@@ -317,11 +315,11 @@ export default function DiagramOrChartView({
       diagramData:
         context.type === 'Flow Diagram'
           ? { nodes, edges }
-          : context.type === 'Whiteboard'
-            ? { tlDrawRecords: JSON.parse(tlDrawInputJson).records }
-            : context.type === 'Chart'
-              ? context.chartJsData
-              : context.mermaidData,
+          // : context.type === 'Whiteboard'
+          //   ? { tlDrawRecords: JSON.parse(tlDrawInputJson).records }
+          : context.type === 'Chart'
+            ? context.chartJsData
+            : context.mermaidData,
       title: context.title,
       description: context.description,
       diagramId: context.diagramId,
@@ -502,7 +500,7 @@ export default function DiagramOrChartView({
               copyMermaidDiagramAsPng={handleCopyImage}
               editMermaidDiagramCode={() => setOpenMermaidEditor(true)}
               checkIfMermaidDiagram={checkIfMermaidDiagram}
-              Whiteboard={Whiteboard}
+              Whiteboard={null}
             />
           )}
 

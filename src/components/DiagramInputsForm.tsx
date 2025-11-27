@@ -16,8 +16,8 @@ import {
 import { track } from '@vercel/analytics'
 import ExamplesDropdown from './Dropdown'
 import ErrorDialog from './ErrorDialog'
-import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
-import { useAssistant } from './Whiteboard/UserPrompt'
+// import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
+// import { useAssistant } from './Whiteboard/UserPrompt'
 import StepLine from './StepLine'
 import { TempMermaidDiagramType } from './Mermaid/OverviewDialog.mermaid'
 import { DiagramSelectionOptionsAndExamples } from '@/lib/DiagramSelectionOptionsAndExamples'
@@ -44,9 +44,9 @@ export default function DiagramInputsForm({
 }: {
   type: DiagramOrChartType | TempMermaidDiagramType
 }) {
-  const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
+  // const assistant = useMemo(() => new CompletionCommandsAssistant(), [])
 
-  const controls = useAssistant(assistant)
+  // const controls = useAssistant(assistant)
 
   const [description, setDescription] = useState<string>('')
   const [error, setError] = useState<string | null>('')
@@ -88,14 +88,14 @@ export default function DiagramInputsForm({
 
       // Check if the user is subscribed. If not, take them to the pricing page
 
-      if (type === 'Whiteboard') {
-        await controls?.start(title)
+      // if (type === 'Whiteboard') {
+      //   await controls?.start(title)
 
-        // Show the feedback modal after 10 seconds
-        setTimeout(() => {
-          context.setFeedbackModalOpen(true)
-        }, 30000)
-      } else {
+      //   // Show the feedback modal after 10 seconds
+      //   setTimeout(() => {
+      //     context.setFeedbackModalOpen(true)
+      //   }, 30000)
+      // } else {
         context.setLoading(true)
         context.setChartJsData(null)
         context.setMermaidData('')
@@ -185,7 +185,7 @@ export default function DiagramInputsForm({
               context.setFeedbackModalOpen(true)
             }, 10000)
           })
-      }
+      // }
     } catch (e) {
       console.log('Error generating diagram: ', e)
       context.setLoading(false)

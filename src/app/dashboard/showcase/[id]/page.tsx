@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -24,7 +24,7 @@ import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 
 // --- Types & Interfaces ---
 interface ShowcaseItemPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 // --- Utility Components ---
@@ -86,6 +86,7 @@ const ActionButton = ({
 )
 
 export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
+  const { id } = use(params)
   const router = useRouter()
 
   // State
@@ -102,7 +103,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
         // Parallel fetching for speed
         const [userRes, visualRes] = await Promise.all([
           fetch('/api/auth/user'),
-          fetch(`/api/get-public-diagrams/${params.id}`),
+          fetch(`/api/get-public-diagrams/${id}`),
         ])
 
         let currentUserId = null
@@ -143,7 +144,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
         fetch(`/api/get-public-diagrams/views_increment`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: params.id }),
+          body: JSON.stringify({ id }),
         }).catch(console.error)
       } catch (error) {
         console.error('Error:', error)
@@ -154,7 +155,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
     }
 
     fetchData()
-  }, [params.id, router])
+  }, [id, router])
 
   // Keyboard Shortcuts for Zoom
   useEffect(() => {

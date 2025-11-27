@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   try {
     let { firstName, lastName, email, message, type, rating } = await req.json()
 
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
 
     const { data: userData } = await supabaseClient.auth.getUser()
 

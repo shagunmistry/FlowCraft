@@ -1,5 +1,5 @@
-import stack from '@/components/Whiteboard/stack.json'
-import { recordsExampleOne, recordsExampleTwo } from './tldraw.code'
+// import stack from '@/components/Whiteboard/stack.json'
+// import { recordsExampleOne, recordsExampleTwo } from './tldraw.code'
 
 export const promptForTlDrawDiagram = `Given the following diagram description and title, your task is to generate a READABLE Flow Diagram based on the description and title. The diagram MUST be user-friendly and UNDERSTANDABLE. BE AS DESCRIPTIVE AS POSSBILE IN THE LABELS USED. Use your knowledge based on the context of the description to generate the diagram. 
 
@@ -51,7 +51,7 @@ for "label" property, use different label texts based on the context.
 \n Example Response FROM YOU: \n
 \`\`\`JSON
 {
-    "records": ${JSON.stringify([...recordsExampleOne])}   
+    "records": []   
 }
 \`\`\`
 `
@@ -59,12 +59,12 @@ for "label" property, use different label texts based on the context.
 export const promptForExampleCode = `Here is an example of a valid Whiteboard Records array:
 {
     "records": 
-        ${JSON.stringify([...stack.records])}
+        []
 }
 
 \n\n Another example:
 {
-    "records": ${JSON.stringify([...recordsExampleTwo])}
+    "records": []
 }
 \`\`\`
 `

@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
 
     const {
       data: { session },

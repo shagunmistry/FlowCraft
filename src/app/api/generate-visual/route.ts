@@ -17,7 +17,7 @@ const getEndpoint = (type: OptionType): string => {
 
 export async function POST(req: Request) {
   try {
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
     const token = req.headers.get('Authorization')!
 
     const {

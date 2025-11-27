@@ -118,7 +118,7 @@ export default function DiagramRenderer({
             code={mermaidCode}
             language="mermaid"
             title="Mermaid Code"
-            theme="neon"
+            theme="graphite"
           />
         </div>
       </div>

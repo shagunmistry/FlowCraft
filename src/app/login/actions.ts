@@ -23,7 +23,7 @@ const getURL = () => {
 }
 
 export async function login(formData: FormData) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -48,7 +48,7 @@ export async function login(formData: FormData) {
 }
 
 async function createOrUpdateUserInDB() {
-  const supabaseClient = createClient()
+  const supabaseClient = await createClient()
 
   const { data: loggedInUser, error: loggedInUserError } =
     await supabaseClient.auth.getUser()
@@ -94,7 +94,7 @@ async function createOrUpdateUserInDB() {
 }
 
 export async function signup(formData: FormData) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -123,7 +123,7 @@ export async function signup(formData: FormData) {
 }
 
 export async function loginWithGithub() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const redirectURL = getURL()
 
   console.log('Redirect URL:', redirectURL)
@@ -145,7 +145,7 @@ export async function loginWithGithub() {
 }
 
 export async function loginWithGoogle() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const redirectURL = getURL()
 
   console.log('(loginWithGoogle) Redirect URL:', redirectURL)

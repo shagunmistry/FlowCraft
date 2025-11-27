@@ -51,7 +51,7 @@ export async function validateApiKey(request: NextRequest): Promise<ApiKeyAuthRe
     const keyHash = hashApiKey(apiKey);
 
     // Query the database using the Supabase function
-    const supabaseClient = createClient();
+    const supabaseClient = await createClient();
     const { data, error } = await supabaseClient.rpc('is_api_key_valid', {
       key_hash_input: keyHash,
     });
@@ -137,7 +137,7 @@ export async function authenticateRequest(
   }
 
   // Fall back to session authentication
-  const supabaseClient = createClient();
+  const supabaseClient = await createClient();
   const { data: userData, error: authError } = await supabaseClient.auth.getUser();
 
   if (authError || !userData?.user) {

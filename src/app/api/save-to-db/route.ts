@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   const json = await req.json()
   const { snapshot, title: input } = json
 
-  const supabaseClient = createClient()
+  const supabaseClient = await createClient()
 
   const { data: userData, error: userDataError } =
     await supabaseClient.auth.getUser()

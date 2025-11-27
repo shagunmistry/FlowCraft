@@ -3,7 +3,7 @@
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { redirect } from 'next/navigation'
 import { track } from '@vercel/analytics'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, use } from 'react'
 import DiagramInputsForm from '@/components/DiagramInputsForm'
 import DiagramOrChartView from '@/components/DiagramOrChartView'
 import PageLoader from '@/components/PageLoader'
@@ -14,19 +14,19 @@ const allowedTypes = ['whiteboard', 'chart', 'flow-diagram', 'mermaid']
 export default function DynamicDiagramPage({
   params,
 }: {
-  params: { type: 'whiteboard' | 'chart' | 'flow-diagram' | 'mermaid' }
+  params: Promise<{ type: 'whiteboard' | 'chart' | 'flow-diagram' | 'mermaid' }>
 }) {
-  if (!allowedTypes.includes(params.type) || !params.type) {
+  const { type } = use(params)
+
+  if (!allowedTypes.includes(type) || !type) {
     return redirect('/dashboard')
   }
 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    track(`dashboard/${params.type}`)
-  }, [params.type])
-
-  const type = params.type
+    track(`dashboard/${type}`)
+  }, [type])
   const context = useContext(DiagramContext)
 
   useEffect(() => {

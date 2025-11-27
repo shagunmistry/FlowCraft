@@ -1,7 +1,7 @@
 'use client'
 
 import mermaid from 'mermaid'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, use } from 'react'
 import PageLoader from '@/components/PageLoader'
 import {
   XCircleIcon,
@@ -27,8 +27,11 @@ type DiagramData = {
 export default function VSCodeDiagramPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  // For client components in Next.js 15, we need to handle params as a promise
+  const unwrappedParams = use(params)
+  const id = unwrappedParams.id
   const [diagramdata, setDiagramData] = useState<DiagramData>({
     description: '',
     difficulty: '',
@@ -92,7 +95,7 @@ export default function VSCodeDiagramPage({
       setLoading(true)
       const API_URL = process.env.NEXT_PUBLIC_FLOWCRAFT_API
       try {
-        const res = await fetch(`${API_URL}/v2/vscode/diagram/${params.id}`, {
+        const res = await fetch(`${API_URL}/v2/vscode/diagram/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -168,7 +171,7 @@ export default function VSCodeDiagramPage({
     }
 
     getDiagram()
-  }, [params.id])
+  }, [id])
 
   if (loading) return <PageLoader />
 

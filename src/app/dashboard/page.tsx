@@ -46,7 +46,7 @@ async function getShares() {
 }
 
 async function getUserDataFromTable(userId: string, email: string) {
-  const sbClient = createClient()
+  const sbClient = await createClient()
   const { data: userData, error } = await sbClient
     .from('users')
     .select('*')
@@ -228,7 +228,7 @@ const SharedDiagramCard = ({
 // --- Main Page Component ---
 
 export default async function Dashboard() {
-  const sbClient = createClient()
+  const sbClient = await createClient()
   const { data: authData, error } = await sbClient.auth.getUser()
 
   if (error || authData?.user === null) return redirect('/login')

@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase-auth/server'
 
 export async function GET() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.auth.getUser()
   if (error || !data?.user) {

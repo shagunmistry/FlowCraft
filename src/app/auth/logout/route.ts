@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase-auth/server'
 export async function GET(request: NextRequest) {
   console.log('GET /auth/logout: ', request.url.toString())
   // Implement logout
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error } = await supabase.auth.signOut()
   console.log('GET /auth/logout: ', error)
   if (!error) {

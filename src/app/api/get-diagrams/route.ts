@@ -8,7 +8,7 @@ import { authenticateRequest } from '@/lib/api-key-auth'
  * @returns {Response}
  */
 export async function GET(request: NextRequest) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Authenticate using either API key or session
   const authResult = await authenticateRequest(request)
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   const { id } = await req.json()
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Authenticate using either API key or session
   const authResult = await authenticateRequest(req)

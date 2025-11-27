@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server'
  */
 export async function GET() {
   try {
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
     const { data: userData, error: authError } = await supabaseClient.auth.getUser()
 
     if (authError || !userData?.user) {
@@ -81,7 +81,7 @@ export async function GET() {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
     const { data: userData, error: authError } = await supabaseClient.auth.getUser()
 
     if (authError || !userData?.user) {
@@ -129,7 +129,7 @@ export async function PATCH(request: NextRequest) {
  */
 export async function DELETE() {
   try {
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
     const { data: userData, error: authError } = await supabaseClient.auth.getUser()
 
     if (authError || !userData?.user) {

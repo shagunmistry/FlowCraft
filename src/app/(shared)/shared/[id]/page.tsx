@@ -5,14 +5,15 @@ import { notFound } from 'next/navigation'
 export default async function SharedDiagramPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const supabaseClient = createClient()
+  const { id } = await params
+  const supabaseClient = await createClient()
 
   const { data, error } = await supabaseClient
     .from('shareable_links')
     .select('id')
-    .eq('id', params.id)
+    .eq('id', id)
 
   if (error) {
     console.log('Error fetching data:', error)
@@ -25,7 +26,7 @@ export default async function SharedDiagramPage({
 
   return (
     <div>
-      <SharedDiagramInviteCodeForm linkId={params.id} />
+      <SharedDiagramInviteCodeForm linkId={id} />
     </div>
   )
 }

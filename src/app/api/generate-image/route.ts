@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       ...(seed && { seed }),
     }
 
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
 
     const {
       data: { session },

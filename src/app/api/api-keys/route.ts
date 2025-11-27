@@ -9,7 +9,7 @@ import type { CreateApiKeyRequest, CreateApiKeyResponse, ApiKeyListItem } from '
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabaseClient = createClient();
+    const supabaseClient = await createClient();
     const { data: userData, error: authError } = await supabaseClient.auth.getUser();
 
     if (authError || !userData?.user) {
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabaseClient = createClient();
+    const supabaseClient = await createClient();
     const { data: userData, error: authError } = await supabaseClient.auth.getUser();
 
     if (authError || !userData?.user) {

@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   if (checkoutSessionId && process.env.STRIPE_SECRET_KEY) {
     const _stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-    const supabase = createClient()
+    const supabase = await createClient()
 
     const { data, error } = await supabase.auth.getUser()
 

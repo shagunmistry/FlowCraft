@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase-auth/server';
 
 export async function POST(req: Request) {
   try {
-    const supabaseClient = createClient();
+    const supabaseClient = await createClient();
     
     // Verify user session
     const {

@@ -8,15 +8,15 @@ import Link from 'next/link'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
 type Props = {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const id = params.id
-  const supabaseClient = createClient()
+  const { id } = await params
+  const supabaseClient = await createClient()
 
   const { data, error } = await supabaseClient
     .from('blog_posts')
@@ -87,13 +87,14 @@ const mdxComponents = {
   ),
 }
 
-export default async function BlogPage({ params }: { params: { id: string } }) {
-  const supabaseClient = createClient()
+export default async function BlogPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabaseClient = await createClient()
 
   const { data, error } = await supabaseClient
     .from('blog_posts')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
 
   if (error || !data || data.length === 0) {
     console.error('Error fetching blog post', error)

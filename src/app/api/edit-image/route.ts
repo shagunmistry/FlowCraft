@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       is_public = false,
     } = body
 
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
 
     const {
       data: { session },

@@ -22,7 +22,7 @@ import { OPEN_AI_MODEL } from '@/lib/utils'
 export const maxDuration = 200
 
 export async function POST(req: NextRequest) {
-  const supabaseClient = createClient()
+  const supabaseClient = await createClient()
 
   // Authenticate using either API key or session
   const authResult = await authenticateRequest(req)

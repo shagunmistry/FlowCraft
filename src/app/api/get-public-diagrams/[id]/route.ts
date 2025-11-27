@@ -2,17 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    console.log('🔍 GET /api/get-public-diagrams/[id] - Route hit with ID:', params.id)
+    const { id } = await params
+    console.log('🔍 GET /api/get-public-diagrams/[id] - Route hit with ID:', id)
     console.log('🔍 Request headers:', Object.fromEntries(request.headers.entries()))
-    
+
     const userId = request.headers.get('User-Id')
     console.log('🔍 User ID from header:', userId)
 
     // Call external API endpoint
-    const apiUrl = `${process.env.NEXT_PUBLIC_FLOWCRAFT_API}/v2/public-diagrams/${params.id}`
+    const apiUrl = `${process.env.NEXT_PUBLIC_FLOWCRAFT_API}/v2/public-diagrams/${id}`
     console.log('🔍 Calling external API:', apiUrl)
 
     const headers: Record<string, string> = {

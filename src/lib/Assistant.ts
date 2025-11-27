@@ -1,11 +1,11 @@
-import { Editor } from '@tldraw/tldraw'
+// import { Editor } from '@tldraw/tldraw'
 
 export interface Assistant<T> {
   // getDefaultSystemPrompt(): Promise<string>
   setSystemPrompt(prompt: string): Promise<void>
 
   /** Threads are created from assistants. */
-  createThread(editor: Editor): Promise<Thread<T>>
+  createThread(editor: any): Promise<Thread<T>>
 }
 
 export interface Thread<T> {

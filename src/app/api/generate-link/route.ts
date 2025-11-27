@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const { diagramData, diagramId, type, title } = body
 
   // Check if the user is authenticated with supabase auth
-  const supabaseClient = createClient()
+  const supabaseClient = await createClient()
   const { data: userData, error } = await supabaseClient.auth.getUser()
 
   if (error || !diagramData) {
@@ -81,7 +81,7 @@ export async function PUT(req: Request) {
   const body = await req.json()
   const { inviteCode, linkId } = body
 
-  const supabaseClient = createClient()
+  const supabaseClient = await createClient()
 
   console.log('searching for invite code:', inviteCode, 'for link:', linkId)
   // Check if the invite code matches the shared link

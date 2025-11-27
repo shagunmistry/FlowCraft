@@ -1,6 +1,6 @@
 'use client'
 
-import { useContext, useEffect, useState, useRef } from 'react'
+import { useContext, useEffect, useState, useRef, use } from 'react'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
@@ -37,7 +37,8 @@ const CanvasLoader = () => (
   </div>
 )
 
-export default function DiagramPage({ params }: { params: { id: string } }) {
+export default function DiagramPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const router = useRouter()
   const diagramContext = useContext(DiagramContext)
 
@@ -87,7 +88,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
         const response = await fetch('/api/get-diagrams', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: params.id }),
+          body: JSON.stringify({ id }),
         })
 
         const { diagram } = await response.json()
@@ -102,7 +103,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
 
         // Context updates (optional if you want to keep context in sync)
         diagramContext.setTitle(data.title)
-        diagramContext.setDiagramId(params.id)
+        diagramContext.setDiagramId(id)
         diagramContext.setType(data.type)
 
         // Type handling
@@ -128,7 +129,7 @@ export default function DiagramPage({ params }: { params: { id: string } }) {
       }
     }
     fetchDiagram()
-  }, [params.id])
+  }, [id])
 
   // 3. Render Mermaid when code is present
   useEffect(() => {

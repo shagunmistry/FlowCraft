@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server'
  */
 export async function GET() {
   try {
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
     const { data: userData, error: authError } =
       await supabaseClient.auth.getUser()
 
@@ -107,7 +107,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const { action } = await request.json()
-    const supabaseClient = createClient()
+    const supabaseClient = await createClient()
     const { data: userData, error: authError } =
       await supabaseClient.auth.getUser()
 

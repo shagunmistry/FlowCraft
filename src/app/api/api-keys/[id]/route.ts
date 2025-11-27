@@ -7,10 +7,10 @@ import { NextRequest } from 'next/server';
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabaseClient = createClient();
+    const supabaseClient = await createClient();
     const { data: userData, error: authError } = await supabaseClient.auth.getUser();
 
     if (authError || !userData?.user) {
@@ -23,7 +23,7 @@ export async function DELETE(
       );
     }
 
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return new Response(
@@ -96,10 +96,10 @@ export async function DELETE(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabaseClient = createClient();
+    const supabaseClient = await createClient();
     const { data: userData, error: authError } = await supabaseClient.auth.getUser();
 
     if (authError || !userData?.user) {
@@ -112,7 +112,7 @@ export async function PATCH(
       );
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { name, is_active } = body;
 

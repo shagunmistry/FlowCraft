@@ -4,15 +4,15 @@ import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.merm
 import Link from 'next/link'
 import { ArrowLeftCircleIcon } from '@heroicons/react/20/solid'
 import DiagramInputsForm from '@/components/DiagramInputsForm'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import PageLoader from '@/components/PageLoader'
 
 export default function DynamicMermaidDiagramPage({
   params,
 }: {
-  params: { type: TempMermaidDiagramType }
+  params: Promise<{ type: TempMermaidDiagramType }>
 }) {
-  const { type } = params
+  const { type } = use(params)
 
   const [loading, setLoading] = useState(true)
 

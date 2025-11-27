@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const isCode = searchParams.get('code')
 
   if (isCode) {
-    const supabase = createClient()
+    const supabase = await createClient()
 
     const { error } = await supabase.auth.exchangeCodeForSession(isCode)
 
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     console.log('GET /auth/confirm Routing to: ', redirectTo.toString())
 
     if (token_hash && type) {
-      const supabase = createClient()
+      const supabase = await createClient()
 
       const { error } = await supabase.auth.verifyOtp({
         type,

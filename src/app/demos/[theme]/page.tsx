@@ -127,10 +127,11 @@ const props: any = {
   },
 }
 
-export default async function Page({ params }: { params: { theme: string } }) {
-  console.log('Theme: ', params.theme)
+export default async function Page({ params }: { params: Promise<{ theme: string }> }) {
+  const { theme } = await params
+  console.log('Theme: ', theme)
 
-  if (!props[params.theme]) {
+  if (!props[theme]) {
     return (
       <div>
         <NotFound />
@@ -140,19 +141,19 @@ export default async function Page({ params }: { params: { theme: string } }) {
 
   return (
     <BaseUseCaseLanding
-      headline={props[params.theme].headline}
-      subheadline={props[params.theme].subheadline}
-      ratedBy={props[params.theme].ratedBy}
-      imageSrc={props[params.theme].imageSrc}
-      imageAlt={props[params.theme].imageAlt}
-      imageDescription={props[params.theme].imageDescription}
-      imageDescriptionSubtext={props[params.theme].imageDescriptionSubtext}
-      contentArea={props[params.theme].contentArea}
-      ctaHeader={props[params.theme].ctaHeader}
-      ctaSubHeader={props[params.theme].ctaSubHeader}
-      nodes={landingPageCodeExamples[params.theme].nodes}
-      edges={landingPageCodeExamples[params.theme].edges}
-      diagramTitle={props[params.theme].diagramTitle}
+      headline={props[theme].headline}
+      subheadline={props[theme].subheadline}
+      ratedBy={props[theme].ratedBy}
+      imageSrc={props[theme].imageSrc}
+      imageAlt={props[theme].imageAlt}
+      imageDescription={props[theme].imageDescription}
+      imageDescriptionSubtext={props[theme].imageDescriptionSubtext}
+      contentArea={props[theme].contentArea}
+      ctaHeader={props[theme].ctaHeader}
+      ctaSubHeader={props[theme].ctaSubHeader}
+      nodes={landingPageCodeExamples[theme].nodes}
+      edges={landingPageCodeExamples[theme].edges}
+      diagramTitle={props[theme].diagramTitle}
     />
   )
 }
