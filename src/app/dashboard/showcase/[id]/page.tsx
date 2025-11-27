@@ -52,7 +52,7 @@ const Tooltip = ({
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: -45, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute z-50 whitespace-nowrap rounded-lg bg-gray-900/90 px-3 py-1.5 text-[11px] font-medium text-white shadow-xl backdrop-blur-sm"
+            className="absolute z-50 whitespace-nowrap rounded-lg bg-gray-900/90 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm"
           >
             {text}
             <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900/90" />
@@ -257,7 +257,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
       </head>
 
       {/* --- Top Navigation Bar --- */}
-      <header className="fixed left-0 right-0 top-0 z-40 flex items-center justify-between px-6 py-4 transition-all">
+      <header className="fixed left-0 right-0 top-20 z-40 flex items-center justify-between px-6 py-4 transition-all">
         <motion.button
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -273,7 +273,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
           animate={{ y: 0, opacity: 1 }}
           className="flex flex-col items-end"
         >
-          <div className="flex items-center gap-2 rounded-full bg-white/50 px-4 py-1.5 shadow-sm ring-1 ring-black/5 backdrop-blur-md">
+          <div className="flex items-center gap-2 rounded-full bg-white/50 px-4 py-1.5 ring-1 ring-black/5 backdrop-blur-md">
             <h1 className="text-sm font-semibold text-slate-800">
               {visual.title}
             </h1>
@@ -304,7 +304,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
         {/* Content Container */}
         <motion.figure
           layout
-          className="relative max-h-[85vh] max-w-[90vw] overflow-auto rounded-xl shadow-[0_30px_60px_-12px_rgba(50,50,93,0.15)] ring-1 ring-black/5"
+          className="relative max-h-[85vh] max-w-[90vw] overflow-auto rounded-xl ring-1 ring-black/5"
           style={{ transform: `scale(${zoomLevel})` }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: zoomLevel }}
@@ -339,7 +339,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="flex items-center gap-1 rounded-full bg-white/80 p-1.5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] ring-1 ring-black/[0.04] backdrop-blur-2xl"
+          className="flex items-center gap-1 rounded-full bg-white/80 p-1.5 ring-1 ring-black/[0.04] backdrop-blur-2xl"
         >
           {/* Zoom Controls Group */}
           <div className="mr-1 flex items-center gap-1 border-r border-slate-200/60 pr-2">
@@ -380,7 +380,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
                 onClick={handleSave}
                 className={`flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-all ${
                   visual.isSaved
-                    ? 'bg-slate-900 text-white shadow-md'
+                    ? 'bg-slate-900 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >

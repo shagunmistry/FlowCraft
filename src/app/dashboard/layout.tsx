@@ -1,7 +1,5 @@
 'use client'
 
-import 'reactflow/dist/style.css'
-
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { TempMermaidDiagramType } from '@/components/Mermaid/OverviewDialog.mermaid'
@@ -12,6 +10,7 @@ import { DiagramOrChartType } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { Edge, Node } from 'reactflow'
 import FeedbackDialog from '@/components/FeedbackDialog'
+import NextTopLoader from 'nextjs-toploader'
 
 export default function DashboardLayout({
   children,
@@ -103,8 +102,19 @@ export default function DashboardLayout({
           }}
         >
           <main>
+            <NextTopLoader
+              color="#000000"
+              initialPosition={0.08}
+              crawlSpeed={200}
+              height={3}
+              crawl={true}
+              showSpinner={false}
+              easing="ease"
+              speed={200}
+              shadow="0 0 10px #000000,0 0 5px #000000"
+            />
             <Navbar />
-            <div className="relative pt-16">{children}</div>
+            <div className="relative pt-16 ">{children}</div>
             <Footer />
           </main>
         </DiagramContext.Provider>
