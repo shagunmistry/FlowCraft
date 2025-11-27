@@ -30,6 +30,14 @@ interface UserSettings {
   created_at: string
 }
 
+interface SubscriptionDetails {
+  id: string
+  status: string
+  current_period_end: number
+  cancel_at_period_end: boolean
+  plan: string
+}
+
 // --- UI Components ---
 
 const Section = ({
@@ -119,8 +127,12 @@ export default function SettingsPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [settings, setSettings] = useState<UserSettings | null>(null)
+  const [subscriptionDetails, setSubscriptionDetails] =
+    useState<SubscriptionDetails | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [actionLoading, setActionLoading] = useState(false)
 
   useEffect(() => {
     fetchSettings()
@@ -134,6 +146,19 @@ export default function SettingsPage() {
       if (!response.ok)
         throw new Error(data.error || 'Failed to fetch settings')
       setSettings(data.settings)
+
+      // Fetch subscription details if user is subscribed
+      if (data.settings.subscription.subscribed) {
+        try {
+          const subResponse = await fetch('/api/subscription')
+          const subData = await subResponse.json()
+          if (subResponse.ok && subData.subscription) {
+            setSubscriptionDetails(subData.subscription)
+          }
+        } catch (subError) {
+          console.error('Failed to fetch subscription details:', subError)
+        }
+      }
     } catch (error: any) {
       if (error && error.toString().includes('Unauthorized')) {
         router.push('/login')
@@ -158,6 +183,63 @@ export default function SettingsPage() {
       toast.error(error.message || 'Failed to delete account')
     } finally {
       setDeleting(false)
+    }
+  }
+
+  const handleCancelSubscription = async () => {
+    try {
+      setActionLoading(true)
+      const response = await fetch('/api/subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'cancel' }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to cancel')
+      toast.success('Subscription will be cancelled at period end')
+      setShowCancelConfirm(false)
+      await fetchSettings()
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to cancel subscription')
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const handleReactivateSubscription = async () => {
+    try {
+      setActionLoading(true)
+      const response = await fetch('/api/subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reactivate' }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to reactivate')
+      toast.success('Subscription reactivated successfully')
+      await fetchSettings()
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to reactivate subscription')
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const handleManageSubscription = async () => {
+    try {
+      setActionLoading(true)
+      const response = await fetch('/api/subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'portal' }),
+      })
+      const data = await response.json()
+      if (!response.ok)
+        throw new Error(data.error || 'Failed to open portal')
+      window.location.href = data.url
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to open subscription portal')
+      setActionLoading(false)
     }
   }
 
@@ -279,14 +361,18 @@ export default function SettingsPage() {
             icon={CreditCardIcon}
           />
 
-          {/* <Row
+          <Row
             label="Status"
             value={
               <div className="flex items-center gap-1.5">
                 {settings.subscription.subscribed ? (
                   <>
                     <CheckBadgeIcon className="h-4 w-4 text-green-500" />
-                    <span className="font-medium text-green-700">Active</span>
+                    <span className="font-medium text-green-700">
+                      {subscriptionDetails?.cancel_at_period_end
+                        ? 'Cancelling'
+                        : 'Active'}
+                    </span>
                   </>
                 ) : (
                   <span className="text-zinc-500">Inactive</span>
@@ -294,15 +380,43 @@ export default function SettingsPage() {
               </div>
             }
             action={
-              <Button
-                onClick={() => router.push('/pricing')}
-                variant="primary"
-                className="ml-2"
-              >
-                {settings.subscription.subscribed ? 'Manage' : 'Upgrade'}
-              </Button>
+              settings.subscription.subscribed ? (
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleManageSubscription}
+                    disabled={actionLoading}
+                    variant="primary"
+                  >
+                    {actionLoading ? 'Loading...' : 'Manage'}
+                  </Button>
+                  {subscriptionDetails?.cancel_at_period_end ? (
+                    <Button
+                      onClick={handleReactivateSubscription}
+                      disabled={actionLoading}
+                      variant="secondary"
+                    >
+                      Reactivate
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => setShowCancelConfirm(true)}
+                      disabled={actionLoading}
+                      variant="danger"
+                    >
+                      Cancel
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  onClick={() => router.push('/pricing?sourcePage=dashboard')}
+                  variant="primary"
+                >
+                  Upgrade
+                </Button>
+              )
             }
-          /> */}
+          />
 
           {settings.subscription.subscribed && (
             <>
@@ -345,6 +459,52 @@ export default function SettingsPage() {
             </div>
           </div>
         </Section>
+
+        {/* Cancel Subscription Confirmation */}
+        <AnimatePresence>
+          {showCancelConfirm && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+              onClick={() => setShowCancelConfirm(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                onClick={(e) => e.stopPropagation()}
+                className="max-w-md rounded-xl border border-amber-200 bg-white p-6 shadow-xl"
+              >
+                <h3 className="mb-2 text-lg font-semibold text-zinc-900">
+                  Cancel Subscription?
+                </h3>
+                <p className="mb-4 text-sm text-zinc-600">
+                  Your subscription will remain active until the end of the
+                  current billing period. You can reactivate anytime before
+                  then.
+                </p>
+                <div className="flex items-center justify-end gap-3">
+                  <Button
+                    onClick={() => setShowCancelConfirm(false)}
+                    variant="secondary"
+                    disabled={actionLoading}
+                  >
+                    Keep Subscription
+                  </Button>
+                  <Button
+                    onClick={handleCancelSubscription}
+                    disabled={actionLoading}
+                    variant="danger"
+                  >
+                    {actionLoading ? 'Cancelling...' : 'Cancel Subscription'}
+                  </Button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Danger Zone */}
         <div className="mt-10 px-2">
