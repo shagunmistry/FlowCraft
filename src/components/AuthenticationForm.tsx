@@ -1,58 +1,33 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
 import Image from 'next/image'
 import ErrorAlert from './ErrorAlert'
 import { useState } from 'react'
 import SuccessAlert from './SuccessAlert'
-import { Provider } from '@supabase/supabase-js'
 import GithubSVG from '@/lib/Shared/svgs/Github.svg'
 import GoogleSVG from '@/lib/Shared/svgs/Google.svg'
 import Button from '@/components/ui/Button'
-import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 export default function AuthenticationForm({
-  login,
-  signUp,
-  loginWithGithub,
-  loginWithGoogle,
   isLoginOrSignup,
 }: {
-  login: (formData: FormData) => Promise<{ error: string }>
-  signUp: (
-    formData: FormData,
-  ) => Promise<
-    | { error: string; success?: undefined }
-    | { success: string; error?: undefined }
-  >
-  loginWithGithub: () => Promise<
-    | { error: string; success?: undefined; data?: undefined }
-    | {
-        success: string
-        data: { provider: Provider; url: string }
-        error?: undefined
-      }
-  >
-  loginWithGoogle: () => Promise<
-    | { error: string; success?: undefined; data?: undefined }
-    | {
-        success: string
-        data: { provider: Provider; url: string }
-        error?: undefined
-      }
-  >
   isLoginOrSignup: 'login' | 'signup'
 }) {
+  const router = useRouter()
   const [showError, setShowError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingType, setLoadingType] = useState<
+    'email' | 'google' | 'github' | null
+  >(null)
 
   const _login = async () => {
-    const formData = new FormData()
-
     const emailField = document.getElementById('email') as HTMLInputElement
     const passwordField = document.getElementById(
       'password',
@@ -60,30 +35,55 @@ export default function AuthenticationForm({
 
     if (!emailField || !passwordField) return
 
-    formData.append('email', emailField.value)
-    formData.append('password', passwordField.value)
+    setIsLoading(true)
+    setLoadingType('email')
 
-    const res = (await login(formData)) as any
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailField.value,
+          password: passwordField.value,
+        }),
+      })
 
-    // If redirect() was called in the server action, res will be undefined
-    // and Next.js will handle the navigation automatically
-    if (res && res.error) {
-      setErrorMessage('Username or password is incorrect.')
+      const data = await response.json()
+
+      if (!response.ok || data.error) {
+        setErrorMessage('Username or password is incorrect.')
+        setShowError(true)
+        setTimeout(() => {
+          setShowError(false)
+          setErrorMessage('')
+        }, 5000)
+
+        if (passwordField) {
+          passwordField.value = ''
+          passwordField.focus()
+        }
+      } else {
+        // Successful login - redirect to dashboard
+        router.push('/dashboard')
+        router.refresh()
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      setErrorMessage('An error occurred during login.')
       setShowError(true)
       setTimeout(() => {
         setShowError(false)
         setErrorMessage('')
       }, 5000)
-
-      if (passwordField) {
-        passwordField.value = ''
-        passwordField.focus()
-      }
+    } finally {
+      setIsLoading(false)
+      setLoadingType(null)
     }
   }
 
   const _signup = async () => {
-    const formData = new FormData()
     const emailField = document.getElementById('email') as HTMLInputElement
     const passwordField = document.getElementById(
       'password',
@@ -91,56 +91,126 @@ export default function AuthenticationForm({
 
     if (!emailField || !passwordField) return
 
-    formData.append('email', emailField.value)
-    formData.append('password', passwordField.value)
+    setIsLoading(true)
+    setLoadingType('email')
 
-    const res = (await signUp(formData)) as any
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailField.value,
+          password: passwordField.value,
+        }),
+      })
 
-    if (res.error) {
-      setErrorMessage(res.error)
+      const data = await response.json()
+
+      if (data.error) {
+        setErrorMessage(data.error)
+        setShowError(true)
+        setTimeout(() => {
+          setShowError(false)
+          setErrorMessage('')
+        }, 5000)
+      }
+
+      if (data.success) {
+        setSuccessMessage(data.success)
+        setShowSuccess(true)
+        emailField.value = ''
+        passwordField.value = ''
+        setTimeout(() => {
+          setShowSuccess(false)
+          setSuccessMessage('')
+        }, 5000)
+      }
+    } catch (error) {
+      console.error('Signup error:', error)
+      setErrorMessage('An error occurred during signup.')
       setShowError(true)
       setTimeout(() => {
         setShowError(false)
         setErrorMessage('')
       }, 5000)
-    }
-
-    if (res.success) {
-      setSuccessMessage(res.success)
-      setShowSuccess(true)
-      emailField.value = ''
-      passwordField.value = ''
-      setTimeout(() => {
-        setShowSuccess(false)
-        setSuccessMessage('')
-      }, 5000)
+    } finally {
+      setIsLoading(false)
+      setLoadingType(null)
     }
   }
 
   const _loginWithGithub = async () => {
-    const res = await loginWithGithub()
-    if (res && res.error) {
-      setErrorMessage('Error during login')
+    setIsLoading(true)
+    setLoadingType('github')
+
+    try {
+      const response = await fetch('/api/auth/github', {
+        method: 'POST',
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        setErrorMessage('Error during login')
+        setShowError(true)
+        setTimeout(() => {
+          setShowError(false)
+          setErrorMessage('')
+        }, 5000)
+        setIsLoading(false)
+        setLoadingType(null)
+      } else if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('GitHub login error:', error)
+      setErrorMessage('An error occurred during GitHub login.')
       setShowError(true)
       setTimeout(() => {
         setShowError(false)
         setErrorMessage('')
       }, 5000)
+      setIsLoading(false)
+      setLoadingType(null)
     }
-    if (res && res.data) window.location.href = res.data.url
   }
 
   const _loginWithGoogle = async () => {
-    const res = await loginWithGoogle()
-    if (res && res.error) {
-      setErrorMessage('Error during login')
+    setIsLoading(true)
+    setLoadingType('google')
+
+    try {
+      const response = await fetch('/api/auth/google', {
+        method: 'POST',
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        setErrorMessage('Error during login')
+        setShowError(true)
+        setTimeout(() => {
+          setShowError(false)
+          setErrorMessage('')
+        }, 5000)
+        setIsLoading(false)
+        setLoadingType(null)
+      } else if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('Google login error:', error)
+      setErrorMessage('An error occurred during Google login.')
       setShowError(true)
       setTimeout(() => {
         setShowError(false)
         setErrorMessage('')
       }, 5000)
+      setIsLoading(false)
+      setLoadingType(null)
     }
-    if (res && res.data) window.location.href = res.data.url
   }
 
   const handleSubmit = (e: any) => {
@@ -234,9 +304,55 @@ export default function AuthenticationForm({
             <div className="pt-2">
               <Button
                 type="submit"
-                className="flex w-full justify-center rounded-lg bg-gray-900 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm transition-all duration-200 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+                disabled={isLoading}
+                className="flex w-full justify-center rounded-lg bg-gray-900 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm transition-all duration-200 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {isLoginOrSignup === 'login' ? 'Sign in' : 'Create account'}
+                <AnimatePresence mode="wait">
+                  {isLoading && loadingType === 'email' ? (
+                    <motion.div
+                      key="loading"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center gap-2"
+                    >
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      <span>
+                        {isLoginOrSignup === 'login'
+                          ? 'Signing in...'
+                          : 'Creating account...'}
+                      </span>
+                    </motion.div>
+                  ) : (
+                    <motion.span
+                      key="text"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                    >
+                      {isLoginOrSignup === 'login' ? 'Sign in' : 'Create account'}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </Button>
             </div>
           </form>
@@ -296,19 +412,103 @@ export default function AuthenticationForm({
             <button
               type="button"
               onClick={_loginWithGoogle}
-              className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"
+              disabled={isLoading}
+              className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <GoogleSVG className="h-5 w-5" />
-              <span>Google</span>
+              <AnimatePresence mode="wait">
+                {isLoading && loadingType === 'google' ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center gap-2"
+                  >
+                    <svg
+                      className="h-4 w-4 animate-spin"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="content"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center gap-3"
+                  >
+                    <GoogleSVG className="h-5 w-5" />
+                    <span>Google</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </button>
 
             <button
               type="button"
               onClick={_loginWithGithub}
-              className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50"
+              disabled={isLoading}
+              className="flex w-full items-center justify-center gap-3 rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <GithubSVG className="h-5 w-5" />
-              <span>GitHub</span>
+              <AnimatePresence mode="wait">
+                {isLoading && loadingType === 'github' ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center gap-2"
+                  >
+                    <svg
+                      className="h-4 w-4 animate-spin"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="content"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center gap-3"
+                  >
+                    <GithubSVG className="h-5 w-5" />
+                    <span>GitHub</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </button>
           </div>
         </div>
