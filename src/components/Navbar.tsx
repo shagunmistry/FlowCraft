@@ -44,7 +44,7 @@ const authenticatedNavigation = [
 ]
 
 const ProfileMenu = [
-  { title: 'Settings', link: '/dashboard/settings' },
+  // { title: 'Settings', link: '/dashboard/settings' },
   { title: 'Help Center', link: '/support' },
   { title: 'Sign Out', link: '/auth/logout', danger: true },
 ]
