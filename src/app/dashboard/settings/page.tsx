@@ -147,17 +147,16 @@ export default function SettingsPage() {
         throw new Error(data.error || 'Failed to fetch settings')
       setSettings(data.settings)
 
-      // Fetch subscription details if user is subscribed
-      if (data.settings.subscription.subscribed) {
-        try {
-          const subResponse = await fetch('/api/subscription')
-          const subData = await subResponse.json()
-          if (subResponse.ok && subData.subscription) {
-            setSubscriptionDetails(subData.subscription)
-          }
-        } catch (subError) {
-          console.error('Failed to fetch subscription details:', subError)
+      // Always try to fetch subscription details from Stripe to get the most up-to-date status
+      // This ensures we show the correct buttons even if the database is out of sync
+      try {
+        const subResponse = await fetch('/api/subscription')
+        const subData = await subResponse.json()
+        if (subResponse.ok && subData.subscription) {
+          setSubscriptionDetails(subData.subscription)
         }
+      } catch (subError) {
+        console.error('Failed to fetch subscription details:', subError)
       }
     } catch (error: any) {
       if (error && error.toString().includes('Unauthorized')) {
@@ -286,6 +285,15 @@ export default function SettingsPage() {
     )
   }
 
+  // Determine if user has an active subscription based on Stripe data (source of truth)
+  // A subscription is considered active if:
+  // 1. Stripe subscription exists AND
+  // 2. Status is 'active' OR (status is 'active' but cancelled at period end)
+  const hasActiveSubscription = subscriptionDetails &&
+    (subscriptionDetails.status === 'active' ||
+     (subscriptionDetails.cancel_at_period_end &&
+      subscriptionDetails.current_period_end * 1000 > Date.now()))
+
   return (
     <main className="min-h-screen bg-zinc-50 pt-14">
       {/* Navigation Header */}
@@ -350,12 +358,12 @@ export default function SettingsPage() {
               <span
                 className={clsx(
                   'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
-                  settings.subscription.subscribed
+                  hasActiveSubscription
                     ? 'bg-blue-50 text-blue-700'
                     : 'bg-zinc-100 text-zinc-600',
                 )}
               >
-                {settings.subscription.plan || 'Free Plan'}
+                {hasActiveSubscription ? (settings.subscription.plan || 'Pro') : 'Free Plan'}
               </span>
             }
             icon={CreditCardIcon}
@@ -365,7 +373,7 @@ export default function SettingsPage() {
             label="Status"
             value={
               <div className="flex items-center gap-1.5">
-                {settings.subscription.subscribed ? (
+                {hasActiveSubscription ? (
                   <>
                     <CheckBadgeIcon className="h-4 w-4 text-green-500" />
                     <span className="font-medium text-green-700">
@@ -380,7 +388,7 @@ export default function SettingsPage() {
               </div>
             }
             action={
-              settings.subscription.subscribed ? (
+              hasActiveSubscription ? (
                 <div className="flex gap-2">
                   <Button
                     onClick={handleManageSubscription}
@@ -418,13 +426,13 @@ export default function SettingsPage() {
             }
           />
 
-          {settings.subscription.subscribed && (
+          {hasActiveSubscription && (
             <>
               <Row
                 label="Subscribed Since"
                 value={formatDate(settings.subscription.date_subscribed)}
               />
-              {settings.subscription.date_cancelled && (
+              {subscriptionDetails?.cancel_at_period_end && settings.subscription.date_cancelled && (
                 <Row
                   label="Expires On"
                   value={formatDate(settings.subscription.date_cancelled)}

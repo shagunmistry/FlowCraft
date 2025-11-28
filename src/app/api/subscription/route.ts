@@ -42,7 +42,8 @@ export async function GET() {
       )
     }
 
-    if (!userInfo.subscribed || !userInfo.plan) {
+    // If there's no plan ID, there's definitely no subscription
+    if (!userInfo.plan) {
       return new Response(
         JSON.stringify({
           subscription: null,
@@ -55,6 +56,8 @@ export async function GET() {
       )
     }
 
+    // Always fetch from Stripe if there's a plan ID, even if database says not subscribed
+    // This ensures we get the most up-to-date status (e.g., cancelled but still active)
     try {
       // Fetch subscription details from Stripe
       const subscription = await stripe.subscriptions.retrieve(userInfo.plan)
@@ -142,7 +145,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!userInfo.subscribed || !userInfo.plan) {
+    // Check if there's a plan ID to work with
+    if (!userInfo.plan) {
       return new Response(
         JSON.stringify({
           error: 'No active subscription found',

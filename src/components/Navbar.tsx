@@ -22,6 +22,7 @@ const mainNavigation = [
   { name: 'Image Studio', href: '/image-studio' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Blog', href: '/blogs' },
+  { name: 'VS Code Extension', href: 'https://marketplace.visualstudio.com/items?itemName=FlowCraft.flowcraft' },
 ]
 
 const useCasesNavigation = [

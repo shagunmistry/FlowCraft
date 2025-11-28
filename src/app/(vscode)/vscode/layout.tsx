@@ -30,7 +30,7 @@ export default function VsCodePageLaytout({
         {/* <Navbar /> */}
         <div className="relative">{children}</div>
       </main>
-      {/* <Footer /> */}
+      <Footer />
       <Analytics />
     </>
   )

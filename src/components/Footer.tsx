@@ -14,6 +14,7 @@ const Footer = () => {
       { name: 'Get Started', href: '/' },
       { name: 'Pricing', href: '/pricing' },
       { name: 'Release Notes', href: '/release-notes' },
+      { name: 'VS Code Extension', href: 'https://marketplace.visualstudio.com/items?itemName=FlowCraft.flowcraft' },
     ],
     resources: [
       { name: 'Blogs', href: '/blogs' },
