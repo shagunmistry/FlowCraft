@@ -39,20 +39,6 @@ const MaintenancePage = () => {
           </div>
         </div>
 
-        {/* Updates Section */}
-        <div className="mt-8 space-y-4">
-          <p className="text-sm text-zinc-500">Follow us for updates</p>
-
-          <a
-            href="https://twitter.com/mistry_shagun"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 text-sm text-blue-600 transition-colors hover:text-blue-700"
-          >
-            <span>@mistry_shagun</span>
-          </a>
-        </div>
-
         {/* Footer */}
         <div className="pt-12 text-sm text-zinc-400">
           Thank you for your patience and understanding.
