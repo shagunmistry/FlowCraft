@@ -15,22 +15,28 @@ export default function FeedbackDialog({
   message: string
 }) {
   const [submitting, setSubmitting] = useState<boolean>(false)
+  const [followUp, setFollowUp] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setError(null)
     const formData = new FormData(e.currentTarget)
-    const feedback = formData.get('feedback')
-    const newFeatures = formData.get('new-features')
-    const followup = formData.get('followup')
-    console.log('Feedback:', feedback)
-    console.log('New Features:', newFeatures)
-    console.log('Followup:', followup)
+    const feedback = String(formData.get('feedback') ?? '').trim()
+    const newFeatures = String(formData.get('new-features') ?? '').trim()
+    const contactEmail = String(formData.get('contact-email') ?? '').trim()
+
+    if (feedback.length < 10) {
+      setError('Tell us a bit more so we can act on it (at least 10 characters).')
+      return
+    }
 
     setSubmitting(true)
     const sbClient = createClient()
     const user = await sbClient.auth.getSession()
 
     if (user && user.data.session && user.data.session.user.email) {
+      const session = user.data.session
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_FLOWCRAFT_API}/feedback`,
         {
@@ -42,16 +48,20 @@ export default function FeedbackDialog({
           body: JSON.stringify({
             feedback,
             newFeatures,
-            followUp: followup === 'on',
-            email: user.data.session.user.id,
+            followUp,
+            userId: session.user.id,
+            contactEmail: followUp
+              ? contactEmail || session.user.email
+              : null,
           }),
         },
       )
 
-      if (response.ok) {
-        console.log('Feedback submitted')
-      } else {
+      if (!response.ok) {
         console.error('Feedback submission failed')
+        setError('Something went wrong submitting your feedback. Try again?')
+        setSubmitting(false)
+        return
       }
 
       setSubmitting(false)
@@ -121,18 +131,25 @@ export default function FeedbackDialog({
                           id="feedback"
                           name="feedback"
                           rows={4}
+                          minLength={10}
                           className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:border-red-500 focus-visible:ring-red-500 sm:text-sm"
                           placeholder="What can we do better?"
                           required
                         />
                       </div>
+                      {error && (
+                        <p className="mt-2 text-sm text-red-600">{error}</p>
+                      )}
                     </div>
                     <div className="mt-5 sm:mt-6">
                       <label
                         htmlFor="new-features"
                         className="block text-sm font-semibold text-gray-700"
                       >
-                        What features would you like to see in the future?
+                        What features would you like to see in the future?{' '}
+                        <span className="font-normal text-gray-400">
+                          (optional)
+                        </span>
                       </label>
                       <div className="mt-1">
                         <textarea
@@ -152,6 +169,8 @@ export default function FeedbackDialog({
                           aria-describedby="followup-description"
                           name="followup"
                           type="checkbox"
+                          checked={followUp}
+                          onChange={(e) => setFollowUp(e.target.checked)}
                           className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
                         />
                       </div>
@@ -164,6 +183,24 @@ export default function FeedbackDialog({
                         </label>
                       </div>
                     </div>
+                    {followUp && (
+                      <div className="mt-3">
+                        <label
+                          htmlFor="contact-email"
+                          className="block text-sm font-semibold text-gray-700"
+                        >
+                          Email to reach you at
+                        </label>
+                        <input
+                          id="contact-email"
+                          name="contact-email"
+                          type="email"
+                          required
+                          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-visible:border-red-500 focus-visible:ring-red-500 sm:text-sm"
+                          placeholder="you@example.com"
+                        />
+                      </div>
+                    )}
                     <div className="mt-5 sm:mt-6">
                       <button
                         type="submit"
