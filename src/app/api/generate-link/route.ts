@@ -7,13 +7,33 @@ export const maxDuration = 200
 export async function POST(req: Request) {
   const body = await req.json()
 
-  const { diagramData, diagramId, type, title } = body
+  const { diagramData, diagramId, type, title, imagePng } = body
 
   // Check if the user is authenticated with supabase auth
   const supabaseClient = await createClient()
+
+  // Resolve user from Bearer token (VS Code extension) or cookie session (web).
+  const authHeader = req.headers.get('authorization')
+  let bearerUserId: string | null = null
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.slice('Bearer '.length)
+    const { data: tokenData, error: tokenError } = await supabaseClient.auth.getUser(token)
+    if (tokenError || !tokenData.user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid token' }),
+        { status: 401 },
+      )
+    }
+    bearerUserId = tokenData.user.id
+  }
+
   const { data: userData, error } = await supabaseClient.auth.getUser()
 
-  if (error || !diagramData) {
+  // Prefer bearer token user; fall back to cookie session user
+  const sessionUserId = !error && userData?.user ? userData.user.id : null
+  const userId = bearerUserId ?? sessionUserId
+
+  if (!userId || !diagramData) {
     console.error('Error getting user', error)
     return new Response(
       JSON.stringify({ error: 'Unauthorized' }),
@@ -30,18 +50,36 @@ export async function POST(req: Request) {
     diagramId,
   )
 
+  // Upload PNG to storage if provided (non-fatal on failure)
+  let imageUrl: string | undefined
+  if (typeof imagePng === 'string' && imagePng.length > 0) {
+    const base64 = imagePng.replace(/^data:image\/png;base64,/, '')
+    const bytes = Buffer.from(base64, 'base64')
+    const objectPath = `shares/${userId}/${inviteCode}.png`
+    const { error: uploadError } = await supabaseClient.storage
+      .from('images')
+      .upload(objectPath, bytes, { contentType: 'image/png', upsert: true })
+    if (!uploadError) {
+      const { data: pub } = supabaseClient.storage.from('images').getPublicUrl(objectPath)
+      imageUrl = pub.publicUrl
+    } else {
+      console.error('Non-fatal: PNG upload failed', uploadError)
+    }
+  }
+
   // Create a new link
   const { data: link, error: linkError } = await supabaseClient
     .from('shareable_links')
     .insert([
       {
-        user_id: userData.user.id,
+        user_id: userId,
         invite_code: inviteCode,
         diagram_id: diagramId,
         created_at: new Date().toISOString(),
         type: type,
         title: title,
         data: JSON.stringify(diagramData),
+        image_url: imageUrl ?? null,
       },
     ])
     .select('id')
@@ -66,6 +104,7 @@ export async function POST(req: Request) {
       result: {
         link: subUrlLinkToShare,
         inviteCode,
+        imageUrl,
       },
     }),
     {
