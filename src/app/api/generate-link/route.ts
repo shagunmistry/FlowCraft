@@ -33,11 +33,17 @@ export async function POST(req: Request) {
   const sessionUserId = !error && userData?.user ? userData.user.id : null
   const userId = bearerUserId ?? sessionUserId
 
-  if (!userId || !diagramData) {
-    console.error('Error getting user', error)
+  if (!userId) {
+    if (error) console.error('Error getting user', error)
     return new Response(
       JSON.stringify({ error: 'Unauthorized' }),
       { status: 401 }
+    )
+  }
+  if (!diagramData) {
+    return new Response(
+      JSON.stringify({ error: 'Missing diagramData' }),
+      { status: 400 }
     )
   }
 
@@ -78,7 +84,7 @@ export async function POST(req: Request) {
         created_at: new Date().toISOString(),
         type: type,
         title: title,
-        data: JSON.stringify(diagramData),
+        data: typeof diagramData === 'string' ? diagramData : JSON.stringify(diagramData),
         image_url: imageUrl ?? null,
       },
     ])
