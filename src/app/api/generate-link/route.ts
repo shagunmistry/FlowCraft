@@ -27,14 +27,16 @@ export async function POST(req: Request) {
     bearerUserId = tokenData.user.id
   }
 
-  const { data: userData, error } = await supabaseClient.auth.getUser()
+  let sessionUserId: string | null = null
+  if (!bearerUserId) {
+    const { data: userData, error } = await supabaseClient.auth.getUser()
+    if (error) console.error('Error getting user', error)
+    sessionUserId = userData?.user ? userData.user.id : null
+  }
 
-  // Prefer bearer token user; fall back to cookie session user
-  const sessionUserId = !error && userData?.user ? userData.user.id : null
   const userId = bearerUserId ?? sessionUserId
 
   if (!userId) {
-    if (error) console.error('Error getting user', error)
     return new Response(
       JSON.stringify({ error: 'Unauthorized' }),
       { status: 401 }
