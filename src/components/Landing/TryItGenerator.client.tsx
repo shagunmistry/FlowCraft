@@ -14,6 +14,7 @@ import {
 } from '@/lib/free-taste/client'
 import { getDeviceId } from '@/lib/free-taste/device'
 import { solveInWorker } from '@/lib/free-taste/solve'
+import { promptLenBucket, trackTryIt } from '@/lib/free-taste/track'
 
 const TYPE_LABELS: Record<FreeTasteType, string> = {
   flowchart: 'Flowchart',
@@ -50,6 +51,7 @@ export default function TryItGenerator() {
         if (!alive) return
         challengeRef.current = { ...c, at: Date.now() }
         setPhase('idle')
+        trackTryIt('try_it_shown')
       })
       .catch(() => alive && setPhase('unavailable'))
     return () => {
@@ -83,6 +85,11 @@ export default function TryItGenerator() {
     if (!prompt.trim() || phase === 'working') return
     setPhase('working')
     setMessage('')
+    const t0 = Date.now()
+    trackTryIt('try_it_started', {
+      type,
+      prompt_len: promptLenBucket(prompt.trim().length),
+    })
     try {
       let res
       try {
@@ -94,6 +101,11 @@ export default function TryItGenerator() {
       setCode(res.mermaidCode)
       setRemaining(res.remaining)
       setPhase('done')
+      trackTryIt('try_it_succeeded', {
+        type,
+        remaining: res.remaining,
+        secs: Math.round((Date.now() - t0) / 1000),
+      })
       try {
         localStorage.setItem(
           'flowcraft:free-taste:last',
@@ -102,12 +114,18 @@ export default function TryItGenerator() {
       } catch {}
     } catch (e) {
       if (e instanceof FreeTasteQuotaError) {
+        trackTryIt('try_it_failed', { type, kind: 'quota' })
         setRemaining(0)
         setPhase('quota')
       } else if (e instanceof FreeTasteUnavailableError) {
+        trackTryIt('try_it_failed', { type, kind: 'unavailable' })
         setMessage('The generator is temporarily unavailable. Please try again soon.')
         setPhase('error')
       } else {
+        trackTryIt('try_it_failed', {
+          type,
+          kind: e instanceof Error && e.message === 'pow' ? 'pow' : 'generation',
+        })
         setMessage('Something went wrong generating that. Try rephrasing and run it again.')
         setPhase('error')
       }
@@ -133,12 +151,15 @@ export default function TryItGenerator() {
         className="mt-3 w-full resize-none rounded-sm border border-rule bg-ink p-3 text-sm text-paper placeholder:text-fog focus:border-signal focus:outline-none"
       />
       <div className="mt-2 flex flex-wrap gap-2">
-        {EXAMPLES.map((ex) => (
+        {EXAMPLES.map((ex, i) => (
           <button
             key={ex}
             type="button"
             disabled={working}
-            onClick={() => setPrompt(ex)}
+            onClick={() => {
+              setPrompt(ex)
+              trackTryIt('try_it_example_used', { index: i })
+            }}
             className="rounded-sm border border-rule px-2 py-1 text-left text-[11px] text-fog transition-colors hover:border-signal/50 hover:text-signal"
           >
             {ex}
@@ -181,7 +202,11 @@ export default function TryItGenerator() {
       {phase === 'quota' && (
         <div role="status" className="mt-4 border border-signal/40 p-4 text-sm text-paper">
           You&apos;ve used your free tries.{' '}
-          <Link href="/sign-up" className="text-signal underline">
+          <Link
+            href="/sign-up?src=try-it"
+            onClick={() => trackTryIt('try_it_cta_clicked', { where: 'quota' })}
+            className="text-signal underline"
+          >
             Sign up free
           </Link>{' '}
           to keep creating, save and export.
@@ -198,7 +223,8 @@ export default function TryItGenerator() {
               {remaining !== null ? `${remaining} free tries left` : ''}
             </span>
             <Link
-              href="/sign-up"
+              href="/sign-up?src=try-it"
+              onClick={() => trackTryIt('try_it_cta_clicked', { where: 'result' })}
               className="rounded-sm border border-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal hover:text-ink"
             >
               Sign up free to save, edit and export →

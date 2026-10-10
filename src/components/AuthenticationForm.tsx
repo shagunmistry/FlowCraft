@@ -11,6 +11,7 @@ import GithubSVG from '@/lib/Shared/svgs/Github.svg'
 import GoogleSVG from '@/lib/Shared/svgs/Google.svg'
 import Button from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
+import { trackTryIt } from '@/lib/free-taste/track'
 
 export default function AuthenticationForm({
   isLoginOrSignup,
@@ -27,12 +28,15 @@ export default function AuthenticationForm({
     'email' | 'google' | 'github' | null
   >(null)
   const [templateId, setTemplateId] = useState<string | null>(null)
+  const [signupSource, setSignupSource] = useState<string>('direct')
 
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search)
       const t = params.get('template')
       if (t) setTemplateId(t)
+      const src = params.get('src')
+      if (src && /^[a-z0-9-]{1,32}$/.test(src)) setSignupSource(src)
     } catch {
       // ignore
     }
@@ -132,6 +136,7 @@ export default function AuthenticationForm({
       }
 
       if (data.success) {
+        trackTryIt('signup_completed', { source: signupSource })
         setSuccessMessage(data.success)
         setShowSuccess(true)
         emailField.value = ''
