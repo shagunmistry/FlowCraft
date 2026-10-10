@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase-auth/client'
 import Navbar from '../Navbar'
 import Footer from '../Footer'
+import TryItGenerator from './TryItGenerator.client'
 
 const rotatingWords = [
   'flowcharts',
@@ -262,6 +263,8 @@ export default function MainLanding() {
                     </span>
                   </Link>
                 </motion.div>
+
+                {!authenticated && <TryItGenerator />}
               </div>
 
               {/* Drafter's card */}
