@@ -18,6 +18,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { id } = await params
+  if (!/^\d+$/.test(id)) {
+    return { title: 'Post Not Found' }
+  }
   const supabaseClient = await createClient()
 
   const { data, error } = await supabaseClient
@@ -45,6 +48,9 @@ export async function generateMetadata(
 
 export default async function BlogPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  if (!/^\d+$/.test(id)) {
+    return notFound()
+  }
   const supabaseClient = await createClient()
 
   const { data, error } = await supabaseClient

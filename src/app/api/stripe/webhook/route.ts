@@ -57,6 +57,10 @@ export async function POST(request: NextRequest) {
               'Webhook: Error updating user on checkout.session.completed',
               error,
             )
+            throw new Error(
+              'Webhook: Error updating user on checkout.session.completed: ' +
+                error.message,
+            )
           }
         }
         break
@@ -83,10 +87,8 @@ export async function POST(request: NextRequest) {
           .eq('plan', subscription.id)
 
         if (error) {
-          console.error(
-            'Webhook: Error updating user on subscription.updated',
-            error,
-          )
+          console.error('Webhook: Error updating user on subscription.updated', error)
+          throw new Error('Webhook: Error updating user on subscription.updated' + ': ' + error.message)
         }
         break
       }
@@ -103,10 +105,8 @@ export async function POST(request: NextRequest) {
           .eq('plan', subscription.id)
 
         if (error) {
-          console.error(
-            'Webhook: Error updating user on subscription.deleted',
-            error,
-          )
+          console.error('Webhook: Error updating user on subscription.deleted', error)
+          throw new Error('Webhook: Error updating user on subscription.deleted' + ': ' + error.message)
         }
         break
       }

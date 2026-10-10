@@ -7,7 +7,6 @@ export async function GET(
   try {
     const { id } = await params
     console.log('🔍 GET /api/get-public-diagrams/[id] - Route hit with ID:', id)
-    console.log('🔍 Request headers:', Object.fromEntries(request.headers.entries()))
 
     const userId = request.headers.get('User-Id')
     console.log('🔍 User ID from header:', userId)
@@ -24,10 +23,20 @@ export async function GET(
       headers['User-Id'] = userId
     }
 
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers,
-    })
+    // Fail fast (before Vercel's 15s function limit) so a cold-starting
+    // backend returns a clean 504 instead of an unhandled runtime timeout.
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 12000)
+    let response: Response
+    try {
+      response = await fetch(apiUrl, {
+        method: 'GET',
+        headers,
+        signal: controller.signal,
+      })
+    } finally {
+      clearTimeout(timer)
+    }
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -40,8 +49,20 @@ export async function GET(
     const diagram = await response.json()
 
     console.log('✅ Successfully returning diagram:', diagram.id)
-    return NextResponse.json({ diagram })
+    // Anonymous responses are identical for every caller, so let the CDN cache them.
+    return NextResponse.json(
+      { diagram },
+      {
+        headers: userId
+          ? undefined
+          : { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' },
+      },
+    )
   } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error('❌ Public diagram fetch timed out')
+      return NextResponse.json({ error: 'Upstream timed out' }, { status: 504 })
+    }
     console.error('❌ Error fetching diagram:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
