@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import Script from 'next/script'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
 import SimpleNotification from '@/components/SimpleNotification'
@@ -48,6 +49,8 @@ const inputClass =
 
 export default function SupportPage() {
   const [loading, setLoading] = useState(false)
+  const startedAt = useRef(Date.now())
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   const [time, setTime] = useState('')
   const [notification, setNotification] = useState({
     message: '',
@@ -78,9 +81,11 @@ export default function SupportPage() {
     const data = {
       firstName: formData.get('first-name'),
       lastName: formData.get('last-name'),
-      company: formData.get('company'),
       email: formData.get('email'),
       message: formData.get('message'),
+      website: formData.get('website'), // honeypot
+      startedAt: startedAt.current,
+      turnstileToken: formData.get('cf-turnstile-response'),
     }
 
     try {
@@ -97,6 +102,8 @@ export default function SupportPage() {
         open: true,
       })
       form.reset()
+      startedAt.current = Date.now()
+      ;(window as any).turnstile?.reset()
     } catch (err) {
       console.error('Submission error:', err)
       setNotification({
@@ -242,6 +249,7 @@ export default function SupportPage() {
                     id="first-name"
                     autoComplete="given-name"
                     required
+                    maxLength={100}
                     placeholder="Jane"
                     className={inputClass}
                   />
@@ -253,26 +261,30 @@ export default function SupportPage() {
                     id="last-name"
                     autoComplete="family-name"
                     required
+                    maxLength={100}
                     placeholder="Doe"
                     className={inputClass}
                   />
                 </FieldRow>
               </div>
 
-              <FieldRow index="03" label="Company" hint="Where you draft from">
+              {/* Honeypot: hidden from people, bots fill it in. */}
+              <div
+                aria-hidden
+                className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+              >
+                <label htmlFor="website">Website</label>
                 <input
                   type="text"
-                  name="company"
-                  id="company"
-                  autoComplete="organization"
-                  required
-                  placeholder="Acme Studio"
-                  className={inputClass}
+                  name="website"
+                  id="website"
+                  tabIndex={-1}
+                  autoComplete="off"
                 />
-              </FieldRow>
+              </div>
 
               <FieldRow
-                index="04"
+                index="03"
                 label="Email"
                 hint="Where the reply lands"
               >
@@ -282,13 +294,14 @@ export default function SupportPage() {
                   id="email"
                   autoComplete="email"
                   required
+                  maxLength={254}
                   placeholder="you@studio.com"
                   className={inputClass}
                 />
               </FieldRow>
 
               <FieldRow
-                index="05"
+                index="04"
                 label="Message"
                 hint="Symptoms, context, hopes"
               >
@@ -297,10 +310,26 @@ export default function SupportPage() {
                   id="message"
                   rows={5}
                   required
+                  minLength={5}
+                  maxLength={5000}
                   placeholder="Tell us what's on your mind…"
                   className={clsx(inputClass, 'resize-none')}
                 />
               </FieldRow>
+
+              {turnstileSiteKey && (
+                <div className="border-t border-rule px-5 py-4 md:px-8">
+                  <Script
+                    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                    strategy="afterInteractive"
+                  />
+                  <div
+                    className="cf-turnstile"
+                    data-sitekey={turnstileSiteKey}
+                    data-theme="dark"
+                  />
+                </div>
+              )}
 
               <div className="flex flex-col items-stretch gap-6 border-t border-rule px-5 py-6 md:flex-row md:items-center md:justify-between md:px-8">
                 <p className="max-w-md font-mono text-[10px] uppercase tracking-[0.22em] text-fog">

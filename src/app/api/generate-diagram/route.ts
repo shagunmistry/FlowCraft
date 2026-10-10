@@ -79,51 +79,22 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  console.log('User Data from DB: ', userDataFromDB)
   if (
     userDataFromDB &&
     userDataFromDB?.length > 0 &&
     userDataFromDB[0].subscribed === false
   ) {
-    // Check how many diagrams the user has created already in the diagrams table
-    const { data: userDiagramsData, error: userDiagramsError } =
-      await supabaseClient
-        .from('diagrams')
-        .select()
-        .eq('user_id', userId)
-
-    if (userDiagramsError) {
-      console.error(
-        'Error getting user diagrams while generating diagram:',
-        userDiagramsError,
-      )
-
-      return new Response(
-        JSON.stringify({
-          error: 'Error getting user diagrams while generating diagram',
-        }),
-        {
-          headers: {
-            'content-type': 'application/json',
-          },
-          status: 401,
+    return new Response(
+      JSON.stringify({
+        error: 'Subscription required to generate diagrams',
+      }),
+      {
+        headers: {
+          'content-type': 'application/json',
         },
-      )
-    }
-
-    if (userDiagramsData.length > 2) {
-      return new Response(
-        JSON.stringify({
-          error: 'User has created more than 1 diagrams',
-        }),
-        {
-          headers: {
-            'content-type': 'application/json',
-          },
-          status: 401,
-        },
-      )
-    }
+        status: 402,
+      },
+    )
   }
 
   const json = await req.json()

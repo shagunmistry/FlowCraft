@@ -43,6 +43,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const { data: userRows } = await supabaseClient
+      .from('users')
+      .select('subscribed')
+      .eq('user_id', session.user.id)
+
+    if (userRows && userRows.length > 0 && userRows[0].subscribed === false) {
+      return NextResponse.json(
+        { error: 'Subscription required to generate images' },
+        { status: 402 },
+      )
+    }
+
     const response = await fetch(
       `${NEXT_PUBLIC_FLOWCRAFT_API}/v2/generate-image`,
       {

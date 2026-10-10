@@ -15,6 +15,18 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  const { data: userRows } = await supabase
+    .from('users')
+    .select('subscribed')
+    .eq('user_id', authResult.userId)
+
+  if (userRows && userRows.length > 0 && userRows[0].subscribed === false) {
+    return new Response(
+      JSON.stringify({ error: 'Subscription required to regenerate diagrams' }),
+      { status: 402, headers: { 'Content-Type': 'application/json' } },
+    )
+  }
+
   const { diagramId } = await req.json()
   if (!diagramId) {
     return new Response(JSON.stringify({ error: 'Missing diagramId' }), {

@@ -19,6 +19,18 @@ export async function POST(req: Request) {
       )
     }
 
+    const { data: userRows } = await supabaseClient
+      .from('users')
+      .select('subscribed')
+      .eq('user_id', session.user.id)
+
+    if (userRows && userRows.length > 0 && userRows[0].subscribed === false) {
+      return new Response(
+        JSON.stringify({ error: 'Subscription required to generate diagrams' }),
+        { status: 402, headers: { 'content-type': 'application/json' } },
+      )
+    }
+
     const body = await req.json()
     const { type, description, isPublic, colorPalette, complexityLevel } = body
 
