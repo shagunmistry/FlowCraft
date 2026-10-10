@@ -148,10 +148,7 @@ const Footer = () => {
           <div className="relative w-full max-w-md transform overflow-hidden rounded-sm border border-rule bg-graphite p-6 shadow-2xl shadow-black/40">
             <div className="mb-5 flex items-center justify-between border-b border-rule pb-4">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
-                  Form · 01
-                </p>
-                <h3 className="mt-1 font-serif text-lg text-paper">
+                <h3 className="font-serif text-lg text-paper">
                   Share your feedback
                 </h3>
               </div>

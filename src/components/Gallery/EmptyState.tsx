@@ -33,10 +33,7 @@ export default function EmptyState({ searchQuery }: EmptyStateProps) {
             />
           </svg>
         </div>
-        <div className="mt-6 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-          Fig. 00 · Empty sheet
-        </div>
-        <h3 className="mt-3 font-serif text-3xl text-paper">
+        <h3 className="font-serif text-3xl text-paper">
           {searchQuery ? 'No matching drafts.' : 'Archive is empty.'}
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-paper/60">

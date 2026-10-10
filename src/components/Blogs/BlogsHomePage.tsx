@@ -104,11 +104,7 @@ export default function BlogsHomePage() {
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className="lg:col-span-8"
               >
-                <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-                  <span className="h-px w-12 bg-signal/50" />
-                  <span className="text-fog">The Flowcraft dispatch</span>
-                </div>
-                <h1 className="mt-6 font-serif text-[56px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[112px]">
+                <h1 className="font-serif text-[56px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[112px]">
                   <span className="block">Notes from</span>
                   <span className="block">
                     <span className="italic text-signal">the drafting</span>
@@ -184,10 +180,6 @@ export default function BlogsHomePage() {
                 >
                   <div className="order-2 lg:order-1 lg:col-span-5">
                     <div className="flex items-baseline gap-4">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal">
-                        Entry 01
-                      </span>
-                      <span className="h-px flex-1 bg-rule" />
                       <time
                         dateTime={featuredPost.published_at}
                         className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog"
@@ -277,11 +269,7 @@ export default function BlogsHomePage() {
                 <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
                     <div className="lg:col-span-5">
-                      <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em]">
-                        <span className="h-px w-12 bg-signal/50" />
-                        <span className="text-fog">Archive</span>
-                      </div>
-                      <h2 className="mt-6 font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
+                      <h2 className="font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
                         Earlier
                         <br />
                         <span className="italic text-signal">entries.</span>

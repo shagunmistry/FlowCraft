@@ -211,23 +211,12 @@ export default function NewDiagramPage() {
       />
 
       <div className="relative mx-auto max-w-4xl px-6 py-16 sm:py-24">
-        {/* Kicker */}
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-            New draft
-          </span>
-          <span className="h-px w-12 bg-signal/60" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-            Workbench · v2
-          </span>
-        </div>
-
         {/* Hero */}
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mt-6 font-serif text-5xl italic leading-[1.02] tracking-tight text-paper sm:text-6xl"
+          className="font-serif text-5xl italic leading-[1.02] tracking-tight text-paper sm:text-6xl"
         >
           Think in diagrams.
           <br />

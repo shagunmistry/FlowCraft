@@ -257,11 +257,7 @@ export default async function Dashboard() {
         {/* Welcome block */}
         <section className="mb-12 grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-              <span className="h-px w-12 bg-signal/50" />
-              <span className="text-fog">Welcome back, drafter</span>
-            </div>
-            <h1 className="mt-6 font-serif text-6xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
+            <h1 className="font-serif text-6xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
               <span className="text-paper/70">Hello,</span>{' '}
               <span className="italic text-signal">{displayName}</span>
               <span className="text-paper/70">.</span>
@@ -432,10 +428,7 @@ export default async function Dashboard() {
               >
                 <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-signal/10 blur-3xl transition-opacity group-hover:opacity-80" />
                 <div className="relative">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
-                    Showcase
-                  </div>
-                  <h3 className="mt-3 font-serif text-2xl text-paper">
+                  <h3 className="font-serif text-2xl text-paper">
                     See what others
                     <br />
                     are <span className="italic text-signal">drafting</span>.
@@ -469,10 +462,7 @@ function DashSectionHeader({
   return (
     <div className="flex items-end justify-between border-b border-rule pb-4">
       <div>
-        <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-          {title}
-        </div>
-        <h2 className="mt-2 font-serif text-3xl text-paper md:text-4xl">
+        <h2 className="font-serif text-3xl text-paper md:text-4xl">
           {title}
         </h2>
       </div>
@@ -587,10 +577,7 @@ function DiagramCard({
       </div>
 
       <div>
-        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-          {diagram.type}
-        </div>
-        <h3 className="mt-2 line-clamp-2 min-h-[3rem] font-serif text-2xl leading-tight text-paper transition-colors group-hover:text-signal">
+        <h3 className="line-clamp-2 min-h-[3rem] font-serif text-2xl leading-tight text-paper transition-colors group-hover:text-signal">
           {diagram.title}
         </h3>
       </div>

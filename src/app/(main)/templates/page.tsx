@@ -30,10 +30,7 @@ export default async function Page() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-10">
       <header className="mb-10 max-w-3xl">
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal">
-          Templates
-        </span>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-paper md:text-5xl">
+        <h1 className="text-4xl font-semibold tracking-tight text-paper md:text-5xl">
           {rows.length}+ ready-to-edit diagram templates
         </h1>
         <p className="mt-4 text-lg text-fog">

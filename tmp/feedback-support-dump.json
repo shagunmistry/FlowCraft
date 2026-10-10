@@ -1,0 +1,1952 @@
+{
+  "feedback": {
+    "table": "feedback",
+    "count": 277,
+    "rows": [
+      {
+        "id": 3,
+        "feedback": "y",
+        "new_features": "y",
+        "follow_up": false,
+        "email": "c8e9414b-4d2f-4574-86ec-905c619ffe70"
+      },
+      {
+        "id": 4,
+        "feedback": "yes",
+        "new_features": "yes",
+        "follow_up": true,
+        "email": "0db339a7-f9b0-47d6-9c66-6e44ea961e1c"
+      },
+      {
+        "id": 5,
+        "feedback": "I have steps or flowcharts\n I will provide a description of the steps:\n\nRoutine Checks: At the beginning of each workday or when the equipment is on standby, perform routine checks on all production equipment to ensure that everything is operating properly.\nProblem Identification: If any equipment is found to be damaged or not functioning properly during routine checks, identify the problem.\nCondition Evaluation: Evaluate the condition of the equipment experiencing the problem and determine if it requires repair or replacement.\nRepair: If the problem can be repaired, take the necessary corrective actions to return the equipment to good operational condition.\nReplacement: If the equipment cannot be repaired or is severely damaged, replace it with new equipment.\nRoutine Maintenance: In addition to inspection and repair when problems occur, also perform routine maintenance at regular intervals to prevent future equipment damage or failure.\n\n\nplease describe the flowchart in the form of a diagram or example that I attached\n\n",
+        "new_features": "",
+        "follow_up": true,
+        "email": "0db339a7-f9b0-47d6-9c66-6e44ea961e1c"
+      },
+      {
+        "id": 6,
+        "feedback": "nerved",
+        "new_features": "",
+        "follow_up": false,
+        "email": "f34d2d44-0dd8-4d6e-bd5b-5c1438ceb26e"
+      },
+      {
+        "id": 7,
+        "feedback": "flowcharts",
+        "new_features": "Cloud Architecture diagram",
+        "follow_up": false,
+        "email": "a105dafb-8a4d-4c71-a275-2e7e4ad8dfec"
+      },
+      {
+        "id": 8,
+        "feedback": "it is good",
+        "new_features": "no hard features",
+        "follow_up": false,
+        "email": "ab68483a-3ef7-468f-91fb-7f3058f6b778"
+      },
+      {
+        "id": 9,
+        "feedback": "sad",
+        "new_features": "adasd",
+        "follow_up": true,
+        "email": "9e97c677-97a5-4a2e-b749-f61659af99da"
+      },
+      {
+        "id": 10,
+        "feedback": "I haven't still used you're application ",
+        "new_features": "I didn't know ",
+        "follow_up": true,
+        "email": "ee57356d-5291-4fc3-a86d-516992f11172"
+      },
+      {
+        "id": 11,
+        "feedback": "Nowhere",
+        "new_features": "More",
+        "follow_up": false,
+        "email": "c48b1df5-0557-4c0c-9cd6-5213944c5cb2"
+      },
+      {
+        "id": 12,
+        "feedback": "Ba",
+        "new_features": "Na",
+        "follow_up": false,
+        "email": "abaf0606-181d-41f0-85d4-aa69aedb2c2c"
+      },
+      {
+        "id": 13,
+        "feedback": "na",
+        "new_features": "na",
+        "follow_up": false,
+        "email": "abaf0606-181d-41f0-85d4-aa69aedb2c2c"
+      },
+      {
+        "id": 14,
+        "feedback": "create properly",
+        "new_features": "",
+        "follow_up": false,
+        "email": "544a1577-cfa7-4088-8e73-aac7a3303808"
+      },
+      {
+        "id": 15,
+        "feedback": "I want to create a diagram that illustrates the workflow of a project. The primary goal of the project is to select 15 companies to develop their businesses, increase their sales, and expand their workforce.\n\nThe project starts by determining the mechanism for selecting companies based on USID requirements and what is developed by the project team. Then, companies will be chosen from multiple information sources:\n\nOur company's database of companies using our delivery system.\nCompanies available through USID.\nCompanies gathered from an advertising campaign aimed at collecting a group of companies that meet the requirements.\nNext, 30 companies will be selected to undergo an evaluation of their current status and potential for development. These companies will be presented to a group of experts from our side (sales experts, IT experts, marketing experts, recruitment experts, and logistics experts). Based on their reports and evaluations, a shortlist of 15 companies will be selected to work with, and a waiting list of 5 companies will be created as a backup in case any of the selected companies drop out.\n\nWork with the companies will proceed according to their specific situations through the following five categories, in collaboration with our experts (sales experts, IT experts, marketing experts, recruitment experts, and logistics experts). The process is as follows:\n\nBased on the previous evaluation, a customized plan will be developed for each company, tailored to their specific needs and circumstances. This plan will focus on five key areas:\n\nSales Development: Strategies to boost sales performance, including improving sales techniques, customer relationship management, and expanding sales channels.\nIT Enhancement: Upgrading IT infrastructure, adopting new technologies, and enhancing cybersecurity measures to support business operations.\nMarketing Improvement: Creating and executing marketing campaigns, improving branding, and utilizing digital marketing tools to increase market visibility and customer engagement.\nRecruitment and HR Development: Implementing best practices in hiring, training, and employee retention to build a strong workforce and improve organizational culture.\nLogistics Optimization: Streamlining logistics and supply chain processes to enhance efficiency, reduce costs, and ensure timely delivery of products and services.\nFor each company, experts in these areas will collaborate to develop a comprehensive plan that addresses the specific challenges and opportunities identified during the evaluation.\n\nImplementation and Follow-Up:\n\nPlan Development: Each company's plan will be designed with clear objectives, timelines, and performance metrics to track progress.\n\nExpert Collaboration: A dedicated expert from each category will be assigned to work closely with the company, providing guidance and support throughout the implementation process.\n\nRegular Monitoring: The expert will regularly check in with the company to monitor the progress of the plan, offer advice, and make any necessary adjustments to ensure the plan stays on track.\n\nEnsuring Best Execution: The expert will ensure that the company has the resources and knowledge needed to execute the plan effectively. This may involve providing training, recommending tools and technologies, and helping to overcome any obstacles that arise.\n\nPerformance Review: Periodic reviews will be conducted to assess the impact of the implemented changes, measure the outcomes against the set objectives, and identify areas for further improvement.\n\nFinally, results will be measured, and lessons learned will be taken to:\n\n\nIncrease employment and sales.\nOpen new markets.",
+        "new_features": "",
+        "follow_up": false,
+        "email": "ce0db4a8-0df2-424b-8460-e6f1d3e7d5f7"
+      },
+      {
+        "id": 16,
+        "feedback": "With references it would be more better",
+        "new_features": "More diagram ",
+        "follow_up": true,
+        "email": "947bd301-31f3-4231-b266-980e0a4cb247"
+      },
+      {
+        "id": 17,
+        "feedback": "every thing good",
+        "new_features": "",
+        "follow_up": false,
+        "email": "1957df49-59c1-4726-b283-430e5c81f264"
+      },
+      {
+        "id": 18,
+        "feedback": "-",
+        "new_features": "",
+        "follow_up": false,
+        "email": "456fa457-ae38-4ddb-ba5e-b08093c9f711"
+      },
+      {
+        "id": 19,
+        "feedback": "=",
+        "new_features": "",
+        "follow_up": false,
+        "email": "456fa457-ae38-4ddb-ba5e-b08093c9f711"
+      },
+      {
+        "id": 20,
+        "feedback": "-",
+        "new_features": "",
+        "follow_up": false,
+        "email": "456fa457-ae38-4ddb-ba5e-b08093c9f711"
+      },
+      {
+        "id": 21,
+        "feedback": "-\n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "456fa457-ae38-4ddb-ba5e-b08093c9f711"
+      },
+      {
+        "id": 22,
+        "feedback": "-",
+        "new_features": "",
+        "follow_up": false,
+        "email": "b6c5dcca-2a09-480f-a20d-8b6bacb34608"
+      },
+      {
+        "id": 23,
+        "feedback": "-",
+        "new_features": "",
+        "follow_up": false,
+        "email": "b6c5dcca-2a09-480f-a20d-8b6bacb34608"
+      },
+      {
+        "id": 24,
+        "feedback": "dgddf",
+        "new_features": "dfgfdgfgf",
+        "follow_up": false,
+        "email": "b23c6c3f-d8f6-4152-9cc1-f085bcda9924"
+      },
+      {
+        "id": 25,
+        "feedback": "cd\npines conectados a la módulo controlador de motores  g32,g23,g25,g26  al sensor ultrasonico los pines g27,g14, 2 gnd y el servomotor g12,gnd y v5\n\n\n#include <Servo.h>                                // Importar librería para controlar el servo\n\n#include \"BluetoothSerial.h\"\n\n\nServo servoLook;                                  // Crear un objeto para controlar el servo\n\nBluetoothSerial SerialBT;                         // Objeto para controlar la comunicación Bluetooth\n\nbool SwitchONOFF;                                 // Valor a usarse en la comunicación Bluetooth\n\nbyte trig = 27;                                   // Asignar pines al sensor ultrasónico\n\nbyte echo = 14;\n\nbyte maxDist = 150;                               // Distancia máxima de sensado (objetos más lejanos se ignoran)\n\nbyte stopDist = 50;                               // Distancia mínima para detenerse en cm\n\nfloat timeOut = 2 * (maxDist + 10) / 100 / 340 * 1000000; // Tiempo máximo para esperar una señal de retorno\n\n\nvoid setup() {\n\n  SwitchONOFF = 0;\n\n  SerialBT.begin(\"Carro\");                        // Nombre del ESP32 en Bluetooth (se puede cambiar)\n\n  pinMode(32, OUTPUT);                            // Motor izquierdo delantero\n\n  pinMode(23, OUTPUT);                            // Motor izquierdo trasero\n\n  pinMode(25, OUTPUT);                            // Motor derecho delantero\n\n  pinMode(26, OUTPUT);                            // Motor derecho trasero\n\n  servoLook.attach(12);                           // Asignar pin al servo\n\n  pinMode(trig, OUTPUT);\n\n  pinMode(echo, INPUT);\n\n}\n\n\nvoid loop() {\n\n  if (SerialBT.available()) {                     // Verificar si hay datos disponibles del Bluetooth\n\n    char received = (char)SerialBT.read();\n\n    if (received == 'A') {                        // Leer el valor enviado por Bluetooth\n\n      SwitchONOFF = 1;\n\n    }\n\n    if (received == 'B') {                        // Leer el valor enviado por Bluetooth\n\n      SwitchONOFF = 0;\n\n    }\n\n  }\n\n\n  if (SwitchONOFF == HIGH) {                      // Si el valor enviado por Bluetooth es 1, el carro funciona normalmente; si es 0, se queda suspendido\n\n    servoLook.write(90);                          // Ajustar el servo para mirar al frente\n\n    delay(750);\n\n    int distance = getDistance();                 // Verificar que no haya objetos adelante\n\n    if (distance >= stopDist) {                   // Si no hay objetos dentro de la distancia de parada, avanzar\n\n      moveForward();\n\n    }\n\n    while (distance >= stopDist) {                // Seguir verificando la distancia del objeto hasta que esté dentro de la distancia mínima de parada\n\n      distance = getDistance();\n\n      delay(250);\n\n    }\n\n    stopMove();                                   // Detener los motores\n\n    int turnDir = checkDirection();               // Verificar las distancias a la izquierda y a la derecha y obtener la instrucción de giro\n\n    Serial.print(turnDir);\n\n    switch (turnDir) {                            // Girar a la izquierda, dar la vuelta o girar a la derecha dependiendo de la instrucción\n\n      case 0:                                     // Girar a la izquierda\n\n        turnLeft(700);\n\n        break;\n\n      case 1:                                     // Dar la vuelta\n\n        turnLeft(1500);\n\n        break;\n\n      case 2:                                     // Girar a la derecha\n\n        turnRight(700);\n\n        break;\n\n    }\n\n  }\n\n}\n\n\nvoid moveForward() {                              // Configurar todos los motores para avanzar\n\n  digitalWrite(32, HIGH);\n\n  digitalWrite(25, HIGH);\n\n}\n\n\nvoid stopMove() {                                 // Configurar todos los motores para detenerse\n\n  digitalWrite(32, LOW);\n\n  digitalWrite(23, LOW);\n\n  digitalWrite(25, LOW);\n\n  digitalWrite(26, LOW);\n\n}\n\n\nvoid turnLeft(int duration) {                     // Configurar motores para girar a la izquierda durante la duración especificada y luego detenerse\n\n  digitalWrite(32, HIGH);\n\n  delay(duration);\n\n  digitalWrite(32, LOW);\n\n}\n\n\nvoid turnRight(int duration) {                    // Configurar motores para girar a la derecha durante la duración especificada y luego detenerse\n\n  digitalWrite(25, HIGH);\n\n  delay(duration);\n\n  digitalWrite(25, LOW);\n\n}\n\n\nint getDistance() {                               // Medir la distancia a un objeto\n\n  unsigned long pulseTime;                        // Crear una variable para almacenar el tiempo de viaje del pulso\n\n  int distance;                                   // Crear una variable para almacenar la distancia calculada\n\n  digitalWrite(trig, HIGH);                       // Generar un pulso de 10 microsegundos\n\n  delayMicroseconds(10);\n\n  digitalWrite(trig, LOW);\n\n  pulseTime = pulseIn(echo, HIGH, timeOut);       // Medir el tiempo para que el pulso regrese\n\n  distance = (float)pulseTime * 340 / 2 / 10000;  // Calcular la distancia del objeto basada en el tiempo del pulso\n\n  return distance;\n\n}\n\n\nint checkDirection() {                            // Verificar las direcciones izquierda y derecha y decidir hacia dónde girar\n\n  int distances[2] ={0, 0};                      // Distancias izquierda y derecha\n\n  int turnDir = 1;                                // Dirección para girar: 0 izquierda, 1 reversa, 2 derecha\n\n  servoLook.write(180);                           // Girar el servo para mirar a la izquierda\n\n  delay(500);\n\n  distances[0] =getDistance();                   // Obtener la distancia del objeto a la izquierda\n\n  servoLook.write(0);                             // Girar el servo para mirar a la derecha\n\n  delay(1000);\n\n  distances[1] = getDistance();                   // Obtener la distancia del objeto a la derecha\n\n  if (distances[0] >= 200 && distances[1] >= 200) // Si ambas direcciones están despejadas, girar a la izquierda\n\n    turnDir = 0;\n\n  else if (distances[0] <= stopDist && distances[1] <= stopDist) // Si ambas direcciones están bloqueadas, dar la vuelta\n\n    turnDir = 1;\n\n  else if (distances[0] >= distances[1])          // Si la izquierda tiene más espacio, girar a la izquierda\n\n    turnDir = 0;\n\n  else if (distances[0] < distances[1])           // Si la derecha tiene más espacio, girar a la derecha\n\n    turnDir = 2;\n\n  return turnDir;\n\n}\n\n\n\n\n#include <Servo.h>                                //Importo linreria de control del servo\n\n\nServo servoLook;                                  //Creo un objecto para controlar el servo\n\n\nbyte trig = 10;                                    //Asigno pines al sensor ultrasonico\n\nbyte echo = 9;\n\nbyte maxDist = 150;                               //Distancia maxima de sensado (Objects further than this distance are ignored)\n\nbyte stopDist = 50;                               //Minimum distance from an object to stop in cm\n\nfloat timeOut = 2*(maxDist+10)/100/340*1000000;   //Maximum time to wait for a return signal\n\n\nvoid setup()\n\n{\n\n  pinMode(8,OUTPUT);      //motor izquierdo delantero\n\n  pinMode(7,OUTPUT);      //motor izquierdo trasero\n\n  pinMode(6,OUTPUT);      //motor derecho delantero\n\n  pinMode(5,OUTPUT);      //motor derecho trasero\n\n  servoLook.attach(3);    //Asigno pin al servo\n\n  pinMode(trig,OUTPUT);  \n\n  pinMode(echo,INPUT);\n\n}\n\n\nvoid loop()\n\n{\n\n  servoLook.write(90);                            //Set the servo to look straight ahead\n\n  delay(750);\n\n  int distance = getDistance();                   //Check that there are no objects ahead\n\n  if(distance >= stopDist)                        //If there are no objects within the stopping distance, move forward\n\n  {\n\n    moveForward();\n\n  }\n\n  while(distance >= stopDist)                     //Keep checking the object distance until it is within the minimum stopping distance\n\n  {\n\n    distance = getDistance();\n\n    delay(250);\n\n  }\n\n  stopMove();                                     //Stop the motors\n\n  int turnDir = checkDirection();                 //Check the left and right object distances and get the turning instruction\n\n  Serial.print(turnDir);\n\n  switch (turnDir)                                //Turn left, turn around or turn right depending on the instruction\n\n  {\n\n    case 0:                                       //Turn left\n\n      turnLeft (700);\n\n      break;\n\n    case 1:                                       //Turn around\n\n      turnLeft (1500);\n\n      break;\n\n    case 2:                                       //Turn right\n\n      turnRight (700);\n\n      break;\n\n  }\n\n}\n\n\nvoid moveForward()                                //Set all motors to run forward\n\n{\n\n  digitalWrite(8,HIGH);\n\n  digitalWrite(6,HIGH);\n\n}\n\n\nvoid stopMove()                                   //Set all motors to stop\n\n{\n\n  digitalWrite(8,LOW);\n\n  digitalWrite(7,LOW);\n\n  digitalWrite(6,LOW);\n\n  digitalWrite(5,LOW);\n\n}\n\n\nvoid turnLeft(int duration)                                 //Set motors to turn left for the specified duration then stop\n\n{\n\n  digitalWrite(8,HIGH);\n\n  delay(duration);\n\n  digitalWrite(8,LOW);\n\n \n\n}\n\n\nvoid turnRight(int duration)                                //Set motors to turn right for the specified duration then stop\n\n{\n\n  digitalWrite(6,HIGH);\n\n  delay(duration);\n\n  digitalWrite(6,LOW);\n\n}\n\n\nint getDistance()                                   //Measure the distance to an object\n\n{\n\n  unsigned long pulseTime;                          //Create a variable to store the pulse travel time\n\n  int distance;                                     //Create a variable to store the calculated distance\n\n  digitalWrite(trig, HIGH);                         //Generate a 10 microsecond pulse\n\n  delayMicroseconds(10);\n\n  digitalWrite(trig, LOW);\n\n  pulseTime = pulseIn(echo, HIGH, timeOut);         //Measure the time for the pulse to return\n\n  distance = (float)pulseTime * 340 / 2 / 10000;    //Calculate the object distance based on the pulse time\n\n  return distance;\n\n}\n\n\nint checkDirection()                                            //Check the left and right directions and decide which way to turn\n\n{\n\n  int distances [2] = {0,0};                                    //Left and right distances\n\n  int turnDir = 1;                                              //Direction to turn, 0 left, 1 reverse, 2 right\n\n  servoLook.write(180);                                         //Turn servo to look left\n\n  delay(500);\n\n  distances [0] = getDistance();                                //Get the left object distance\n\n  servoLook.write(0);                                           //Turn servo to look right\n\n  delay(1000);\n\n  distances [1] = getDistance();                                //Get the right object distance\n\n  if (distances[0]>=200 && distances[1]>=200)                   //If both directions are clear, turn left\n\n    turnDir = 0;\n\n  else if (distances[0]<=stopDist && distances[1]<=stopDist)    //If both directions are blocked, turn around\n\n    turnDir = 1;\n\n  else if (distances[0]>=distances[1])                          //If left has more space, turn left\n\n    turnDir = 0;\n\n  else if (distances[0]<distances[1])                           //If right has more space, turn right\n\n    turnDir = 2;\n\n  return turnDir;\n\n}\nPuedes hacer un diagrama de flujo para ese código por favor ",
+        "new_features": "",
+        "follow_up": false,
+        "email": "e66d3ee9-3c9d-4fb8-9267-0ef0ba5fb62e"
+      },
+      {
+        "id": 26,
+        "feedback": "UI can be  better, can show variable for us to choose and add",
+        "new_features": "more options to improve the flowchart, smaller and more compact visuals will be good",
+        "follow_up": false,
+        "email": "7807cc8a-484d-441c-a1ff-930f24ff4474"
+      },
+      {
+        "id": 27,
+        "feedback": "its good, can be more compact in visual",
+        "new_features": "",
+        "follow_up": false,
+        "email": "7807cc8a-484d-441c-a1ff-930f24ff4474"
+      },
+      {
+        "id": 28,
+        "feedback": "this is good, the fonts are too small to see",
+        "new_features": "",
+        "follow_up": false,
+        "email": "7807cc8a-484d-441c-a1ff-930f24ff4474"
+      },
+      {
+        "id": 29,
+        "feedback": "Please include mind mapping ai",
+        "new_features": "mind mapping ai\n",
+        "follow_up": true,
+        "email": "1dbc2868-8f8b-4c39-a80b-612541f22f68"
+      },
+      {
+        "id": 30,
+        "feedback": ",,",
+        "new_features": "",
+        "follow_up": false,
+        "email": "3199933d-2074-4b5b-b0c0-5a0fb04c9220"
+      },
+      {
+        "id": 31,
+        "feedback": "Haz un diagrama de flujo detallado sobre la preparación de un café Espresso machiatto en Starbucks ",
+        "new_features": "",
+        "follow_up": false,
+        "email": "84c720f8-282d-48e6-9962-29e6ed6db07f"
+      },
+      {
+        "id": 32,
+        "feedback": "Good",
+        "new_features": "Good",
+        "follow_up": true,
+        "email": "195c78e8-2163-4680-aeea-93a1d3841eaa"
+      },
+      {
+        "id": 33,
+        "feedback": "Good",
+        "new_features": "Good",
+        "follow_up": false,
+        "email": "195c78e8-2163-4680-aeea-93a1d3841eaa"
+      },
+      {
+        "id": 34,
+        "feedback": "Option to download",
+        "new_features": "",
+        "follow_up": false,
+        "email": "e52d0cbc-6773-44fd-b70f-9efe43472373"
+      },
+      {
+        "id": 35,
+        "feedback": "Good",
+        "new_features": "",
+        "follow_up": false,
+        "email": "e52d0cbc-6773-44fd-b70f-9efe43472373"
+      },
+      {
+        "id": 36,
+        "feedback": "Good",
+        "new_features": "",
+        "follow_up": false,
+        "email": "e52d0cbc-6773-44fd-b70f-9efe43472373"
+      },
+      {
+        "id": 37,
+        "feedback": "don't ask for feedback or to sign up before the end user has experienced the full website.",
+        "new_features": "feedback and sign-up",
+        "follow_up": true,
+        "email": "20bee193-0556-430e-b94a-69da26331111"
+      },
+      {
+        "id": 38,
+        "feedback": "don't ask for feedback so early",
+        "new_features": "wait until I've used the website fully",
+        "follow_up": false,
+        "email": "20bee193-0556-430e-b94a-69da26331111"
+      },
+      {
+        "id": 39,
+        "feedback": "let me use the website fully before you ask me for feedback",
+        "new_features": "same as before",
+        "follow_up": false,
+        "email": "20bee193-0556-430e-b94a-69da26331111"
+      },
+      {
+        "id": 40,
+        "feedback": "I havent started yet :)",
+        "new_features": "",
+        "follow_up": false,
+        "email": "c8df49f4-92be-4ec5-8a8b-f4709706630f"
+      },
+      {
+        "id": 41,
+        "feedback": "NA",
+        "new_features": "",
+        "follow_up": false,
+        "email": "353bd9fd-6250-437e-9307-445d97b1a041"
+      },
+      {
+        "id": 42,
+        "feedback": "M",
+        "new_features": "M",
+        "follow_up": false,
+        "email": "3592700a-8e47-417a-97aa-a298931c5c03"
+      },
+      {
+        "id": 43,
+        "feedback": "early\n",
+        "new_features": "early",
+        "follow_up": false,
+        "email": "3592700a-8e47-417a-97aa-a298931c5c03"
+      },
+      {
+        "id": 44,
+        "feedback": "very powerful and importantly",
+        "new_features": "best performance",
+        "follow_up": true,
+        "email": "8e70ca11-5509-46d1-9eff-87c3f2bdca05"
+      },
+      {
+        "id": 45,
+        "feedback": "ok",
+        "new_features": "",
+        "follow_up": false,
+        "email": "b4b66384-30d9-4a72-8da4-5ee432629807"
+      },
+      {
+        "id": 46,
+        "feedback": "by making flowchart\n",
+        "new_features": "",
+        "follow_up": true,
+        "email": "84c9db9f-34ea-4b10-907b-f44e69edfd2c"
+      },
+      {
+        "id": 47,
+        "feedback": "ok i will follow up you\n",
+        "new_features": "",
+        "follow_up": true,
+        "email": "84c9db9f-34ea-4b10-907b-f44e69edfd2c"
+      },
+      {
+        "id": 48,
+        "feedback": "no",
+        "new_features": "no",
+        "follow_up": true,
+        "email": "bceba83f-7497-448e-9bab-865f6b4fcce6"
+      },
+      {
+        "id": 49,
+        "feedback": "si",
+        "new_features": "si",
+        "follow_up": false,
+        "email": "bceba83f-7497-448e-9bab-865f6b4fcce6"
+      },
+      {
+        "id": 50,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "3a606096-1982-494b-a4bf-70a0c946b243"
+      },
+      {
+        "id": 51,
+        "feedback": "Good",
+        "new_features": "Good",
+        "follow_up": false,
+        "email": "2ff7224a-94dc-4ecc-b140-1d70f523d605"
+      },
+      {
+        "id": 52,
+        "feedback": "hola",
+        "new_features": "aaa",
+        "follow_up": false,
+        "email": "fe916ea3-d223-4aa4-bda0-6ce7d259f405"
+      },
+      {
+        "id": 53,
+        "feedback": "no",
+        "new_features": "create",
+        "follow_up": false,
+        "email": "fe916ea3-d223-4aa4-bda0-6ce7d259f405"
+      },
+      {
+        "id": 54,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "fe916ea3-d223-4aa4-bda0-6ce7d259f405"
+      },
+      {
+        "id": 55,
+        "feedback": "I will give feedback later",
+        "new_features": "yet to use the app",
+        "follow_up": true,
+        "email": "f8fbafed-aba0-4e55-8d6d-ecdb6c5c699a"
+      },
+      {
+        "id": 56,
+        "feedback": "goof ",
+        "new_features": "more visual option what diagramms can be used \n",
+        "follow_up": true,
+        "email": "2a199b97-b748-4163-9043-035ecf3c8c9b"
+      },
+      {
+        "id": 57,
+        "feedback": "rrr",
+        "new_features": "r",
+        "follow_up": false,
+        "email": "33894c0b-ce2d-417f-89f3-bf377c39dbc9"
+      },
+      {
+        "id": 58,
+        "feedback": "21",
+        "new_features": "",
+        "follow_up": true,
+        "email": "0cb0ee08-cdc4-42fe-be27-5139c56c74db"
+      },
+      {
+        "id": 59,
+        "feedback": "1",
+        "new_features": "",
+        "follow_up": false,
+        "email": "0cb0ee08-cdc4-42fe-be27-5139c56c74db"
+      },
+      {
+        "id": 60,
+        "feedback": "bgnfgmgf",
+        "new_features": "fbfbfc",
+        "follow_up": false,
+        "email": "8c984a29-d894-4f49-9d07-487a00c788b5"
+      },
+      {
+        "id": 61,
+        "feedback": "efwetg",
+        "new_features": "efwf",
+        "follow_up": false,
+        "email": "8c984a29-d894-4f49-9d07-487a00c788b5"
+      },
+      {
+        "id": 62,
+        "feedback": "d",
+        "new_features": "d",
+        "follow_up": false,
+        "email": "33894c0b-ce2d-417f-89f3-bf377c39dbc9"
+      },
+      {
+        "id": 63,
+        "feedback": "Expand the diagram so that it is more clear",
+        "new_features": "",
+        "follow_up": false,
+        "email": "33894c0b-ce2d-417f-89f3-bf377c39dbc9"
+      },
+      {
+        "id": 64,
+        "feedback": "Business Plan: Large-Scale Fog-to-Water Harvesting in the Sidi Ifni Region\nExecutive Summary\nThis business plan outlines a comprehensive strategy for addressing the critical water scarcity challenge in the Sidi Ifni region through the implementation of a large-scale fog-to-water harvesting system. By leveraging advanced fog collection technology, coupled with a robust financial and operational framework, the project aims to deliver a sustainable and impactful solution for the local community.\nThe plan encompasses a detailed market analysis, technological innovation, financial projections, operational strategies, and a robust social and environmental impact assessment. A key component of the project is the integration of a tokenization model to facilitate investment and community participation.\nProject Overview\nThe project entails the design, construction, and operation of a substantial fog harvesting infrastructure within the Sidi Ifni region. By capturing atmospheric moisture, the initiative seeks to augment the region’s water supply, bolstering agricultural productivity, improving public health, and stimulating economic growth. The project will be implemented in phases, starting with a pilot project to refine the technology and assess its performance under local conditions.\n1- Market Analysis\nA thorough market analysis will be conducted to identify the specific needs and challenges within the Sidi Ifni region. This will include:\n    • Water Demand Assessment: Quantifying the region's water consumption patterns for domestic, agricultural, and industrial purposes.\n    • Target Market Identification: Defining specific customer segments and their water needs.\n    • Competitive Analysis: Evaluating existing water supply solutions and identifying potential competitors.\n    • Regulatory Framework: Assessing relevant environmental, water, and land-use regulations.\n2- Technology and Operations\n    • Fog Harvesting Technology: The project will leverage advanced fog collection technology, including high-efficiency mesh materials and optimized system design.\n    • Water Treatment: A robust water treatment process will be implemented to ensure the produced water meets stringent drinking water quality standards.\n    • Infrastructure Development: The project will encompass the design and construction of water storage, distribution, and maintenance systems.\n    • Operational Excellence: Efficient operational procedures, quality control measures, and maintenance protocols will be established.\n3- Financial Projections\n    • Revenue Generation: Multiple revenue streams will be explored, including water sales, carbon credits, government subsidies, and potential revenue from the sale of fog-harvesting technology.\n    • Cost Structure: A detailed financial model will be developed to assess capital expenditures, operational costs, and recurring expenses.\n    • Investment Requirements: The project will require substantial investment for technology, infrastructure, and operations. Funding sources will include equity, debt, and potentially grants.\n    • Financial Performance: Comprehensive financial projections, including cash flow analysis, profit and loss, and return on investment (ROI) calculations, will be prepared.\n4- Tokenization Model\n    • Token Structure: A tokenization model will be implemented to facilitate investment and community participation.\n    • Token Economics: A robust tokenomics framework will be developed, including pricing, distribution, and governance mechanisms.\n    • Investor Relations: A comprehensive investor relations strategy will be implemented to attract capital and build long-term partnerships.\n5- Social Impact and Sustainability\n    • Community Engagement: A participatory approach will be adopted to ensure the project aligns with the needs and aspirations of the local community.\n    • Environmental Impact Assessment: A thorough assessment will be conducted to identify potential environmental impacts and develop mitigation strategies.\n    • Corporate Social Responsibility: The project will incorporate social and environmental responsibility into its core operations.\n6- Implementation Plan\n    • Project Phases: The project will be divided into distinct phases, including planning, design, construction, operation, and monitoring.\n    • Resource Allocation: Human, financial, and technical resources will be allocated efficiently to achieve project objectives.\n    • Risk Management: A comprehensive risk assessment will be conducted, and mitigation strategies implemented.\n    • Monitoring and Evaluation: A robust monitoring and evaluation system will be established to track project performance and impact.\nBy following this structured approach, the project aims to deliver a sustainable and scalable solution to the water scarcity challenge in the Sidi Ifni region, while generating significant economic and social benefits.\n\n\n\nMarket Analysis for Fog-to-Water Harvesting in Sidi Ifni\nUnderstanding the Target Market\nA comprehensive market analysis is essential to identify the potential customers for fog-harvested water. The target market for this project can be segmented into:\n    • Residential Customers: Households in the region that rely on limited water sources.\n    • Agricultural Sector: Farmers and cooperatives requiring additional water for irrigation.\n    • Commercial and Industrial Users: Businesses and industries with water-intensive processes.\n    • Government and Public Institutions: Local authorities and government agencies responsible for water management and distribution.\nAssessing Water Demand and Supply\n    • Water Scarcity Analysis: Quantify the water deficit in the region, considering factors such as population growth, agricultural expansion, and climate change.\n    • Existing Water Sources: Evaluate the availability and quality of alternative water sources (groundwater, surface water, desalination).\n    • Water Pricing: Analyze current water pricing structures and potential impacts on fog-harvested water adoption.\nCompetitive Analysis\n    • Identifying Competitors: Assess existing water providers, including public utilities, private water suppliers, and potential competitors in fog harvesting.\n    • Competitive Advantage: Identify the unique selling points of fog-harvested water, such as its quality, sustainability, and potential cost-effectiveness.\n    • Competitive Analysis: Evaluate competitors' strengths, weaknesses, opportunities, and threats (SWOT analysis).\nMarket Segmentation and Targeting\n    • Customer Segmentation: Divide the market into distinct segments based on factors such as income, location, water consumption patterns, and specific needs.\n    • Target Market Selection: Prioritize specific customer segments based on their potential value and alignment with the project's goals.\n    • Customer Profiling: Develop detailed profiles of target customers to understand their needs, preferences, and buying behavior.\nPricing Strategy\n    • Cost-Based Pricing: Determine the production cost of fog-harvested water and set a price accordingly.\n    • Value-Based Pricing: Consider the perceived value of the water to customers and set a price premium.\n    • Dynamic Pricing: Explore the possibility of adjusting prices based on demand, supply, and market conditions.\nDistribution Channels\n    • Direct Sales: Establish direct sales channels to residential and commercial customers.\n    • Partnerships: Collaborate with local distributors, retailers, or cooperatives.\n    • Government Contracts: Explore opportunities to supply water to government institutions and public facilities.\n\nTechnology and Operations for Fog-to-Water Harvesting\nFog Harvesting Technology\nMesh Selection and Design:\n    • Material: Explore the use of advanced materials such as hydrophobic/hydrophilic hybrid meshes or nanomaterial-coated meshes for enhanced water collection efficiency.\n    • Mesh Structure: Optimize mesh geometry (pore size, thickness, and fiber arrangement) to maximize water capture and minimize air resistance.\n    • Mesh Durability: Evaluate the long-term performance of materials under harsh environmental conditions.\nCollector Design and Optimization:\n    • Collector Orientation: Determine the optimal angle and orientation of fog collectors to maximize water yield.\n    • Collector Size: Analyze the relationship between collector size and water production to optimize resource allocation.\n    • Collector Arrangement: Explore different configurations (e.g., linear, zigzag, or hexagonal) to improve efficiency.\nWater Collection and Storage\n    • Water Collection Systems: Design efficient systems for channeling collected water to storage tanks.\n    • Water Quality: Implement filtration and purification processes to ensure water meets drinking water standards.\n    • Storage Tanks: Select appropriate tank materials and sizes to accommodate water storage needs.\n    • Water Distribution: Develop a distribution network to deliver water to the target population.\nOperational Considerations\n    • Maintenance and Cleaning: Establish a routine maintenance schedule for fog collectors and water infrastructure.\n    • Energy Consumption: Minimize energy consumption through efficient pump and filtration systems.\n    • Data Collection and Monitoring: Implement systems to track water production, weather conditions, and equipment performance.\n    • Community Engagement: Develop strategies for involving the local community in system operation and maintenance.\nTechnological Advancements\n    • IoT Integration: Explore the use of IoT sensors to monitor fog conditions, water levels, and equipment performance.\n    • Artificial Intelligence: Utilize AI to optimize collector placement, predict fog occurrence, and improve water distribution.\n    • Material Science Innovations: Stay updated on advancements in materials science for potential improvements in fog harvesting technology.\n\nThe Financial Projections\n\nFinancial Projections are crucial for any business plan, especially one of this scale. They provide a roadmap for investors, lenders, and the project team.\nKey Financial Components\n    1. Revenue Generation:\n        ◦ Water Sales: Determine the potential revenue from selling water to domestic, agricultural, and industrial consumers.\n        ◦ Carbon Credits: Explore the possibility of generating revenue by selling carbon credits associated with water conservation and environmental benefits.\n        ◦ Government Subsidies: Identify potential government programs or incentives that can support the project.\n        ◦ Technology Licensing: Consider licensing the fog harvesting technology to generate additional revenue.\n    2. Cost Structure:\n        ◦ Capital Expenditures (CAPEX): Detail the costs of purchasing land, constructing fog collectors, building water storage and distribution infrastructure, and acquiring necessary equipment.\n        ◦ Operational Expenses (OPEX): Outline ongoing costs such as labor, energy, maintenance, repairs, and administrative expenses.\n        ◦ Financing Costs: Include interest payments on loans or other forms of financing.\n    3. Investment Requirements:\n        ◦ Total Project Cost: Calculate the overall investment needed to implement the project.\n        ◦ Funding Sources: Identify potential investors, lenders, or government grants.\n        ◦ Equity vs. Debt: Determine the optimal capital structure for the project.\n    4. Financial Performance:\n        ◦ Profit and Loss Statement: Project revenue, expenses, and net income over a specified period.\n        ◦ Cash Flow Statement: Analyze the project's cash inflows and outflows.\n        ◦ Balance Sheet: Present the project's financial position at a specific point in time.Key Financial Ratios: Calculate relevant financial ratios such as return on investment (ROI), payback period, and net present value (NPV).\n              Financial Modeling Tools\n    5. To create accurate and comprehensive financial projections, consider using financial modeling software or spreadsheets. Tools like Excel, Google Sheets, or specialized financial modeling software can help you analyze different scenarios and make informed decisions.\n            ▪ Sensitivity Analysis\n        ◦ Conduct a sensitivity analysis to assess how changes in key variables (e.g., water price, energy costs, government subsidies) impact the project's financial performance. This will help identify potential risks and opportunities.\n\n\nTokenization Model for Fog-to-Water Project\n\nUnderstanding the Token\nToken Definition: An H2O token represents a virtual share in the fog-to-water project, specifically linked to a defined unit of fog collection capacity (e.g., one square meter).\nToken Value Proposition:\n    • Direct Asset Backing: Each token is directly tied to a physical asset, providing transparency and trust.\n    • Revenue Sharing: Token holders participate in the project's revenue, including water sales, carbon credits, and potential government subsidies.\n    • Governance Rights: Depending on the token structure, holders may have voting rights in project decisions.\nToken Structure\nSecurity Token or Utility Token:\n    • Security Token: Offers ownership rights and potential financial returns, subject to securities regulations.\n    • Utility Token: Provides access to specific services or benefits within the ecosystem, such as discounted water purchases or priority access to new projects.\nHybrid Model: A combination of security and utility token features can be considered, offering both ownership and utility benefits.Token Economics\n    • Token Supply: Determine the total number of tokens to be issued, considering project scale and investor appetite.\n    • Token Distribution: Allocate tokens to project founders, investors, employees, and potentially the local community.\n    • Token Pricing: Establish a fair pricing mechanism based on the value of the underlying asset and market demand.\n    • Revenue Sharing: Define how water revenues and other income are distributed among token holders.\nToken Governance\n    • Decentralized Autonomous Organization (DAO): Consider implementing a DAO structure to empower token holders in decision-making.\n    • Voting Mechanisms: Define voting rights and procedures for token holders.\n    • Token Holder Benefits: Outline additional benefits for token holders, such as early access to new projects or exclusive merchandise.\nLegal and Regulatory Framework\n    • Security Token Regulations: If issuing security tokens, ensure compliance with relevant securities laws.\n    • Tax Implications: Understand the tax consequences for token holders and the project entity.\n    • Investor Protection: Implement measures to protect investor interests, such as disclosure requirements and anti-fraud measures.\nToken Use Cases\n    • Crowdfunding: Use tokenization to raise capital from a wide investor base.\n    • Community Engagement: Involve the local community by offering token ownership opportunities.\n    • Water Trading: Create a marketplace for water credits backed by H2O tokens.\nChallenges and Mitigation\n    • Token Price Volatility: Implement mechanisms to stabilize token prices, such as buyback programs or price stabilization funds.\nMarket Liquidity: Ensure sufficient liquidity for token trading through partnerships with exchanges or market makers.Regulatory Uncertainty: Stay updated on evolving token regulations and adapt accordingly.\nBy carefully considering these factors, a robust tokenization model can be developed to support the fog-to-water project and attract investors.\n\nSocial Impact and Sustainability of the Fog-to-Water Project\nSocial Impact\n    • Community Empowerment: Foster a sense of ownership by involving local communities in project design, implementation, and management.\n    • Gender Equality: Prioritize women's participation in all project phases, recognizing their role in water management and household responsibilities.\n    • Health and Hygiene: Provide education on hygiene and sanitation practices to improve community health.\n    • Economic Development: Create job opportunities for local residents in project construction, operation, and maintenance.\n    • Education: Support educational programs focused on water conservation and management.\nSustainability\n    • Environmental Impact: Minimize the project's ecological footprint by using sustainable materials and practices.\n    • Resource Efficiency: Optimize water distribution and usage to reduce waste.\n    • Climate Change Adaptation: Design the system to be resilient to climate change impacts, such as changes in fog patterns.\n    • Community Resilience: Build community capacity to manage the water resource and adapt to future challenges.\n    • Knowledge Transfer: Share project learnings and best practices with other communities facing water scarcity.\nMeasuring Social and Environmental Impact\n    • Key Performance Indicators (KPIs): Develop specific metrics to measure social and environmental outcomes, such as changes in water access, household income, and biodiversity.\n    • Baseline Assessment: Establish baseline data on social and environmental conditions to track progress.\n    • Monitoring and Evaluation: Implement a robust monitoring and evaluation system to assess the project's impact over time.\n    • Stakeholder Engagement: Continuously engage with the community to gather feedback and incorporate their perspectives.\nPotential Partnerships\n    • Collaborate with NGOs: Partner with organizations focused on water, sanitation, and community development.\n    • Engage with Government Agencies: Seek support from local, regional, and national governments.\nAcademic Institutions: Partner with universities for research and development.\n\nImplementation Plan for Large-Scale Fog-to-Water Harvesting Project\nProject Phases\nThe successful implementation of a large-scale fog-to-water harvesting project requires a structured approach with clear phases:\nPhase 1: Project Initiation and Planning\n    • Feasibility Study: Conduct in-depth analysis of the target region, including fog density, wind patterns, and water demand.\n    • Site Selection: Identify optimal locations for fog collector installation based on fog frequency and accessibility.\n    • Project Design: Develop detailed plans for fog collector systems, water storage, distribution infrastructure, and community engagement.\n    • Permitting and Licensing: Obtain necessary permits and licenses from relevant authorities.\n    • Funding Acquisition: Secure financial resources through investments, grants, or loans.\nPhase 2: Infrastructure Development\n    • Site Preparation: Prepare project sites for installation of fog collectors and supporting infrastructure.\n    • Fog Collector Installation: Deploy fog collectors according to the designed layout.\n    • Water Storage and Treatment: Construct water storage tanks and implement water treatment facilities.\n    • Distribution Network: Develop a pipeline network to distribute water to target communities.\nPhase 3: Community Engagement and Training\n    • Community Outreach: Conduct awareness campaigns about the project benefits and engage the community in the process.\n    • Capacity Building: Train local residents on system operation, maintenance, and water management.\n    • Water Management Committees: Establish community-based organizations to manage water distribution and usage.\nPhase 4: Monitoring and Evaluation\n    • Performance Metrics: Define key performance indicators (KPIs) to measure project success.\n    • Data Collection: Implement systems to collect data on water production, water quality, and system performance.\n    • Evaluation: Regularly assess project outcomes and make necessary adjustments.\nResource Allocation and Management\n    • Human Resources: Recruit and train project staff, including engineers, technicians, and community liaisons.\n    • Financial Resources: Develop a detailed budget and financial management plan.\n    • Material Resources: Procure necessary equipment, materials, and supplies.\n    • Equipment and Machinery: Acquire and maintain fog collectors, pumps, and other equipment.\nRisk Management\n    • Identify Potential Risks: Conduct a thorough risk assessment to identify potential challenges.\n    • Develop Mitigation Strategies: Create contingency plans for various risks, such as equipment failure, natural disasters, or community resistance.\n    • Risk Monitoring: Continuously monitor for emerging risks and adjust mitigation plans as needed.\nMonitoring and Evaluation\n    • Key Performance Indicators (KPIs): Establish KPIs to measure project success, including water production, water quality, community satisfaction, and financial performance.\n    • Data Collection: Implement a robust data collection system to track project performance and identify areas for improvement.\n    • Reporting: Prepare regular reports on project progress and achievements.",
+        "new_features": "",
+        "follow_up": false,
+        "email": "ba9e429b-a2b8-4485-922b-6d9468afe8f7"
+      },
+      {
+        "id": 65,
+        "feedback": "fdf",
+        "new_features": "",
+        "follow_up": false,
+        "email": "b606907e-f5a4-4f30-9a49-6abc24009cf5"
+      },
+      {
+        "id": 66,
+        "feedback": "Stop asking, I haven't even been able to use this yet",
+        "new_features": "",
+        "follow_up": false,
+        "email": "cc6b42d7-600e-4570-a3b1-a7d242db080e"
+      },
+      {
+        "id": 67,
+        "feedback": "donwload dont show full diagram",
+        "new_features": "",
+        "follow_up": false,
+        "email": "6728f58f-da79-40ed-97f6-93c82c78473b"
+      },
+      {
+        "id": 68,
+        "feedback": "just started testing ",
+        "new_features": "don't know yet",
+        "follow_up": false,
+        "email": "a70d7707-d0fc-47ef-bca8-19e515ad7446"
+      },
+      {
+        "id": 69,
+        "feedback": "ok",
+        "new_features": "1st trial",
+        "follow_up": false,
+        "email": "e37e8068-a9e4-4876-91ec-642e133d8772"
+      },
+      {
+        "id": 70,
+        "feedback": "ok",
+        "new_features": "ok",
+        "follow_up": false,
+        "email": "e37e8068-a9e4-4876-91ec-642e133d8772"
+      },
+      {
+        "id": 71,
+        "feedback": "good",
+        "new_features": "good",
+        "follow_up": false,
+        "email": "0fd23a7d-7ae7-4622-906d-8076c92c09b0"
+      },
+      {
+        "id": 72,
+        "feedback": "nn",
+        "new_features": "aa",
+        "follow_up": true,
+        "email": "0fd23a7d-7ae7-4622-906d-8076c92c09b0"
+      },
+      {
+        "id": 73,
+        "feedback": "flowchart TD\n    A[เริ่มต้นการใช้ข้อมูล] --> B[ร้องขอการเข้าถึงข้อมูล]\n    B --> C[ตรวจสอบสิทธิ์และการอนุมัติ]\n    C --> D[ใช้งานข้อมูลตามวัตถุประสงค์]\n    D --> E[บันทึกการใช้งานในระบบ]\n    E --> F[สิ้นสุดการใช้ข้อมูล]\n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "c016760e-0018-4112-ba0b-78b132f72cad"
+      },
+      {
+        "id": 74,
+        "feedback": "Input by image",
+        "new_features": "Input by image",
+        "follow_up": false,
+        "email": "c016760e-0018-4112-ba0b-78b132f72cad"
+      },
+      {
+        "id": 75,
+        "feedback": "hh",
+        "new_features": "h",
+        "follow_up": false,
+        "email": "0fd23a7d-7ae7-4622-906d-8076c92c09b0"
+      },
+      {
+        "id": 76,
+        "feedback": "k",
+        "new_features": "k",
+        "follow_up": false,
+        "email": "0fd23a7d-7ae7-4622-906d-8076c92c09b0"
+      },
+      {
+        "id": 77,
+        "feedback": "No se",
+        "new_features": "No se",
+        "follow_up": false,
+        "email": "dad5abf7-4110-43df-a6de-1f3df9d7a076"
+      },
+      {
+        "id": 78,
+        "feedback": "No me gusto",
+        "new_features": "",
+        "follow_up": false,
+        "email": "dad5abf7-4110-43df-a6de-1f3df9d7a076"
+      },
+      {
+        "id": 79,
+        "feedback": "Best",
+        "new_features": "",
+        "follow_up": true,
+        "email": "5bd7f1a6-941f-46d1-9ee6-2d6d8263f3e8"
+      },
+      {
+        "id": 80,
+        "feedback": "L",
+        "new_features": "",
+        "follow_up": false,
+        "email": "3822c99f-f828-41dc-9788-3af9824334f5"
+      },
+      {
+        "id": 81,
+        "feedback": "L",
+        "new_features": "",
+        "follow_up": false,
+        "email": "3822c99f-f828-41dc-9788-3af9824334f5"
+      },
+      {
+        "id": 82,
+        "feedback": "L",
+        "new_features": "",
+        "follow_up": false,
+        "email": "3822c99f-f828-41dc-9788-3af9824334f5"
+      },
+      {
+        "id": 83,
+        "feedback": "vvv",
+        "new_features": "vvv",
+        "follow_up": false,
+        "email": "b4005c88-698e-40b8-b091-6b9344e51008"
+      },
+      {
+        "id": 84,
+        "feedback": "nnnn",
+        "new_features": "nnn",
+        "follow_up": false,
+        "email": "b4005c88-698e-40b8-b091-6b9344e51008"
+      },
+      {
+        "id": 85,
+        "feedback": "lkh",
+        "new_features": "y",
+        "follow_up": false,
+        "email": "1c88dde3-60b4-46f4-bb8c-0006d84ec930"
+      },
+      {
+        "id": 86,
+        "feedback": "worst",
+        "new_features": "",
+        "follow_up": false,
+        "email": "9a0c874a-c50c-47b3-9cab-5d69d6eb7f53"
+      },
+      {
+        "id": 87,
+        "feedback": "you're good.",
+        "new_features": "Try hard",
+        "follow_up": false,
+        "email": "f6719f0c-dcff-4135-9353-52c47ed704a4"
+      },
+      {
+        "id": 88,
+        "feedback": "Just dont ask too many times about \" How to Improve\".",
+        "new_features": "Let user edit the generated diagrams.",
+        "follow_up": false,
+        "email": "f6719f0c-dcff-4135-9353-52c47ed704a4"
+      },
+      {
+        "id": 89,
+        "feedback": "mejorando ",
+        "new_features": "ok",
+        "follow_up": false,
+        "email": "831c0d3e-bf86-44eb-9abb-725217d6ba83"
+      },
+      {
+        "id": 90,
+        "feedback": "I have not started to use the tool yet.",
+        "new_features": "You should avoid asking the user this kind of question when using the tool for the first time.",
+        "follow_up": false,
+        "email": "cb8771e8-f4d4-45ef-96ea-b4ba7bc01b3c"
+      },
+      {
+        "id": 91,
+        "feedback": "Like free sign up",
+        "new_features": "Depends on you ",
+        "follow_up": true,
+        "email": "7d1a4cc7-22b4-4c38-8a54-0c4a72c845ac"
+      },
+      {
+        "id": 92,
+        "feedback": "Like free sign up",
+        "new_features": "Depends on you ",
+        "follow_up": true,
+        "email": "7d1a4cc7-22b4-4c38-8a54-0c4a72c845ac"
+      },
+      {
+        "id": 93,
+        "feedback": "idk\n",
+        "new_features": "idk",
+        "follow_up": false,
+        "email": "a07463e0-b6d7-4f4e-9977-a395df202f79"
+      },
+      {
+        "id": 94,
+        "feedback": "kujh",
+        "new_features": "qiojnp;",
+        "follow_up": false,
+        "email": "a07463e0-b6d7-4f4e-9977-a395df202f79"
+      },
+      {
+        "id": 95,
+        "feedback": "wefdjgqwfdajhs",
+        "new_features": "`jhfjhfgasxfvsxbz",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 96,
+        "feedback": "1231231",
+        "new_features": "231321321",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 97,
+        "feedback": "jyfgyjh",
+        "new_features": "fjhgfjhgjhg",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 98,
+        "feedback": "q",
+        "new_features": "q",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 99,
+        "feedback": "q",
+        "new_features": "q",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 100,
+        "feedback": "1",
+        "new_features": "1",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 101,
+        "feedback": "1",
+        "new_features": "2",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 102,
+        "feedback": "2",
+        "new_features": "3\n",
+        "follow_up": false,
+        "email": "c78087f7-2d5b-43ba-b9c6-bf4f4249a517"
+      },
+      {
+        "id": 103,
+        "feedback": "none",
+        "new_features": "none",
+        "follow_up": false,
+        "email": "e2c50a86-0120-4cb0-96de-189407e1556a"
+      },
+      {
+        "id": 104,
+        "feedback": "none",
+        "new_features": "none",
+        "follow_up": false,
+        "email": "e2c50a86-0120-4cb0-96de-189407e1556a"
+      },
+      {
+        "id": 105,
+        "feedback": "n",
+        "new_features": "n\n",
+        "follow_up": false,
+        "email": "e2c50a86-0120-4cb0-96de-189407e1556a"
+      },
+      {
+        "id": 106,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "87afdc06-dd2f-4833-b225-bcd73f6dc34e"
+      },
+      {
+        "id": 107,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "87afdc06-dd2f-4833-b225-bcd73f6dc34e"
+      },
+      {
+        "id": 108,
+        "feedback": "Jsi",
+        "new_features": "Jdis",
+        "follow_up": false,
+        "email": "c2acffec-01df-4490-b061-8abac82844ad"
+      },
+      {
+        "id": 109,
+        "feedback": "to soon to know, i need time to use it and i will give feedback after",
+        "new_features": "icons for all the charts and gpt4 use",
+        "follow_up": false,
+        "email": "c1375ab2-4a8c-4042-b004-826cb45ee10c"
+      },
+      {
+        "id": 110,
+        "feedback": "=)",
+        "new_features": "",
+        "follow_up": false,
+        "email": "12fb4b37-d05e-4756-a1df-9bc3f43be6c5"
+      },
+      {
+        "id": 111,
+        "feedback": "Aún ko lo pruebo ",
+        "new_features": "Que sea dinámico ",
+        "follow_up": false,
+        "email": "a6263225-d28f-47d9-bab8-e6eefe48cb9b"
+      },
+      {
+        "id": 112,
+        "feedback": "voy a probarlo \n",
+        "new_features": "espero que ses dinamico \n",
+        "follow_up": false,
+        "email": "a6263225-d28f-47d9-bab8-e6eefe48cb9b"
+      },
+      {
+        "id": 113,
+        "feedback": "Nothing",
+        "new_features": "I dont know",
+        "follow_up": false,
+        "email": "3aa8e35e-d4ba-4e58-b66f-930e7c50e124"
+      },
+      {
+        "id": 114,
+        "feedback": "ok",
+        "new_features": "ok",
+        "follow_up": true,
+        "email": "6e9ef9aa-4d62-4707-aa9e-9546fa702743"
+      },
+      {
+        "id": 115,
+        "feedback": "errores comunes sobre la instalacion de office ",
+        "new_features": "",
+        "follow_up": false,
+        "email": "1a60d5b8-b121-4c2d-b468-0303ecbb32c3"
+      },
+      {
+        "id": 116,
+        "feedback": "houioh",
+        "new_features": "uyg",
+        "follow_up": false,
+        "email": "a893e001-20d8-4a12-8d20-c1d539321286"
+      },
+      {
+        "id": 117,
+        "feedback": "la precisión de la información brindada ",
+        "new_features": "diagramas de espina de pescado",
+        "follow_up": false,
+        "email": "ddcca458-a4dd-44ec-b578-d921cc4c79e9"
+      },
+      {
+        "id": 118,
+        "feedback": "kdajd",
+        "new_features": "",
+        "follow_up": false,
+        "email": "6c6284fd-f320-4a21-ad3d-b59b734dfdc3"
+      },
+      {
+        "id": 119,
+        "feedback": "Nothing",
+        "new_features": "",
+        "follow_up": false,
+        "email": "bdd4ab50-1c29-4ece-bdc0-198c6f59ead3"
+      },
+      {
+        "id": 120,
+        "feedback": "Nothing",
+        "new_features": "",
+        "follow_up": false,
+        "email": "bdd4ab50-1c29-4ece-bdc0-198c6f59ead3"
+      },
+      {
+        "id": 121,
+        "feedback": "ssada",
+        "new_features": "ds",
+        "follow_up": false,
+        "email": "9ab1574f-d519-41e3-80e8-a1ee6726c1cb"
+      },
+      {
+        "id": 122,
+        "feedback": "no sale ningun diagrama",
+        "new_features": "",
+        "follow_up": false,
+        "email": "9ab1574f-d519-41e3-80e8-a1ee6726c1cb"
+      },
+      {
+        "id": 123,
+        "feedback": "first time for me",
+        "new_features": "",
+        "follow_up": false,
+        "email": "c7d31d8e-2bc7-4bfc-84a0-8eec287ce2b3"
+      },
+      {
+        "id": 124,
+        "feedback": "Here's a flowchart idea for the \"Innovation and Uniqueness of the Solution\" section, focusing on **Dual-Layer Security**, **Real-Time Data Sync**, and **Cost-Effectiveness**:\n\n### **Flowchart Outline**\n\n1. **Start**\n   - ⟶ Employee arrives near the office.\n\n2. **Geolocation Check (GPS)**\n   - Does the employee's location fall within the 200-meter radius?\n     - Yes ⟶ Proceed\n     - No ⟶ Stop (Attendance not marked)\n\n3. **Wi-Fi Verification**\n   - Is the employee connected to the office's authorized Wi-Fi?\n     - Yes ⟶ Proceed to Check-in\n     - No ⟶ Stop (Attendance not marked)\n\n4. **Real-Time Data Sync**\n   - Automatically sync attendance data to the backend system\n   - Update HR/Admin portal with check-in data\n\n5. **Backend System**\n   - Store attendance record securely\n   - Generate real-time reports for HR/Admin\n\n6. **Cost Efficiency Using Open-Source Tools**\n   - **Geolocation:** OpenStreetMap for GPS check\n   - **Backend & Sync:** Firebase for real-time sync and authentication\n   - **Customization:** Django/Node.js for report generation and system management\n\n7. **End**\n\n---\n\n### **Flowchart Elements**\n- **Start:** (Oval shape)\n- **Decision Points (Geolocation Check, Wi-Fi Verification):** (Diamond shape)\n- **Processes (Real-Time Sync, Backend Storage):** (Rectangle shape)\n- **End:** (Oval shape)\n\nThis flowchart structure shows the interaction between **dual-layer security**, **data synchronization**, and the **cost-efficient use of open-source tools**. I can also help create the flowchart diagram if you'd like!",
+        "new_features": "",
+        "follow_up": false,
+        "email": "a68647ba-8507-42e6-ab8c-53ab448c2089"
+      },
+      {
+        "id": 125,
+        "feedback": "by taking feedback",
+        "new_features": "generating with voice",
+        "follow_up": false,
+        "email": "a68647ba-8507-42e6-ab8c-53ab448c2089"
+      },
+      {
+        "id": 126,
+        "feedback": "g",
+        "new_features": "",
+        "follow_up": false,
+        "email": "d95275ad-863f-4b06-8c32-497e02b6df1b"
+      },
+      {
+        "id": 127,
+        "feedback": "good",
+        "new_features": "good",
+        "follow_up": true,
+        "email": "d06d7261-1bf8-4f8b-884b-4f17a8e07587"
+      },
+      {
+        "id": 128,
+        "feedback": ".",
+        "new_features": "",
+        "follow_up": true,
+        "email": "d531a79c-4006-4eab-995e-b41fccc42fe2"
+      },
+      {
+        "id": 129,
+        "feedback": "银行存款类型分为定期和活期，定期又分为3个月、6个月、1年、3年、5年。存款类型不同，利率也不相同。储户存款时要填写存款单(姓名、日期、存款类型、金额等)，由业务员将数据输入系统。系统根据存款类型查出存款利率，将数据存放到数据库中。储户取款时要填写取款单，系统从数据库里查找储户的账号，进行取款处理，若存款全部取出，系统就把该账户注销。存款或取款操作都要给储户处理凭证。生成数据流图",
+        "new_features": "",
+        "follow_up": false,
+        "email": "e0046b6c-215f-4325-a28c-778f58cc4c6f"
+      },
+      {
+        "id": 130,
+        "feedback": "NADA",
+        "new_features": "",
+        "follow_up": true,
+        "email": "b1327560-b192-4a24-b933-ef38f560a328"
+      },
+      {
+        "id": 131,
+        "feedback": "You can delay this pop-up for new users. I've literally just logged in and haven't used the tool yet.",
+        "new_features": "Not sure, not used it yet.",
+        "follow_up": false,
+        "email": "c2aad7a5-c99d-4c87-b908-7f69aa137bed"
+      },
+      {
+        "id": 132,
+        "feedback": "\nCreate a user flow diagram for the EasyNav app that outlines the following key steps a user goes through during their experience:\n\n1. **User Onboarding:**\n   - Downloading the app\n   - Creating an account or logging in\n   - Personalizing settings (e.g., preferred transport modes, frequent routes)\n\n2. **Route Planning:**\n   - Inputting starting location and destination\n   - Choosing preferred transportation options (car, bus, walking, etc.)\n   - Viewing suggested routes with estimated times\n\n3. **Navigation:**\n   - Starting navigation\n   - Receiving real-time updates on traffic and delays\n   - Adjusting route if necessary based on live feedback\n\n4. **Feedback and Support:**\n   - Rating the navigation experience\n   - Providing feedback on app performance\n   - Accessing help or support resources if needed\n\n5. **User Retention:**\n   - Receiving notifications for app updates or new features\n   - Engaging with community features (sharing tips, routes)\n   - Encouraging friends to download the app through referral incentives\n\n**Ensure to include decision points, possible user actions, and outcomes at each stage of the user flow. Highlight any loops or branches where the user may need to revisit previous steps based on their choices.",
+        "new_features": "\n**Create a user flow diagram for the EasyNav app that outlines the following key steps a user goes through during their experience:**\n\n1. **User Onboarding:**\n   - Downloading the app\n   - Creating an account or logging in\n   - Personalizing settings (e.g., preferred transport modes, frequent routes)\n\n2. **Route Planning:**\n   - Inputting starting location and destination\n   - Choosing preferred transportation options (car, bus, walking, etc.)\n   - Viewing suggested routes with estimated times\n\n3. **Navigation:**\n   - Starting navigation\n   - Receiving real-time updates on traffic and delays\n   - Adjusting route if necessary based on live feedback\n\n4. **Feedback and Support:**\n   - Rating the navigation experience\n   - Providing feedback on app performance\n   - Accessing help or support resources if needed\n\n5. **User Retention:**\n   - Receiving notifications for app updates or new features\n   - Engaging with community features (sharing tips, routes)\n   - Encouraging friends to download the app through referral incentives\n\n**Ensure to include decision points, possible user actions, and outcomes at each stage of the user flow. Highlight any loops or branches where the user may need to revisit previous steps based on their choices.**",
+        "follow_up": true,
+        "email": "22a46caf-c7dc-416c-8bed-da061e6c494d"
+      },
+      {
+        "id": 133,
+        "feedback": "For now I didn't use your application.",
+        "new_features": "If I use it I suggest the featu6",
+        "follow_up": true,
+        "email": "0622989b-3b7e-4676-94c2-3b7ee9a6c1d4"
+      },
+      {
+        "id": 134,
+        "feedback": "fsaf",
+        "new_features": "sdfas",
+        "follow_up": false,
+        "email": "96e5f41b-ad14-45b1-b550-874082fb4950"
+      },
+      {
+        "id": 135,
+        "feedback": "i dont try the web yet",
+        "new_features": "i dnt try the website yet",
+        "follow_up": false,
+        "email": "17891e36-547d-4619-ae8f-effdc0d33066"
+      },
+      {
+        "id": 136,
+        "feedback": ".",
+        "new_features": "",
+        "follow_up": false,
+        "email": "b379d694-9035-480a-9085-84eaf3ea873d"
+      },
+      {
+        "id": 137,
+        "feedback": "iggyu",
+        "new_features": "gh",
+        "follow_up": true,
+        "email": "8ea748c3-5f67-4886-8ae9-df66eb16de90"
+      },
+      {
+        "id": 138,
+        "feedback": "nothing, just let me enter to create my diagram ",
+        "new_features": "just need to enter, i cant",
+        "follow_up": false,
+        "email": "720ac26b-494f-4842-bb63-df5d1819c0a1"
+      },
+      {
+        "id": 139,
+        "feedback": "fdgdfgfdg",
+        "new_features": "",
+        "follow_up": false,
+        "email": "da9b27de-3d46-432d-9cf6-8d3d09ec2c27"
+      },
+      {
+        "id": 140,
+        "feedback": "todo esta bien",
+        "new_features": "",
+        "follow_up": false,
+        "email": "8772e048-2872-4aed-a945-218dd40b0fcb"
+      },
+      {
+        "id": 141,
+        "feedback": "qu sea mas rapido",
+        "new_features": "toda ",
+        "follow_up": true,
+        "email": "5f41eb44-64c6-484f-b241-7c9cb040d3cb"
+      },
+      {
+        "id": 142,
+        "feedback": "Yes",
+        "new_features": "",
+        "follow_up": true,
+        "email": "94fb47b5-3433-4ff1-b8c1-8ae5e83d46c7"
+      },
+      {
+        "id": 143,
+        "feedback": "no",
+        "new_features": "",
+        "follow_up": false,
+        "email": "c80c4197-e093-4d25-b8fe-f3b6a2991726"
+      },
+      {
+        "id": 144,
+        "feedback": "draw a flowchart for algorithm\n",
+        "new_features": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n// Define a structure to represent a student with name, score, and grade\nstruct Student {\n    string name;\n    int score;\n    char grade;\n};\n// Function to determine the grade based on the percentage\nchar determineGrade(double percentage) {\n    // Assign grades based on percentage ranges\n    if (percentage >= 95) return 'A';\n    else if (percentage >= 80) return 'B';\n    else if (percentage >= 65) return 'C';\n    else if (percentage >= 50) return 'D';\n    else return 'E'; // If percentage is below 60\n}\n// Merge two sorted subarrays into a single sorted array\nvoid merge(vector<Student>& students, int left, int mid, int right) {\n    // Calculate sizes of two subarrays to be merged\n    int n1 = mid - left + 1;\n    int n2 = right - mid;\n\n    // Create temporary vectors to hold the two subarrays\n    vector<Student> L(n1);\n    vector<Student> R(n2);\n\n    // Copy data to temporary vectors L[] and R[]\n    for (int i = 0; i < n1; i++)\n        L[i] = students[left + i];\n    for (int j = 0; j < n2; j++)\n        R[j] = students[mid + 1 + j];\n\n    // Merge the two temporary vectors back into students vector\n    int i = 0, j = 0, k = left;\n\n    // Merge the two subarrays back into the original array in sorted order\n    while (i < n1 && j < n2) {\n        if (L[i].score > R[j].score) {\n            students[k] = L[i];\n            i++;\n        } else {\n            students[k] = R[j];\n            j++;\n        }\n        k++;\n    }\n    // Copy any remaining elements of L[] if there are any\n    while (i < n1) {\n        students[k] = L[i];\n        i++;\n        k++;\n    }\n    // Copy any remaining elements of R[] if there are any\n    while (j < n2) {\n        students[k] = R[j];\n        j++;\n        k++;\n    }\n}\n// Recursive function to perform merge sort on the students vector\nvoid mergeSort(vector<Student>& students, int left, int right) {\n    // Check if there are more than one element to sort\n    if (left < right) {\n        // Calculate middle index\n        int mid = left + (right - left) / 2;\n\n        // Recursive calls for left and right subarrays\n        mergeSort(students, left, mid);\n        mergeSort(students, mid + 1, right);\n\n        // Merge the sorted subarrays\n        merge(students, left, mid, right);\n    }\n}\n// Main function to input student data, calculate grades, and display sorted results\nint main() {\n    vector<Student> students; // Vector to store student data\n    int n; // Number of students\n    double totalMarks; // Maximum total marks for grading\ncout<< \"The ranking system of an assessable task for students in Primary Schools of PNG.\\n\\n\";\n    // Input the maximum score for grading\n    cout << \"Enter maximum score: \";\n    cin >> totalMarks;\n\n    // Input the number of students\n    cout << \"Enter the number of students: \";\n    cin >> n;\n\n    // Input each student's name and score, calculate grade, and store in the vector\n    cout << \"\\nEnter the student's name and the score:\\n\";\n    for (int i = 0; i < n; i++) {\n        Student student;\n        cout << i + 1 << \". Name: \";\n        cin >> student.name;\n        cout << \"   Score: \";\n        cin >> student.score;\n\n        // Validate the score and calculate grade\n        if (student.score < 0 || student.score > totalMarks) {\n            cout << \"Score must be between 0 and \" << totalMarks << \". Please enter correctly.\\n\";\n            return 1; // Exit if score is invalid\n        }\n\n        // Calculate the percentage and determine the grade\n        double percentage = static_cast<double>(student.score) / totalMarks * 100;\n        student.grade = determineGrade(percentage);\n\n        // Add the student to the vector\n        students.push_back(student);\n    }\n\n    // Sort the students based on score in descending order using merge sort\n    mergeSort(students, 0, n - 1);\n\n    // Display the students sorted by score along with their names, scores, and grades\n    cout << \"\\nStudents are sorted by their scores and grade in descending order:\\n\";\n    for (const Student& student : students) {\n        cout << student.name << \": Score: \" << student.score<< \"/\" <<totalMarks  << \", Grade: \" << student.grade << \"\\n\";\n    }\n\n    return 0; // Exit the program successfully\n}",
+        "follow_up": false,
+        "email": "7ca9edde-d888-46d5-b4b9-fd2d99fb6891"
+      },
+      {
+        "id": 145,
+        "feedback": "MAS   SENCILLO",
+        "new_features": "",
+        "follow_up": false,
+        "email": "82086e32-e97b-4420-8480-a2c4b7ad7697"
+      },
+      {
+        "id": 146,
+        "feedback": "casd",
+        "new_features": "asasd",
+        "follow_up": false,
+        "email": "580c31ea-ee86-4600-b934-2745a0e4ce63"
+      },
+      {
+        "id": 147,
+        "feedback": "5rz",
+        "new_features": "rr",
+        "follow_up": false,
+        "email": "7f8c042e-415d-44d5-8770-5d9d12530b5b"
+      },
+      {
+        "id": 148,
+        "feedback": "FC njyg",
+        "new_features": "Xvhrdh",
+        "follow_up": false,
+        "email": "5b10da0d-d20b-469f-a92e-09748f79d225"
+      },
+      {
+        "id": 149,
+        "feedback": "1",
+        "new_features": "1",
+        "follow_up": false,
+        "email": "71f1fd65-955f-442b-9db3-c1efbe04da1e"
+      },
+      {
+        "id": 150,
+        "feedback": "1",
+        "new_features": "1",
+        "follow_up": false,
+        "email": "71f1fd65-955f-442b-9db3-c1efbe04da1e"
+      },
+      {
+        "id": 151,
+        "feedback": "a",
+        "new_features": "",
+        "follow_up": false,
+        "email": "8f1152f9-f288-4886-9884-2f3182477a7b"
+      },
+      {
+        "id": 152,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "8f1152f9-f288-4886-9884-2f3182477a7b"
+      },
+      {
+        "id": 153,
+        "feedback": "a",
+        "new_features": "q",
+        "follow_up": false,
+        "email": "8f1152f9-f288-4886-9884-2f3182477a7b"
+      },
+      {
+        "id": 154,
+        "feedback": "None at this time",
+        "new_features": "",
+        "follow_up": false,
+        "email": "202b954e-6647-4cd9-8b2c-5e02ff5c2ca8"
+      },
+      {
+        "id": 155,
+        "feedback": "None",
+        "new_features": "",
+        "follow_up": false,
+        "email": "202b954e-6647-4cd9-8b2c-5e02ff5c2ca8"
+      },
+      {
+        "id": 156,
+        "feedback": "None",
+        "new_features": "",
+        "follow_up": false,
+        "email": "202b954e-6647-4cd9-8b2c-5e02ff5c2ca8"
+      },
+      {
+        "id": 157,
+        "feedback": "Hard to use",
+        "new_features": "",
+        "follow_up": false,
+        "email": "5032c13d-d1b3-45c1-a1b6-e2e9fb2a8492"
+      },
+      {
+        "id": 158,
+        "feedback": "Jerarquía de la Normatividad en Colombia y las Instituciones Ambientales\nA continuación, se presenta un esquema jerárquico de la normatividad en Colombia y las instituciones que la emiten, con especial atención a las instituciones con potestad para emitir normatividad ambiental:\nI. Constitución Política de 1991:\n●\nEmitida por: Asamblea Nacional Constituyente.\n●\nEs la norma suprema del ordenamiento jurídico colombiano.\n●\nPrincipios ambientales: Establece el derecho a un ambiente sano, la protección de la diversidad e integridad del ambiente, el desarrollo sostenible, y la participación ciudadana en las decisiones ambientales.\nII. Bloque de Constitucionalidad:\n●\nCompuesto por: Tratados internacionales de derechos humanos ratificados por Colombia y la jurisprudencia de la Corte Constitucional.\n●\nInfluye en la interpretación y aplicación de la normatividad ambiental.\nIII. Ley:\n●\nEmitida por: Congreso de la República.\n●\nRegula de manera general diversas materias, incluyendo la ambiental.\n●\nEjemplos en materia ambiental: Ley 99 de 1993 (Sistema Nacional Ambiental - SINA), Ley 165 de 1994 (Convenio de Diversidad Biológica).\nIV. Decretos con fuerza de ley:\n●\nEmitidos por: Presidente de la República en casos excepcionales y con autorización del Congreso.\n●\nTienen la misma jerarquía que la ley.\nV. Decretos reglamentarios:\n●\nEmitidos por: Presidente de la República.\n●\nDesarrollan y especifican el contenido de las leyes.\n●\nEjemplos en materia ambiental: Decretos que reglamentan la Ley 99 de 1993.\nVI. Resoluciones:\n●\nEmitidas por: Diversas autoridades del orden nacional, departamental o municipal.\n●\nRegulan asuntos específicos dentro de su competencia.\n●\nEjemplos en materia ambiental: Resoluciones del Ministerio de Ambiente y Desarrollo Sostenible, Corporaciones Autónomas Regionales (CAR).\nVII. Otros actos administrativos:\n●\nEmitidos por: Autoridades administrativas en ejercicio de sus funciones.\n●\nEjemplos: Circulares, conceptos técnicos, licencias ambientales.\nInstituciones con potestad para emitir normatividad ambiental en Colombia:\n●\nCongreso de la República: Emite leyes en materia ambiental.\n●\nPresidente de la República: Emite decretos con fuerza de ley (en casos excepcionales) y decretos reglamentarios en materia ambiental.\n●\nMinisterio de Ambiente y Desarrollo Sostenible: Emite resoluciones y otros actos administrativos en materia ambiental.\n●\nCorporaciones Autónomas Regionales (CAR): Entidades con autonomía administrativa y financiera encargadas de la gestión ambiental en su jurisdicción. Emiten resoluciones y otros actos administrativos en materia ambiental.\n●\nAutoridades ambientales urbanas: Encargadas de la gestión ambiental en las grandes ciudades. Emiten resoluciones y otros actos administrativos en materia ambiental.\n●\nConsejos municipales y asambleas departamentales: Emiten acuerdos municipales y ordenanzas departamentales que pueden tener implicaciones ambientales.\nNota: Este esquema es una simplificación del complejo sistema jurídico colombiano. Existen otras normas y entidades que pueden tener injerencia en materia ambiental.",
+        "new_features": "",
+        "follow_up": false,
+        "email": "f13ecbe1-bb42-4250-a19c-d182f43873a1"
+      },
+      {
+        "id": 159,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "7f3e604e-a066-4b64-9090-f511bf8bd745"
+      },
+      {
+        "id": 160,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "7f3e604e-a066-4b64-9090-f511bf8bd745"
+      },
+      {
+        "id": 161,
+        "feedback": "I have not tried it yet but my intentions are to create diagrams from primitive c++ codes",
+        "new_features": "",
+        "follow_up": false,
+        "email": "d9349eaf-e6ca-44e2-aecf-c8a8356e0773"
+      },
+      {
+        "id": 162,
+        "feedback": "GOOD",
+        "new_features": "",
+        "follow_up": false,
+        "email": "2092a2c7-cac7-4a32-acf5-f17bee5c0645"
+      },
+      {
+        "id": 163,
+        "feedback": "GOOD",
+        "new_features": "",
+        "follow_up": false,
+        "email": "2092a2c7-cac7-4a32-acf5-f17bee5c0645"
+      },
+      {
+        "id": 164,
+        "feedback": "h h",
+        "new_features": "h h",
+        "follow_up": true,
+        "email": "cf5f34fa-1e43-44b3-b5b1-f7c495124a53"
+      },
+      {
+        "id": 165,
+        "feedback": "a",
+        "new_features": "",
+        "follow_up": false,
+        "email": "c2b37dc9-2914-44fe-b319-f753977531a3"
+      },
+      {
+        "id": 166,
+        "feedback": "расположить на основе иерархии",
+        "new_features": "",
+        "follow_up": false,
+        "email": "60325a3e-6779-4cde-919e-8331d7fb2faa"
+      },
+      {
+        "id": 167,
+        "feedback": "S/N",
+        "new_features": "S/N",
+        "follow_up": false,
+        "email": "954f1ba9-f51a-40ae-9ea0-0c26101583c5"
+      },
+      {
+        "id": 168,
+        "feedback": "6yy6y",
+        "new_features": "",
+        "follow_up": false,
+        "email": "ae31d750-bc59-4bc4-820f-dce4a2b4fea8"
+      },
+      {
+        "id": 169,
+        "feedback": "1",
+        "new_features": "1",
+        "follow_up": false,
+        "email": "be06bc61-38c6-4619-a328-93d85b354e7a"
+      },
+      {
+        "id": 170,
+        "feedback": "dadwa",
+        "new_features": "dawdawdaw",
+        "follow_up": false,
+        "email": "764ae2ca-aa34-4c84-a5d7-d8d394dd536d"
+      },
+      {
+        "id": 171,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "a36ea835-6bb9-4009-83e1-55db813dc406"
+      },
+      {
+        "id": 172,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "e0238baa-0108-4c59-890c-33f2681850ce"
+      },
+      {
+        "id": 173,
+        "feedback": "More sophisticated content.",
+        "new_features": "",
+        "follow_up": false,
+        "email": "48f8949d-0a2f-486f-8238-a1184bfdbdc9"
+      },
+      {
+        "id": 174,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "331efacf-0ccf-49dc-bb91-450969d497e7"
+      },
+      {
+        "id": 175,
+        "feedback": "gta",
+        "new_features": "xkc/",
+        "follow_up": false,
+        "email": "b3aabb30-a3fa-4010-8cc2-b67fa17e621e"
+      },
+      {
+        "id": 176,
+        "feedback": "Poor design",
+        "new_features": "",
+        "follow_up": false,
+        "email": "b2810911-808e-48a3-aa6b-dd4880019de2"
+      },
+      {
+        "id": 177,
+        "feedback": "no",
+        "new_features": "yes\n",
+        "follow_up": true,
+        "email": "47718c2c-6740-4a91-b080-313958ea573c"
+      },
+      {
+        "id": 178,
+        "feedback": "so much",
+        "new_features": "nothing",
+        "follow_up": true,
+        "email": "47718c2c-6740-4a91-b080-313958ea573c"
+      },
+      {
+        "id": 179,
+        "feedback": "ㄴㅇㄹ",
+        "new_features": "ㄴㅇㄹ",
+        "follow_up": false,
+        "email": "628e3697-0db6-4ba4-8564-95ec9d8b8b26"
+      },
+      {
+        "id": 180,
+        "feedback": "mkşlk",
+        "new_features": "",
+        "follow_up": false,
+        "email": "9fc07c3b-7a77-42cc-b287-9b3ba5092c1f"
+      },
+      {
+        "id": 181,
+        "feedback": "It keeps giving me an error everytime I try to make the diagram",
+        "new_features": "",
+        "follow_up": true,
+        "email": "5c1e2d62-8d4d-41a5-8cf6-d442639de7c2"
+      },
+      {
+        "id": 182,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "bb533491-6056-401f-b8e8-8eb3189d563b"
+      },
+      {
+        "id": 183,
+        "feedback": "it s good ",
+        "new_features": "",
+        "follow_up": false,
+        "email": "a0e7b699-dc5a-4e7f-a856-87b603fcb976"
+      },
+      {
+        "id": 184,
+        "feedback": "Passo a passo de execução \n1) requerer a consulta ao Bacen Jud, pedindo expressamente ao juiz que: a) ao preencher os campos do sistema, marque também a opção “extrato de investimento e outros ativos”;  b) caso o primeiro resultado seja negativo, oficie as instituições financeiras com quem o executado possua vínculo, para que mantenham ordem de bloqueio de valores por pelo menos 30 dias consecutivos; c) não realize o imediato desbloqueio quando o extrato reportar valores ínfimos nas contas.\n2) ao requerer a consulta ao Renajud, pedir expressamente que: a) caso sejam encontrados veículos em nome do devedor, seja lançada no sistema restrição de circulação e registro de penhora; b) seja o devedor intimado a recolher o bem imediatamente em depósito, sob pena de multa diária e busca e apreensão; c) seja providenciado o imediato leilão do veículo;\n3) requerer a expedição de ofício à ANAC, solicitando consulta ao SACI acerca da existência de aeronaves em nome do devedor;\n4) requerer a consulta do Juízo ao CCS, na modalidade “detalhamento”;\n5) requerer a consulta do Juízo ao Infojud;\n6) sendo o executado pessoa jurídica, requerer ao juízo que oficie a Receita Federal para apresentar a ECT da empresa obtida pelo sistema SPED;\n7) requerer ao juízo da execução que oficie a Receita Federal para que apresente o Dossiê Integrado da pessoa física ou jurídica executada;\n8) requerer ao juízo a consulta ao CENSEC para verificar existência de escritura pública de compra e venda de imóveis em nome do devedor;\n9) requerer ao juízo o lançamento de indisponibilidade de bens do executado na CNIB;\n10) requerer o lançamento da negativação do nome do executado nos cadastros de restrição ao crédito via SerasaJud;\n11) em caso de frustração das medidas anteriores e, havendo fortes indícios de ocultação patrimonial, solicitar ao juízo que expeça pedido de informações ao UIF/COAF e, se for o caso, consulta sobre operações financeiras por meio do SIMBA. O efetivo uso das ferramentas disponíveis, bem como a implantação de outras como as que foram aqui sugeridas, ainda que de modo rudimentar, envolvem um interesse real de se resolver os problemas da execução com responsabilidade e busca de resultados legítimos, tal como os que se buscam nas investigações sobre lavagem de dinheiro no País.\n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "09162834-05f2-4048-80a5-79e01de1b31e"
+      },
+      {
+        "id": 185,
+        "feedback": "ta",
+        "new_features": "ta",
+        "follow_up": false,
+        "email": "09162834-05f2-4048-80a5-79e01de1b31e"
+      },
+      {
+        "id": 186,
+        "feedback": "I have not used it",
+        "new_features": "UML diagram and mind maps with graphs and charts",
+        "follow_up": false,
+        "email": "bd7449f3-c0d6-415a-a88b-9458841203cc"
+      },
+      {
+        "id": 187,
+        "feedback": "no",
+        "new_features": "no",
+        "follow_up": false,
+        "email": "bd7449f3-c0d6-415a-a88b-9458841203cc"
+      },
+      {
+        "id": 188,
+        "feedback": "a",
+        "new_features": "a",
+        "follow_up": false,
+        "email": "b5e984e2-c172-409b-a35c-6eafc6e720d4"
+      },
+      {
+        "id": 189,
+        "feedback": "food",
+        "new_features": "yes",
+        "follow_up": true,
+        "email": "791659fe-f2c2-4b32-92ad-045ffe91b49d"
+      },
+      {
+        "id": 190,
+        "feedback": "later",
+        "new_features": "",
+        "follow_up": true,
+        "email": "e270f074-c6db-43fd-b409-2878b1ca12b6"
+      },
+      {
+        "id": 191,
+        "feedback": "No",
+        "new_features": "O",
+        "follow_up": false,
+        "email": "20e4112e-e2fe-4560-95a9-f23589052111"
+      },
+      {
+        "id": 192,
+        "feedback": "a",
+        "new_features": "",
+        "follow_up": false,
+        "email": "cb0f14ee-d732-4f88-97a4-bfceb39f85ab"
+      },
+      {
+        "id": 193,
+        "feedback": "a",
+        "new_features": "",
+        "follow_up": false,
+        "email": "cb0f14ee-d732-4f88-97a4-bfceb39f85ab"
+      },
+      {
+        "id": 194,
+        "feedback": "9",
+        "new_features": "[",
+        "follow_up": false,
+        "email": "53680708-c00f-4841-a69b-f69e0e5e69e3"
+      },
+      {
+        "id": 195,
+        "feedback": "f",
+        "new_features": "",
+        "follow_up": true,
+        "email": "57270f5f-ff33-4f27-b15c-0d0db38cc688"
+      },
+      {
+        "id": 196,
+        "feedback": "hkl",
+        "new_features": "",
+        "follow_up": true,
+        "email": "57270f5f-ff33-4f27-b15c-0d0db38cc688"
+      },
+      {
+        "id": 197,
+        "feedback": "Título: Fluxograma do Lançamento - 45 Dias\n\nFase 1: Planejamento (Antes do Lançamento)\n\nDefinir o público-alvo.\nCriar personas com base nas dores e objetivos.\nIdentificar o perfil ideal do cliente.\nConfigurar ferramentas.\nFerramentas de marketing, como gerenciadores de tráfego pago.\nConfigurar plataformas de lives: Zoom, YouTube, etc.\nPreparar contas de anúncios (Google Ads, Facebook Ads).\nCriar calendário editorial.\nOrganizar todas as datas de posts, lives e campanhas.\nDefinir responsáveis para cada tarefa.\nProduzir materiais de suporte.\nCriar apresentações para lives.\nGravar vídeos curtos para teasers e divulgação.\nFase 2: Aquecimento (10 Dias)\n\nLançar campanhas de tráfego pago.\nAnúncios nas redes sociais para atrair leads.\nPostar conteúdo educativo.\nPublicar posts explicando problemas e soluções.\nRealizar lives curtas.\nTrês lives para introduzir o tema do lançamento.\nInteragir com o público.\nUsar enquetes, caixas de perguntas e respostas.\nFase 3: Conteúdo Principal (30 Dias)\n\nRealizar lives educativas (diárias ou alternadas).\nExplicar o método em passos/módulos.\nIncluir atividades práticas para o público.\nPostar resumos das lives.\nComplementar o conteúdo no Instagram e outras redes sociais.\nFase 4: Tratamento de Objeções (5 Dias)\n\nRealizar lives para tratar objeções.\nResponder dúvidas em tempo real.\nFocar em provas sociais e histórias de sucesso.\nCriar posts para lidar com objeções.\nExemplos: “Não tenho tempo?” ou “Vale o investimento?”.\nIniciar campanhas de escassez.\nBônus exclusivos ou ofertas limitadas.\nFase 5: Fechamento (Últimos 5 Dias)\n\nRealizar última live de venda.\nRecapitular benefícios e bônus.\nCriar urgência para o fechamento.\nIntensificar campanhas de escassez.\nAnúncios de última chance: “Faltam X dias!",
+        "new_features": "",
+        "follow_up": true,
+        "email": "dba70b39-03f1-4331-badd-0303c05300da"
+      },
+      {
+        "id": 198,
+        "feedback": "teste",
+        "new_features": "teste",
+        "follow_up": false,
+        "email": "89199ebc-8da3-4593-8246-92a0c2ceb35d"
+      },
+      {
+        "id": 199,
+        "feedback": "pp",
+        "new_features": "",
+        "follow_up": false,
+        "email": "e1de5ac8-bc9a-463b-914c-7866818168fd"
+      },
+      {
+        "id": 200,
+        "feedback": "一定",
+        "new_features": "图标流程",
+        "follow_up": true,
+        "email": "2dd866bf-b3c7-431d-9837-4b5d807ebe0a"
+      },
+      {
+        "id": 201,
+        "feedback": "It's good",
+        "new_features": "Real representation of gates",
+        "follow_up": true,
+        "email": "a6fe1e0e-afe7-499c-97db-070bc7c9329a"
+      },
+      {
+        "id": 202,
+        "feedback": "Worst",
+        "new_features": "Woret",
+        "follow_up": false,
+        "email": "a6fe1e0e-afe7-499c-97db-070bc7c9329a"
+      },
+      {
+        "id": 203,
+        "feedback": "lebih cepat",
+        "new_features": "lebih banyak pilihan",
+        "follow_up": true,
+        "email": "28620f51-7dad-4043-8baf-72bbeae95e70"
+      },
+      {
+        "id": 204,
+        "feedback": "good",
+        "new_features": "very good",
+        "follow_up": true,
+        "email": "28620f51-7dad-4043-8baf-72bbeae95e70"
+      },
+      {
+        "id": 205,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "ff329d1b-633f-42e5-92b5-9f5c009cb00e"
+      },
+      {
+        "id": 206,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "ff329d1b-633f-42e5-92b5-9f5c009cb00e"
+      },
+      {
+        "id": 207,
+        "feedback": "so far so good",
+        "new_features": "",
+        "follow_up": false,
+        "email": "fc7c9333-f6df-410e-8152-4d53f695600f"
+      },
+      {
+        "id": 208,
+        "feedback": "Looks good right nw",
+        "new_features": "",
+        "follow_up": false,
+        "email": "fc7c9333-f6df-410e-8152-4d53f695600f"
+      },
+      {
+        "id": 209,
+        "feedback": "i dont know",
+        "new_features": "no idea",
+        "follow_up": false,
+        "email": "fdbc03bc-65d1-4a89-a744-29d9ebbc0d7e"
+      },
+      {
+        "id": 210,
+        "feedback": "you the best \n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "28d7a744-9fd4-40b4-a561-66affe491c2a"
+      },
+      {
+        "id": 211,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": true,
+        "email": "5c66fe6b-e4d6-4fdf-ab06-0b7f6b733a2d"
+      },
+      {
+        "id": 212,
+        "feedback": "you are the best ",
+        "new_features": "",
+        "follow_up": false,
+        "email": "28d7a744-9fd4-40b4-a561-66affe491c2a"
+      },
+      {
+        "id": 213,
+        "feedback": "--",
+        "new_features": "",
+        "follow_up": false,
+        "email": "28d7a744-9fd4-40b4-a561-66affe491c2a"
+      },
+      {
+        "id": 214,
+        "feedback": "lo quei con la informacion que yo tengo en pdf o word",
+        "new_features": "",
+        "follow_up": false,
+        "email": "aa6cead6-1232-420a-a876-a7b62fa971dc"
+      },
+      {
+        "id": 215,
+        "feedback": "hacerlo con la informaxion que te dan ",
+        "new_features": "",
+        "follow_up": false,
+        "email": "aa6cead6-1232-420a-a876-a7b62fa971dc"
+      },
+      {
+        "id": 216,
+        "feedback": "gi",
+        "new_features": "",
+        "follow_up": false,
+        "email": "aa6cead6-1232-420a-a876-a7b62fa971dc"
+      },
+      {
+        "id": 217,
+        "feedback": "vgg\n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "aa6cead6-1232-420a-a876-a7b62fa971dc"
+      },
+      {
+        "id": 218,
+        "feedback": "nothing",
+        "new_features": "nothing",
+        "follow_up": true,
+        "email": "4c8b8e24-6358-4aff-aca4-4a2be52ba8e4"
+      },
+      {
+        "id": 219,
+        "feedback": "I DON'T KNOW",
+        "new_features": "I NEED TO WORK WITH THESE FIRST",
+        "follow_up": false,
+        "email": "5bcb81f2-10d4-4c34-a670-bd7e73c28c4f"
+      },
+      {
+        "id": 220,
+        "feedback": "I DON'T KNOW YET",
+        "new_features": "I NEED TO SEE THE JOB FIRST",
+        "follow_up": false,
+        "email": "5bcb81f2-10d4-4c34-a670-bd7e73c28c4f"
+      },
+      {
+        "id": 221,
+        "feedback": "I DON'T NOT YET",
+        "new_features": "lET ME SE THE JOB",
+        "follow_up": false,
+        "email": "5bcb81f2-10d4-4c34-a670-bd7e73c28c4f"
+      },
+      {
+        "id": 222,
+        "feedback": "I DON'T KNOW YET",
+        "new_features": "LET ME SEE THE JOB",
+        "follow_up": false,
+        "email": "5bcb81f2-10d4-4c34-a670-bd7e73c28c4f"
+      },
+      {
+        "id": 223,
+        "feedback": "realizar un digrama de Petri detallado con las siguientes expecificaciones además de agregar más servicios que no se mencionan redes de Petri de bajo nivel, y el diseño de los servicios que se prestan en un banco, tener en cuenta los siguientes aspectos:\n\nDe los servicios básicos: 4 cajeros, dos que atienden a público general y los cuatro atienden a clientes del banco 2 cajeros automáticos 4 atención personalizada Zona de Información que puede remitir a: los cajeros, atención personalizada y cajero automático Atención gerencia Y todos los demás servicios que crean convenientes incluir en el diseño Queda a criterio: la entrada de clientes al banco, la disposición de la atención de los diferentes servicios, etc No olvidar: Todos los lugares deben tener un nombre asignado lugares testigo de entrada de clientes, lugares testigo de las diferentes colas, lugares testigo de la atención recibida en cada servicio, cuando el cliente sale del sistema; estos lugares testigo no requieren de nombre ya que provienen de lugares de las diferentes colas, para evitar tantos textos en el diseño Las transiciones deben ser definidas con distribución exponencial y distribución uniforme, NO inmediata ni determinista y los tiempos asignados quedan a criterio Encerrar en cuadros con diferentes colores las distintas zonas de servicios Tener en cuenta los aspectos que no he mencionado en este correo y que a su criterio se deben incluir",
+        "new_features": "",
+        "follow_up": false,
+        "email": "8ad0c343-bfa6-4a87-bb8a-2f28130bd498"
+      },
+      {
+        "id": 224,
+        "feedback": "Now I don't have anything to say you",
+        "new_features": "",
+        "follow_up": true,
+        "email": "d319401e-9456-4a31-bebd-1dfb3c6db6cc"
+      },
+      {
+        "id": 225,
+        "feedback": "Sou novo aqui então ainda preciso de explorar para aposterior saber avaliar e sugerir melhorias ",
+        "new_features": "",
+        "follow_up": true,
+        "email": "d319401e-9456-4a31-bebd-1dfb3c6db6cc"
+      },
+      {
+        "id": 226,
+        "feedback": "Please support the Japanese language.",
+        "new_features": "",
+        "follow_up": false,
+        "email": "224d75c6-c5ef-4095-b0d7-cf663102e445"
+      },
+      {
+        "id": 227,
+        "feedback": "-",
+        "new_features": "-",
+        "follow_up": false,
+        "email": "9528b221-0de1-48ee-a3e6-2f44e3fb55d5"
+      },
+      {
+        "id": 228,
+        "feedback": "ewjd",
+        "new_features": "kjdsq",
+        "follow_up": true,
+        "email": "de817355-9a21-4090-aaad-766c55c48616"
+      },
+      {
+        "id": 229,
+        "feedback": "hvfhjf",
+        "new_features": "",
+        "follow_up": false,
+        "email": "de817355-9a21-4090-aaad-766c55c48616"
+      },
+      {
+        "id": 230,
+        "feedback": "jkjk",
+        "new_features": "knklnjkln",
+        "follow_up": false,
+        "email": "47928719-afdc-4ea5-b96d-551e0bc5d4f6"
+      },
+      {
+        "id": 231,
+        "feedback": "Be more user-friendly",
+        "new_features": "",
+        "follow_up": false,
+        "email": "efc534e2-9ece-4dea-9c3d-2a601bdc3d6b"
+      },
+      {
+        "id": 232,
+        "feedback": "Add more languages",
+        "new_features": "",
+        "follow_up": false,
+        "email": "efc534e2-9ece-4dea-9c3d-2a601bdc3d6b"
+      },
+      {
+        "id": 233,
+        "feedback": "Hjko",
+        "new_features": "Hjjkjt",
+        "follow_up": false,
+        "email": "3b60b0d4-af6f-4581-8bb5-6966ff05c30a"
+      },
+      {
+        "id": 234,
+        "feedback": "Hufrreds",
+        "new_features": "Ddffghh",
+        "follow_up": false,
+        "email": "23f35177-0aa8-48ce-bad4-b94ec33aa51d"
+      },
+      {
+        "id": 235,
+        "feedback": "By asking the feedback later, Haven't yet started using and this prompt came by.",
+        "new_features": "Ai. assisted picture or diagram ",
+        "follow_up": false,
+        "email": "71ebfbd8-f856-4de5-a190-298fc5d53f58"
+      },
+      {
+        "id": 236,
+        "feedback": "fasd fsadf sa",
+        "new_features": "asdasfsd",
+        "follow_up": true,
+        "email": "c22d6cbb-69b8-467a-aae4-b958b5ff5e01"
+      },
+      {
+        "id": 237,
+        "feedback": "no",
+        "new_features": "no",
+        "follow_up": false,
+        "email": "683249b5-446f-4586-8c45-8dbdcb86ee56"
+      },
+      {
+        "id": 238,
+        "feedback": "idk",
+        "new_features": "",
+        "follow_up": false,
+        "email": "451ff302-761b-4650-8c78-7e2b5f1220bd"
+      },
+      {
+        "id": 239,
+        "feedback": "Stop asking me for feedback",
+        "new_features": "",
+        "follow_up": false,
+        "email": "451ff302-761b-4650-8c78-7e2b5f1220bd"
+      },
+      {
+        "id": 240,
+        "feedback": "todo bien",
+        "new_features": "refencias bibliograficas",
+        "follow_up": false,
+        "email": "df074107-a821-45ec-8461-46efdf761b24"
+      },
+      {
+        "id": 241,
+        "feedback": "Highst",
+        "new_features": "",
+        "follow_up": true,
+        "email": "c084169b-0312-4a63-97f1-10ad64f03d67"
+      },
+      {
+        "id": 242,
+        "feedback": "make it user friendly",
+        "new_features": "make UI UX better",
+        "follow_up": true,
+        "email": "2ddf7bd2-9da9-4ff8-82f5-56f617b89eaf"
+      },
+      {
+        "id": 243,
+        "feedback": "THE BEST",
+        "new_features": "",
+        "follow_up": true,
+        "email": "72985198-8699-4352-8cef-bf3e12823ba2"
+      },
+      {
+        "id": 244,
+        "feedback": "diagram xrp",
+        "new_features": "",
+        "follow_up": false,
+        "email": "7adee11b-dd75-4e8c-9f9f-5eb4f270ba4e"
+      },
+      {
+        "id": 245,
+        "feedback": "nhfgg",
+        "new_features": "g",
+        "follow_up": true,
+        "email": "488e6bfb-4227-4faa-9912-12e33b6e5a0d"
+      },
+      {
+        "id": 246,
+        "feedback": "everything\\\n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "bcb4f939-7cb9-4d08-a48e-1311310d9a62"
+      },
+      {
+        "id": 247,
+        "feedback": "flowchart TD\n    A[(\"👤 Traveler\")]\n    B[(\"👑 Admin\")]\n    C[(\"🆔 NID System\")]\n    \n    %% Consolidated Processes\n    P1[[\"1.0 User Management\"]]\n    P2[[\"2.0 Event & Group Operations\"]]\n    P3[[\"3.0 Content & Support\"]]\n    \n    %% Consolidated Data Stores\n    DS1[(\"D1: User Database\")]\n    DS2[(\"D2: Event Database\")]\n    \n    %% Flows\n    A -->|Login/Signup| P1\n    P1 -->|Verify Identity| C\n    C -->|Result| P1\n    P1 -->|Store Profile| DS1\n    P1 -->|Access| A\n    \n    A -->|Create/Browse Events| P2\n    A -->|Join Requests| P2\n    B -->|Manage Events| P2\n    P2 -->|Save Event| DS2\n    P2 -->|Event List| A\n    P2 -->|Approval Status| B\n    \n    A -->|Group Messages| P2\n    P2 -->|Chat Data| DS2\n    \n    A -->|Travel Questions| P3\n    P3 -->|AI Responses| A\n    \n    A -->|Post-Trip Content| P3\n    P3 -->|Store Content| DS2\n    P3 -->|Shared Feed| A\n    \n    %% Admin Access\n    B -->|User Oversight| DS1\n    B -->|Event Management| DS2",
+        "new_features": "",
+        "follow_up": false,
+        "email": "a6366ced-ef61-4c6e-ad35-99611de1aa4b"
+      },
+      {
+        "id": 248,
+        "feedback": "yes",
+        "new_features": "yes",
+        "follow_up": false,
+        "email": "ee318f4c-6bb3-45e1-829c-2f58b8f3b0ed"
+      },
+      {
+        "id": 249,
+        "feedback": "fff",
+        "new_features": "hhhhh",
+        "follow_up": false,
+        "email": "44d843b0-e960-4944-9c26-ba08a8582f3d"
+      },
+      {
+        "id": 250,
+        "feedback": "ss",
+        "new_features": "",
+        "follow_up": true,
+        "email": "3cc5ef8d-b3af-4456-8c2e-e1e10a974a64"
+      },
+      {
+        "id": 251,
+        "feedback": "fsdfsad",
+        "new_features": "fsdfadsff",
+        "follow_up": false,
+        "email": "92c4bc65-f3bc-4d66-8674-cbab1621fe3f"
+      },
+      {
+        "id": 252,
+        "feedback": "i've just started to use the tool",
+        "new_features": "",
+        "follow_up": false,
+        "email": "6d6c39bf-fcb3-4101-af66-5c1dfef7ceea"
+      },
+      {
+        "id": 253,
+        "feedback": "na",
+        "new_features": "na",
+        "follow_up": false,
+        "email": "3701572c-46b2-47e9-aeb1-306afbef57a7"
+      },
+      {
+        "id": 254,
+        "feedback": "improve the vscode addon to manage more than 10000 chars",
+        "new_features": "",
+        "follow_up": false,
+        "email": "76872340-1d40-44e6-845c-432c53cab6b5"
+      },
+      {
+        "id": 255,
+        "feedback": "no se",
+        "new_features": "no se",
+        "follow_up": false,
+        "email": "6a6b9352-8ac2-4f43-9165-c7c61a669c49"
+      },
+      {
+        "id": 256,
+        "feedback": "\"Solicitar al usuario un número repetidamente. Guardar el número mayor ingresado. Terminar cuando el usuario escriba 0. Mostrar cuál fue el mayor.\"",
+        "new_features": "",
+        "follow_up": true,
+        "email": "5643208f-95d7-457f-8289-5356bd7eb531"
+      },
+      {
+        "id": 257,
+        "feedback": "no",
+        "new_features": "",
+        "follow_up": true,
+        "email": "2c5fb1fb-07c8-40f1-8e1e-1ecdf401b3fa"
+      },
+      {
+        "id": 258,
+        "feedback": ".",
+        "new_features": ".",
+        "follow_up": false,
+        "email": "9cf49e0d-a2ae-4717-ad06-c1ad3de7bb7d"
+      },
+      {
+        "id": 259,
+        "feedback": "123",
+        "new_features": "",
+        "follow_up": false,
+        "email": "4749bef2-881e-479b-a94e-95c564bcc5fb"
+      },
+      {
+        "id": 260,
+        "feedback": "hh",
+        "new_features": "uu",
+        "follow_up": true,
+        "email": "c8d13c30-f4d5-4a50-b48c-ae9d883a9523"
+      },
+      {
+        "id": 261,
+        "feedback": "ok\n",
+        "new_features": "",
+        "follow_up": true,
+        "email": "5d1c90e3-5238-4a38-b422-75f91b8ded8e"
+      },
+      {
+        "id": 262,
+        "feedback": "123\n",
+        "new_features": "",
+        "follow_up": false,
+        "email": "7144d6dc-d1a8-4114-bcea-1a34d2cdd98c"
+      },
+      {
+        "id": 263,
+        "feedback": "no",
+        "new_features": "no",
+        "follow_up": false,
+        "email": "742256fe-8c51-44cb-8705-c8d491fd193c"
+      },
+      {
+        "id": 264,
+        "feedback": "nkshcks",
+        "new_features": "jxkjckdx",
+        "follow_up": true,
+        "email": "8edce709-6e43-4f30-bb65-e90e155725dc"
+      },
+      {
+        "id": 265,
+        "feedback": "not yet",
+        "new_features": "i dont know yet",
+        "follow_up": false,
+        "email": "d06f564d-6c09-46fe-b453-31c2a244353b"
+      },
+      {
+        "id": 266,
+        "feedback": "azaAA",
+        "new_features": "",
+        "follow_up": false,
+        "email": "bbfe8580-fe75-48c4-adb0-dc9055c8883c"
+      },
+      {
+        "id": 267,
+        "feedback": "adsfiohasiofjas;f",
+        "new_features": "asdfasgsgasgarsgfas",
+        "follow_up": false,
+        "email": "0443d69d-feca-4d09-80ac-b1cf9ec1ac53"
+      },
+      {
+        "id": 268,
+        "feedback": "noNO idea",
+        "new_features": "",
+        "follow_up": false,
+        "email": "db4abe28-6daa-4745-8146-a593b3e77513"
+      },
+      {
+        "id": 269,
+        "feedback": "okeoke",
+        "new_features": "oke",
+        "follow_up": true,
+        "email": "098ae128-f65b-41e7-a7f6-c9b6ad5884aa"
+      },
+      {
+        "id": 270,
+        "feedback": "yrd",
+        "new_features": "",
+        "follow_up": false,
+        "email": "a49ee32a-e9f4-4f00-ba1a-bf847cb59e09"
+      },
+      {
+        "id": 271,
+        "feedback": "s",
+        "new_features": "s",
+        "follow_up": false,
+        "email": "8e83dd44-2435-4383-a20c-4a6028dc44c6"
+      },
+      {
+        "id": 272,
+        "feedback": "good",
+        "new_features": "good",
+        "follow_up": false,
+        "email": "1ec23136-ad75-4656-93d3-bb2d15257a2d"
+      },
+      {
+        "id": 273,
+        "feedback": "Create a professional industrial logistics and dispatch planning flowchart.\n\nStart:\nReceive Purchase Order (PO) from client\n\nSteps:\n- Verify order details and quantity\n- Calculate number of vehicles required based on tonnage\n- Take quotations from 4-5 transporters\n- Negotiate rates and finalize transporter\n- Take approval from AGM / GM / MD\n- Plan vehicle placement\n\nPre-dispatch:\n- Prepare packing list from inventory sheet\n- Verify invoice weight vs weighment weight\n\nDecision:\nIf weighment > invoice:\n    Take confirmation from planning department and attach documents\nElse:\n    Proceed\n\n- Documentation check: invoice, e-way bill, LR, packing list, weight slip\nIf any document missing:\n    Hold dispatch\n\nDispatch:\n- Load vehicle (avoid underloading unless approved)\n- Gate entry and time recording\n- Dispatch release\n\nControls:\n- No detention at loading (recover internally)\n- Detention at unloading recover from client\n- Ensure 24–36 hours free time from gate entry\n\nEnd\n\n",
+        "new_features": "arrows, diamond,document list",
+        "follow_up": false,
+        "email": "71882651-a92a-43c6-8a28-b5dda1c41474"
+      },
+      {
+        "id": 274,
+        "feedback": "great",
+        "new_features": "",
+        "follow_up": false,
+        "email": "bbd74c84-ab1e-4332-8666-bbcae858591a"
+      },
+      {
+        "id": 275,
+        "feedback": "More templates",
+        "new_features": "More Templates",
+        "follow_up": false,
+        "email": "278d3d41-debe-4dbc-bc2c-2112c0c858af"
+      },
+      {
+        "id": 276,
+        "feedback": "nonen",
+        "new_features": "none",
+        "follow_up": false,
+        "email": "d85438ac-3dcf-4f29-8d05-cc0ca6cb6fe6"
+      },
+      {
+        "id": 277,
+        "feedback": "efsfd",
+        "new_features": "sdff",
+        "follow_up": false,
+        "email": "8bd331f3-6986-40ca-8f7a-656600c27fdf"
+      },
+      {
+        "id": 278,
+        "feedback": "na",
+        "new_features": "na",
+        "follow_up": false,
+        "email": "ecc7e250-52eb-4a79-9ed0-8a9596bde39e"
+      },
+      {
+        "id": 279,
+        "feedback": "No",
+        "new_features": "Yes",
+        "follow_up": false,
+        "email": "2687b5c6-98e3-4197-8ffc-946232d110f2"
+      }
+    ]
+  },
+  "support": {
+    "table": "support",
+    "count": 0,
+    "rows": []
+  }
+}

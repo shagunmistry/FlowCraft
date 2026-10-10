@@ -10,21 +10,6 @@ import { motion } from 'framer-motion'
 
 type PricingPageSource = 'landing' | 'dashboard' | 'mermaid' | 'chart'
 
-const PricingKicker = (sourcePage: PricingPageSource) => {
-  switch (sourcePage) {
-    case 'landing':
-      return 'Choose your tier'
-    case 'dashboard':
-      return 'Pick a plan to continue'
-    case 'mermaid':
-      return 'Unlock complex diagrams'
-    case 'chart':
-      return 'Unlock charts'
-    default:
-      return 'Pick a plan'
-  }
-}
-
 export default function PricingTemplate({
   sourcePage,
   shouldGoToCheckout,
@@ -152,11 +137,7 @@ export default function PricingTemplate({
           className="grid grid-cols-1 gap-8 lg:grid-cols-12"
         >
           <div className="lg:col-span-7">
-            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-              <span className="h-px w-12 bg-signal/50" />
-              <span className="text-fog">{PricingKicker(sourcePage)}</span>
-            </div>
-            <h1 className="mt-6 font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
+            <h1 className="font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
               Straight lines,
               <br />
               <span className="italic text-signal">fair rates</span>

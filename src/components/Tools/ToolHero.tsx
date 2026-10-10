@@ -19,9 +19,6 @@ export default function ToolHero({ tool }: { tool: ToolPage }) {
 
       <div className="mx-auto max-w-5xl px-6 pb-12 pt-20 sm:pt-28 lg:px-8 lg:pt-32">
         <div className="text-center">
-          <p className="mb-4 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium uppercase tracking-wider text-gray-600">
-            Free AI Tool
-          </p>
           <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-[1.1] tracking-tight text-gray-900 md:text-6xl">
             {tool.h1 ?? tool.title}
           </h1>

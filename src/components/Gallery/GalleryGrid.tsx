@@ -39,10 +39,7 @@ export default function GalleryGrid({
     <section>
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-4">
         <div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-            Index · {selectedFilter}
-          </div>
-          <h2 className="mt-3 font-serif text-4xl leading-[0.95] text-paper md:text-5xl">
+          <h2 className="font-serif text-4xl leading-[0.95] text-paper md:text-5xl">
             {heading}
             <span className="italic text-signal">.</span>
           </h2>

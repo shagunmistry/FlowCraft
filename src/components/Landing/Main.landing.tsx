@@ -362,7 +362,6 @@ export default function MainLanding() {
         <section className="relative py-24 lg:py-36">
           <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
             <SectionHeader
-              kicker="Specimen catalogue"
               title={
                 <>
                   Six instruments for
@@ -437,7 +436,6 @@ export default function MainLanding() {
         <section className="relative border-t border-rule bg-graphite/30 py-24 lg:py-36">
           <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
             <SectionHeader
-              kicker="Method"
               title={
                 <>
                   From thought to
@@ -485,14 +483,7 @@ export default function MainLanding() {
                       idx % 2 === 1 ? 'lg:order-2' : ''
                     }`}
                   >
-                    <div className="flex items-baseline gap-4">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal">
-                        Movement
-                      </span>
-                      <span className="h-px flex-1 bg-rule" />
-                    </div>
-
-                    <div className="mt-4 font-serif text-[140px] leading-[0.85] text-paper/10 md:text-[200px]">
+                    <div className="font-serif text-[140px] leading-[0.85] text-paper/10 md:text-[200px]">
                       /{item.step}
                     </div>
 
@@ -549,7 +540,6 @@ export default function MainLanding() {
         <section className="relative py-24 lg:py-36">
           <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
             <SectionHeader
-              kicker="Canvas"
               title={
                 <>
                   Built for people who
@@ -606,11 +596,6 @@ export default function MainLanding() {
           />
 
           <div className="relative mx-auto max-w-[1100px] px-6 text-center lg:px-8">
-            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
-              <span className="h-px w-8 bg-fog" />
-              <span>Final sheet</span>
-              <span className="h-px w-8 bg-fog" />
-            </div>
 
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -662,22 +647,16 @@ export default function MainLanding() {
 /* ──────────────────────────────────────────── */
 
 function SectionHeader({
-  kicker,
   title,
   description,
 }: {
-  kicker: string
   title: React.ReactNode
   description: string
 }) {
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
       <div className="lg:col-span-5">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-          <span className="h-px w-12 bg-signal/50" />
-          <span className="text-fog">{kicker}</span>
-        </div>
-        <h2 className="mt-6 font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
+        <h2 className="font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
           {title}
         </h2>
       </div>

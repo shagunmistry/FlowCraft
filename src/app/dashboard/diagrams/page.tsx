@@ -129,11 +129,7 @@ export default function AllDiagramsPage() {
         {/* Masthead */}
         <section className="mb-14 grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-              <span className="h-px w-12 bg-signal/50" />
-              <span className="text-fog">Index · Vol. 01</span>
-            </div>
-            <h1 className="mt-6 font-serif text-6xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
+            <h1 className="font-serif text-6xl leading-[0.95] tracking-[-0.01em] text-paper md:text-7xl">
               <span className="text-paper/70">Every draft,</span>{' '}
               <span className="italic text-signal">catalogued</span>
               <span className="text-paper/70">.</span>
@@ -501,10 +497,7 @@ function EmptyState({
       />
 
       <div className="relative mx-auto max-w-md">
-        <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-          {isSearching ? '∅ No matches' : '◇ Empty shelf'}
-        </div>
-        <h3 className="mt-5 font-serif text-4xl leading-tight text-paper md:text-5xl">
+        <h3 className="font-serif text-4xl leading-tight text-paper md:text-5xl">
           {isSearching ? (
             <>
               Nothing{' '}

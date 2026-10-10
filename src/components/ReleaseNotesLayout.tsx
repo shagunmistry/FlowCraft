@@ -50,11 +50,7 @@ export function ReleaseNotesLayout({
 
             <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
               <div className="lg:col-span-8">
-                <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-                  <span className="h-px w-12 bg-signal/50" />
-                  <span className="text-fog">What shipped, when</span>
-                </div>
-                <h1 className="mt-6 font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[108px]">
+                <h1 className="font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[108px]">
                   <span className="block">The field</span>
                   <span className="block">
                     <span className="italic text-signal">log</span>

@@ -255,11 +255,6 @@ export default function Workbench({
       {/* Top crossbar */}
       <div className="relative flex items-center justify-between gap-3 border-b border-rule/60 bg-ink/90 px-6 py-3 backdrop-blur">
         <div className="flex min-w-0 items-center gap-4">
-          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-            <span className="text-signal">FC</span>
-            <span className="h-px w-6 bg-rule" />
-            <span className="text-paper/80">{diagramType}</span>
-          </div>
           <h1 className="truncate font-serif text-xl italic text-paper">
             {title || 'Untitled draft'}
           </h1>

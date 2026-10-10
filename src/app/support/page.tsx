@@ -162,11 +162,7 @@ export default function SupportPage() {
               className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12"
             >
               <div className="lg:col-span-8">
-                <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-                  <span className="h-px w-12 bg-signal/50" />
-                  <span className="text-fog">Say hello</span>
-                </div>
-                <h1 className="mt-6 font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[108px]">
+                <h1 className="font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[108px]">
                   <span className="block">Write us</span>
                   <span className="block">
                     <span className="italic text-signal">a sentence</span>
@@ -209,11 +205,7 @@ export default function SupportPage() {
           <div className="mx-auto max-w-[1100px] px-6 lg:px-8">
             <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12">
               <div className="lg:col-span-5">
-                <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em]">
-                  <span className="h-px w-12 bg-signal/50" />
-                  <span className="text-fog">Draft transmission</span>
-                </div>
-                <h2 className="mt-6 font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-6xl">
+                <h2 className="font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-6xl">
                   Fill the
                   <br />
                   <span className="italic text-signal">slip.</span>

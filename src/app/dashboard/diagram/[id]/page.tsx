@@ -156,11 +156,7 @@ export default function DiagramPage({
           className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.04] blur-[120px]"
         />
         <div className="relative flex max-w-md flex-col items-center">
-          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-            <span className="h-px w-10 bg-signal/50" />
-            Draft · 404
-          </div>
-          <h2 className="mt-6 font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper">
+          <h2 className="font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper">
             <span className="text-paper/70">This sheet has</span>{' '}
             <span className="italic text-signal">gone missing</span>
             <span className="text-paper/70">.</span>

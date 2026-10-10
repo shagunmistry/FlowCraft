@@ -83,11 +83,7 @@ export default function GalleryHeader({ totalItems }: GalleryHeaderProps) {
           }}
           className="lg:col-span-8"
         >
-          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-            <span className="h-px w-12 bg-signal/50" />
-            <span className="text-fog">Specimen catalogue</span>
-          </div>
-          <h1 className="mt-6 font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[80px] lg:text-[96px]">
+          <h1 className="font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[80px] lg:text-[96px]">
             <span className="block">Drafts from</span>
             <span className="block">
               <span className="italic text-signal">the community</span>

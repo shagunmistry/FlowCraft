@@ -58,10 +58,6 @@ export default function FAQs() {
       <div className="relative mx-auto max-w-[1280px] border-t border-rule px-6 py-24 lg:px-8 lg:py-32">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-              <span className="h-px w-12 bg-signal/50" />
-              <span className="text-fog">Queries</span>
-            </div>
             <h2
               id="faq-heading"
               className="mt-6 font-serif text-5xl leading-[0.95] tracking-[-0.01em] text-paper md:text-6xl"

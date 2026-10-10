@@ -29,9 +29,6 @@ export default function ToolsIndexPage() {
       <main className="min-h-screen bg-white pb-24 pt-20">
         <section className="mx-auto max-w-6xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="mb-4 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium uppercase tracking-wider text-gray-600">
-              Free AI Tools
-            </p>
             <h1 className="text-4xl font-semibold tracking-tight text-gray-900 md:text-5xl">
               Free AI diagram tools
             </h1>

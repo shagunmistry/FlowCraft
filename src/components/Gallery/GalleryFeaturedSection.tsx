@@ -26,10 +26,7 @@ export default function GalleryFeaturedSection({
     <section className="mb-20">
       <div className="flex items-end justify-between border-b border-rule pb-4">
         <div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-            Popular
-          </div>
-          <h2 className="mt-3 font-serif text-4xl leading-[0.95] text-paper md:text-5xl">
+          <h2 className="font-serif text-4xl leading-[0.95] text-paper md:text-5xl">
             Most viewed
             <span className="italic text-signal"> this week.</span>
           </h2>
