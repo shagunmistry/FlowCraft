@@ -82,7 +82,7 @@ function ReadOnlyFlow({ nodes, edges }: { nodes: Node[]; edges: Edge[] }) {
     >
       <Controls
         position="bottom-left"
-        className="!rounded-lg !border-gray-200/80 !bg-white/90 !shadow-lg !shadow-black/5 !backdrop-blur-xl"
+        className="!rounded-lg !border-rule !bg-graphite/90 !shadow-lg !shadow-black/5 !backdrop-blur-xl"
       />
       <Background
         color="#d1d5db"
@@ -295,7 +295,7 @@ function EditableFlow({
     >
       <Controls
         position="bottom-left"
-        className="!rounded-lg !border-gray-200/80 !bg-white/90 !shadow-lg !shadow-black/5 !backdrop-blur-xl"
+        className="!rounded-lg !border-rule !bg-graphite/90 !shadow-lg !shadow-black/5 !backdrop-blur-xl"
       />
       {gridEnabled && (
         <Background

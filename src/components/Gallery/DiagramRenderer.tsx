@@ -140,9 +140,9 @@ export default function DiagramRenderer({
 
   return (
     <div
-      className={`flex h-full w-full items-center justify-center bg-gray-100 ${className}`}
+      className={`flex h-full w-full items-center justify-center bg-ink ${className}`}
     >
-      <div className="text-gray-500">No diagram preview available</div>
+      <div className="text-fog">No diagram preview available</div>
     </div>
   )
 }

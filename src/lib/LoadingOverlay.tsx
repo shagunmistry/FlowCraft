@@ -54,7 +54,7 @@ const LoadingOverlay = ({
         className="pointer-events-none absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(196,255,61,0.1) 1px, transparent 1px)',
+            'radial-gradient(rgb(var(--color-signal) / 0.1) 1px, transparent 1px)',
           backgroundSize: '28px 28px',
         }}
       />
@@ -72,11 +72,11 @@ const LoadingOverlay = ({
               cx="32"
               cy="32"
               r="29"
-              stroke="#C4FF3D"
+              style={{ stroke: 'rgb(var(--color-signal))' }}
               strokeWidth="1"
               strokeDasharray="3 4"
             />
-            <circle cx="32" cy="3" r="2.5" fill="#C4FF3D" />
+            <circle cx="32" cy="3" r="2.5" style={{ fill: 'rgb(var(--color-signal))' }} />
           </motion.svg>
           <span className="absolute inset-0 flex items-center justify-center">
             <span className="inline-flex h-2 w-2 animate-tick rounded-full bg-signal" />

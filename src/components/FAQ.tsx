@@ -11,12 +11,12 @@ const faqs = [
   {
     question: 'What can I draft?',
     answer:
-      'Flowcharts, sequence diagrams, mind maps, knowledge graphs, user-journey maps, Sankey diagrams, pie charts, infographics, and editorial illustrations — all from a single sentence or a document paste.',
+      'Flowcharts, sequence diagrams, mind maps, knowledge graphs, user-journey maps, Sankey diagrams, pie charts, infographics, and editorial illustrations, all from a single sentence or a document paste.',
   },
   {
     question: 'Is it suitable for beginners?',
     answer:
-      "Absolutely. If you can write a sentence, you can draft a diagram. The interface is intentionally quiet — your idea is the input, the visual is the output.",
+      "Absolutely. If you can write a sentence, you can draft a diagram. The interface is intentionally quiet. Your idea is the input, the visual is the output.",
   },
   {
     question: 'Does FlowCraft support collaboration?',
@@ -26,7 +26,7 @@ const faqs = [
   {
     question: 'How does billing work?',
     answer:
-      'Monthly or annual, with a 17% discount for annual. Cancel anytime. Specific billing questions — reach support directly.',
+      'Monthly or annual, with a 17% discount for annual. Cancel anytime. Specific billing questions, so reach support directly.',
   },
 ]
 
@@ -90,7 +90,7 @@ export default function FAQs() {
                           {faq.question}
                         </span>
                         <span className="mt-1 flex h-7 w-7 flex-none items-center justify-center border border-rule font-mono text-fog transition-all group-hover:border-signal group-hover:text-signal">
-                          {open ? '–' : '+'}
+                          {open ? '-' : '+'}
                         </span>
                       </Disclosure.Button>
                     </dt>

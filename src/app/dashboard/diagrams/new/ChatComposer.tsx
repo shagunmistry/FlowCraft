@@ -8,7 +8,7 @@ export default function ChatComposer({
   onChange,
   onSubmit,
   disabled = false,
-  placeholder = 'Ask for edits — "make nodes green", "add a review step after start"...',
+  placeholder = 'Ask for edits, like "make nodes green" or "add a review step after start"',
   submitLabel = 'Send',
   size = 'normal',
   autoFocus = false,

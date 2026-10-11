@@ -65,7 +65,7 @@ export default function GalleryHeader({ totalItems }: GalleryHeaderProps) {
         >
           <p className="max-w-md text-lg leading-relaxed text-paper/60">
             A rolling archive of flowcharts, mind maps, illustrations, and
-            infographics — drafted from sentences by people like you.
+            infographics, drafted from sentences by people like you.
           </p>
           <p className="mt-5 text-sm text-fog">Updated continuously</p>
         </motion.div>

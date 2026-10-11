@@ -58,7 +58,7 @@ export default function BlogsHomePage() {
             className="pointer-events-none absolute right-[-10%] top-[20%] h-[460px] w-[600px] rounded-full"
             style={{
               background:
-                'radial-gradient(circle, rgba(196,255,61,0.10), transparent 60%)',
+                'radial-gradient(circle, rgb(var(--color-signal) / 0.10), transparent 60%)',
             }}
           />
 
@@ -184,7 +184,7 @@ export default function BlogsHomePage() {
                           className="pointer-events-none absolute inset-0 z-10 opacity-30 mix-blend-overlay"
                           style={{
                             backgroundImage:
-                              'linear-gradient(135deg, transparent 45%, rgba(196,255,61,0.25) 50%, transparent 55%)',
+                              'linear-gradient(135deg, transparent 45%, rgb(var(--color-signal) / 0.25) 50%, transparent 55%)',
                           }}
                         />
                         <div
@@ -192,7 +192,7 @@ export default function BlogsHomePage() {
                           className="pointer-events-none absolute inset-0 z-10 opacity-30"
                           style={{
                             backgroundImage:
-                              'radial-gradient(rgba(196,255,61,0.12) 1px, transparent 1px)',
+                              'radial-gradient(rgb(var(--color-signal) / 0.12) 1px, transparent 1px)',
                             backgroundSize: '14px 14px',
                           }}
                         />
@@ -254,7 +254,7 @@ export default function BlogsHomePage() {
                               className="pointer-events-none absolute inset-0 z-10 opacity-30"
                               style={{
                                 backgroundImage:
-                                  'radial-gradient(rgba(196,255,61,0.10) 1px, transparent 1px)',
+                                  'radial-gradient(rgb(var(--color-signal) / 0.10) 1px, transparent 1px)',
                                 backgroundSize: '12px 12px',
                               }}
                             />
@@ -343,10 +343,6 @@ function Meta({ k, v }: { k: string; v: string }) {
 function CornerTicks() {
   return (
     <>
-      <span className="pointer-events-none absolute -left-px -top-px z-20 h-3 w-3 border-l border-t border-signal" />
-      <span className="pointer-events-none absolute -right-px -top-px z-20 h-3 w-3 border-r border-t border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -left-px z-20 h-3 w-3 border-b border-l border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -right-px z-20 h-3 w-3 border-b border-r border-signal" />
     </>
   )
 }
@@ -379,7 +375,7 @@ function SchematicPlaceholder({ mini = false }: { mini?: boolean }) {
         <rect x="75" y="80" width="50" height="24" rx="1" />
       </g>
       <g
-        stroke="#C4FF3D"
+        style={{ stroke: 'rgb(var(--color-signal))' }}
         strokeWidth="1"
         strokeDasharray="3 3"
         opacity="0.7"

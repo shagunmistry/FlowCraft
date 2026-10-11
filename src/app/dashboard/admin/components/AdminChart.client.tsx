@@ -56,7 +56,7 @@ export function StackedAreaChart({ rows, title }: { rows: Row[]; title?: string 
     })),
   }
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-rule bg-graphite p-4">
       {title ? <div className="mb-2 text-sm font-medium">{title}</div> : null}
       <Line
         data={data}
@@ -91,7 +91,7 @@ export function SimpleLineChart({
     ],
   }
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-rule bg-graphite p-4">
       {title ? <div className="mb-2 text-sm font-medium">{title}</div> : null}
       <Line data={data} options={{ responsive: true, plugins: { legend: { display: false } } }} />
     </div>
@@ -127,7 +127,7 @@ export function EngagementChart({
     ],
   }
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-rule bg-graphite p-4">
       {title ? <div className="mb-2 text-sm font-medium">{title}</div> : null}
       <Line
         data={data}
@@ -151,7 +151,7 @@ export function CategoryDoughnut({
   const labels = Object.keys(data)
   const values = Object.values(data)
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-rule bg-graphite p-4">
       {title ? <div className="mb-2 text-sm font-medium">{title}</div> : null}
       <Doughnut
         data={{
@@ -179,7 +179,7 @@ export function CategoryBar({
   const labels = Object.keys(data)
   const values = Object.values(data)
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-rule bg-graphite p-4">
       {title ? <div className="mb-2 text-sm font-medium">{title}</div> : null}
       <Bar
         data={{

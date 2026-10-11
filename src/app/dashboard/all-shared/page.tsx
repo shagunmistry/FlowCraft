@@ -38,7 +38,7 @@ export default function AllDiagramsPage() {
     <div className="mx-auto mt-6 flex h-[50vh] max-w-7xl flex-col py-12 py-6 sm:px-6 lg:px-8">
       <div className="md:flex md:items-center md:justify-between">
         <div className="min-w-0 flex-1">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+          <h2 className="text-2xl font-bold leading-7 text-paper sm:truncate sm:text-3xl sm:tracking-tight">
             All Diagrams
           </h2>
         </div>{' '}
@@ -50,7 +50,7 @@ export default function AllDiagramsPage() {
         {sharedLinks.map((sharedLink) => (
           <li
             key={sharedLink.id}
-            className="relative flex justify-between gap-x-6 px-4 py-5 transition-all duration-200 hover:scale-105 hover:bg-gray-50 hover:shadow-lg sm:px-6"
+            className="relative flex justify-between gap-x-6 px-4 py-5 transition-all duration-200 hover:scale-105 hover:bg-ink hover:shadow-lg sm:px-6"
           >
             <div className="flex min-w-0 gap-x-4">
               <div className="min-w-0 flex-auto">
@@ -65,24 +65,24 @@ export default function AllDiagramsPage() {
                     {sharedLink.title}
                   </Link>
                 </p>
-                <p className="text-sm leading-5 text-gray-500">
+                <p className="text-sm leading-5 text-fog">
                   Invite Code: {sharedLink.invite_code}
                 </p>
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-x-4">
               <div className="hidden sm:flex sm:flex-col sm:items-end">
-                <p className="text-sm leading-6 text-gray-900">
+                <p className="text-sm leading-6 text-paper">
                   {new Date(sharedLink.created_at).toLocaleDateString()}
                 </p>
                 <div className="mt-1 flex items-center gap-x-1.5">
-                  <p className="text-xs leading-5 text-gray-500">
+                  <p className="text-xs leading-5 text-fog">
                     {sharedLink.type}
                   </p>
                 </div>
               </div>
               <ChevronRightIcon
-                className="h-5 w-5 flex-none text-gray-400"
+                className="h-5 w-5 flex-none text-fog"
                 aria-hidden="true"
               />
             </div>
@@ -92,10 +92,10 @@ export default function AllDiagramsPage() {
 
       {sharedLinks.length === 0 && (
         <div className="mt-6 flex h-[50vh] flex-col items-center justify-center py-12 text-center">
-          <p className="text-lg text-gray-500">
+          <p className="text-lg text-fog">
             No diagrams shared yet.{' '}
             <Link
-              href="/dashboard/flow-diagram"
+              href="/dashboard/diagrams/new"
               className="text-red-600 hover:underline"
             >
               Create one

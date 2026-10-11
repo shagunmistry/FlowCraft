@@ -37,10 +37,10 @@ export default async function AdminUsersPage() {
 
       <SimpleLineChart rows={ts.rows} title="New users per day, last 30d" />
 
-      <div className="rounded-lg border border-gray-200 bg-white p-4">
+      <div className="rounded-lg border border-rule bg-graphite p-4">
         <div className="mb-3 text-sm font-medium">Top users by diagrams created</div>
         <table className="w-full text-sm">
-          <thead className="text-left text-xs text-gray-500">
+          <thead className="text-left text-xs text-fog">
             <tr>
               <th className="py-1">Email</th>
               <th className="py-1">Diagrams</th>
@@ -49,7 +49,7 @@ export default async function AdminUsersPage() {
           </thead>
           <tbody>
             {top.rows.map((u) => (
-              <tr key={u.user_id} className="border-t border-gray-100">
+              <tr key={u.user_id} className="border-t border-rule">
                 <td className="py-1 truncate">{u.email || u.user_id}</td>
                 <td className="py-1 tabular-nums">{u.diagrams_created ?? 0}</td>
                 <td className="py-1">{u.subscribed ? 'yes' : 'no'}</td>

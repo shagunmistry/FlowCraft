@@ -395,14 +395,6 @@ function DiagramCard({
       </div>
 
       {/* Corner tick */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute right-3 top-3 h-2 w-2 border-r border-t border-rule transition-colors group-hover:border-signal"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute bottom-3 left-3 h-2 w-2 border-b border-l border-rule transition-colors group-hover:border-signal"
-      />
     </motion.article>
   )
 }
@@ -426,25 +418,9 @@ function EmptyState({
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(196,255,61,0.10) 1px, transparent 1px)',
+            'radial-gradient(rgb(var(--color-signal) / 0.10) 1px, transparent 1px)',
           backgroundSize: '14px 14px',
         }}
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute left-4 top-4 h-3 w-3 border-l border-t border-rule"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute right-4 top-4 h-3 w-3 border-r border-t border-rule"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute bottom-4 left-4 h-3 w-3 border-b border-l border-rule"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute bottom-4 right-4 h-3 w-3 border-b border-r border-rule"
       />
 
       <div className="relative mx-auto max-w-md">

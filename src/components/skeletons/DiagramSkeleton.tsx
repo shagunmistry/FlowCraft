@@ -11,7 +11,7 @@ export default function DiagramSkeleton() {
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(196,255,61,0.1) 1px, transparent 1px)',
+            'radial-gradient(rgb(var(--color-signal) / 0.1) 1px, transparent 1px)',
           backgroundSize: '28px 28px',
         }}
       />
@@ -30,11 +30,11 @@ export default function DiagramSkeleton() {
             cx="24"
             cy="24"
             r="22"
-            stroke="#C4FF3D"
+            style={{ stroke: 'rgb(var(--color-signal))' }}
             strokeWidth="1"
             strokeDasharray="3 4"
           />
-          <circle cx="24" cy="2" r="2" fill="#C4FF3D" />
+          <circle cx="24" cy="2" r="2" style={{ fill: 'rgb(var(--color-signal))' }} />
         </svg>
         <p className="text-sm text-fog">Loading diagram</p>
       </div>

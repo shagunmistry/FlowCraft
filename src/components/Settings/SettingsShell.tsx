@@ -18,18 +18,18 @@ export default function SettingsShell({
   const router = useRouter()
 
   return (
-    <main className="min-h-screen bg-zinc-50 pt-14">
+    <main className="min-h-screen bg-ink pt-14">
       {/* Navigation Header */}
-      <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
+      <header className="sticky top-0 z-10 border-b border-rule bg-graphite/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <button
             onClick={() => router.push('/dashboard')}
-            className="-ml-2 flex items-center gap-1 rounded-lg px-2 py-1 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600"
+            className="-ml-2 flex items-center gap-1 rounded-lg px-2 py-1 text-fog transition-colors hover:bg-ink hover:text-signal"
           >
             <ChevronLeftIcon className="h-5 w-5" />
             <span className="text-sm font-medium">Dashboard</span>
           </button>
-          <h1 className="text-base font-semibold text-zinc-900">Settings</h1>
+          <h1 className="text-base font-semibold text-paper">Settings</h1>
           <div className="w-16" />
         </div>
       </header>

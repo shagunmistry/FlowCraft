@@ -4,18 +4,38 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { parseMermaid, renderMermaid } from '@/lib/mermaidClient'
 
-const PREVIEW_MERMAID_CONFIG = {
-  theme: 'dark' as const,
-  themeVariables: {
-    darkMode: true,
-    background: '#141417',
-    primaryColor: '#141417',
-    primaryTextColor: '#F3EFE4',
-    primaryBorderColor: '#C4FF3D',
-    lineColor: '#76766F',
-    secondaryColor: '#0B0B0C',
-    tertiaryColor: '#141417',
-  },
+// Mermaid needs concrete colors, so pick the palette that matches the active theme.
+function previewMermaidConfig() {
+  const dark =
+    typeof document !== 'undefined' &&
+    document.documentElement.classList.contains('dark')
+  return dark
+    ? {
+        theme: 'dark' as const,
+        themeVariables: {
+          darkMode: true,
+          background: '#16181C',
+          primaryColor: '#16181C',
+          primaryTextColor: '#EEF0F4',
+          primaryBorderColor: '#6E8CFF',
+          lineColor: '#949AA6',
+          secondaryColor: '#0E0F12',
+          tertiaryColor: '#16181C',
+        },
+      }
+    : {
+        theme: 'base' as const,
+        themeVariables: {
+          darkMode: false,
+          background: '#FFFFFF',
+          primaryColor: '#FFFFFF',
+          primaryTextColor: '#101216',
+          primaryBorderColor: '#2442E6',
+          lineColor: '#5E6470',
+          secondaryColor: '#F6F7F9',
+          tertiaryColor: '#FFFFFF',
+        },
+      }
 }
 
 const MIN_ZOOM = 0.3
@@ -91,7 +111,7 @@ export default function PreviewPane({
         const { svg } = await renderMermaid(
           renderId,
           code,
-          PREVIEW_MERMAID_CONFIG,
+          previewMermaidConfig(),
         )
         if (cancelled) return
         host.innerHTML = svg
@@ -180,7 +200,7 @@ export default function PreviewPane({
           </span>
           <span className="text-paper/80">Preview</span>
           {renderError && (
-            <span className="text-red-300/90">· Invalid syntax</span>
+            <span className="text-red-600">Invalid syntax</span>
           )}
         </div>
         <div className="flex items-center gap-1 text-xs text-fog">
@@ -224,7 +244,7 @@ export default function PreviewPane({
         {!code && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="max-w-xs text-center">
-              <p className="font-serif text-2xl italic text-paper/70">
+              <p className="font-serif text-2xl text-paper/70">
                 Awaiting the first draft.
               </p>
               <p className="mt-2 text-sm text-fog">

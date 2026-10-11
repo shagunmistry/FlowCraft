@@ -176,7 +176,7 @@ export default function Gallery({ user_id }: GalleryProps) {
         className="pointer-events-none absolute left-1/2 top-60 h-[480px] w-[820px] -translate-x-1/2 rounded-full"
         style={{
           background:
-            'radial-gradient(circle, rgba(196,255,61,0.08), transparent 60%)',
+            'radial-gradient(circle, rgb(var(--color-signal) / 0.08), transparent 60%)',
         }}
       />
 

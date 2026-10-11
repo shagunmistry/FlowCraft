@@ -144,7 +144,7 @@ export default function TryItGenerator() {
         <Link
           href="/sign-up?src=hero"
           onClick={() => trackTryIt('try_it_cta_clicked', { where: 'hero_fallback' })}
-          className="mt-5 inline-flex rounded-full bg-signal px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-paper"
+          className="mt-5 inline-flex rounded-full bg-signal px-6 py-3 text-[15px] font-medium text-ink transition-colors hover:opacity-90"
         >
           Create a free account
         </Link>
@@ -192,7 +192,7 @@ export default function TryItGenerator() {
             type="button"
             onClick={onGenerate}
             disabled={!prompt.trim() || working}
-            className="ml-auto rounded-full bg-signal px-6 py-2.5 text-[15px] font-medium text-white transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
+            className="ml-auto rounded-full bg-signal px-6 py-2.5 text-[15px] font-medium text-ink transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {working ? 'Drawing your diagram' : 'Generate diagram'}
           </button>
@@ -249,7 +249,7 @@ export default function TryItGenerator() {
               setResultOpen(true)
               trackTryIt('try_it_result_opened', { type, reopen: true })
             }}
-            className="rounded-full border border-signal px-5 py-2 text-sm text-signal transition-colors hover:bg-signal hover:text-white"
+            className="rounded-full border border-signal px-5 py-2 text-sm text-signal transition-colors hover:bg-signal hover:text-ink"
           >
             View diagram
           </button>

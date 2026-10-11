@@ -227,7 +227,7 @@ const DiagramCanvas = forwardRef<DiagramCanvasHandle, DiagramCanvasProps>(
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative overflow-hidden rounded-sm bg-white shadow-2xl shadow-black/60 ring-1 ring-rule"
+              className="relative overflow-hidden rounded-sm bg-graphite shadow-2xl shadow-black/60 ring-1 ring-rule"
             >
               <div className="min-h-[300px] min-w-[300px] p-8 md:p-12">
                 {svgCode && (
@@ -244,12 +244,12 @@ const DiagramCanvas = forwardRef<DiagramCanvasHandle, DiagramCanvasProps>(
                       className={`flex w-full justify-center ${mermaidError ? 'hidden' : ''}`}
                     />
                     {mermaidError && (
-                      <div className="flex min-h-[260px] w-full flex-col items-center justify-center gap-4 rounded-sm border border-gray-200 bg-gray-50 p-8 text-center">
-                        <div className="text-sm font-medium text-gray-500">
+                      <div className="flex min-h-[260px] w-full flex-col items-center justify-center gap-4 rounded-sm border border-rule bg-ink p-8 text-center">
+                        <div className="text-sm font-medium text-fog">
                           Render failed
                         </div>
-                        <p className="max-w-sm text-sm text-gray-700">
-                          Unable to render diagram — the generated mermaid
+                        <p className="max-w-sm text-sm text-paper">
+                          Unable to render diagram. The generated mermaid
                           syntax was invalid.
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-3">
@@ -265,7 +265,7 @@ const DiagramCanvas = forwardRef<DiagramCanvasHandle, DiagramCanvasProps>(
                           {diagramId && (
                             <a
                               href={`/dashboard/diagrams/new?id=${diagramId}`}
-                              className="rounded-sm border border-gray-300 px-4 py-2 text-sm text-gray-800 transition-colors hover:border-ink hover:text-ink"
+                              className="rounded-sm border border-rule px-4 py-2 text-sm text-paper transition-colors hover:border-ink hover:text-ink"
                             >
                               Re-open in workbench
                             </a>
@@ -273,10 +273,10 @@ const DiagramCanvas = forwardRef<DiagramCanvasHandle, DiagramCanvasProps>(
                         </div>
                         {mermaidCode && (
                           <details className="w-full max-w-lg text-left">
-                            <summary className="cursor-pointer text-xs text-gray-500 hover:text-gray-800">
+                            <summary className="cursor-pointer text-xs text-fog hover:text-paper">
                               Show raw source
                             </summary>
-                            <pre className="mt-2 max-h-64 overflow-auto rounded-sm bg-gray-100 p-3 text-left text-xs text-gray-800">
+                            <pre className="mt-2 max-h-64 overflow-auto rounded-sm bg-ink p-3 text-left text-xs text-paper">
                               {mermaidCode}
                             </pre>
                           </details>
@@ -306,7 +306,7 @@ const DiagramCanvas = forwardRef<DiagramCanvasHandle, DiagramCanvasProps>(
                   !imageUrl &&
                   !chartJsData &&
                   !isFlowDiagram && (
-                    <div className="flex h-[300px] items-center justify-center text-sm text-gray-400">
+                    <div className="flex h-[300px] items-center justify-center text-sm text-fog">
                       No preview available
                     </div>
                   )}

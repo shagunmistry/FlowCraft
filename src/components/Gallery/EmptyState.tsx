@@ -12,7 +12,7 @@ export default function EmptyState({ searchQuery }: EmptyStateProps) {
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(196,255,61,0.10) 1px, transparent 1px)',
+            'radial-gradient(rgb(var(--color-signal) / 0.10) 1px, transparent 1px)',
           backgroundSize: '14px 14px',
         }}
       />

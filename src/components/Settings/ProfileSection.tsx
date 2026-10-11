@@ -89,14 +89,14 @@ export default function ProfileSection({
     <div>
       {/* Avatar + Name Header */}
       <div className="mb-8 flex items-center gap-5">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-xl font-bold text-white shadow-lg">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-signal text-xl font-medium text-ink">
           {initials}
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-zinc-900">
+          <h2 className="text-xl font-semibold text-paper">
             {settings.display_name || settings.email}
           </h2>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-fog">
             Member since {new Date(settings.created_at).getFullYear()}
           </p>
         </div>
@@ -107,9 +107,9 @@ export default function ProfileSection({
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-zinc-900">Display Name</p>
+              <p className="text-sm font-medium text-paper">Display Name</p>
               {!editing && (
-                <p className="mt-1 text-sm text-zinc-500">
+                <p className="mt-1 text-sm text-fog">
                   {settings.display_name || 'Not set'}
                 </p>
               )}
@@ -130,10 +130,10 @@ export default function ProfileSection({
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Enter your display name"
                 maxLength={50}
-                className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-lg border border-rule px-3 py-2 text-sm focus:border-signal focus:outline-none focus:ring-2 focus:ring-signal/20"
                 autoFocus
               />
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-xs text-fog">
                 {displayName.length}/50 characters
               </p>
               <div className="mt-3 flex gap-2">
@@ -155,7 +155,7 @@ export default function ProfileSection({
         <Row
           label="User ID"
           value={
-            <code className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-xs text-zinc-600">
+            <code className="rounded bg-ink px-2 py-0.5 font-mono text-xs text-fog">
               {settings.user_id}
             </code>
           }

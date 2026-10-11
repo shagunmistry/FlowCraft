@@ -90,22 +90,14 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
 
   return (
     <>
-      {/* Top coordinate strip — visible at all times on large screens */}
-
       <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        initial={false}
         className={cn(
           'fixed left-0 right-0 top-0 z-50 transition-[background,backdrop-filter,border-color] duration-300',
           scrolled
             ? 'border-b border-rule bg-ink/85 backdrop-blur-xl'
             : 'border-b border-transparent bg-ink',
         )}
-        style={{
-          backgroundImage:
-            'linear-gradient(to bottom, rgb(var(--color-signal) / 0.06), transparent 60%)',
-        }}
       >
         <div
           className={cn(
@@ -364,14 +356,6 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
             </button>
           </div>
         </div>
-
-        {/* Bottom signal accent line — only when scrolled */}
-        <motion.div
-          initial={false}
-          animate={{ scaleX: scrolled ? 1 : 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute bottom-0 left-0 h-px w-full origin-left bg-gradient-to-r from-transparent via-signal/40 to-transparent"
-        />
       </motion.nav>
 
       {/* Mobile overlay */}

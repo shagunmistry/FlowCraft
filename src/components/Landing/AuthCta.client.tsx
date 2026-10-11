@@ -28,7 +28,7 @@ export function useIsAuthenticated() {
 
 const styles = {
   primary:
-    'inline-flex items-center rounded-full bg-signal px-7 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-paper',
+    'inline-flex items-center rounded-full bg-signal px-7 py-3.5 text-[15px] font-medium text-ink transition-colors hover:opacity-90',
   quiet:
     'inline-flex items-center px-1 py-3.5 text-[15px] text-paper underline decoration-rule underline-offset-[6px] transition-colors hover:decoration-signal',
 }

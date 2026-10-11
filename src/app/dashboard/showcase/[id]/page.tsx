@@ -74,11 +74,11 @@ const ActionButton = ({
   <Tooltip text={label}>
     <button
       onClick={onClick}
-      className={`group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ease-out hover:bg-black/5 active:scale-95 ${isActive ? 'bg-rose-50' : ''}`}
+      className={`group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ease-out hover:bg-black/5 active:scale-95 ${isActive ? 'bg-ink' : ''}`}
       aria-label={label}
     >
       <Icon
-        className={`h-5 w-5 transition-colors duration-300 ${isActive ? activeColor : 'text-slate-500 group-hover:text-slate-900'}`}
+        className={`h-5 w-5 transition-colors duration-300 ${isActive ? activeColor : 'text-fog group-hover:text-paper'}`}
         strokeWidth={2}
       />
     </button>
@@ -237,8 +237,8 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
   if (loading) {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center bg-[#F5F5F7]">
-        <div className="h-16 w-16 animate-pulse rounded-2xl bg-gray-200" />
-        <div className="mt-4 h-4 w-32 animate-pulse rounded bg-gray-200" />
+        <div className="h-16 w-16 animate-pulse rounded-2xl bg-ink" />
+        <div className="mt-4 h-4 w-32 animate-pulse rounded bg-ink" />
       </div>
     )
   }
@@ -246,7 +246,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
   if (!visual) return null
 
   return (
-    <main className="relative flex h-screen w-full flex-col overflow-hidden bg-[#F5F5F7] text-slate-900 selection:bg-violet-500/20">
+    <main className="relative flex h-screen w-full flex-col overflow-hidden bg-[#F5F5F7] text-paper selection:bg-violet-500/20">
       {/* --- SEO Metadata (Client Side Fallback) --- */}
       <head>
         <meta
@@ -263,7 +263,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           onClick={() => router.push('/dashboard/showcase')}
-          className="group flex items-center gap-2 rounded-full bg-white/50 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm backdrop-blur-md transition-all hover:bg-white/80 hover:shadow-md hover:ring-1 hover:ring-black/5"
+          className="group flex items-center gap-2 rounded-full bg-graphite/50 px-4 py-2 text-sm font-medium text-fog shadow-sm backdrop-blur-md transition-all hover:bg-graphite/80 hover:shadow-md hover:ring-1 hover:ring-black/5"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
           <span>Back</span>
@@ -274,12 +274,12 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
           animate={{ y: 0, opacity: 1 }}
           className="flex flex-col items-end"
         >
-          <div className="flex items-center gap-2 rounded-full bg-white/50 px-4 py-1.5 ring-1 ring-black/5 backdrop-blur-md">
-            <h1 className="text-sm font-semibold text-slate-800">
+          <div className="flex items-center gap-2 rounded-full bg-graphite/50 px-4 py-1.5 ring-1 ring-black/5 backdrop-blur-md">
+            <h1 className="text-sm font-semibold text-paper">
               {visual.title}
             </h1>
             <span className="mx-1 h-3 w-px bg-slate-300"></span>
-            <div className="flex items-center gap-3 text-xs text-slate-500">
+            <div className="flex items-center gap-3 text-xs text-fog">
               <span className="flex items-center gap-1">
                 <Eye className="h-3 w-3" /> {visual.views}
               </span>
@@ -311,7 +311,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
           animate={{ opacity: 1, scale: zoomLevel }}
           transition={{ type: 'spring', stiffness: 260, damping: 20 }}
         >
-          <div className="bg-white p-1">
+          <div className="bg-graphite p-1">
             <DiagramRenderer
               type={visual.type}
               data={visual.data}
@@ -329,7 +329,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
             height={20}
             className="grayscale"
           />
-          <span className="text-xs font-semibold text-slate-900">
+          <span className="text-xs font-semibold text-paper">
             FLOWCRAFT
           </span>
         </div>
@@ -340,16 +340,16 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="flex items-center gap-1 rounded-full bg-white/80 p-1.5 ring-1 ring-black/[0.04] backdrop-blur-2xl"
+          className="flex items-center gap-1 rounded-full bg-graphite/80 p-1.5 ring-1 ring-black/[0.04] backdrop-blur-2xl"
         >
           {/* Zoom Controls Group */}
-          <div className="mr-1 flex items-center gap-1 border-r border-slate-200/60 pr-2">
+          <div className="mr-1 flex items-center gap-1 border-r border-rule pr-2">
             <ActionButton
               onClick={handleZoomOut}
               icon={ZoomOut}
               label="Zoom Out (Cmd -)"
             />
-            <span className="w-12 text-center font-mono text-xs font-medium text-slate-500">
+            <span className="w-12 text-center font-mono text-xs font-medium text-fog">
               {Math.round(zoomLevel * 100)}%
             </span>
             <ActionButton
@@ -381,8 +381,8 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
                 onClick={handleSave}
                 className={`flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-all ${
                   visual.isSaved
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-signal text-ink'
+                    : 'bg-ink text-fog hover:bg-ink'
                 }`}
               >
                 {visual.isSaved ? 'Saved' : 'Save'}

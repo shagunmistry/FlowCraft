@@ -23,7 +23,7 @@ export function ReleaseNotesLayout({
             className="pointer-events-none absolute left-[30%] top-[30%] h-[460px] w-[640px] -translate-x-1/2 rounded-full"
             style={{
               background:
-                'radial-gradient(circle, rgba(196,255,61,0.10), transparent 60%)',
+                'radial-gradient(circle, rgb(var(--color-signal) / 0.10), transparent 60%)',
             }}
           />
 
@@ -120,7 +120,7 @@ export function ReleaseNotesLayout({
               top: 0.75em;
               width: 0.75rem;
               height: 1px;
-              background: #C4FF3D;
+              background: rgb(var(--color-signal));
             }
             .prose h3::before {
               content: '';
@@ -181,10 +181,6 @@ function Meta({ k, v }: { k: string; v: React.ReactNode }) {
 function CornerTicks() {
   return (
     <>
-      <span className="pointer-events-none absolute -left-px -top-px z-20 h-3 w-3 border-l border-t border-signal" />
-      <span className="pointer-events-none absolute -right-px -top-px z-20 h-3 w-3 border-r border-t border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -left-px z-20 h-3 w-3 border-b border-l border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -right-px z-20 h-3 w-3 border-b border-r border-signal" />
     </>
   )
 }

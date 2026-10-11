@@ -95,7 +95,7 @@ export default function DashboardShell({
         >
           <main>
             <NextTopLoader
-              color="#000000"
+              color="#2442E6"
               initialPosition={0.08}
               crawlSpeed={200}
               height={3}

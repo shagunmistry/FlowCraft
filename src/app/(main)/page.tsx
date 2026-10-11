@@ -117,7 +117,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="lp min-h-screen overflow-x-hidden selection:bg-signal selection:text-white">
+    <div className="min-h-screen overflow-x-hidden selection:bg-signal selection:text-ink">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }}
@@ -247,7 +247,7 @@ export default async function Home() {
                     href={t.id === 'tier-teams' ? '/support' : `/sign-up?src=pricing_${t.id}`}
                     className={`mt-8 inline-flex justify-center rounded-full px-6 py-3 text-[15px] font-medium transition-colors ${
                       t.featured
-                        ? 'bg-signal text-white hover:bg-paper'
+                        ? 'bg-signal text-ink hover:opacity-90'
                         : 'border border-rule text-paper hover:border-signal'
                     }`}
                   >

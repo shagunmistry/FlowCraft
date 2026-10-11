@@ -58,10 +58,6 @@ export async function generateMetadata({
 function CornerTicks() {
   return (
     <>
-      <span className="pointer-events-none absolute -left-px -top-px h-3 w-3 border-l border-t border-signal" />
-      <span className="pointer-events-none absolute -right-px -top-px h-3 w-3 border-r border-t border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -left-px h-3 w-3 border-b border-l border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -right-px h-3 w-3 border-b border-r border-signal" />
     </>
   )
 }

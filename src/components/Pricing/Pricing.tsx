@@ -119,7 +119,7 @@ export default function PricingTemplate({
         className="pointer-events-none absolute left-1/2 top-48 h-[520px] w-[820px] -translate-x-1/2 rounded-full"
         style={{
           background:
-            'radial-gradient(circle, rgba(196,255,61,0.10), transparent 60%)',
+            'radial-gradient(circle, rgb(var(--color-signal) / 0.10), transparent 60%)',
         }}
       />
 
@@ -142,7 +142,7 @@ export default function PricingTemplate({
           <div className="lg:col-span-5 lg:pt-12">
             <p className="max-w-md text-lg leading-relaxed text-paper/60">
               Draft as much as you want on the free tier. Step up to Pro when
-              your ideas need more volume — or when the team catches on.
+              your ideas need more volume, or when the team catches on.
             </p>
           </div>
         </motion.div>
@@ -220,7 +220,7 @@ export default function PricingTemplate({
                   className="pointer-events-none absolute inset-0 opacity-50"
                   style={{
                     backgroundImage:
-                      'radial-gradient(rgba(196,255,61,0.12) 1px, transparent 1px)',
+                      'radial-gradient(rgb(var(--color-signal) / 0.12) 1px, transparent 1px)',
                     backgroundSize: '14px 14px',
                   }}
                 />
@@ -372,10 +372,6 @@ export default function PricingTemplate({
 function TierCornerTicks() {
   return (
     <>
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-signal" />
-      <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-signal" />
-      <span className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b border-l border-signal" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-signal" />
     </>
   )
 }

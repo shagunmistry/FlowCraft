@@ -139,10 +139,10 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
             <h1 className="mb-2 bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-4xl font-bold text-transparent">
               Image Studio
             </h1>
-            <p className="text-lg text-gray-600">Generate images with AI</p>
+            <p className="text-lg text-fog">Generate images with AI</p>
             <div className="mt-2 flex items-center justify-center space-x-2">
-              <PencilSquareIcon className="h-5 w-5 text-gray-400" />
-              <span className="text-sm italic text-gray-400">
+              <PencilSquareIcon className="h-5 w-5 text-fog" />
+              <span className="text-sm italic text-fog">
                 Edit functionality coming soon
               </span>
             </div>
@@ -155,8 +155,8 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
           {/* Control Panel */}
           <div className="space-y-6">
             {/* Mode Selection */}
-            <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="rounded-3xl border border-rule bg-graphite p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold text-paper">
                 Create Mode
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -165,7 +165,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   className={`rounded-2xl border-2 p-4 transition-all duration-200 ${
                     mode === 'generate'
                       ? 'border-red-500 bg-red-50 text-red-700'
-                      : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                      : 'border-rule text-paper hover:border-rule'
                   }`}
                 >
                   <SparklesIcon className="mx-auto mb-2 h-6 w-6" />
@@ -177,7 +177,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
                     mode === 'edit'
                       ? 'border-red-500 bg-red-50 text-red-700'
-                      : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                      : 'border-rule hover:border-rule text-paper'
                   }`}
                 >
                   <PencilSquareIcon className="w-6 h-6 mx-auto mb-2" />
@@ -194,14 +194,14 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm"
+                  className="rounded-3xl border border-rule bg-graphite p-6 shadow-sm"
                 >
-                  <h3 className="mb-4 text-lg font-semibold text-gray-900">
+                  <h3 className="mb-4 text-lg font-semibold text-paper">
                     Upload Image
                   </h3>
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-8 text-center transition-all duration-200 hover:border-red-400 hover:bg-red-50/50"
+                    className="cursor-pointer rounded-2xl border-2 border-dashed border-rule p-8 text-center transition-all duration-200 hover:border-red-400 hover:bg-red-50/50"
                   >
                     {inputImage ? (
                       <div className="space-y-3">
@@ -210,18 +210,18 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                           alt="Uploaded"
                           className="mx-auto max-h-32 max-w-full rounded-xl object-contain"
                         />
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-fog">
                           Click to change image
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
+                        <CloudArrowUpIcon className="mx-auto h-12 w-12 text-fog" />
                         <div>
-                          <p className="text-lg font-medium text-gray-900">
+                          <p className="text-lg font-medium text-paper">
                             Upload an image
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-fog">
                             PNG, JPG, GIF, or WebP
                           </p>
                         </div>
@@ -240,8 +240,8 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
             </AnimatePresence>
 
             {/* Prompt Input */}
-            <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="rounded-3xl border border-rule bg-graphite p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold text-paper">
                 {mode === 'generate'
                   ? 'Describe your image'
                   : 'How should we edit it?'}
@@ -255,14 +255,14 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                     : 'Make this a 90s cartoon style, change the background to a beach...'
                 }
                 rows={4}
-                className="w-full resize-none rounded-2xl border border-gray-200 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-red-500"
+                className="w-full resize-none rounded-2xl border border-rule px-4 py-3 text-paper placeholder-gray-500 focus:border-transparent focus:ring-2 focus:ring-red-500"
               />
             </div>
 
             {/* Aspect Ratio Selection */}
             {mode === 'generate' && (
-              <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
-                <h3 className="mb-4 text-lg font-semibold text-gray-900">
+              <div className="rounded-3xl border border-rule bg-graphite p-6 shadow-sm">
+                <h3 className="mb-4 text-lg font-semibold text-paper">
                   Aspect Ratio
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -273,7 +273,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                       className={`rounded-xl border-2 p-3 text-sm transition-all duration-200 ${
                         aspectRatio === ratio.value
                           ? 'border-red-500 bg-red-50 text-red-700'
-                          : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                          : 'border-rule text-paper hover:border-rule'
                       }`}
                     >
                       {ratio.label}
@@ -314,7 +314,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
             {(inputImage || generatedImage || prompt) && (
               <button
                 onClick={clearAll}
-                className="w-full rounded-2xl border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50"
+                className="w-full rounded-2xl border border-rule px-6 py-3 font-medium text-paper transition-all duration-200 hover:bg-ink"
               >
                 <div className="flex items-center justify-center space-x-2">
                   <XMarkIcon className="h-5 w-5" />
@@ -325,20 +325,20 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
           </div>
 
           {/* Preview Panel */}
-          <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className="rounded-3xl border border-rule bg-graphite p-6 shadow-sm">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Preview</h3>
+              <h3 className="text-lg font-semibold text-paper">Preview</h3>
               {generatedImage && (
                 <div className="flex space-x-2">
                   <button
                     onClick={handleDownload}
-                    className="p-2 text-gray-600 transition-colors hover:text-red-600"
+                    className="p-2 text-fog transition-colors hover:text-red-600"
                     title="Download"
                   >
                     <Download className="h-5 w-5" />
                   </button>
                   {/* <button
-                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                    className="p-2 text-fog hover:text-red-600 transition-colors"
                     title="Share"
                   >
                     <ShareIcon className="w-5 h-5" />
@@ -347,7 +347,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
               )}
             </div>
 
-            <div className="aspect-square flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50">
+            <div className="aspect-square flex items-center justify-center overflow-hidden rounded-2xl bg-ink">
               <AnimatePresence mode="wait">
                 {isGenerating ? (
                   <motion.div
@@ -375,7 +375,7 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                       </motion.div>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-lg font-medium text-gray-700">
+                      <p className="text-lg font-medium text-paper">
                         {mode === 'generate'
                           ? 'Generating your image...'
                           : 'Editing your image...'}
@@ -420,12 +420,12 @@ export default function ImageStudioClient({ user }: ImageStudioClientProps) {
                     transition={{ duration: 0.3 }}
                     className="space-y-4 text-center"
                   >
-                    <PhotoIcon className="mx-auto h-16 w-16 text-gray-300" />
+                    <PhotoIcon className="mx-auto h-16 w-16 text-fog" />
                     <div>
-                      <p className="text-lg font-medium text-gray-500">
+                      <p className="text-lg font-medium text-fog">
                         Your image will appear here
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-fog">
                         {mode === 'generate'
                           ? 'Enter a prompt to get started'
                           : 'Upload an image and add editing instructions'}

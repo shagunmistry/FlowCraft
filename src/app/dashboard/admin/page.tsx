@@ -60,7 +60,7 @@ export default async function AdminOverviewPage() {
       />
 
       {overview.legacy.diagrams_from_api_total > 0 ? (
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-fog">
           Legacy v1 API table (`diagrams_from_api`) has{' '}
           {overview.legacy.diagrams_from_api_total} rows, counted under VS Code.
         </div>

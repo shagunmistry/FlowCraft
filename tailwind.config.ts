@@ -14,7 +14,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
-        serif: ['"Instrument Serif"', ...defaultTheme.fontFamily.serif],
+        serif: ['Satoshi', ...defaultTheme.fontFamily.sans],
         mono: ['"JetBrains Mono"', ...defaultTheme.fontFamily.mono],
       },
       colors: {
@@ -25,11 +25,14 @@ export default {
         fog: 'rgb(var(--color-fog) / <alpha-value>)',
         rule: 'rgb(var(--color-rule) / var(--color-rule-alpha, 0.08))',
       },
+      borderRadius: {
+        sm: '0.5rem',
+      },
       backgroundImage: {
         'dot-grid':
           'radial-gradient(rgb(var(--color-dot) / var(--color-dot-alpha, 0.08)) 1px, transparent 1px)',
         'dot-grid-dark':
-          'radial-gradient(rgba(11,11,12,0.12) 1px, transparent 1px)',
+          'radial-gradient(rgb(var(--color-dot) / 0.12) 1px, transparent 1px)',
       },
       backgroundSize: {
         'dot-24': '24px 24px',

@@ -82,7 +82,7 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap"
         />
         <script
           type="application/ld+json"
@@ -113,8 +113,9 @@ export default function RootLayout({
               toastOptions={{
                 duration: 4000,
                 style: {
-                  background: '#363636',
-                  color: '#fff',
+                  background: 'rgb(var(--color-graphite))',
+                  color: 'rgb(var(--color-paper))',
+                  border: '1px solid rgb(var(--color-rule) / var(--color-rule-alpha))',
                 },
               }}
             />

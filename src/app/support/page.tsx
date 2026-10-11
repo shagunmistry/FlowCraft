@@ -117,7 +117,7 @@ export default function SupportPage() {
             className="pointer-events-none absolute left-[50%] top-[40%] h-[460px] w-[640px] -translate-x-1/2 rounded-full"
             style={{
               background:
-                'radial-gradient(circle, rgba(196,255,61,0.10), transparent 60%)',
+                'radial-gradient(circle, rgb(var(--color-signal) / 0.10), transparent 60%)',
             }}
           />
 
@@ -379,10 +379,6 @@ function LiveDot({ label }: { label: string }) {
 function CornerTicks() {
   return (
     <>
-      <span className="pointer-events-none absolute -left-px -top-px z-20 h-3 w-3 border-l border-t border-signal" />
-      <span className="pointer-events-none absolute -right-px -top-px z-20 h-3 w-3 border-r border-t border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -left-px z-20 h-3 w-3 border-b border-l border-signal" />
-      <span className="pointer-events-none absolute -bottom-px -right-px z-20 h-3 w-3 border-b border-r border-signal" />
     </>
   )
 }

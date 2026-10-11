@@ -72,7 +72,7 @@ export default function FreeTasteResultDialog({ open, onClose, code, prompt, rem
               <Link
                 href="/sign-up?src=try-it"
                 onClick={() => trackTryIt('try_it_cta_clicked', { where: 'dialog' })}
-                className="rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper"
+                className="rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:opacity-90"
               >
                 Sign up free to save and export
               </Link>

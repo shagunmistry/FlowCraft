@@ -3,39 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark theme (default, preserves existing drafting-studio look) */
+  /* Default theme: cool white, near-black text, one cobalt accent. */
   :root,
-  .dark {
-    --color-ink: 11 11 12;
-    --color-graphite: 20 20 23;
-    --color-paper: 243 239 228;
-    --color-signal: 196 255 61;
-    --color-fog: 118 118 111;
-    --color-rule: 255 255 255;
-    --color-rule-alpha: 0.08;
-    --color-dot: 255 255 255;
-    --color-dot-alpha: 0.08;
-    color-scheme: dark;
-  }
-
-  /* Light theme — inverts ink/paper roles for readable contrast
-     against existing class usage (bg-ink text-paper stays legible). */
   .light {
-    --color-ink: 247 245 238;      /* soft paper white, was ~#F7F5EE */
-    --color-graphite: 255 255 255; /* pure white card surface */
-    --color-paper: 11 11 12;       /* near-black text on light bg */
-    --color-signal: 88 125 38;     /* muted olive — readable on white */
-    --color-fog: 107 114 128;      /* zinc-500 */
-    --color-rule: 17 24 39;        /* gray-900 */
-    --color-rule-alpha: 0.1;
-    --color-dot: 17 24 39;
-    --color-dot-alpha: 0.1;
-    color-scheme: light;
-  }
-
-  /* Landing page scope: cool white, cobalt accent, one family.
-     Navbar and Footer render inside it and pick the palette up via tokens. */
-  .lp {
     --color-ink: 246 247 249;
     --color-graphite: 255 255 255;
     --color-paper: 16 18 22;
@@ -46,19 +16,39 @@
     --color-dot: 16 18 22;
     --color-dot-alpha: 0.08;
     color-scheme: light;
-    background-color: rgb(var(--color-ink));
-    color: rgb(var(--color-paper));
   }
-  .lp .font-serif {
-    font-family: Satoshi, ui-sans-serif, system-ui, sans-serif;
+
+  /* Dark variant: same structure, lighter cobalt so it keeps contrast. */
+  .dark {
+    --color-ink: 14 15 18;
+    --color-graphite: 22 24 28;
+    --color-paper: 238 240 244;
+    --color-signal: 110 140 255;
+    --color-fog: 148 154 166;
+    --color-rule: 255 255 255;
+    --color-rule-alpha: 0.1;
+    --color-dot: 255 255 255;
+    --color-dot-alpha: 0.08;
+    color-scheme: dark;
+  }
+
+  /* One family everywhere. Headings keep the weight and tracking of the
+     landing page; the body prefix wins over Tailwind's single-class utilities. */
+  body .font-serif {
     font-weight: 500;
     letter-spacing: -0.02em;
   }
-  .lp .italic {
+  body .italic {
     font-style: normal;
   }
-  .lp :focus-visible {
+  :focus-visible {
     outline: 2px solid rgb(var(--color-signal));
     outline-offset: 3px;
   }
+}
+
+/* The dotted drafting-sheet backdrop is retired. Kept as a no-op so existing
+   markup does not need to change all at once. */
+body .bg-dot-grid {
+  background-image: none;
 }

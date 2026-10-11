@@ -29,10 +29,10 @@ export default function AccountSection({
           <div className="flex items-start gap-3">
             <ExclamationTriangleIcon className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
             <div>
-              <h4 className="text-sm font-semibold text-zinc-900">
+              <h4 className="text-sm font-semibold text-paper">
                 Delete Account
               </h4>
-              <p className="mt-1 text-sm text-zinc-600">
+              <p className="mt-1 text-sm text-fog">
                 Permanently delete your account and all associated data,
                 including diagrams, API keys, and subscription information. This
                 action cannot be undone.

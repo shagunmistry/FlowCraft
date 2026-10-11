@@ -223,7 +223,7 @@ export default function NewDiagramPage() {
           <span className="text-fog">Iterate in conversation.</span>
         </motion.h1>
         <p className="mt-4 max-w-xl font-sans text-[15px] leading-relaxed text-fog">
-          Pick a form, describe what you want, and keep refining — your
+          Pick a form, describe what you want, and keep refining. Your
           conversation stays on the page alongside the code and the live
           preview.
         </p>
@@ -244,7 +244,7 @@ export default function NewDiagramPage() {
               size="large"
               submitLabel={showGenerating ? 'Drafting…' : 'Draft it'}
               autoFocus
-              placeholder={`Describe the ${String(selectedType ?? 'diagram').toLowerCase()} you want — e.g. "AI staffing agency architecture with tech stack, recruiters, and vertical focus"`}
+              placeholder={`Describe the ${String(selectedType ?? 'diagram').toLowerCase()} you want, for example "AI staffing agency architecture with tech stack, recruiters, and vertical focus"`}
               footerLeft={
                 <span>
                   {selectedType ? `Type · ${selectedType}` : 'Pick a type above'}

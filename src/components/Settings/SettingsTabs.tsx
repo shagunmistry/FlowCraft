@@ -38,11 +38,11 @@ export default function SettingsTabs({
                 className={clsx(
                   'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-zinc-100 text-zinc-900'
-                    : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700',
+                    ? 'bg-ink text-paper'
+                    : 'text-fog hover:bg-ink hover:text-paper',
                 )}
               >
-                <tab.icon className={clsx('h-5 w-5', isActive ? 'text-zinc-700' : 'text-zinc-400')} />
+                <tab.icon className={clsx('h-5 w-5', isActive ? 'text-paper' : 'text-fog')} />
                 {tab.label}
               </button>
             )
@@ -62,8 +62,8 @@ export default function SettingsTabs({
                 className={clsx(
                   'flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-zinc-900 text-white'
-                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200',
+                    ? 'bg-signal text-ink'
+                    : 'bg-ink text-fog hover:bg-ink',
                 )}
               >
                 <tab.icon className="h-4 w-4" />

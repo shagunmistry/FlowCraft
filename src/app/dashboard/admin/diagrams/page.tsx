@@ -55,15 +55,15 @@ function TopList({
   metric: 'views' | 'likes'
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-rule bg-graphite p-4">
       <div className="mb-3 text-sm font-medium">{title}</div>
       <ol className="space-y-1 text-sm">
         {rows.map((r) => (
           <li key={r.id} className="flex justify-between gap-2">
             <span className="truncate">
-              <span className="text-gray-400">[{r.source}]</span> {r.title || 'Untitled'}
+              <span className="text-fog">[{r.source}]</span> {r.title || 'Untitled'}
             </span>
-            <span className="tabular-nums text-gray-700">{r[metric]}</span>
+            <span className="tabular-nums text-paper">{r[metric]}</span>
           </li>
         ))}
       </ol>

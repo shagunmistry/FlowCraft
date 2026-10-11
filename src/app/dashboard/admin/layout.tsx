@@ -24,7 +24,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link
               key={t.href}
               href={t.href}
-              className="text-gray-600 hover:text-black"
+              className="text-fog hover:text-black"
             >
               {t.label}
             </Link>

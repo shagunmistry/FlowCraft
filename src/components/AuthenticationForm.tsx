@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import SuccessAlert from './SuccessAlert'
 import GithubSVG from '@/lib/Shared/svgs/Github.svg'
 import GoogleSVG from '@/lib/Shared/svgs/Google.svg'
-import Button from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
 import { trackTryIt } from '@/lib/free-taste/track'
 import { track } from '@/lib/analytics'
@@ -250,28 +249,18 @@ export default function AuthenticationForm({
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-ink px-4 py-12 sm:px-6 lg:px-8">
-      {/* dot grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            'radial-gradient(rgba(196,255,61,0.1) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }}
-      />
-
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative w-full max-w-[440px]"
       >
-        <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite shadow-2xl shadow-black/40">
+        <div className="relative overflow-hidden rounded-2xl border border-rule bg-graphite shadow-[0_24px_60px_-30px_rgba(16,18,22,0.25)]">
           <div className="px-6 py-8 sm:px-10 sm:py-10">
             {/* Header Section */}
             <div className="flex flex-col items-center text-center">
               <Link href="/" className="mb-6">
-                <div className="relative h-14 w-14 overflow-hidden rounded-sm border border-rule bg-ink p-1 transition-transform hover:scale-105">
+                <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-rule bg-ink p-1 transition-transform hover:scale-105">
                   <Image
                     className="h-full w-full object-cover"
                     src={FlowCraftLogo}
@@ -283,20 +272,12 @@ export default function AuthenticationForm({
                 </div>
               </Link>
               <h1 className="font-serif text-3xl leading-tight text-paper">
-                {isLoginOrSignup === 'login' ? (
-                  <>
-                    Welcome <span className="italic text-signal">back</span>
-                  </>
-                ) : (
-                  <>
-                    Begin a new <span className="italic text-signal">draft</span>
-                  </>
-                )}
+                {isLoginOrSignup === 'login' ? 'Welcome back' : 'Create your account'}
               </h1>
               <p className="mt-2 max-w-sm text-sm leading-6 text-paper/60">
                 {isLoginOrSignup === 'login'
                   ? 'Enter your credentials to access your workspace.'
-                  : 'Start visualizing your ideas — the canvas awaits.'}
+                  : 'Save, edit and export every diagram you make.'}
               </p>
             </div>
 
@@ -317,7 +298,7 @@ export default function AuthenticationForm({
                       type="email"
                       autoComplete="email"
                       required
-                      className="block w-full rounded-sm border border-rule bg-ink/60 px-3 py-2.5 text-sm text-paper placeholder:text-fog/70 focus:border-signal/50 focus:outline-none focus:ring-0"
+                      className="block w-full rounded-lg border border-rule bg-graphite px-3 py-2.5 text-sm text-paper placeholder:text-fog/70 focus:border-signal focus:outline-none focus:ring-0"
                       placeholder="name@example.com"
                     />
                   </div>
@@ -341,17 +322,17 @@ export default function AuthenticationForm({
                           : 'new-password'
                       }
                       required
-                      className="block w-full rounded-sm border border-rule bg-ink/60 px-3 py-2.5 text-sm text-paper placeholder:text-fog/70 focus:border-signal/50 focus:outline-none focus:ring-0"
+                      className="block w-full rounded-lg border border-rule bg-graphite px-3 py-2.5 text-sm text-paper placeholder:text-fog/70 focus:border-signal focus:outline-none focus:ring-0"
                       placeholder="••••••••"
                     />
                   </div>
                 </div>
 
                 <div className="pt-2">
-                  <Button
+                  <button
                     type="submit"
                     disabled={isLoading}
-                    className="group relative flex w-full items-center justify-center overflow-hidden rounded-sm bg-signal px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="group relative flex w-full items-center justify-center overflow-hidden rounded-full bg-signal px-4 py-3 text-[15px] font-medium text-ink transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                 <AnimatePresence mode="wait">
                   {isLoading && loadingType === 'email' ? (
@@ -384,8 +365,8 @@ export default function AuthenticationForm({
                       </svg>
                       <span>
                         {isLoginOrSignup === 'login'
-                          ? 'Signing in...'
-                          : 'Creating account...'}
+                          ? 'Signing in'
+                          : 'Creating account'}
                       </span>
                     </motion.div>
                   ) : (
@@ -404,7 +385,7 @@ export default function AuthenticationForm({
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </Button>
+              </button>
             </div>
           </form>
 
@@ -466,7 +447,7 @@ export default function AuthenticationForm({
               type="button"
               onClick={_loginWithGoogle}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-3 rounded-sm border border-rule bg-ink/60 px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex w-full items-center justify-center gap-3 rounded-lg border border-rule bg-graphite px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <AnimatePresence mode="wait">
                 {isLoading && loadingType === 'google' ? (
@@ -517,7 +498,7 @@ export default function AuthenticationForm({
               type="button"
               onClick={_loginWithGithub}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-3 rounded-sm border border-rule bg-ink/60 px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex w-full items-center justify-center gap-3 rounded-lg border border-rule bg-graphite px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <AnimatePresence mode="wait">
                 {isLoading && loadingType === 'github' ? (

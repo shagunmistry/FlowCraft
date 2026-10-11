@@ -75,14 +75,14 @@ export default function SubscriptionSection({
     <div>
       {/* Free user upgrade CTA */}
       {!hasActiveSubscription && (
-        <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white shadow-lg">
+        <div className="mb-8 overflow-hidden rounded-xl bg-signal p-6 text-ink">
           <h3 className="text-lg font-semibold">Upgrade to Pro</h3>
           <p className="mt-1 text-sm text-indigo-100">
             Unlock unlimited AI-generated diagrams, priority support, and more.
           </p>
           <button
             onClick={() => router.push('/pricing?sourcePage=dashboard')}
-            className="mt-4 rounded-full bg-white px-6 py-2 text-sm font-semibold text-indigo-700 transition-transform hover:scale-105 active:scale-95"
+            className="mt-4 rounded-full bg-graphite px-6 py-2 text-sm font-semibold text-signal transition-transform hover:scale-105 active:scale-95"
           >
             View Plans
           </button>
@@ -97,8 +97,8 @@ export default function SubscriptionSection({
               className={clsx(
                 'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
                 hasActiveSubscription
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'bg-zinc-100 text-zinc-600',
+                  ? 'bg-signal/10 text-signal'
+                  : 'bg-ink text-fog',
               )}
             >
               {hasActiveSubscription
@@ -125,7 +125,7 @@ export default function SubscriptionSection({
                   </span>
                 </>
               ) : (
-                <span className="text-zinc-500">Inactive</span>
+                <span className="text-fog">Inactive</span>
               )}
             </div>
           }
@@ -190,14 +190,14 @@ export default function SubscriptionSection({
       {hasActiveSubscription && (
         <Section title="Billing">
           <div className="p-4">
-            <p className="text-sm text-zinc-600">
+            <p className="text-sm text-fog">
               Manage your payment methods, view invoices, and update billing
               information through the Stripe billing portal.
             </p>
             <button
               onClick={onManage}
               disabled={actionLoading}
-              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700 disabled:opacity-50"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-signal transition-colors hover:text-signal disabled:opacity-50"
             >
               Open Billing Portal
               <ArrowTopRightOnSquareIcon className="h-4 w-4" />
@@ -221,12 +221,12 @@ export default function SubscriptionSection({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="max-w-md rounded-xl border border-amber-200 bg-white p-6 shadow-xl"
+              className="max-w-md rounded-xl border border-amber-200 bg-graphite p-6 shadow-xl"
             >
-              <h3 className="mb-2 text-lg font-semibold text-zinc-900">
+              <h3 className="mb-2 text-lg font-semibold text-paper">
                 Cancel Subscription?
               </h3>
-              <p className="mb-4 text-sm text-zinc-600">
+              <p className="mb-4 text-sm text-fog">
                 Your subscription will remain active until the end of the
                 current billing period. You can reactivate anytime before then.
               </p>

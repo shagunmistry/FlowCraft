@@ -41,10 +41,10 @@ export default function SettingsPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-zinc-50">
+        <div className="flex min-h-screen items-center justify-center bg-ink">
           <div className="flex flex-col items-center gap-3">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-blue-600" />
-            <p className="text-sm font-medium text-zinc-500">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-rule border-t-blue-600" />
+            <p className="text-sm font-medium text-fog">
               Loading settings...
             </p>
           </div>
@@ -182,10 +182,10 @@ function SettingsPageContent() {
   // Loading state
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-50">
+      <div className="flex min-h-screen items-center justify-center bg-ink">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-blue-600" />
-          <p className="text-sm font-medium text-zinc-500">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-rule border-t-blue-600" />
+          <p className="text-sm font-medium text-fog">
             Loading settings...
           </p>
         </div>
@@ -196,13 +196,13 @@ function SettingsPageContent() {
   // Error state
   if (!settings) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
+      <div className="flex min-h-screen items-center justify-center bg-ink p-4">
         <div className="max-w-sm text-center">
-          <ExclamationCircleIcon className="mx-auto mb-3 h-10 w-10 text-zinc-300" />
-          <h2 className="font-semibold text-zinc-900">
+          <ExclamationCircleIcon className="mx-auto mb-3 h-10 w-10 text-fog" />
+          <h2 className="font-semibold text-paper">
             Unable to load settings
           </h2>
-          <p className="mb-4 mt-1 text-sm text-zinc-500">
+          <p className="mb-4 mt-1 text-sm text-fog">
             We couldn&apos;t retrieve your account information at this time.
           </p>
           <Button onClick={() => router.push('/dashboard')} variant="outline">

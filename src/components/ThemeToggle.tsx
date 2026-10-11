@@ -10,7 +10,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
 
   useEffect(() => setMounted(true), [])
 
-  const isDark = mounted ? resolvedTheme !== 'light' : true
+  const isDark = mounted ? resolvedTheme === 'dark' : false
   const next = isDark ? 'light' : 'dark'
 
   return (
@@ -25,7 +25,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       )}
     >
       {/* Render a deterministic icon on the server to avoid hydration flash. */}
-      {!mounted || isDark ? (
+      {mounted && isDark ? (
         <SunIcon className="h-4 w-4" />
       ) : (
         <MoonIcon className="h-4 w-4" />

@@ -72,12 +72,12 @@ function PlaceholderMark() {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <svg viewBox="0 0 160 90" className="h-24 w-36 opacity-70" fill="none">
-        <g stroke="#F3EFE4" strokeWidth="1">
+        <g style={{ stroke: 'rgb(var(--color-paper))' }} strokeWidth="1">
           <rect x="18" y="18" width="34" height="18" rx="1" />
           <rect x="64" y="40" width="34" height="18" rx="1" />
           <rect x="110" y="18" width="34" height="18" rx="1" />
         </g>
-        <g stroke="#C4FF3D" strokeWidth="0.9" strokeDasharray="2 2">
+        <g style={{ stroke: 'rgb(var(--color-signal))' }} strokeWidth="0.9" strokeDasharray="2 2">
           <path d="M52 27 L 81 49" />
           <path d="M110 27 L 81 49" />
         </g>
@@ -130,7 +130,7 @@ export default function GalleryCard({
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
             backgroundImage:
-              'radial-gradient(rgba(196,255,61,0.08) 1px, transparent 1px)',
+              'radial-gradient(rgb(var(--color-signal) / 0.08) 1px, transparent 1px)',
             backgroundSize: '12px 12px',
           }}
         />

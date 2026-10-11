@@ -62,7 +62,7 @@ export default function GalleryViewer({
   };
 
   return (
-    <div className="fixed inset-0 bg-white z-50 overflow-auto">
+    <div className="fixed inset-0 bg-graphite z-50 overflow-auto">
       <div className="max-w-5xl mx-auto p-4 md:p-8">
         <button
           onClick={onClose}
@@ -74,24 +74,24 @@ export default function GalleryViewer({
           <span className="font-medium text-red-700 group-hover:text-red-900">Back to Showcase</span>
         </button>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
+        <div className="bg-graphite rounded-xl shadow-sm border border-rule overflow-hidden transition-all hover:shadow-md">
           <div className="p-6 md:p-8">
             <div className="mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{visual.title}</h2>
-              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+              <h2 className="text-2xl md:text-3xl font-bold text-paper mb-2">{visual.title}</h2>
+              <div className="flex flex-wrap items-center gap-3 text-sm text-fog">
                 <span className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-medium">
                   {visual.type}
                 </span>
                 <span>{new Date(visual.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                <span className="text-gray-300">•</span>
+                <span className="text-fog">•</span>
                 <span>{(visual.views || 0) + 1} views</span>
-                <span className="text-gray-300">•</span>
+                <span className="text-fog">•</span>
                 <span>{likeCount} likes</span>
               </div>
             </div>
 
             <div className="grid gap-8">
-              <div className="border border-gray-200 rounded-lg bg-gray-50 overflow-hidden transition-transform hover:scale-[1.005]">
+              <div className="border border-rule rounded-lg bg-ink overflow-hidden transition-transform hover:scale-[1.005]">
                 <div className="aspect-[4/3] flex items-center justify-center p-6">
                   <DiagramRenderer
                     type={visual.type}
@@ -109,7 +109,7 @@ export default function GalleryViewer({
                     onClick={handleLike}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${isLiked 
                       ? 'bg-red-50 text-red-600 hover:bg-red-100' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
+                      : 'bg-ink text-fog hover:bg-ink'}
                       ${isAnimatingLike ? 'animate-pulse' : ''}`}
                   >
                     {isLiked ? (
@@ -123,8 +123,8 @@ export default function GalleryViewer({
                   <button
                     onClick={handleSave}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${isSaved 
-                      ? 'bg-blue-50 text-blue-600 hover:bg-blue-100' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
+                      ? 'bg-signal/10 text-signal hover:bg-signal/10' 
+                      : 'bg-ink text-fog hover:bg-ink'}
                       ${isAnimatingSave ? 'animate-pulse' : ''}`}
                   >
                     {isSaved ? (
@@ -138,9 +138,9 @@ export default function GalleryViewer({
               )}
 
               {visual.description && (
-                <div className="prose max-w-none border-t border-gray-100 pt-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Description</h3>
-                  <div className="text-gray-700 leading-relaxed">
+                <div className="prose max-w-none border-t border-rule pt-6">
+                  <h3 className="text-lg font-semibold text-paper mb-4">Description</h3>
+                  <div className="text-paper leading-relaxed">
                     {visual.description}
                   </div>
                 </div>
