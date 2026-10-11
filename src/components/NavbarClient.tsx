@@ -104,7 +104,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
         )}
         style={{
           backgroundImage:
-            'linear-gradient(to bottom, rgba(196,255,61,0.06), transparent 60%)',
+            'linear-gradient(to bottom, rgb(var(--color-signal) / 0.06), transparent 60%)',
         }}
       >
         <div
@@ -134,18 +134,17 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                     cx="16"
                     cy="16"
                     r="14.5"
-                    stroke="#C4FF3D"
                     strokeWidth="1"
                     strokeDasharray="2 3"
-                    className="origin-center transition-transform duration-[1200ms] group-hover:rotate-90"
+                    className="origin-center stroke-signal transition-transform duration-[1200ms] group-hover:rotate-90"
                   />
                   <path
                     d="M10 11h12M10 16h8M10 21h5"
-                    stroke="#F3EFE4"
                     strokeWidth="1.4"
                     strokeLinecap="round"
+                    className="stroke-paper"
                   />
-                  <circle cx="22" cy="16" r="1.5" fill="#C4FF3D" />
+                  <circle cx="22" cy="16" r="1.5" className="fill-signal" />
                 </svg>
               </span>
               <span className="flex flex-col leading-none">
@@ -403,7 +402,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                 className="pointer-events-none absolute inset-0 opacity-40"
                 style={{
                   backgroundImage:
-                    'radial-gradient(rgba(196,255,61,0.12) 1px, transparent 1px)',
+                    'radial-gradient(rgb(var(--color-signal) / 0.12) 1px, transparent 1px)',
                   backgroundSize: '28px 28px',
                 }}
               />

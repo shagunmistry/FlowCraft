@@ -122,7 +122,7 @@ export default function TryItGenerator() {
         setPhase('quota')
       } else if (e instanceof FreeTasteUnavailableError) {
         trackTryIt('try_it_failed', { type, kind: 'unavailable' })
-        setMessage('The free generator is busy or at capacity right now. Please try again in a bit, or sign up for unlimited drafts.')
+        setMessage('The free generator is busy right now. Try again in a moment, or sign up to keep creating.')
         setPhase('error')
       } else {
         trackTryIt('try_it_failed', {
@@ -135,25 +135,72 @@ export default function TryItGenerator() {
     }
   }
 
-  if (phase === 'checking' || phase === 'unavailable') return null
+  if (phase === 'unavailable') {
+    return (
+      <div className="mt-10 max-w-3xl rounded-2xl border border-rule bg-graphite p-6 shadow-[0_24px_60px_-30px_rgba(16,18,22,0.25)] sm:p-8">
+        <p className="text-lg text-paper">
+          Describe a process, system or idea and get a diagram in seconds.
+        </p>
+        <Link
+          href="/sign-up?src=hero"
+          onClick={() => trackTryIt('try_it_cta_clicked', { where: 'hero_fallback' })}
+          className="mt-5 inline-flex rounded-full bg-signal px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-paper"
+        >
+          Create a free account
+        </Link>
+      </div>
+    )
+  }
 
   const working = phase === 'working'
   return (
-    <div className="mt-10 max-w-2xl border border-rule bg-graphite/40 p-4 sm:p-5">
-      <p className="text-sm text-fog">
-        Try it — no account needed
-      </p>
-      <textarea
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        maxLength={1500}
-        rows={3}
-        disabled={working}
-        placeholder="Describe a process, system or idea…"
-        aria-label="Describe your diagram"
-        className="mt-3 w-full resize-none rounded-sm border border-rule bg-ink p-3 text-sm text-paper placeholder:text-fog focus:border-signal focus:outline-none"
-      />
-      <div className="mt-2 flex flex-wrap gap-2">
+    <div className="mt-10 max-w-3xl">
+      <div className="rounded-2xl border border-rule bg-graphite p-3 shadow-[0_24px_60px_-30px_rgba(16,18,22,0.25)] focus-within:border-signal sm:p-4">
+        <label htmlFor="hero-prompt" className="sr-only">
+          Describe your diagram
+        </label>
+        <textarea
+          id="hero-prompt"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          maxLength={1500}
+          rows={3}
+          disabled={working}
+          placeholder="Describe a process, system or idea"
+          className="w-full resize-none border-0 bg-transparent p-2 text-lg leading-snug text-paper placeholder:text-fog focus:outline-none focus:ring-0"
+        />
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-rule px-1 pt-3">
+          <div className="flex flex-wrap gap-x-4 gap-y-1" role="group" aria-label="Diagram type">
+            {FREE_TASTE_TYPES.map((t) => (
+              <button
+                key={t}
+                type="button"
+                disabled={working}
+                aria-pressed={type === t}
+                onClick={() => setType(t)}
+                className={`border-b-2 pb-0.5 text-sm transition-colors ${
+                  type === t
+                    ? 'border-signal text-paper'
+                    : 'border-transparent text-fog hover:text-paper'
+                }`}
+              >
+                {TYPE_LABELS[t]}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={onGenerate}
+            disabled={!prompt.trim() || working}
+            className="ml-auto rounded-full bg-signal px-6 py-2.5 text-[15px] font-medium text-white transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {working ? 'Drawing your diagram' : 'Generate diagram'}
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+        <span className="text-fog">No account needed. Try one of these:</span>
         {EXAMPLES.map((ex, i) => (
           <button
             key={ex}
@@ -163,52 +210,26 @@ export default function TryItGenerator() {
               setPrompt(ex)
               trackTryIt('try_it_example_used', { index: i })
             }}
-            className="rounded-sm border border-rule px-2 py-1 text-left text-[11px] text-fog transition-colors hover:border-signal/50 hover:text-signal"
+            className="text-left text-paper underline decoration-rule underline-offset-4 transition-colors hover:decoration-signal"
           >
             {ex}
           </button>
         ))}
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        {FREE_TASTE_TYPES.map((t) => (
-          <button
-            key={t}
-            type="button"
-            disabled={working}
-            aria-pressed={type === t}
-            onClick={() => setType(t)}
-            className={`rounded-sm border px-2.5 py-1 text-xs transition-colors ${
-              type === t
-                ? 'border-signal bg-signal text-ink'
-                : 'border-rule text-fog hover:text-paper'
-            }`}
-          >
-            {TYPE_LABELS[t]}
-          </button>
-        ))}
-        <button
-          type="button"
-          onClick={onGenerate}
-          disabled={!prompt.trim() || working}
-          className="ml-auto rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          {working ? 'Generating…' : 'Generate'}
-        </button>
-      </div>
 
       {phase === 'error' && (
-        <p role="alert" className="mt-3 text-sm text-rose-400">
+        <p role="alert" className="mt-4 text-sm text-red-600">
           {message}
         </p>
       )}
 
       {phase === 'quota' && (
-        <div role="status" className="mt-4 border border-signal/40 p-4 text-sm text-paper">
-          You&apos;ve used your free tries.{' '}
+        <div role="status" className="mt-4 rounded-xl border border-signal/40 bg-graphite p-4 text-sm text-paper">
+          You have used your free tries.{' '}
           <Link
             href="/sign-up?src=try-it"
             onClick={() => trackTryIt('try_it_cta_clicked', { where: 'quota' })}
-            className="text-signal underline"
+            className="text-signal underline underline-offset-4"
           >
             Sign up free
           </Link>{' '}
@@ -217,10 +238,10 @@ export default function TryItGenerator() {
       )}
 
       {phase === 'done' && (
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-signal/40 p-3">
-          <span className="text-xs text-fog">
-            Draft ready
-            {remaining !== null ? ` · ${remaining} free ${remaining === 1 ? 'try' : 'tries'} left` : ''}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-signal/40 bg-graphite p-3 pl-4">
+          <span className="text-sm text-fog">
+            Your diagram is ready.
+            {remaining !== null ? ` ${remaining} free ${remaining === 1 ? 'try' : 'tries'} left.` : ''}
           </span>
           <button
             type="button"
@@ -228,7 +249,7 @@ export default function TryItGenerator() {
               setResultOpen(true)
               trackTryIt('try_it_result_opened', { type, reopen: true })
             }}
-            className="rounded-sm border border-signal px-4 py-2 text-sm text-signal transition-colors hover:bg-signal hover:text-ink"
+            className="rounded-full border border-signal px-5 py-2 text-sm text-signal transition-colors hover:bg-signal hover:text-white"
           >
             View diagram
           </button>

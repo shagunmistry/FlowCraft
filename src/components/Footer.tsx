@@ -10,7 +10,7 @@ const Footer = () => {
 
   const navigation = {
     product: [
-      { name: 'Get Started', href: '/' },
+      { name: 'Get started', href: '/sign-up?src=footer' },
       { name: 'Templates', href: '/templates' },
       { name: 'Gallery', href: '/gallery' },
       { name: 'Pricing', href: '/pricing' },
@@ -54,7 +54,7 @@ const Footer = () => {
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(196,255,61,0.08) 1px, transparent 1px)',
+            'radial-gradient(rgb(var(--color-signal) / 0.08) 1px, transparent 1px)',
           backgroundSize: '28px 28px',
         }}
       />
@@ -75,17 +75,17 @@ const Footer = () => {
                     cx="16"
                     cy="16"
                     r="14.5"
-                    stroke="#C4FF3D"
                     strokeWidth="1"
                     strokeDasharray="2 3"
+                    className="stroke-signal"
                   />
                   <path
                     d="M10 11h12M10 16h8M10 21h5"
-                    stroke="#F3EFE4"
                     strokeWidth="1.4"
                     strokeLinecap="round"
+                    className="stroke-paper"
                   />
-                  <circle cx="22" cy="16" r="1.5" fill="#C4FF3D" />
+                  <circle cx="22" cy="16" r="1.5" className="fill-signal" />
                 </svg>
               </span>
               <span className="font-serif text-[22px] text-paper">
@@ -93,8 +93,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="max-w-xs font-serif text-lg leading-snug text-paper/80">
-              Transform ideas into stunning visual content — drafted with the
-              precision of AI.
+              Turn ideas into clear visuals, drafted by AI in seconds.
             </p>
           </div>
 
@@ -122,11 +121,10 @@ const Footer = () => {
         <div className="mt-14 flex flex-col gap-4 border-t border-rule pt-8 text-xs text-fog sm:flex-row sm:items-center sm:justify-between lg:mt-20">
           <p>
             <span className="text-signal">©</span> {new Date().getFullYear()}{' '}
-            FlowCraft · All rights reserved
+            FlowCraft. All rights reserved.
           </p>
           <p className="max-w-sm sm:text-right">
-            Improved via Microsoft Clarity · By using the site you consent to
-            our data practices.
+            We use Microsoft Clarity to improve the site. By using it you consent to our data practices.
           </p>
         </div>
       </div>

@@ -33,4 +33,32 @@
     color-scheme: light;
   }
 
+  /* Landing page scope: cool white, cobalt accent, one family.
+     Navbar and Footer render inside it and pick the palette up via tokens. */
+  .lp {
+    --color-ink: 246 247 249;
+    --color-graphite: 255 255 255;
+    --color-paper: 16 18 22;
+    --color-signal: 36 66 230;
+    --color-fog: 94 100 112;
+    --color-rule: 16 18 22;
+    --color-rule-alpha: 0.1;
+    --color-dot: 16 18 22;
+    --color-dot-alpha: 0.08;
+    color-scheme: light;
+    background-color: rgb(var(--color-ink));
+    color: rgb(var(--color-paper));
+  }
+  .lp .font-serif {
+    font-family: Satoshi, ui-sans-serif, system-ui, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .lp .italic {
+    font-style: normal;
+  }
+  .lp :focus-visible {
+    outline: 2px solid rgb(var(--color-signal));
+    outline-offset: 3px;
+  }
 }
