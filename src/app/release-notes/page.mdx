@@ -1,16 +1,193 @@
 export { ReleaseNotesLayout as default } from '@/components/ReleaseNotesLayout'
+import { SITE_URL, SITE_NAME, TWITTER_HANDLE, buildCanonical } from '@/lib/seo'
 
-# FlowCraft Release Notes
+export const metadata = {
+  title: { absolute: 'FlowCraft Release Notes: New Features, Updates and Fixes' },
+  description:
+    'Every FlowCraft release in one place: the free AI diagram generator on the landing page, the new cool white theme, VS Code sign-in, templates, Light Mode and bug fixes.',
+  keywords: [
+    'flowcraft release notes',
+    'flowcraft changelog',
+    'flowcraft updates',
+    'ai diagram generator updates',
+    'flowchart generator new features',
+    'mermaid diagram generator changelog',
+    'flowcraft vs code extension',
+  ],
+  alternates: { canonical: buildCanonical('/release-notes') },
+  openGraph: {
+    title: 'FlowCraft Release Notes: New Features, Updates and Fixes',
+    description:
+      'See what is new in FlowCraft, the AI diagram generator for flowcharts, mind maps, sequence diagrams and database schemas.',
+    url: buildCanonical('/release-notes'),
+    siteName: SITE_NAME,
+    type: 'article',
+    modifiedTime: '2026-10-11',
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: 'FlowCraft release notes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FlowCraft Release Notes',
+    description:
+      'New features, improvements and fixes in the FlowCraft AI diagram generator.',
+    images: [`${SITE_URL}/opengraph-image`],
+    creator: TWITTER_HANDLE,
+  },
+}
 
-## Version 6.2.1 — Finalize & View no longer fails with "Render failed"
+export const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TechArticle',
+      '@id': `${buildCanonical('/release-notes')}#article`,
+      headline: 'FlowCraft Release Notes: New Features, Updates and Fixes',
+      description:
+        'A chronological changelog of FlowCraft releases, newest first.',
+      url: buildCanonical('/release-notes'),
+      dateModified: '2026-10-11',
+      inLanguage: 'en',
+      author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+      publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+      about: { '@type': 'SoftwareApplication', name: SITE_NAME, url: SITE_URL },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Release notes',
+          item: buildCanonical('/release-notes'),
+        },
+      ],
+    },
+  ],
+}
 
-If you drafted a diagram, clicked **Finalize & View**, and landed on a "Render failed — Unable to render diagram, the generated mermaid syntax was invalid" panel (with `Could not find a suitable point for the given distance` in the console), this is the fix. The Mermaid source was always valid — a global CSS rule was hiding the temp DOM node Mermaid uses to measure text, so every node came out with zero width.
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+/>
+
+FlowCraft is an AI diagram generator for flowcharts, mind maps, sequence diagrams and database schemas. This page lists every release, newest first, with what changed and why it matters. Use the [templates library](/templates), the [VS Code extension](/features) or the [pricing page](/pricing) to put the latest features to work.
+
+## Version 7.0.1: Showcase diagrams render everywhere
+
+*Released October 11, 2026*
+
+If you browsed the [public showcase](/gallery) and saw a FlowCraft placeholder instead of a diagram, or opened a diagram and got an "Invalid Mermaid syntax" panel for a perfectly valid chart, this release fixes both.
+
+### 🖼️ Real previews on every showcase card
+
+- Diagram cards in the showcase and gallery now draw the actual diagram instead of a generic placeholder. Previews render lazily as you scroll and are cached, so filtering and searching stay fast.
+- The "Most viewed" row, which features the most popular diagrams, now shows live renders of those diagrams.
+- Diagrams whose source cannot be drawn are filtered out of the showcase, so every card you see opens to a working diagram.
+
+### 🐛 Valid diagrams were being reported as broken
+
+- The showcase viewer treated any rendered Mermaid SVG containing the text `error-icon` as a failure. Mermaid embeds that class name in the stylesheet of every diagram it draws, so valid diagrams were rejected. The viewer now relies on Mermaid's own parse and render errors instead.
+- Architecture, treemap, kanban, packet and radar diagrams were being discarded before rendering because the sanitizer only recognised older diagram types. They now render, along with diagrams that begin with a YAML `config` block.
+- The viewer now shares FlowCraft's single Mermaid client, which waits for fonts to load before measuring text, and uses a unique render id per diagram.
+
+---
+
+## Version 7.0.0: A free AI diagram generator on the homepage and a cleaner look
+
+*Released October 11, 2026*
+
+You can now try FlowCraft before you sign up, and the whole product has a new, lighter look.
+
+### ✨ Try the AI diagram generator without an account
+
+- The new landing page has a generator right in the hero. Type a process, system or idea in plain language and FlowCraft draws the flowchart, mind map, sequence diagram or database schema in seconds.
+- Your result opens in a full-screen preview with fit, zoom and pan, plus a one-click path to create a free account and keep editing.
+- A lightweight proof-of-work check runs in your browser to keep the free generator fast for real people and out of reach of bots. There is nothing to solve and no CAPTCHA.
+
+### 🏠 A landing page built for clarity
+
+- Rebuilt around one idea, "Describe it. Get the diagram.", with sections for diagram types, how it works, live pricing pulled from Stripe, and an FAQ.
+- Pages are server rendered with structured data for the software and its FAQ, so search engines and AI assistants can read the page without running scripts.
+
+### 🎨 A cool white theme across the whole app
+
+- The landing page palette is now the default theme everywhere: sign-in, dashboard, navbar, settings, templates and the diagram workbench. The Satoshi typeface, softer corners and a cobalt accent replace the old lime and grid-paper look.
+- Dark mode is retuned to match, and the theme toggle still remembers your choice.
+- Decorative corner ticks, dot grids and tracked uppercase labels are gone, so interfaces read more cleanly.
+
+### 📈 Privacy-friendly usage analytics
+
+- We now record a small set of product events, such as viewing pricing, starting checkout, creating a share link and exporting, so we can see where people get stuck. Diagram titles are never sent with these events.
+
+---
+
+## Version 6.4.0: Subscriber-first generation and reliability fixes
+
+*Released October 10, 2026*
+
+FlowCraft is now focused on keeping the product stable for paying subscribers while the free tier is limited to a try-it experience.
+
+### 🔐 Generation is a subscriber feature
+
+- AI generation in the web app (diagrams, images, edits, regeneration and diagram chat) now requires an active subscription. Free accounts can still sign up, browse the public showcase and open shared diagrams, and anyone can try the landing page generator.
+- The support form is hardened with input validation, a spam trap and per-hour rate limits so messages reach us reliably.
+- The Startup Costs calculator under `/tools` has been retired.
+
+### 🐛 Fixes
+
+- **Blog links:** visiting a blog URL with a non-numeric id, such as `/blogs/null`, now returns a proper 404 instead of an error.
+- **Public showcase:** the public diagram endpoint now times out after 12 seconds with a clear error and caches anonymous reads at the edge, so the showcase loads faster and fails cleanly.
+- **Billing:** the Stripe webhook now reports database errors back to Stripe, so a failed subscription update is retried instead of being silently dropped.
+
+---
+
+## Version 6.3.1: Share diagrams from VS Code with a PNG
+
+*Released June 21, 2026*
+
+### ✨ Better sharing from the VS Code extension
+
+- The share-link endpoint now accepts a PNG upload, so diagrams you share from VS Code get a proper preview image.
+- Requests from the extension authenticate with a bearer token, and the extra session lookup that slowed every Share action has been removed.
+- Plain-text payloads are stored exactly as sent, and a missing body is now reported separately from an authentication failure, so errors are easier to understand.
+
+---
+
+## Version 6.3.0: Sign in to VS Code with your browser and fixes for saved diagrams
+
+*Released May 2026*
+
+### ✨ VS Code sign-in with OAuth
+
+- The FlowCraft VS Code extension can now sign you in through your browser with Google or GitHub, so there is no need to copy API keys around. See the [features page](/features) for the extension.
+
+### 🐛 Saving edits to a diagram
+
+- Fixed a "Diagram not found" error when updating a diagram you own. Updates now run as you, so row-level security recognises you as the owner, and a failed update returns a clear 404 instead of looking like it succeeded.
+
+### 💬 Better feedback collection
+
+- The feedback form now asks for at least a short message, marks the "new features" field as optional, and only asks for an email when you opt in to a follow-up, so we can reply to the right person.
+
+---
+
+## Version 6.2.1: Finalize & View no longer fails with "Render failed"
+
+If you drafted a diagram, clicked **Finalize & View**, and landed on a "Render failed: Unable to render diagram, the generated mermaid syntax was invalid" panel (with `Could not find a suitable point for the given distance` in the console), this is the fix. The Mermaid source was always valid. A global CSS rule was hiding the temp DOM node Mermaid uses to measure text, so every node came out with zero width.
 
 ### 🐛 The page's own CSS was nuking measurement
 
 - A "safety net" rule in `styles/tailwind.css` (`body > [id^="dmermaid-"], body > [id^="dtpl-"] { display: none !important; }`) was meant to clean up failed-render stragglers, but it also matched the *in-progress* render's temp container. Mermaid measures node text via `getComputedTextLength()` and `getBBox()` on an SVG inside that container; with `display: none`, both return 0. Dagre then laid out nodes on top of each other, edges collapsed to polylines shorter than the label distance, and `calculatePoint` threw "Could not find a suitable point for the given distance".
 - The workbench preview wasn't hit because it uses temp-IDs starting with `dmmd-`, which the selector didn't match. Only the finalized viewer (`dmermaid-*`) and template viewer (`dtpl-*`) were affected.
-- The rule has been removed. Mermaid's own `removeExistingElements` clears prior temp nodes at the start of every render, and our `finally` block removes the temp node on every code-path — the safety net wasn't pulling its weight.
+- The rule has been removed. Mermaid's own `removeExistingElements` clears prior temp nodes at the start of every render, and our `finally` block removes the temp node on every code-path, the safety net wasn't pulling its weight.
 
 ### 🛡️ Belt-and-braces in the shared client
 
@@ -22,7 +199,7 @@ If you drafted a diagram, clicked **Finalize & View**, and landed on a "Render f
 
 ---
 
-## Version 6.2.0 — Dashboard splits finalized diagrams from in-progress drafts
+## Version 6.2.0: Dashboard splits finalized diagrams from in-progress drafts
 
 Your dashboard now separates shipped work from work-in-progress so you can see what's done at a glance.
 
@@ -35,7 +212,7 @@ Your dashboard now separates shipped work from work-in-progress so you can see w
 
 ---
 
-## Version 6.1.5 — Template flowcharts no longer fail with a dagre layout error
+## Version 6.1.5: Template flowcharts no longer fail with a dagre layout error
 
 If you opened `/templates/flowchart/[id]` and saw "Could not find a suitable point for the given distance" where the diagram should be, this is the fix.
 
@@ -46,62 +223,62 @@ If you opened `/templates/flowchart/[id]` and saw "Could not find a suitable poi
 
 ---
 
-## Version 6.1.4 — Finalized diagrams no longer render as a blank white card
+## Version 6.1.4: Finalized diagrams no longer render as a blank white card
 
 If you clicked into a finalized diagram and saw an empty white sheet with nothing drawn inside, this is the fix.
 
 ### 🐛 Legacy finalized rows now surface an actionable error instead of a blank canvas
 
-- The viewer's `sanitizeMermaid` call can return an empty string for diagrams finalized before the sanitize-on-finalize fix in 6.1.3 (stored content was missing a recognizable Mermaid header). An empty string bypassed both the Mermaid render path *and* the error UI — so you got a silent white box with no console output.
+- The viewer's `sanitizeMermaid` call can return an empty string for diagrams finalized before the sanitize-on-finalize fix in 6.1.3 (stored content was missing a recognizable Mermaid header). An empty string bypassed both the Mermaid render path *and* the error UI, so you got a silent white box with no console output.
 - The viewer now falls back to the raw stored content when sanitize comes back empty. Mermaid fails loudly, the existing error panel renders with "Show raw source" and a "Re-open in workbench" link so you can heal the draft in one click.
 - Drafts that simply had an unusual preamble Mermaid itself accepts will now render correctly, since we stopped discarding them pre-parse.
 
 ---
 
-## Version 6.1.3 — Fix "invalid syntax" on freshly drafted diagrams
+## Version 6.1.3: Fix "invalid syntax" on freshly drafted diagrams
 
 A generation-pipeline fix for anyone who saw their new draft render as "· invalid syntax" even though the Mermaid code looked valid.
 
 ### 🐛 Envelope parsing now survives nested fences and multi-line strings
 
-- The backend validator that extracts `{ title, code }` from the model's response was choking on two things: a non-greedy fence regex that stopped at the *first* inner ` ``` ` (the opening of the nested `mermaid` block), and strict JSON rejecting the literal newlines LLMs embed in multi-line code. When both failed, the raw JSON envelope was being saved to the database and streamed into the editor — hence the wrapper showing up in the Mermaid pane.
+- The backend validator that extracts `{ title, code }` from the model's response was choking on two things: a non-greedy fence regex that stopped at the *first* inner ` ``` ` (the opening of the nested `mermaid` block), and strict JSON rejecting the literal newlines LLMs embed in multi-line code. When both failed, the raw JSON envelope was being saved to the database and streamed into the editor, hence the wrapper showing up in the Mermaid pane.
 - The validator now greedily matches the outer fence, parses with `strict=False` so embedded newlines are accepted, and strips any residual ` ```mermaid … ``` ` wrapper from the `code` field before saving.
 - Chat iteration on existing diagrams uses the same validator, so follow-up edits are covered too.
 
 ### ♻️ Legacy rows heal on reopen
 
-If you had a draft saved with the broken wrapper, reopening it now unwraps the envelope on the fly via a hardened `sanitizeMermaid`. Editing or finalizing writes the cleaned Mermaid back to your diagram — no manual recovery needed.
+If you had a draft saved with the broken wrapper, reopening it now unwraps the envelope on the fly via a hardened `sanitizeMermaid`. Editing or finalizing writes the cleaned Mermaid back to your diagram, no manual recovery needed.
 
 ---
 
-## Version 6.1.2 — Templates match the drafting studio
+## Version 6.1.2: Templates match the drafting studio
 
 The Templates gallery now speaks the same visual language as the rest of FlowCraft.
 
 ### 🎨 Editorial redesign for template pages
 
 - Individual template pages (e.g. `/templates/flowchart/microservices-architecture`) now use the drafting-studio aesthetic: serif display headlines with signal-lime italics, monospaced kickers, corner ticks around the specimen, dot-grid backdrop, and a title-block / status strip beneath the diagram.
-- Type listing pages (`/templates/[type]`) and topic cross-reference pages (`/templates/topic/[topic]`) were still rendering in the old light-mode slate/white palette — they've been rebuilt on ink/paper with Fig. captions and hover-to-graphite cards.
+- Type listing pages (`/templates/[type]`) and topic cross-reference pages (`/templates/topic/[topic]`) were still rendering in the old light-mode slate/white palette, they've been rebuilt on ink/paper with Fig. captions and hover-to-graphite cards.
 - Templates layout background switched from `graphite` to `ink` so the whole tree matches the landing page.
 
-No functional changes — just visual consistency.
+No functional changes, just visual consistency.
 
 ---
 
-## Version 6.1.1 — Template handoff fixes
+## Version 6.1.1: Template handoff fixes
 
 A handful of fixes for people using the Templates gallery.
 
 ### 🔧 "Use this template" now works end-to-end
 
-- Clicking **Use this template** after signing in (or signing up) now lands you in the editor instead of a 404 — the post-auth redirect was pointing at `/dashboard/diagrams/:id` but the real route is `/dashboard/diagram/:id`. Fixed in the template action, email/OAuth confirm callback, and the login form.
+- Clicking **Use this template** after signing in (or signing up) now lands you in the editor instead of a 404. The post-auth redirect was pointing at `/dashboard/diagrams/:id` but the real route is `/dashboard/diagram/:id`. Fixed in the template action, email/OAuth confirm callback, and the login form.
 - If you were already signed in on `app.flowcraft.app` but clicked into a template from the root domain, the template page saw you as logged-out and bounced you to sign-up. Supabase auth cookies are now scoped to the parent domain, so your session is shared across `flowcraft.app` and `app.flowcraft.app`.
 
 Existing users may need to sign in once more after this rolls out so the new parent-domain cookie gets written.
 
 ---
 
-## Version 6.1.0 — Retry on render failure
+## Version 6.1.0: Retry on render failure
 
 Small but practical addition for anyone who's run into `Unable to render diagram.` in the viewer.
 
@@ -110,7 +287,7 @@ Small but practical addition for anyone who's run into `Unable to render diagram
 When Mermaid can't parse a generated diagram, the viewer now shows an inline **"Retry with original prompt"** button instead of a dead-end message.
 
 - Hits a new `/api/regenerate-diagram` endpoint that re-runs generation with the diagram's original title, description, and type
-- Updates the diagram in place — no new row created, no lost link
+- Updates the diagram in place, with no new row created and no lost link
 - Only available to the diagram owner; public share viewers are unaffected
 - Works for all mermaid-based diagram types (flow charts, sequence, class, ER, state, gitgraph, etc.)
 
@@ -118,15 +295,15 @@ No more reloading the page, regenerating from scratch, or digging through the co
 
 ---
 
-## Version 6.0.0 — The Drafting Studio
+## Version 6.0.0: The Drafting Studio
 
 Hello FlowCrafters!
 
-This is our biggest update yet. Over the last several weeks we rebuilt FlowCraft around a new editorial "drafting studio" aesthetic — grid paper, monospaced tickers, signal-lime accents — and shipped an entire templates library, a rewritten pricing stack, and a long-awaited **Light Mode**. Here's everything that landed.
+This is our biggest update yet. Over the last several weeks we rebuilt FlowCraft around a new editorial "drafting studio" aesthetic (grid paper, monospaced tickers, signal-lime accents) and shipped an entire templates library, a rewritten pricing stack, and a long-awaited **Light Mode**. Here's everything that landed.
 
 ### ✨ Light Mode is here
 
-You can now flip the entire app between light and dark from the new toggle in the navbar. Your preference is saved across sessions, and every surface — landing page, dashboard, diagram viewer, templates, blogs, release notes — respects it.
+You can now flip the entire app between light and dark from the new toggle in the navbar. Your preference is saved across sessions, and every surface (landing page, dashboard, diagram viewer, templates, blogs, release notes) respects it.
 
 - Dark remains the default to preserve the signature drafting-studio look
 - Tokens live as CSS variables so the app stays consistent across routes
@@ -156,21 +333,21 @@ A brand-new way to start: pre-made, SEO-rich diagram templates you can clone int
 
 ### 💳 Rewritten Pricing
 
-- `/pricing` is now a **Server Component with 1-hour ISR** and pulls tiers directly from **Stripe** — no more drift between what's in the code and what's in your bill
+- `/pricing` is now a **Server Component with 1-hour ISR** and pulls tiers directly from **Stripe**: no more drift between what's in the code and what's in your bill
 - **Auth-aware CTAs**: the button says the right thing whether you're signed out, on Free, or already a subscriber
 - Loading state and strict Stripe pricing fixes
 
 ### 🛠️ /tools SEO landing pages
 
-We added **61 dedicated `/tools/[slug]` pages** (e.g. *AI Class Diagram Generator*, *AI ER Diagram Maker*, *AI Sequence Diagram Generator*) with pre-rendered SVG examples — so folks searching for a specific diagram generator can land directly on the right page.
+We added **61 dedicated `/tools/[slug]` pages** (e.g. *AI Class Diagram Generator*, *AI ER Diagram Maker*, *AI Sequence Diagram Generator*) with pre-rendered SVG examples, so folks searching for a specific diagram generator can land directly on the right page.
 
 ### 🐛 Bug fixes
 
-- **Session loss on refresh** — moved Supabase SSR to the `getAll`/`setAll` cookie adapter (`@supabase/ssr` 0.5.2) so you no longer get silently signed out after a page reload. Also relocated the middleware so session refresh actually runs.
-- **Stray "Unable to render diagram" overlay** — when Mermaid couldn't parse a diagram, a leftover render node was sometimes left attached to the page, blocking content on the side. Rendering now preflights the syntax, always cleans up its temporary nodes, and a global safeguard hides any straggler.
-- **Paste-mode classifier lock** — the paste flow no longer gets stuck on the AI-suggested diagram type once you override it.
-- **Gitgraph diagrams** — aligned the type name with the API so generation works reliably again.
-- **Self-heal subscription lookup** — subscription state now recovers automatically from transient inconsistencies instead of showing the wrong tier.
+- **Session loss on refresh**: moved Supabase SSR to the `getAll`/`setAll` cookie adapter (`@supabase/ssr` 0.5.2) so you no longer get silently signed out after a page reload. Also relocated the middleware so session refresh actually runs.
+- **Stray "Unable to render diagram" overlay**: when Mermaid couldn't parse a diagram, a leftover render node was sometimes left attached to the page, blocking content on the side. Rendering now preflights the syntax, always cleans up its temporary nodes, and a global safeguard hides any straggler.
+- **Paste-mode classifier lock**: the paste flow no longer gets stuck on the AI-suggested diagram type once you override it.
+- **Gitgraph diagrams**: aligned the type name with the API so generation works reliably again.
+- **Self-heal subscription lookup**: subscription state now recovers automatically from transient inconsistencies instead of showing the wrong tier.
 
 We poured a lot into this release. Give Light Mode a try, browse the new Templates library, and let us know what you think.
 
@@ -180,7 +357,7 @@ Happy drafting,
 
 ---
 
-## Version 5.0.0 - Redesigned Diagram Creation Experience
+## Version 5.0.0: Redesigned Diagram Creation Experience
 
 Hello FlowCrafters!
 
@@ -200,7 +377,7 @@ We hope you enjoy the new and improved FlowCraft experience! As always, we're he
 Happy diagramming!
 
 
-## Version 4.4.0 - Copy Diagrams and Bug Fixes
+## Version 4.4.0: Copy Diagrams and Bug Fixes
 
 Hello FlowCrafters!
 
@@ -329,7 +506,7 @@ Hey FlowCrafters! The FlowCraft team here, bursting with excitement to unveil so
 
 **But wait, there's more!** Upgrading your plan grants you **early access to all our shiny new features** before anyone else. Be the trendsetter, the envy of your colleagues, the diagramming guru with the coolest tools!
 
-Speaking of cool tools, keep your eyes peeled because **team collaboration** is just around the corner! Imagine brainstorming and editing diagrams together in real-time – pure diagramming bliss! ✨ And that's not all – we've got a whole pipeline of awesome upgrades brewing in our secret (not really that secret) developer lair.
+Speaking of cool tools, keep your eyes peeled because **team collaboration** is just around the corner! Imagine brainstorming and editing diagrams together in real-time, pure diagramming bliss! ✨ And that's not all, we've got a whole pipeline of awesome upgrades brewing in our secret (not really that secret) developer lair.
 
 **Ready to unlock the full potential of FlowCraft?** Head over to your account and explore our upgrade options! It's time to unleash your creativity and conquer the world (or at least that next big project) with the power of FlowCraft!
 

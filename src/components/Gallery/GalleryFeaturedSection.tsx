@@ -8,6 +8,7 @@ interface GalleryFeaturedSectionProps {
   onVisualClick: (visual: PublicVisual) => void
   onLike: (visualId: string) => Promise<boolean>
   onSave: (visualId: string) => Promise<boolean>
+  onRenderFail?: (visualId: string) => void
 }
 
 export default function GalleryFeaturedSection({
@@ -15,6 +16,7 @@ export default function GalleryFeaturedSection({
   onVisualClick,
   onLike,
   onSave,
+  onRenderFail,
 }: GalleryFeaturedSectionProps) {
   const featured = [...visuals]
     .sort((a, b) => (b.views || 0) - (a.views || 0))
@@ -42,6 +44,7 @@ export default function GalleryFeaturedSection({
             onClick={() => onVisualClick(visual)}
             onLike={onLike}
             onSave={onSave}
+            onRenderFail={onRenderFail}
             featured
           />
         ))}

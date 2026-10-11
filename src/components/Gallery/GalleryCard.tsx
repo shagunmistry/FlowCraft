@@ -7,18 +7,21 @@ import {
   BookmarkIcon as BookmarkIconSolid,
 } from '@heroicons/react/24/solid'
 import { PublicVisual } from './PublicVisualType'
+import MermaidThumb from './MermaidThumb'
 
 interface GalleryCardProps {
   visual: PublicVisual
   onClick: () => void
   onLike: (visualId: string) => Promise<boolean>
   onSave: (visualId: string) => Promise<boolean>
+  onRenderFail?: (visualId: string) => void
   featured?: boolean
   index?: number
 }
 
 const typeLabelMap: Record<PublicVisual['type'], string> = {
-  mermaid: 'Mermaid',
+  mermaid: 'Diagram',
+  diagram: 'Diagram',
   infographic: 'Infographic',
   illustration: 'Illustration',
   generated_image: 'Image',
@@ -35,7 +38,13 @@ function CornerTicks() {
   )
 }
 
-function PreviewThumb({ visual }: { visual: PublicVisual }) {
+function PreviewThumb({
+  visual,
+  onRenderFail,
+}: {
+  visual: PublicVisual
+  onRenderFail?: (visualId: string) => void
+}) {
   if (
     visual.type === 'illustration' ||
     visual.type === 'generated_image'
@@ -61,6 +70,17 @@ function PreviewThumb({ visual }: { visual: PublicVisual }) {
         alt={visual.title}
         className="h-full w-full object-contain p-4 opacity-90 transition-opacity duration-500 group-hover:opacity-100"
         loading="lazy"
+      />
+    )
+  }
+
+  if (visual.type === 'diagram' || visual.type === 'mermaid') {
+    return (
+      <MermaidThumb
+        id={visual.id}
+        data={visual.data}
+        title={visual.title}
+        onRenderFail={onRenderFail}
       />
     )
   }
@@ -91,6 +111,7 @@ export default function GalleryCard({
   onClick,
   onLike,
   onSave,
+  onRenderFail,
   featured,
   index = 0,
 }: GalleryCardProps) {
@@ -135,7 +156,7 @@ export default function GalleryCard({
           }}
         />
         <div className="relative h-full w-full">
-          <PreviewThumb visual={visual} />
+          <PreviewThumb visual={visual} onRenderFail={onRenderFail} />
         </div>
 
         {/* Hover action buttons */}

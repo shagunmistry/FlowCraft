@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import mermaid from 'mermaid'
+import { useEffect, useId, useRef, useState } from 'react'
+import { renderMermaid } from '@/lib/mermaidClient'
 import { sanitizeMermaid, sanitizeSVG } from '@/lib/utils'
 import { CodeFrame } from 'lumina-code-frame'
 
@@ -19,20 +19,10 @@ export default function DiagramRenderer({
   className = '',
 }: DiagramRendererProps) {
   const mermaidContainerRef = useRef<HTMLDivElement>(null)
-  const [mermaidInitialized, setMermaidInitialized] = useState(false)
   const [svgCode, setSvgCode] = useState('')
   const [mermaidCode, setMermaidCode] = useState('')
   const [renderError, setRenderError] = useState<string | null>(null)
-
-  // Initialize Mermaid once
-  useEffect(() => {
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'default',
-      securityLevel: 'loose',
-    })
-    setMermaidInitialized(true)
-  }, [])
+  const renderId = useId().replace(/:/g, '')
 
   // Process diagram data based on type
   useEffect(() => {
@@ -44,61 +34,38 @@ export default function DiagramRenderer({
       setSvgCode(sanitizedSvgCode.svgContent)
       setMermaidCode('')
     } else {
-      const sanitizedMermaidCode = sanitizeMermaid(data)
-      setMermaidCode(sanitizedMermaidCode)
+      setMermaidCode(sanitizeMermaid(data))
       setSvgCode('')
     }
+    setRenderError(null)
   }, [type, data])
 
-  // Validate and render Mermaid diagram when code changes
+  // Render Mermaid through the shared client. mermaid.render throws on invalid
+  // syntax, so no SVG string sniffing is needed (valid Mermaid SVGs always
+  // embed an `.error-icon` rule in their stylesheet).
   useEffect(() => {
-    if (mermaidInitialized && mermaidCode && mermaidContainerRef.current) {
-      const container = mermaidContainerRef.current
-      container.innerHTML = '' // Clear previous content
-      setRenderError(null) // Clear previous error
+    if (!mermaidCode || renderError !== null) return
+    let cancelled = false
 
-      // First, validate the mermaid code
-      const validateAndRender = async () => {
-        try {
-          // Validate mermaid syntax before rendering
-          await mermaid.parse(mermaidCode)
+    renderMermaid(`dr-${renderId}`, mermaidCode)
+      .then(({ svg }) => {
+        if (cancelled || !mermaidContainerRef.current) return
+        mermaidContainerRef.current.innerHTML = svg
+      })
+      .catch((error) => {
+        if (cancelled) return
+        const message = error instanceof Error ? error.message : 'Unknown error'
+        console.error('Mermaid rendering error:', message)
+        setRenderError(`Invalid Mermaid syntax: ${message}`)
+      })
+      .finally(() => {
+        document.getElementById(`ddr-${renderId}`)?.remove()
+      })
 
-          // If validation passes, proceed with rendering
-          const { svg } = await mermaid.render('mermaid-diagram', mermaidCode)
-
-          // Check if the rendered SVG contains error indicators
-          if (
-            svg.includes('error-icon') ||
-            svg.includes('Syntax error in text')
-          ) {
-            console.error('Mermaid syntax error detected in rendered SVG')
-            setRenderError(
-              'Error rendering Mermaid diagram. Please check the syntax.',
-            )
-            container.innerHTML = '' // Don't display the error SVG
-          } else {
-            container.innerHTML = svg
-            setRenderError(null)
-          }
-        } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error'
-          console.error('Mermaid validation/rendering error:', errorMessage)
-          setRenderError(
-            `Invalid Mermaid syntax: ${errorMessage}`,
-          )
-          // Clear the container on error
-          container.innerHTML = ''
-        }
-      }
-
-      validateAndRender()
+    return () => {
+      cancelled = true
     }
-  }, [mermaidCode, mermaidInitialized])
-
-  console.log('SVG Code: ', svgCode)
-  console.log('Mermaid Code: ', mermaidCode)
-  console.log('Render error state: ', renderError)
+  }, [mermaidCode, renderError, renderId])
 
   if (!!svgCode && renderError === null) {
     return (

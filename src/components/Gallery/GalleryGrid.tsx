@@ -12,6 +12,7 @@ interface GalleryGridProps {
   onVisualClick: (visual: PublicVisual) => void
   onLike: (visualId: string) => Promise<boolean>
   onSave: (visualId: string) => Promise<boolean>
+  onRenderFail?: (visualId: string) => void
 }
 
 export default function GalleryGrid({
@@ -21,6 +22,7 @@ export default function GalleryGrid({
   onVisualClick,
   onLike,
   onSave,
+  onRenderFail,
 }: GalleryGridProps) {
   const [showAll, setShowAll] = useState(false)
   const displayed = showAll ? visuals : visuals.slice(0, 12)
@@ -77,6 +79,7 @@ export default function GalleryGrid({
               onClick={() => onVisualClick(visual)}
               onLike={onLike}
               onSave={onSave}
+              onRenderFail={onRenderFail}
             />
           ))}
         </div>

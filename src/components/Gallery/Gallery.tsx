@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import GalleryHeader from './GalleryHeader'
 import GallerySearchAndFilter from './GallerySearchAndFilter'
@@ -9,6 +9,21 @@ import GalleryGrid from './GalleryGrid'
 import PageLoader from '@/components/PageLoader'
 import { PublicVisual } from './PublicVisualType'
 import FlowCraftLogo from '@/images/FlowCraftLogo_New.png'
+import { parseMermaid } from '@/lib/mermaidClient'
+import { sanitizeMermaid } from '@/lib/utils'
+
+// Only showcase diagrams that actually parse, so every card shows a real
+// render. Non-Mermaid visuals (images, SVG infographics) pass straight through.
+async function filterRenderable(visuals: PublicVisual[]) {
+  const checks = await Promise.all(
+    visuals.map(async (v) => {
+      if (v.type !== 'diagram' && v.type !== 'mermaid') return true
+      const code = sanitizeMermaid(v.data)
+      return code ? parseMermaid(code) : false
+    }),
+  )
+  return visuals.filter((_, i) => checks[i])
+}
 
 interface GalleryProps {
   user_id?: string | null
@@ -21,6 +36,7 @@ export default function Gallery({ user_id }: GalleryProps) {
   const [selectedFilter, setSelectedFilter] = useState('Newest')
   const [publicVisuals, setPublicVisuals] = useState<PublicVisual[]>([])
   const [loading, setLoading] = useState(true)
+  const [failedIds, setFailedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const fetchPublicVisuals = async () => {
@@ -51,7 +67,7 @@ export default function Gallery({ user_id }: GalleryProps) {
           }
         })
 
-        setPublicVisuals(transformedDiagrams)
+        setPublicVisuals(await filterRenderable(transformedDiagrams))
       } catch (error) {
         console.error('Error fetching public visuals:', error)
       } finally {
@@ -128,8 +144,17 @@ export default function Gallery({ user_id }: GalleryProps) {
     }
   }
 
+  const handleRenderFail = useCallback((visualId: string) => {
+    setFailedIds((prev) => new Set(prev).add(visualId))
+  }, [])
+
+  const visibleVisuals = useMemo(
+    () => publicVisuals.filter((v) => !failedIds.has(v.id)),
+    [publicVisuals, failedIds],
+  )
+
   const filteredVisuals = useMemo(() => {
-    return publicVisuals
+    return visibleVisuals
       .filter((v) =>
         (v.title || '').toLowerCase().includes(searchQuery.toLowerCase()),
       )
@@ -151,7 +176,7 @@ export default function Gallery({ user_id }: GalleryProps) {
           )
         return 0
       })
-  }, [searchQuery, selectedFilter, publicVisuals])
+  }, [searchQuery, selectedFilter, visibleVisuals])
 
   const openVisualViewer = (visual: PublicVisual) => {
     router.push(`/dashboard/showcase/${visual.id}`)
@@ -181,7 +206,7 @@ export default function Gallery({ user_id }: GalleryProps) {
       />
 
       <div className="relative mx-auto max-w-[1400px] px-6 pb-32 pt-10 lg:px-8">
-        <GalleryHeader totalItems={publicVisuals.length} />
+        <GalleryHeader totalItems={visibleVisuals.length} />
 
         <GallerySearchAndFilter
           searchQuery={searchQuery}
@@ -191,10 +216,11 @@ export default function Gallery({ user_id }: GalleryProps) {
         />
 
         <GalleryFeaturedSection
-          visuals={publicVisuals}
+          visuals={visibleVisuals}
           onVisualClick={openVisualViewer}
           onLike={handleLike}
           onSave={handleSave}
+          onRenderFail={handleRenderFail}
         />
 
         <GalleryGrid
@@ -204,6 +230,7 @@ export default function Gallery({ user_id }: GalleryProps) {
           onVisualClick={openVisualViewer}
           onLike={handleLike}
           onSave={handleSave}
+          onRenderFail={handleRenderFail}
         />
       </div>
     </main>

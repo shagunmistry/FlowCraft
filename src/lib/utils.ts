@@ -326,7 +326,7 @@ function escapeControlCharsInJsonStrings(s: string): string {
 }
 
 const MERMAID_HEADER_RE =
-  /^(?:\s*%%\{[^}]*\}%%\s*\n)?\s*(graph|flowchart|sequenceDiagram|classDiagram(?:-v2)?|stateDiagram(?:-v2)?|erDiagram|journey|gantt|pie|mindmap|timeline|quadrantChart|gitGraph|requirementDiagram|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment|xychart-beta|sankey-beta|block-beta)\b/m
+  /^(?:\s*%%\{[^}]*\}%%\s*\n)?\s*(graph|flowchart|sequenceDiagram|classDiagram(?:-v2)?|stateDiagram(?:-v2)?|erDiagram|journey|gantt|pie|mindmap|timeline|quadrantChart|gitGraph|requirementDiagram|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment|xychart(?:-beta)?|sankey(?:-beta)?|block(?:-beta)?|architecture(?:-beta)?|treemap(?:-beta)?|kanban|packet(?:-beta)?|radar(?:-beta)?)\b/m
 
 export function sanitizeMermaid(code: string): string {
   let cleaned = code?.trim() || ''
@@ -369,14 +369,21 @@ export function sanitizeMermaid(code: string): string {
 
   // Trim non-mermaid preamble: scan for the first mermaid header line and
   // drop everything before it. Preserves optional %%{init}%% directive.
-  const headerMatch = cleaned.match(MERMAID_HEADER_RE)
+  // A leading YAML frontmatter block (`---\nconfig: ...\n---`) is kept intact
+  // and the header is searched for after it, so config keys such as `kanban:`
+  // are never mistaken for the diagram type.
+  const frontmatter = cleaned.match(/^---[ \t]*\n[\s\S]*?\n---[ \t]*\n/)
+  const preamble = frontmatter ? frontmatter[0] : ''
+  const body = cleaned.slice(preamble.length)
+
+  const headerMatch = body.match(MERMAID_HEADER_RE)
   if (!headerMatch) {
     // No recognizable mermaid diagram type — let the caller treat this as
     // unparseable instead of shipping garbage to mermaid.parse.
     return ''
   }
-  const headerStart = cleaned.indexOf(headerMatch[0])
-  if (headerStart > 0) cleaned = cleaned.slice(headerStart)
+  const headerStart = body.indexOf(headerMatch[0])
+  cleaned = preamble + (headerStart > 0 ? body.slice(headerStart) : body)
 
   return cleaned.trim()
 }

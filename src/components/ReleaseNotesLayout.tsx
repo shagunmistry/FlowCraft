@@ -31,17 +31,15 @@ export function ReleaseNotesLayout({
             <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
               <div className="lg:col-span-8">
                 <h1 className="font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[108px]">
-                  <span className="block">The field</span>
+                  <span className="block">FlowCraft</span>
                   <span className="block">
-                    <span className="italic text-signal">log</span>
-                    <span className="text-fog">,</span>{' '}
-                    <span className="text-paper">kept</span>
+                    <span className="italic text-signal">release</span>{' '}
+                    <span className="text-paper">notes</span>
                   </span>
-                  <span className="block">honest.</span>
                 </h1>
                 <p className="mt-10 max-w-xl text-lg leading-relaxed text-paper/70 md:text-xl">
-                  Every release we've cut, every feature filed, every bug
-                  crossed out. Read from the top — newest first.
+                  Every feature, improvement and fix we have shipped in the
+                  FlowCraft AI diagram generator. Newest first.
                 </p>
               </div>
 
@@ -50,7 +48,7 @@ export function ReleaseNotesLayout({
                   <CornerTicks />
                   <dl className="divide-y divide-rule text-sm">
                     <Meta k="Format" v="Chronological" />
-                    <Meta k="Latest" v="V · 5.0.0" />
+                    <Meta k="Latest" v="7.0.1" />
                     <Meta k="Cadence" v="Irregular" />
                     <Meta k="Maintainer" v="Flowcraft" />
                   </dl>
