@@ -77,6 +77,9 @@ export default function PreviewPane({
     if (!code || !containerRef.current) return
     let cancelled = false
     const host = containerRef.current
+    // Unique per run: React StrictMode (dev) runs this effect twice, and two
+    // overlapping renders sharing one id delete each other's temp node.
+    const renderId = `${idRef.current}-${Math.random().toString(36).slice(2, 7)}`
 
     ;(async () => {
       try {
@@ -86,7 +89,7 @@ export default function PreviewPane({
           return
         }
         const { svg } = await renderMermaid(
-          idRef.current,
+          renderId,
           code,
           PREVIEW_MERMAID_CONFIG,
         )
@@ -107,7 +110,7 @@ export default function PreviewPane({
       } catch {
         if (!cancelled) setRenderError(true)
       } finally {
-        document.getElementById(`d${idRef.current}`)?.remove()
+        document.getElementById(`d${renderId}`)?.remove()
       }
     })()
 

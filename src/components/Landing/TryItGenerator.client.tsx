@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import MermaidViewer from '@/components/Templates/MermaidViewer'
+import FreeTasteResultDialog from './FreeTasteResultDialog.client'
 import {
   FREE_TASTE_TYPES,
   FreeTasteExpiredError,
@@ -41,6 +41,7 @@ export default function TryItGenerator() {
   const [code, setCode] = useState('')
   const [remaining, setRemaining] = useState<number | null>(null)
   const [message, setMessage] = useState('')
+  const [resultOpen, setResultOpen] = useState(false)
   const challengeRef = useRef<Challenge | null>(null)
 
   // The generator only appears if the backend answers a challenge request.
@@ -101,6 +102,8 @@ export default function TryItGenerator() {
       setCode(res.mermaidCode)
       setRemaining(res.remaining)
       setPhase('done')
+      setResultOpen(true)
+      trackTryIt('try_it_result_opened', { type })
       trackTryIt('try_it_succeeded', {
         type,
         remaining: res.remaining,
@@ -119,7 +122,7 @@ export default function TryItGenerator() {
         setPhase('quota')
       } else if (e instanceof FreeTasteUnavailableError) {
         trackTryIt('try_it_failed', { type, kind: 'unavailable' })
-        setMessage('The generator is temporarily unavailable. Please try again soon.')
+        setMessage('The free generator is busy or at capacity right now. Please try again in a bit, or sign up for unlimited drafts.')
         setPhase('error')
       } else {
         trackTryIt('try_it_failed', {
@@ -143,7 +146,7 @@ export default function TryItGenerator() {
       <textarea
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        maxLength={2000}
+        maxLength={1500}
         rows={3}
         disabled={working}
         placeholder="Describe a process, system or idea…"
@@ -214,24 +217,34 @@ export default function TryItGenerator() {
       )}
 
       {phase === 'done' && (
-        <div className="mt-4">
-          <div className="overflow-auto rounded-sm bg-white">
-            <MermaidViewer code={code} />
-          </div>
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
-              {remaining !== null ? `${remaining} free tries left` : ''}
-            </span>
-            <Link
-              href="/sign-up?src=try-it"
-              onClick={() => trackTryIt('try_it_cta_clicked', { where: 'result' })}
-              className="rounded-sm border border-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal hover:text-ink"
-            >
-              Sign up free to save, edit and export →
-            </Link>
-          </div>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-signal/40 p-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+            Draft ready
+            {remaining !== null ? ` · ${remaining} free ${remaining === 1 ? 'try' : 'tries'} left` : ''}
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setResultOpen(true)
+              trackTryIt('try_it_result_opened', { type, reopen: true })
+            }}
+            className="rounded-sm border border-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal hover:text-ink"
+          >
+            View diagram →
+          </button>
         </div>
       )}
+
+      <FreeTasteResultDialog
+        open={resultOpen}
+        onClose={() => {
+          setResultOpen(false)
+          trackTryIt('try_it_result_closed')
+        }}
+        code={code}
+        prompt={prompt.trim()}
+        remaining={remaining}
+      />
     </div>
   )
 }

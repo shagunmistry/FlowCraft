@@ -6,6 +6,8 @@ export type TryItEvent =
   | 'try_it_succeeded'
   | 'try_it_failed'
   | 'try_it_cta_clicked'
+  | 'try_it_result_opened'
+  | 'try_it_result_closed'
   | 'try_it_example_used'
   | 'signup_completed'
 
