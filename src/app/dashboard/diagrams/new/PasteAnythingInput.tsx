@@ -138,20 +138,11 @@ export default function PasteAnythingInput({
               className="absolute inset-0 z-10 flex items-center justify-center bg-ink/90 backdrop-blur-sm"
             >
               <div className="flex flex-col items-center gap-2 text-signal">
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em]">
-                  ▸ Drop file to ingest
-                </span>
+                <span className="text-sm">Drop file to upload</span>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-
-        <div className="flex items-center border-b border-rule px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-          <span className="flex items-center gap-2">
-            <span className="text-signal">▸</span>
-            Input · Paste anything
-          </span>
-        </div>
 
         <textarea
           ref={textareaRef}
@@ -170,7 +161,7 @@ export default function PasteAnythingInput({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+              className="group inline-flex items-center gap-2 text-xs text-fog transition-colors hover:text-signal"
             >
               <span className="inline-block h-px w-4 bg-current transition-all group-hover:w-6" />
               Upload file
@@ -192,7 +183,7 @@ export default function PasteAnythingInput({
               <motion.span
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-1.5 rounded-sm border border-signal/30 bg-signal/10 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-signal"
+                className="inline-flex items-center gap-1.5 rounded-sm border border-signal/30 bg-signal/10 px-2 py-1 text-xs text-signal"
               >
                 {fileName}
                 <button
@@ -206,7 +197,7 @@ export default function PasteAnythingInput({
             )}
           </div>
 
-          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+          <div className="flex items-center gap-3 text-xs text-fog">
             {isClassifying && (
               <motion.span
                 initial={{ opacity: 0 }}
@@ -230,9 +221,9 @@ export default function PasteAnythingInput({
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-400"
+            className="text-xs text-red-400"
           >
-            ✕ {fileError}
+            {fileError}
           </motion.p>
         )}
       </AnimatePresence>

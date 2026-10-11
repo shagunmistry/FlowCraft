@@ -12,7 +12,7 @@ export const Section = ({
 }) => (
   <section className={clsx('mb-8', className)}>
     {title && (
-      <h3 className="px-4 pb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+      <h3 className="px-4 pb-2 text-sm font-semibold text-zinc-500">
         {title}
       </h3>
     )}

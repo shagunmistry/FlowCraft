@@ -34,13 +34,7 @@ export default function GallerySearchAndFilter({
     >
       {/* Search field */}
       <div className="grid grid-cols-1 gap-6 border-y border-rule py-6 lg:grid-cols-12 lg:items-center">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-fog lg:col-span-3">
-          <span className="text-signal">▸</span>
-          <span>Search · Index</span>
-          <span className="hidden h-px flex-1 bg-rule lg:block" />
-        </div>
-
-        <div className="lg:col-span-9">
+        <div className="lg:col-span-12">
           <div className="group relative flex items-center gap-3 border-b border-rule/60 pb-2 transition-colors focus-within:border-signal/60">
             <svg
               className="h-4 w-4 text-fog transition-colors group-focus-within:text-signal"
@@ -66,9 +60,9 @@ export default function GallerySearchAndFilter({
               <button
                 onClick={() => onSearchChange('')}
                 aria-label="Clear search"
-                className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+                className="text-xs text-fog transition-colors hover:text-signal"
               >
-                Clear ×
+                Clear
               </button>
             )}
           </div>
@@ -77,11 +71,6 @@ export default function GallerySearchAndFilter({
 
       {/* Filters */}
       <div className="mt-6 flex items-center gap-4">
-        <div className="hidden items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-fog md:flex">
-          <span className="text-signal">▸</span>
-          <span>Filter</span>
-          <span className="h-px w-8 bg-rule" />
-        </div>
         <div className="-mx-1 flex flex-1 flex-wrap gap-1 overflow-x-auto">
           {filters.map((filter) => {
             const selected = selectedFilter === filter
@@ -90,7 +79,7 @@ export default function GallerySearchAndFilter({
                 key={filter}
                 onClick={() => onFilterChange(filter)}
                 className={
-                  'group relative rounded-sm border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ' +
+                  'group relative rounded-sm border px-3 py-1.5 text-sm transition-colors ' +
                   (selected
                     ? 'border-signal bg-signal text-ink'
                     : 'border-rule text-paper/70 hover:border-signal/50 hover:text-paper')

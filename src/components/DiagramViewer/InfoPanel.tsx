@@ -76,7 +76,7 @@ export default function InfoPanel({
                 </Field>
 
                 <Field label="Type">
-                  <span className="inline-flex items-center gap-2 border border-rule bg-ink px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+                  <span className="inline-flex items-center gap-2 border border-rule bg-ink px-2.5 py-1 text-xs capitalize text-signal">
                     <span className="h-1 w-1 rounded-full bg-signal" />
                     {type.replace('_', ' ')}
                   </span>
@@ -92,7 +92,7 @@ export default function InfoPanel({
 
                 {createdAt && (
                   <Field label="Created">
-                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-paper/80">
+                    <p className="text-sm text-paper/80">
                       {new Date(createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -110,15 +110,9 @@ export default function InfoPanel({
                 href="https://flowcraft.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+                className="group flex items-center justify-between text-xs text-fog transition-colors hover:text-signal"
               >
-                <span className="flex items-center gap-2">
-                  <span className="text-signal">◆</span>
-                  Drafted with FlowCraft
-                </span>
-                <span className="transition-transform group-hover:translate-x-1">
-                  →
-                </span>
+                <span>Drafted with FlowCraft</span>
               </a>
             </div>
           </motion.aside>
@@ -137,10 +131,7 @@ function Field({
 }) {
   return (
     <div>
-      <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
-        <span className="h-px w-4 bg-fog/60" />
-        {label}
-      </div>
+      <div className="text-xs font-medium text-fog">{label}</div>
       <div className="mt-3">{children}</div>
     </div>
   )

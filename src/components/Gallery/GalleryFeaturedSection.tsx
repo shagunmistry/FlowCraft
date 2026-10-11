@@ -31,10 +31,6 @@ export default function GalleryFeaturedSection({
             <span className="italic text-signal"> this week.</span>
           </h2>
         </div>
-        <span className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog md:inline-flex">
-          <span className="h-px w-8 bg-rule" />
-          Selection · 04
-        </span>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">

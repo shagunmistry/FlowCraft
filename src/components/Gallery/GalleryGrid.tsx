@@ -45,7 +45,7 @@ export default function GalleryGrid({
           </h2>
         </div>
 
-        <div className="flex items-center gap-6 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+        <div className="flex items-center gap-6 text-sm text-fog">
           <span>
             Showing{' '}
             <span className="text-paper">
@@ -61,10 +61,7 @@ export default function GalleryGrid({
               onClick={() => setShowAll((v) => !v)}
               className="group inline-flex items-center gap-2 rounded-sm border border-rule px-3 py-2 text-paper/80 transition-colors hover:border-signal/50 hover:text-signal"
             >
-              <span>{showAll ? 'Show less' : 'Reveal all'}</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
+              <span>{showAll ? 'Show less' : 'Show all'}</span>
             </button>
           )}
         </div>

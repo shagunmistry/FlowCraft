@@ -24,17 +24,13 @@ export default function FloatingToolbar({
 }: FloatingToolbarProps) {
   return (
     <div className="absolute bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-sm border border-rule bg-graphite/95 px-2 py-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl">
-      <span className="pl-2 pr-1 font-mono text-[9px] uppercase tracking-[0.24em] text-fog">
-        ▸ Scale
-      </span>
-      <Divider />
       <ToolButton
         onClick={() => onZoom('out')}
         icon={MagnifyingGlassMinusIcon}
         label="Zoom Out"
         disabled={zoomLevel <= 25}
       />
-      <span className="w-12 select-none text-center font-mono text-[11px] font-medium text-paper">
+      <span className="w-12 select-none text-center text-xs font-medium tabular-nums text-paper">
         {zoomLevel}
         <span className="text-fog">%</span>
       </span>

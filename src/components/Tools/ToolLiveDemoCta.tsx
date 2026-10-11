@@ -31,7 +31,7 @@ export default function ToolLiveDemoCta({ tool }: { tool: ToolPage }) {
     <div className="mx-auto max-w-3xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
       <label
         htmlFor="tool-demo-prompt"
-        className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500"
+        className="flex items-center gap-2 text-sm font-semibold text-gray-500"
       >
         <SparklesIcon className="h-4 w-4 text-pink-500" />
         Try this prompt

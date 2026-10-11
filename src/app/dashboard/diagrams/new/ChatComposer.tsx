@@ -78,7 +78,7 @@ export default function ChatComposer({
         )}
       />
       <div className="flex items-center justify-between gap-3 border-t border-rule/50 px-4 py-2">
-        <div className="flex min-w-0 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+        <div className="flex min-w-0 items-center gap-3 text-xs text-fog">
           <span className="truncate">
             {footerLeft ?? <span>Enter to send · Shift + Enter for newline</span>}
           </span>
@@ -90,7 +90,7 @@ export default function ChatComposer({
             disabled={disabled || !value.trim()}
             className={clsx(
               'relative inline-flex items-center gap-2 rounded-sm px-3 py-1.5',
-              'font-mono text-[10px] uppercase tracking-[0.2em]',
+              'text-sm font-medium',
               'transition',
               disabled || !value.trim()
                 ? 'cursor-not-allowed border border-rule text-fog'

@@ -329,7 +329,7 @@ export default function ShowcaseItemPage({ params }: ShowcaseItemPageProps) {
             height={20}
             className="grayscale"
           />
-          <span className="text-xs font-semibold tracking-wider text-slate-900">
+          <span className="text-xs font-semibold text-slate-900">
             FLOWCRAFT
           </span>
         </div>

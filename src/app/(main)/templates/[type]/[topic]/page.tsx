@@ -66,15 +66,6 @@ function CornerTicks() {
   )
 }
 
-function Kicker({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-      <span className="h-px w-12 bg-signal/50" />
-      <span className="text-fog">{children}</span>
-    </div>
-  )
-}
-
 export default async function Page({
   params,
 }: {
@@ -141,7 +132,7 @@ export default async function Page({
 
       <div className="relative mx-auto max-w-[1280px] px-6 py-16 lg:px-8 lg:py-20">
         {/* sheet header */}
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 text-sm text-fog">
           <nav className="flex items-center gap-2">
             <Link href="/templates" className="transition-colors hover:text-paper">
               Templates
@@ -156,17 +147,12 @@ export default async function Page({
             <span className="text-rule">/</span>
             <span className="text-paper">{tp.title}</span>
           </nav>
-          <span className="hidden items-center gap-2 md:inline-flex">
-            <span className="text-signal">◆</span>
-            <span>Specimen · {t.title}</span>
-          </span>
         </div>
 
         {/* headline */}
         <header className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <Kicker>{t.title} template</Kicker>
-            <h1 className="mt-6 font-serif text-[44px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[72px]">
+            <h1 className="font-serif text-[44px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[72px]">
               {tp.title}
               <span className="text-fog">,</span>
               <br />
@@ -186,14 +172,10 @@ export default async function Page({
           <div className="relative">
             <CornerTicks />
             <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite">
-              <div className="flex items-center justify-between border-b border-rule px-5 py-3 font-mono text-[9px] uppercase tracking-[0.25em] text-fog">
-                <span>Title Block</span>
-                <span className="text-signal">◆</span>
-              </div>
               <div className="relative">
                 <TemplateRenderer typeId={t.id} data={row.data} />
               </div>
-              <div className="grid grid-cols-3 border-t border-rule font-mono text-[10px] uppercase tracking-[0.2em]">
+              <div className="grid grid-cols-3 border-t border-rule text-xs">
                 <div className="border-r border-rule p-4">
                   <div className="text-fog">Type</div>
                   <div className="mt-1 text-paper">{t.title}</div>
@@ -211,10 +193,6 @@ export default async function Page({
                 </div>
               </div>
             </div>
-            <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-              <span>Fig. 01</span>
-              <span>Reference draft</span>
-            </div>
           </div>
 
           <aside className="flex flex-col gap-3">
@@ -223,30 +201,21 @@ export default async function Page({
               <input type="hidden" name="topic" value={tp.slug} />
               <button
                 type="submit"
-                className="group relative inline-flex w-full items-center justify-between gap-3 overflow-hidden rounded-sm bg-signal px-5 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+                className="group relative inline-flex w-full items-center justify-between gap-3 overflow-hidden rounded-sm bg-signal px-5 py-4 text-sm font-medium text-ink transition-colors hover:bg-paper"
               >
                 <span>Use this template</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                  →
-                </span>
               </button>
             </form>
 
             <Link
               href={`/templates/topic/${tp.slug}`}
-              className="group inline-flex items-center justify-between gap-3 rounded-sm border border-rule bg-graphite/40 px-5 py-4 font-mono text-[11px] uppercase tracking-[0.22em] text-paper/80 transition-colors hover:border-signal/40 hover:text-paper"
+              className="group inline-flex items-center justify-between gap-3 rounded-sm border border-rule bg-graphite/40 px-5 py-4 text-sm text-paper/80 transition-colors hover:border-signal/40 hover:text-paper"
             >
               <span>See topic as other types</span>
-              <span className="text-fog transition-transform duration-300 group-hover:translate-x-1 group-hover:text-signal">
-                ↗
-              </span>
             </Link>
 
             <div className="rounded-sm border border-rule bg-graphite/40 p-5">
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                ▸ Notes
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-paper/70">
+              <p className="text-sm leading-relaxed text-paper/70">
                 Open this specimen in Flowcraft to edit nodes, swap labels, or
                 restyle.
               </p>
@@ -257,8 +226,7 @@ export default async function Page({
         {/* long-form */}
         <section className="mt-20 grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <Kicker>Overview</Kicker>
-            <h2 className="mt-6 font-serif text-4xl leading-[0.95] text-paper md:text-5xl">
+            <h2 className="font-serif text-4xl leading-[0.95] text-paper md:text-5xl">
               About this
               <br />
               <span className="italic text-signal">specimen.</span>
@@ -276,8 +244,7 @@ export default async function Page({
           <section className="mt-24 border-t border-rule pt-16">
             <div className="mb-10 flex items-end justify-between gap-6">
               <div>
-                <Kicker>Cross-reference</Kicker>
-                <h2 className="mt-6 font-serif text-3xl leading-[0.95] text-paper md:text-4xl">
+                <h2 className="font-serif text-3xl leading-[0.95] text-paper md:text-4xl">
                   {tp.title}
                   <span className="text-fog">,</span>{' '}
                   <span className="italic text-signal">as another form.</span>
@@ -295,16 +262,13 @@ export default async function Page({
                       className="group flex h-full items-center justify-between gap-3 bg-ink p-5 transition-colors duration-300 hover:bg-graphite"
                     >
                       <div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+                        <div className="text-xs text-signal">
                           {st.title}
                         </div>
                         <div className="mt-2 text-sm text-paper/85">
                           {tp.title} as a {st.title}
                         </div>
                       </div>
-                      <span className="font-mono text-fog transition-all duration-300 group-hover:translate-x-1 group-hover:text-signal">
-                        →
-                      </span>
                     </Link>
                   </li>
                 )
@@ -317,27 +281,20 @@ export default async function Page({
         {related.length > 0 && (
           <section className="mt-24 border-t border-rule pt-16">
             <div className="mb-10">
-              <Kicker>Related specimens</Kicker>
-              <h2 className="mt-6 font-serif text-3xl leading-[0.95] text-paper md:text-4xl">
+              <h2 className="font-serif text-3xl leading-[0.95] text-paper md:text-4xl">
                 More {t.title.toLowerCase()}
                 <br />
                 <span className="italic text-signal">templates.</span>
               </h2>
             </div>
             <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((r, i) => (
+              {related.map((r) => (
                 <li key={r.id}>
                   <Link
                     href={`/templates/${t.slug}/${r.topic_slug}`}
                     className="group flex h-full flex-col gap-3 bg-ink p-6 transition-colors duration-300 hover:bg-graphite"
                   >
-                    <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                      <span>Fig. {String(i + 2).padStart(2, '0')}</span>
-                      <span className="transition-transform duration-300 group-hover:rotate-90">
-                        ┼
-                      </span>
-                    </div>
-                    <div className="mt-2 font-serif text-xl text-paper">
+                    <div className="font-serif text-xl text-paper">
                       {r.topic_title}
                     </div>
                     <div className="text-xs leading-relaxed text-paper/60">
@@ -355,8 +312,7 @@ export default async function Page({
           <section className="mt-24 border-t border-rule pt-16">
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
               <div className="lg:col-span-4">
-                <Kicker>FAQ</Kicker>
-                <h2 className="mt-6 font-serif text-3xl leading-[0.95] text-paper md:text-4xl">
+                <h2 className="font-serif text-3xl leading-[0.95] text-paper md:text-4xl">
                   Common
                   <br />
                   <span className="italic text-signal">questions.</span>
@@ -369,7 +325,7 @@ export default async function Page({
                     className="rounded-sm border border-rule bg-graphite/40 p-6"
                   >
                     <dt className="flex items-baseline gap-3 font-serif text-lg text-paper">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+                      <span className="text-xs text-signal">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       <span>{f.q}</span>

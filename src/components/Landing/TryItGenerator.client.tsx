@@ -140,7 +140,7 @@ export default function TryItGenerator() {
   const working = phase === 'working'
   return (
     <div className="mt-10 max-w-2xl border border-rule bg-graphite/40 p-4 sm:p-5">
-      <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+      <p className="text-sm text-fog">
         Try it — no account needed
       </p>
       <textarea
@@ -177,7 +177,7 @@ export default function TryItGenerator() {
             disabled={working}
             aria-pressed={type === t}
             onClick={() => setType(t)}
-            className={`rounded-sm border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors ${
+            className={`rounded-sm border px-2.5 py-1 text-xs transition-colors ${
               type === t
                 ? 'border-signal bg-signal text-ink'
                 : 'border-rule text-fog hover:text-paper'
@@ -190,9 +190,9 @@ export default function TryItGenerator() {
           type="button"
           onClick={onGenerate}
           disabled={!prompt.trim() || working}
-          className="ml-auto rounded-sm bg-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
+          className="ml-auto rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {working ? 'Generating…' : 'Generate →'}
+          {working ? 'Generating…' : 'Generate'}
         </button>
       </div>
 
@@ -218,7 +218,7 @@ export default function TryItGenerator() {
 
       {phase === 'done' && (
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-signal/40 p-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+          <span className="text-xs text-fog">
             Draft ready
             {remaining !== null ? ` · ${remaining} free ${remaining === 1 ? 'try' : 'tries'} left` : ''}
           </span>
@@ -228,9 +228,9 @@ export default function TryItGenerator() {
               setResultOpen(true)
               trackTryIt('try_it_result_opened', { type, reopen: true })
             }}
-            className="rounded-sm border border-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal hover:text-ink"
+            className="rounded-sm border border-signal px-4 py-2 text-sm text-signal transition-colors hover:bg-signal hover:text-ink"
           >
-            View diagram →
+            View diagram
           </button>
         </div>
       )}

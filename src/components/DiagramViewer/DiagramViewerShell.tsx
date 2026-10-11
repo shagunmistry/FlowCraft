@@ -199,25 +199,21 @@ export default function DiagramViewerShell({
                 <>
                   <button
                     onClick={onBack}
-                    className="group flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+                    className="group flex items-center gap-2 text-sm text-fog transition-colors hover:text-signal"
                     aria-label="Back to dashboard"
                   >
                     <ChevronLeftIcon className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-                    Sheet
+                    Back
                   </button>
-                  <span className="font-mono text-[10px] text-fog/60">/</span>
+                  <span className="text-xs text-fog/60">/</span>
                 </>
               )}
 
               <div className="flex items-center gap-3">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-                  <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-                </span>
                 <h1 className="max-w-[340px] truncate font-serif text-lg leading-none text-paper">
                   {title || 'Untitled'}
                 </h1>
-                <span className="border border-rule bg-graphite px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.24em] text-fog">
+                <span className="border border-rule bg-graphite px-2 py-0.5 text-xs capitalize text-fog">
                   {type.replace('_', ' ')}
                 </span>
               </div>
@@ -229,7 +225,7 @@ export default function DiagramViewerShell({
                 <button
                   onClick={handleReModify}
                   disabled={reopening}
-                  className="mr-1 inline-flex items-center gap-2 rounded-sm border border-rule bg-graphite/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-paper transition-colors hover:border-signal/40 hover:text-signal disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mr-1 inline-flex items-center gap-2 rounded-sm border border-rule bg-graphite/60 px-3 py-1.5 text-sm text-paper transition-colors hover:border-signal/40 hover:text-signal disabled:cursor-not-allowed disabled:opacity-60"
                   title="Re-open this draft in the workbench to iterate on it"
                 >
                   <PencilSquareIcon className="h-3.5 w-3.5" />
@@ -258,20 +254,6 @@ export default function DiagramViewerShell({
           </motion.header>
         )}
       </AnimatePresence>
-
-      {/* Margin marks — editorial sheet corners */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-6 top-20 font-mono text-[9px] uppercase tracking-[0.24em] text-fog/50"
-      >
-        ▸ Draft · {new Date().getFullYear()}
-      </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-6 right-6 font-mono text-[9px] uppercase tracking-[0.24em] text-fog/50"
-      >
-        {zoomLevel}% · {type.replace('_', ' ')}
-      </div>
 
       {/* Canvas */}
       <main className="relative flex-1">

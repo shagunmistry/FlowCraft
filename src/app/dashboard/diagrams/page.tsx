@@ -11,7 +11,7 @@ type SortKey = 'recent' | 'oldest' | 'title'
 // --- Skeleton ------------------------------------------------------------
 const DiagramSkeleton = () => (
   <div className="relative flex min-h-[240px] flex-col justify-between gap-6 bg-graphite p-6">
-    <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em]">
+    <div className="flex items-center justify-between">
       <span className="h-2 w-16 animate-pulse bg-rule" />
       <span className="h-2 w-10 animate-pulse bg-rule" />
     </div>
@@ -101,30 +101,12 @@ export default function AllDiagramsPage() {
       <div className="pointer-events-none fixed inset-x-0 bottom-0 top-[76px] bg-dot-grid bg-dot-24 opacity-60" />
 
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-8">
-        {/* Sheet header */}
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/dashboard"
-              className="text-fog transition-colors hover:text-paper"
-            >
-              Sheet · Workspace
-            </Link>
-            <span>/</span>
-            <span className="text-paper">All drafts</span>
-            <span>/</span>
-            <span>{headerDate}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-signal">◆</span>
-            <span>
-              Archive ·{' '}
-              <span className="text-paper">
-                {data.length} {data.length === 1 ? 'entry' : 'entries'}
-              </span>
-            </span>
-          </div>
-        </div>
+        <p className="mb-10 text-sm text-fog">
+          {headerDate} ·{' '}
+          <span className="text-paper">
+            {data.length} {data.length === 1 ? 'entry' : 'entries'}
+          </span>
+        </p>
 
         {/* Masthead */}
         <section className="mb-14 grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
@@ -143,16 +125,13 @@ export default function AllDiagramsPage() {
           <div className="flex flex-col gap-3 lg:col-span-4 lg:items-end">
             <Link
               href="/dashboard/diagrams/new"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
             >
               <span className="relative z-10">+ New draft</span>
-              <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1.5">
-                →
-              </span>
             </Link>
             <Link
               href="/dashboard"
-              className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-fog transition-colors hover:text-paper"
+              className="group inline-flex items-center gap-2 text-sm text-fog transition-colors hover:text-paper"
             >
               <span className="h-px w-6 bg-current transition-all group-hover:w-10" />
               Back to dashboard
@@ -167,9 +146,7 @@ export default function AllDiagramsPage() {
         >
           {/* Search */}
           <div className="group relative flex items-center gap-3 lg:w-[420px]">
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-              ⌕ Find
-            </span>
+            <span className="text-sm text-signal">Find</span>
             <div className="relative flex-1">
               <input
                 type="text"
@@ -182,9 +159,9 @@ export default function AllDiagramsPage() {
                 <button
                   onClick={() => setSearchQuery('')}
                   aria-label="Clear search"
-                  className="absolute bottom-2 right-0 font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+                  className="absolute bottom-2 right-0 text-xs text-fog transition-colors hover:text-signal"
                 >
-                  ✕ Clear
+                  Clear
                 </button>
               )}
             </div>
@@ -192,30 +169,26 @@ export default function AllDiagramsPage() {
 
           {/* Type filter */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
-              Form
-            </span>
+            <span className="mr-2 text-sm text-fog">Form</span>
             {types.map((t) => (
               <button
                 key={t}
                 onClick={() => setTypeFilter(t)}
                 className={cn(
-                  'rounded-sm border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors',
+                  'rounded-sm border px-3 py-1.5 text-xs transition-colors',
                   typeFilter === t
                     ? 'border-signal bg-signal text-ink'
                     : 'border-rule bg-graphite/60 text-fog hover:border-signal/40 hover:text-paper',
                 )}
               >
-                {t === 'all' ? '✱ All' : t}
+                {t === 'all' ? 'All' : t}
               </button>
             ))}
           </div>
 
           {/* Sort */}
           <div className="flex items-center gap-2">
-            <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
-              Order
-            </span>
+            <span className="mr-2 text-sm text-fog">Order</span>
             {(
               [
                 ['recent', 'New → Old'],
@@ -227,7 +200,7 @@ export default function AllDiagramsPage() {
                 key={key}
                 onClick={() => setSort(key)}
                 className={cn(
-                  'font-mono text-[10px] uppercase tracking-[0.22em] transition-colors',
+                  'text-xs transition-colors',
                   sort === key
                     ? 'text-signal'
                     : 'text-fog hover:text-paper',
@@ -249,7 +222,7 @@ export default function AllDiagramsPage() {
         </section>
 
         {/* Results meta */}
-        <div className="mb-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+        <div className="mb-6 flex items-center justify-between text-sm text-fog">
           <span>
             Showing{' '}
             <span className="text-paper">{filteredDiagrams.length}</span> of{' '}
@@ -263,7 +236,7 @@ export default function AllDiagramsPage() {
               }}
               className="text-fog transition-colors hover:text-signal"
             >
-              Reset filters ↺
+              Reset filters
             </button>
           )}
         </div>
@@ -306,18 +279,6 @@ export default function AllDiagramsPage() {
           )}
         </div>
 
-        {/* Footer rule */}
-        {!isLoading && filteredDiagrams.length > 0 && (
-          <div className="mt-12 flex items-center justify-between border-t border-rule pt-6 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-            <span>End of index</span>
-            <span className="flex items-center gap-2">
-              <span className="h-px w-10 bg-rule" />
-              <span className="text-signal">◆</span>
-              <span className="h-px w-10 bg-rule" />
-            </span>
-            <span>{headerDate}</span>
-          </div>
-        )}
       </div>
     </main>
   )
@@ -337,15 +298,8 @@ function SectionGrid({
 }) {
   return (
     <section>
-      <div className="mb-5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+      <div className="mb-5 flex items-center justify-between text-sm text-fog">
         <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              variant === 'finalized' ? 'text-signal' : 'text-paper',
-            )}
-          >
-            {variant === 'finalized' ? '◆' : '◇'}
-          </span>
           <span className="text-paper">{label}</span>
           <span className="h-px w-8 bg-rule" />
           <span>
@@ -400,13 +354,13 @@ function DiagramCard({
       className="group relative flex min-h-[260px] flex-col justify-between gap-6 bg-graphite p-6 transition-colors duration-300 hover:bg-ink"
     >
       {/* Top row: entry number + type + date */}
-      <div className="flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.22em]">
+      <div className="flex items-start justify-between text-xs">
         <div className="flex items-center gap-3">
           <span className="text-fog">№ {entryNo}</span>
           <span className="h-px w-4 bg-rule" />
           <span className="text-signal">{diagram.type || 'Draft'}</span>
           {variant === 'finalized' && (
-            <span className="rounded-sm border border-signal/50 px-1.5 py-0.5 text-[9px] text-signal">
+            <span className="rounded-sm border border-signal/50 px-1.5 py-0.5 text-xs text-signal">
               Finalized
             </span>
           )}
@@ -435,11 +389,8 @@ function DiagramCard({
 
       {/* Footer */}
       <div className="flex items-center justify-between border-t border-rule pt-4">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors group-hover:text-signal">
+        <span className="text-sm text-fog transition-colors group-hover:text-signal">
           {footerLabel}
-        </span>
-        <span className="font-mono text-xs text-fog transition-transform duration-300 group-hover:translate-x-1 group-hover:text-signal">
-          →
         </span>
       </div>
 
@@ -519,22 +470,16 @@ function EmptyState({
           {isSearching ? (
             <button
               onClick={onClear}
-              className="group inline-flex items-center gap-2 rounded-sm border border-rule bg-graphite px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-paper transition-colors hover:border-signal/40 hover:text-signal"
+              className="group inline-flex items-center gap-2 rounded-sm border border-rule bg-graphite px-5 py-3 text-sm font-medium text-paper transition-colors hover:border-signal/40 hover:text-signal"
             >
               Reset filters
-              <span className="transition-transform duration-300 group-hover:rotate-180">
-                ↺
-              </span>
             </button>
           ) : (
             <Link
               href="/dashboard/diagrams/new"
-              className="group inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+              className="group inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
             >
               + Start first draft
-              <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                →
-              </span>
             </Link>
           )}
         </div>

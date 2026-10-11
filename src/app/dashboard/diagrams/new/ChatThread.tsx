@@ -46,7 +46,7 @@ export default function ChatThread({
                 m.role === 'user' ? 'items-end' : 'items-start',
               )}
             >
-              <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-fog">
+              <div className="flex items-center gap-2 text-xs text-fog">
                 {m.role === 'user' ? (
                   <>
                     <span className="h-px w-6 bg-rule" />

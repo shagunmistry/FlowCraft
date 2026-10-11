@@ -30,7 +30,7 @@ export default function FreeTasteResultDialog({ open, onClose, code, prompt, rem
         >
           <header className="flex items-start justify-between gap-4 border-b border-rule px-4 py-3 sm:px-5">
             <div className="min-w-0">
-              <DialogTitle className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
+              <DialogTitle className="text-sm font-medium text-signal">
                 Your draft
               </DialogTitle>
               <p className="mt-1 truncate text-sm text-fog" title={prompt}>
@@ -41,7 +41,7 @@ export default function FreeTasteResultDialog({ open, onClose, code, prompt, rem
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="shrink-0 rounded-sm border border-rule px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-fog transition-colors hover:text-paper"
+              className="shrink-0 rounded-sm border border-rule px-2.5 py-1 text-xs text-fog transition-colors hover:text-paper"
             >
               Close ✕
             </button>
@@ -54,27 +54,27 @@ export default function FreeTasteResultDialog({ open, onClose, code, prompt, rem
           <footer className="flex flex-col gap-3 border-t border-rule px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <div>
               <p className="text-sm text-paper">Love it? Save it, edit it and export it.</p>
-              <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-fog">
+              <p className="mt-0.5 text-xs text-fog">
                 {remaining !== null
                   ? `${remaining} free ${remaining === 1 ? 'try' : 'tries'} left · `
                   : ''}
-                Free account · no credit card
+                Free account · No credit card
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-sm border border-rule px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-fog transition-colors hover:text-paper"
+                className="rounded-sm border border-rule px-4 py-2 text-sm text-fog transition-colors hover:text-paper"
               >
                 Try another
               </button>
               <Link
                 href="/sign-up?src=try-it"
                 onClick={() => trackTryIt('try_it_cta_clicked', { where: 'dialog' })}
-                className="rounded-sm bg-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:bg-paper"
+                className="rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper"
               >
-                Sign up free to save & export →
+                Sign up free to save & export
               </Link>
             </div>
           </footer>

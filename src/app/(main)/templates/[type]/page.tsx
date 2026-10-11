@@ -46,7 +46,7 @@ export default async function Page({
       />
 
       <div className="relative mx-auto max-w-[1280px] px-6 py-16 lg:px-8 lg:py-20">
-        <div className="mb-10 flex items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+        <div className="mb-10 flex items-center justify-between gap-4 border-b border-rule pb-4 text-sm text-fog">
           <nav className="flex items-center gap-2">
             <Link href="/templates" className="transition-colors hover:text-paper">
               Templates
@@ -55,7 +55,7 @@ export default async function Page({
             <span className="text-paper">{t.title}</span>
           </nav>
           <span className="hidden md:inline">
-            {rows.length} specimen{rows.length === 1 ? '' : 's'}
+            {rows.length} template{rows.length === 1 ? '' : 's'}
           </span>
         </div>
 
@@ -76,7 +76,7 @@ export default async function Page({
 
         {rows.length > 0 ? (
           <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
-            {rows.map((r, i) => (
+            {rows.map((r) => (
               <li key={r.id}>
                 <Link
                   href={`/templates/${t.slug}/${r.topic_slug}`}
@@ -90,16 +90,10 @@ export default async function Page({
                       decoding="async"
                       className="h-44 w-full object-contain p-4"
                     />
-                    <span className="absolute bottom-2 right-2 font-mono text-[9px] uppercase tracking-[0.22em] text-fog">
-                      Fig. {String(i + 1).padStart(2, '0')}
-                    </span>
                   </div>
                   <div className="flex flex-1 flex-col gap-3 p-6">
-                    <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                    <div className="flex items-center justify-between text-xs text-fog">
                       <span className="text-signal">{t.title}</span>
-                      <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:text-signal">
-                        →
-                      </span>
                     </div>
                     <div className="font-serif text-xl text-paper">
                       {r.topic_title}
@@ -114,8 +108,8 @@ export default async function Page({
           </ul>
         ) : (
           <div className="rounded-sm border border-dashed border-rule bg-graphite/40 p-16 text-center">
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-              ▸ No specimens yet
+            <div className="text-sm text-fog">
+              No templates yet
             </div>
             <p className="mt-4 text-paper/70">
               Templates for this type are in the drafting room.
@@ -123,7 +117,7 @@ export default async function Page({
           </div>
         )}
 
-        <div className="mt-16 flex items-center justify-between border-t border-rule pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-fog">
+        <div className="mt-16 flex items-center justify-between border-t border-rule pt-6 text-sm text-fog">
           <Link
             href="/templates"
             className="group inline-flex items-center gap-3 transition-colors hover:text-signal"

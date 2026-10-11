@@ -124,22 +124,6 @@ export default function PricingTemplate({
       />
 
       <div className="relative mx-auto max-w-[1280px] px-6 pb-24 pt-24 lg:px-8 lg:pt-32">
-        {/* Sheet header */}
-        <div className="mb-12 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 text-paper">
-              <span className="h-1.5 w-1.5 rounded-full bg-signal" />
-              Sheet · Pricing
-            </span>
-            <span>/</span>
-            <span>Rates & tiers</span>
-          </div>
-          <div className="hidden items-center gap-3 md:flex">
-            <span className="text-signal">◆</span>
-            <span>All plans · Exports in PNG / SVG / PDF</span>
-          </div>
-        </div>
-
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -173,7 +157,7 @@ export default function PricingTemplate({
           <button
             onClick={() => setYearly(false)}
             className={cn(
-              'rounded-sm px-5 py-2 font-mono text-[11px] uppercase tracking-[0.22em] transition-colors',
+              'rounded-sm px-5 py-2 text-sm font-medium transition-colors',
               !yearly
                 ? 'bg-signal text-ink'
                 : 'border border-rule text-paper/60 hover:text-paper',
@@ -184,7 +168,7 @@ export default function PricingTemplate({
           <button
             onClick={() => setYearly(true)}
             className={cn(
-              'relative rounded-sm px-5 py-2 font-mono text-[11px] uppercase tracking-[0.22em] transition-colors',
+              'relative rounded-sm px-5 py-2 text-sm font-medium transition-colors',
               yearly
                 ? 'bg-signal text-ink'
                 : 'border border-rule text-paper/60 hover:text-paper',
@@ -193,7 +177,7 @@ export default function PricingTemplate({
             Annual
             <span
               className={cn(
-                'absolute -top-2 -right-2 rounded-sm border px-1.5 py-0.5 font-mono text-[9px] tracking-[0.15em]',
+                'absolute -top-2 -right-2 rounded-sm border px-1.5 py-0.5 text-[10px]',
                 yearly
                   ? 'border-ink bg-ink text-signal'
                   : 'border-signal bg-ink text-signal',
@@ -244,7 +228,7 @@ export default function PricingTemplate({
               {tier.featured && <TierCornerTicks />}
 
               {tier.featured && (
-                <div className="relative flex items-center justify-end font-mono text-[10px] uppercase tracking-[0.22em]">
+                <div className="relative flex items-center justify-end text-xs font-medium">
                   <span className="inline-flex items-center gap-1.5 text-signal">
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal" />
                     Recommended
@@ -262,7 +246,7 @@ export default function PricingTemplate({
                   <span className="font-serif text-6xl text-paper">
                     {yearly ? tier.price.annually : tier.price.monthly}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                  <span className="text-xs text-fog">
                     /{yearly ? 'yr' : 'mo'}
                   </span>
                 </div>
@@ -284,12 +268,9 @@ export default function PricingTemplate({
                 {tier.id === 'tier-teams' ? (
                   <Link
                     href="/support"
-                    className="group/cta flex w-full items-center justify-between rounded-sm border border-rule bg-transparent px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-paper transition-colors hover:border-signal/50 hover:text-signal"
+                    className="group/cta flex w-full items-center justify-center rounded-sm border border-rule bg-transparent px-5 py-3 text-sm font-medium text-paper transition-colors hover:border-signal/50 hover:text-signal"
                   >
                     <span>{tier.cta}</span>
-                    <span className="transition-transform duration-300 group-hover/cta:translate-x-1">
-                      →
-                    </span>
                   </Link>
                 ) : shouldGoToCheckout ? (
                   <button
@@ -301,7 +282,7 @@ export default function PricingTemplate({
                     }
                     disabled={loadingTier !== null}
                     className={cn(
-                      'group/cta flex w-full items-center justify-between rounded-sm px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] transition-colors',
+                      'group/cta flex w-full items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-colors',
                       tier.featured
                         ? 'bg-signal text-ink hover:bg-paper'
                         : 'border border-rule text-paper hover:border-signal/50 hover:text-signal',
@@ -326,9 +307,6 @@ export default function PricingTemplate({
                     ) : (
                       <>
                         <span>Upgrade</span>
-                        <span className="transition-transform duration-300 group-hover/cta:translate-x-1">
-                          →
-                        </span>
                       </>
                     )}
                   </button>
@@ -336,16 +314,13 @@ export default function PricingTemplate({
                   <Link
                     href={tier.href}
                     className={cn(
-                      'group/cta flex w-full items-center justify-between rounded-sm px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] transition-colors',
+                      'group/cta flex w-full items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-colors',
                       tier.featured
                         ? 'bg-signal text-ink hover:bg-paper'
                         : 'border border-rule text-paper hover:border-signal/50 hover:text-signal',
                     )}
                   >
                     <span>{tier.cta}</span>
-                    <span className="transition-transform duration-300 group-hover/cta:translate-x-1">
-                      →
-                    </span>
                   </Link>
                 )}
               </div>
@@ -361,8 +336,8 @@ export default function PricingTemplate({
           transition={{ duration: 0.7 }}
           className="mx-auto mt-16 max-w-3xl rounded-sm border border-rule bg-graphite/60 p-8"
         >
-          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-            <span className="text-fog">Included in every tier</span>
+          <div className="text-sm font-medium text-fog">
+            Included in every tier
           </div>
           <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
             {[

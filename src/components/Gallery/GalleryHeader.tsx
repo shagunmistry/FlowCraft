@@ -1,64 +1,24 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
 
 interface GalleryHeaderProps {
   totalItems?: number
 }
 
 export default function GalleryHeader({ totalItems }: GalleryHeaderProps) {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    const update = () => {
-      const d = new Date()
-      setTime(
-        `${d.getUTCHours().toString().padStart(2, '0')}:${d
-          .getUTCMinutes()
-          .toString()
-          .padStart(2, '0')} UTC`,
-      )
-    }
-    update()
-    const interval = setInterval(update, 1000 * 30)
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <section className="relative">
-      {/* Sheet strip */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.05 }}
-        className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog"
-      >
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-            </span>
-            <span className="text-paper">Sheet · Gallery</span>
-          </span>
-          <span>/</span>
-          <span className="hidden sm:inline">Community · Public visuals</span>
-          {typeof totalItems === 'number' && (
-            <>
-              <span className="hidden sm:inline">/</span>
-              <span className="hidden sm:inline text-paper">
-                {totalItems.toString().padStart(3, '0')} drafts indexed
-              </span>
-            </>
-          )}
-        </div>
-        <div className="hidden items-center gap-3 md:flex">
-          <span>{time || '—:—'}</span>
-          <span className="text-signal">◆</span>
-          <span>Archive open</span>
-        </div>
-      </motion.div>
+      {typeof totalItems === 'number' && (
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.05 }}
+          className="mb-10 text-sm text-fog"
+        >
+          {totalItems} drafts indexed
+        </motion.p>
+      )}
 
       <motion.div
         initial="hidden"
@@ -107,10 +67,7 @@ export default function GalleryHeader({ totalItems }: GalleryHeaderProps) {
             A rolling archive of flowcharts, mind maps, illustrations, and
             infographics — drafted from sentences by people like you.
           </p>
-          <div className="mt-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-signal animate-tick" />
-            <span>Updated continuously</span>
-          </div>
+          <p className="mt-5 text-sm text-fog">Updated continuously</p>
         </motion.div>
       </motion.div>
     </section>

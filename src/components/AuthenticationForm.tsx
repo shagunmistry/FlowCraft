@@ -247,7 +247,6 @@ export default function AuthenticationForm({
     }
   }
 
-  const pageLabel = isLoginOrSignup === 'login' ? 'Sheet · 01 · Access' : 'Sheet · 02 · Enroll'
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-ink px-4 py-12 sm:px-6 lg:px-8">
@@ -260,13 +259,6 @@ export default function AuthenticationForm({
           backgroundSize: '28px 28px',
         }}
       />
-      {/* corner crosshairs */}
-      <div className="pointer-events-none absolute left-6 top-6 hidden font-mono text-[10px] uppercase tracking-[0.25em] text-fog md:block">
-        <span className="text-signal">◆</span> flowcraft / auth
-      </div>
-      <div className="pointer-events-none absolute right-6 top-6 hidden font-mono text-[10px] uppercase tracking-[0.25em] text-fog md:block">
-        N 40°42′ · W 74°00′ · v.2026
-      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -275,15 +267,6 @@ export default function AuthenticationForm({
         className="relative w-full max-w-[440px]"
       >
         <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite shadow-2xl shadow-black/40">
-          {/* top strip */}
-          <div className="flex items-center justify-between border-b border-rule px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-            <span>{pageLabel}</span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-signal animate-tick" />
-              <span className="text-signal">●</span>
-            </span>
-          </div>
-
           <div className="px-6 py-8 sm:px-10 sm:py-10">
             {/* Header Section */}
             <div className="flex flex-col items-center text-center">
@@ -323,7 +306,7 @@ export default function AuthenticationForm({
                 <div>
                   <label
                     htmlFor="email"
-                    className="block font-mono text-[10px] uppercase tracking-[0.22em] text-fog"
+                    className="block text-xs text-fog"
                   >
                     Email
                   </label>
@@ -343,7 +326,7 @@ export default function AuthenticationForm({
                 <div>
                   <label
                     htmlFor="password"
-                    className="block font-mono text-[10px] uppercase tracking-[0.22em] text-fog"
+                    className="block text-xs text-fog"
                   >
                     Password
                   </label>
@@ -368,7 +351,7 @@ export default function AuthenticationForm({
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="group relative flex w-full items-center justify-center overflow-hidden rounded-sm bg-signal px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:bg-paper disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="group relative flex w-full items-center justify-center overflow-hidden rounded-sm bg-signal px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                 <AnimatePresence mode="wait">
                   {isLoading && loadingType === 'email' ? (
@@ -418,9 +401,6 @@ export default function AuthenticationForm({
                           ? 'Sign in'
                           : 'Create account'}
                       </span>
-                      <span className="transition-transform duration-200 group-hover:translate-x-1">
-                        →
-                      </span>
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -439,7 +419,7 @@ export default function AuthenticationForm({
           </div>
 
           {/* Toggle Login/Signup */}
-          <p className="mt-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
+          <p className="mt-6 text-center text-sm text-fog">
             {isLoginOrSignup === 'login' ? (
               <>
                 Not a member?{' '}
@@ -449,7 +429,7 @@ export default function AuthenticationForm({
                   }
                   className="text-signal transition-colors hover:text-paper"
                 >
-                  Sign up →
+                  Sign up
                 </Link>
               </>
             ) : (
@@ -459,7 +439,7 @@ export default function AuthenticationForm({
                   href={templateId ? `/login?template=${templateId}` : '/login'}
                   className="text-signal transition-colors hover:text-paper"
                 >
-                  Sign in →
+                  Sign in
                 </Link>
               </>
             )}
@@ -474,7 +454,7 @@ export default function AuthenticationForm({
               <div className="w-full border-t border-rule" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-graphite px-4 font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
+              <span className="bg-graphite px-4 text-xs text-fog">
                 Or continue with
               </span>
             </div>
@@ -486,7 +466,7 @@ export default function AuthenticationForm({
               type="button"
               onClick={_loginWithGoogle}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-3 rounded-sm border border-rule bg-ink/60 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex w-full items-center justify-center gap-3 rounded-sm border border-rule bg-ink/60 px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <AnimatePresence mode="wait">
                 {isLoading && loadingType === 'google' ? (
@@ -537,7 +517,7 @@ export default function AuthenticationForm({
               type="button"
               onClick={_loginWithGithub}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-3 rounded-sm border border-rule bg-ink/60 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex w-full items-center justify-center gap-3 rounded-sm border border-rule bg-ink/60 px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <AnimatePresence mode="wait">
                 {isLoading && loadingType === 'github' ? (

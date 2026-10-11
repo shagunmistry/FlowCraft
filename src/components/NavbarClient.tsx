@@ -152,9 +152,6 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                 <span className="font-serif text-[22px] text-paper">
                   Flow<span className="italic text-signal">craft</span>
                 </span>
-                <span className="mt-0.5 hidden font-mono text-[9px] uppercase tracking-[0.3em] text-fog md:block">
-                  drafting / visuals / flow
-                </span>
               </span>
             </Link>
 
@@ -206,10 +203,6 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                           className="absolute left-0 top-full mt-3 w-[280px] origin-top"
                         >
                           <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite shadow-2xl shadow-black/40">
-                            <div className="flex items-center justify-between border-b border-rule px-4 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                              <span>Specimen · Studios</span>
-                              <span className="text-signal">●</span>
-                            </div>
                             <div className="p-1.5">
                               {useCasesNavigation.map((item) => (
                                 <Link
@@ -225,9 +218,6 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                                   className="group flex items-center justify-between rounded-sm px-3 py-2.5 text-paper/80 transition-colors hover:bg-ink hover:text-paper"
                                 >
                                   <span className="text-sm">{item.name}</span>
-                                  <span className="font-mono text-xs text-fog transition-transform duration-200 group-hover:translate-x-1 group-hover:text-signal">
-                                    →
-                                  </span>
                                 </Link>
                               ))}
                             </div>
@@ -249,7 +239,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                 {!isSubscribed && (
                   <Link
                     href="/pricing?sourcePage=dashboard"
-                    className="group relative hidden overflow-hidden rounded-sm border border-signal/40 bg-signal/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal/20 md:inline-flex"
+                    className="group relative hidden overflow-hidden rounded-sm border border-signal/40 bg-signal/10 px-4 py-2 text-sm text-signal transition-colors hover:bg-signal/20 md:inline-flex"
                   >
                     <span className="relative z-10">★ Upgrade</span>
                     <span className="absolute inset-y-0 -left-10 w-10 skew-x-[-20deg] bg-signal/30 transition-transform duration-700 group-hover:translate-x-[220%]" />
@@ -258,13 +248,13 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
 
                 <Link
                   href="/dashboard/diagrams/new"
-                  className="group hidden items-center gap-2 rounded-sm bg-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:bg-paper md:inline-flex"
+                  className="group hidden items-center gap-2 rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper md:inline-flex"
                 >
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inset-0 animate-ping rounded-full bg-ink opacity-60" />
                     <span className="relative h-1.5 w-1.5 rounded-full bg-ink" />
                   </span>
-                  New Draft
+                  New draft
                 </Link>
 
                 <div className="relative hidden md:block" data-menu="profile">
@@ -276,7 +266,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                     className="flex items-center gap-x-2.5 rounded-sm border border-rule bg-graphite px-2 py-1.5 text-paper transition-colors hover:border-signal/50"
                     aria-label="Open user menu"
                   >
-                    <div className="flex h-6 w-6 items-center justify-center rounded-sm bg-signal/15 font-mono text-[11px] font-medium text-signal">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-sm bg-signal/15 text-xs font-medium text-signal">
                       {(userName || 'U').charAt(0).toUpperCase()}
                     </div>
                     <span className="text-sm">{userName}</span>
@@ -306,10 +296,10 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                           <p className="font-serif text-base text-paper">
                             {userName}
                           </p>
-                          <p className="mt-0.5 truncate font-mono text-[10px] uppercase tracking-[0.15em] text-fog">
+                          <p className="mt-0.5 truncate text-xs text-fog">
                             {userEmail}
                           </p>
-                          <div className="mt-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em]">
+                          <div className="mt-2 flex items-center gap-2 text-xs">
                             <span
                               className={cn(
                                 'inline-flex h-1.5 w-1.5 rounded-full',
@@ -349,18 +339,15 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
               <div className="hidden items-center gap-2 lg:flex">
                 <Link
                   href="/login"
-                  className="px-3 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-paper/70 transition-colors hover:text-paper"
+                  className="px-3 py-2 text-sm text-paper/70 transition-colors hover:text-paper"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/login"
-                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm bg-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:bg-paper"
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper"
                 >
                   <span className="relative z-10">Start drafting</span>
-                  <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
                 </Link>
               </div>
             )}
@@ -421,10 +408,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                 }}
               />
 
-              <div className="relative flex items-center justify-between border-b border-rule px-6 py-5">
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
-                  Index · Menu
-                </span>
+              <div className="relative flex items-center justify-end border-b border-rule px-6 py-5">
                 <button
                   type="button"
                   className="-m-2 p-2 text-paper"
@@ -464,7 +448,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                         <p className="font-serif text-lg text-paper">
                           {userName}
                         </p>
-                        <p className="mt-1 truncate font-mono text-[10px] uppercase tracking-[0.15em] text-fog">
+                        <p className="mt-1 truncate text-xs text-fog">
                           {userEmail}
                         </p>
                       </div>
@@ -484,10 +468,9 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                     <Link
                       href="/dashboard/diagrams/new"
                       onClick={closeMenus}
-                      className="mt-6 flex items-center justify-between rounded-sm bg-signal px-4 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink"
+                      className="mt-6 flex items-center justify-between rounded-sm bg-signal px-4 py-4 text-sm font-medium text-ink"
                     >
-                      <span>New Draft</span>
-                      <span>→</span>
+                      <span>New draft</span>
                     </Link>
                   </>
                 ) : (
@@ -523,29 +506,24 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                       <Link
                         href="/login"
                         onClick={closeMenus}
-                        className="flex items-center justify-center rounded-sm border border-rule px-4 py-4 font-mono text-[11px] uppercase tracking-[0.22em] text-paper hover:bg-graphite"
+                        className="flex items-center justify-center rounded-sm border border-rule px-4 py-4 text-sm text-paper hover:bg-graphite"
                       >
                         Sign in
                       </Link>
                       <Link
                         href="/login"
                         onClick={closeMenus}
-                        className="flex items-center justify-between rounded-sm bg-signal px-4 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink"
+                        className="flex items-center justify-between rounded-sm bg-signal px-4 py-4 text-sm font-medium text-ink"
                       >
                         <span>Start drafting</span>
-                        <span>→</span>
                       </Link>
                     </div>
                   </>
                 )}
               </div>
 
-              <div className="relative flex items-center justify-between gap-3 border-t border-rule px-6 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                <span>
-                  <span className="text-signal">◆</span> v.2026.04
-                </span>
+              <div className="relative flex items-center justify-between gap-3 border-t border-rule px-6 py-4 text-xs text-fog">
                 <ThemeToggle />
-                <span>N 40°42′ · W 74°00′</span>
               </div>
             </motion.div>
           </motion.div>
@@ -585,7 +563,7 @@ function MobileGroup({
   return (
     <div className="mb-8">
       <div className="mb-4 flex items-center gap-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
+        <span className="text-xs font-medium text-fog">
           {label}
         </span>
         <span className="h-px flex-1 bg-rule" />
@@ -629,9 +607,6 @@ function MobileLink({
         )}
       >
         <span className="font-serif text-2xl">{children}</span>
-        <span className="font-mono text-xs text-fog transition-transform duration-200 group-hover:translate-x-1 group-hover:text-signal">
-          →
-        </span>
       </Link>
     </motion.div>
   )

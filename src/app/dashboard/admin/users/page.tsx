@@ -40,7 +40,7 @@ export default async function AdminUsersPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-4">
         <div className="mb-3 text-sm font-medium">Top users by diagrams created</div>
         <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase text-gray-500">
+          <thead className="text-left text-xs text-gray-500">
             <tr>
               <th className="py-1">Email</th>
               <th className="py-1">Diagrams</th>

@@ -169,7 +169,7 @@ export default function PreviewPane({
       />
 
       <div className="relative z-10 flex items-center justify-between border-b border-rule/60 bg-ink/80 px-5 py-3 backdrop-blur">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+        <div className="flex items-center gap-3 text-xs text-fog">
           <span className="inline-flex h-1.5 w-1.5 items-center">
             <span
               className={clsx(
@@ -180,10 +180,10 @@ export default function PreviewPane({
           </span>
           <span className="text-paper/80">Preview</span>
           {renderError && (
-            <span className="text-red-300/90">· invalid syntax</span>
+            <span className="text-red-300/90">· Invalid syntax</span>
           )}
         </div>
-        <div className="flex items-center gap-1 font-mono text-[10px] text-fog">
+        <div className="flex items-center gap-1 text-xs text-fog">
           <button
             type="button"
             onClick={zoomOut}
@@ -206,7 +206,7 @@ export default function PreviewPane({
           <button
             type="button"
             onClick={fitToPane}
-            className="ml-1 rounded-sm border border-rule/60 px-2 py-1 uppercase tracking-[0.18em] hover:bg-graphite"
+            className="ml-1 rounded-sm border border-rule/60 px-2 py-1 hover:bg-graphite"
           >
             Fit
           </button>
@@ -227,7 +227,7 @@ export default function PreviewPane({
               <p className="font-serif text-2xl italic text-paper/70">
                 Awaiting the first draft.
               </p>
-              <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+              <p className="mt-2 text-sm text-fog">
                 Your diagram will appear here
               </p>
             </div>

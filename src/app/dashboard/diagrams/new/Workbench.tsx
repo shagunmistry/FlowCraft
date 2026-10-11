@@ -229,11 +229,11 @@ export default function Workbench({
       title={`Expand ${label}`}
       className="hidden h-full w-8 shrink-0 flex-col items-center justify-between border-r border-rule/60 bg-graphite/60 py-4 transition hover:bg-graphite md:flex"
     >
-      <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+      <span className="text-xs text-fog">
         ⟩
       </span>
       <span
-        className="font-mono text-[10px] uppercase tracking-[0.28em] text-fog"
+        className="text-xs text-fog"
         style={{
           writingMode: 'vertical-rl',
           transform: 'rotate(180deg)',
@@ -241,7 +241,7 @@ export default function Workbench({
       >
         {label}
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+      <span className="text-xs text-fog">
         ⟩
       </span>
     </button>
@@ -259,7 +259,7 @@ export default function Workbench({
             {title || 'Untitled draft'}
           </h1>
           {isStreaming && (
-            <span className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-signal sm:inline-flex">
+            <span className="hidden items-center gap-2 text-xs text-signal sm:inline-flex">
               <span className="h-1.5 w-1.5 rounded-full bg-signal animate-tick" />
               streaming
             </span>
@@ -274,7 +274,7 @@ export default function Workbench({
                 key={p}
                 onClick={() => setMobilePane(p)}
                 className={clsx(
-                  'px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em]',
+                  'px-3 py-1.5 text-xs capitalize',
                   mobilePane === p
                     ? 'bg-paper text-ink'
                     : 'text-fog hover:text-paper',
@@ -287,7 +287,7 @@ export default function Workbench({
 
           {/* Paid-only privacy toggle */}
           {isPaid && diagramId && (
-            <label className="hidden cursor-pointer items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fog hover:text-paper sm:flex">
+            <label className="hidden cursor-pointer items-center gap-2 text-xs text-fog hover:text-paper sm:flex">
               <input
                 type="checkbox"
                 checked={keepPrivate}
@@ -300,7 +300,7 @@ export default function Workbench({
 
           <button
             onClick={onNewDraft}
-            className="rounded-sm border border-rule px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-fog hover:border-signal/60 hover:text-paper"
+            className="rounded-sm border border-rule px-3 py-1.5 text-xs text-fog hover:border-signal/60 hover:text-paper"
           >
             New draft
           </button>
@@ -309,7 +309,7 @@ export default function Workbench({
             onClick={handleFinalize}
             disabled={!diagramId || finalizing || !code}
             className={clsx(
-              'rounded-sm px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] transition',
+              'rounded-sm px-3 py-1.5 text-xs font-medium transition',
               'bg-signal text-ink hover:bg-paper',
               'disabled:cursor-not-allowed disabled:bg-rule disabled:text-fog',
             )}
@@ -343,17 +343,15 @@ export default function Workbench({
               }}
             >
               <div className="flex items-center justify-between border-b border-rule/60 bg-ink/70 px-5 py-3">
-                <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+                <div className="flex items-center gap-3 text-xs text-fog">
                   <span className="text-paper/80">Chat</span>
-                  <span className="h-px w-8 bg-signal/50" />
-                  <span className="text-fog">thread</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setCollapsed((c) => ({ ...c, chat: true }))}
                   aria-label="Collapse chat pane"
                   title="Collapse"
-                  className="hidden rounded-sm border border-rule/60 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-fog hover:border-signal/60 hover:text-paper md:inline-block"
+                  className="hidden rounded-sm border border-rule/60 px-2 py-1 text-xs text-fog hover:border-signal/60 hover:text-paper md:inline-block"
                 >
                   ⟨
                 </button>
@@ -375,7 +373,7 @@ export default function Workbench({
                       <button
                         type="button"
                         onClick={onCancel}
-                        className="rounded-sm border border-rule px-2 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-fog hover:border-red-400/60 hover:text-red-300"
+                        className="rounded-sm border border-rule px-2 py-1 text-xs text-fog hover:border-red-400/60 hover:text-red-300"
                       >
                         Stop
                       </button>

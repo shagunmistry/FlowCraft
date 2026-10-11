@@ -137,7 +137,7 @@ const DiagramSelectionGrid = ({
             key={key}
             onClick={() => setSelectedCategory(key)}
             className={clsx(
-              'relative px-4 py-3 font-mono text-[11px] uppercase tracking-[0.22em] transition-colors',
+              'relative px-4 py-3 text-sm transition-colors',
               selectedCategory === key
                 ? 'text-signal'
                 : 'text-paper/60 hover:text-paper',
@@ -153,7 +153,7 @@ const DiagramSelectionGrid = ({
 
       {/* Grid */}
       <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {visible.map(({ type, description, badge }, i) => {
+        {visible.map(({ type, description, badge }) => {
           const isSelected = selectedOption === type
           const isHighlighted = highlightedType === type
           return (
@@ -170,24 +170,11 @@ const DiagramSelectionGrid = ({
                     : 'bg-graphite text-paper hover:bg-ink',
               )}
             >
-              <div className="flex items-center justify-between">
-                <span
-                  className={clsx(
-                    'font-mono text-[10px] uppercase tracking-[0.22em]',
-                    isSelected
-                      ? 'text-ink/70'
-                      : isHighlighted
-                        ? 'text-signal'
-                        : 'text-signal/70',
-                  )}
-                >
-                  {String(type).slice(0, 4).toUpperCase()}.
-                  {(i + 1).toString().padStart(2, '0')}
-                </span>
-                {badge && (
+              {badge && (
+                <div className="flex items-center justify-end">
                   <span
                     className={clsx(
-                      'rounded-sm border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em]',
+                      'rounded-sm border px-1.5 py-0.5 text-xs',
                       isSelected
                         ? 'border-ink bg-ink text-signal'
                         : 'border-signal bg-signal/10 text-signal',
@@ -195,8 +182,8 @@ const DiagramSelectionGrid = ({
                   >
                     {badge}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
               <div>
                 <h4
                   className={clsx(
@@ -220,7 +207,7 @@ const DiagramSelectionGrid = ({
                 </p>
               </div>
               {isHighlighted && !isSelected && (
-                <span className="absolute right-3 top-3 inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.2em] text-signal">
+                <span className="absolute right-3 top-3 inline-flex items-center gap-1 text-xs text-signal">
                   <span className="h-1 w-1 rounded-full bg-signal" />
                   suggested
                 </span>
@@ -233,10 +220,7 @@ const DiagramSelectionGrid = ({
       {/* Vision description (when not hidden) */}
       {!hideTextarea && (
         <div className="space-y-3" id="vision-description">
-          <label className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-signal">
-            <span className="h-px w-8 bg-signal/50" />
-            <span className="text-fog">Describe the vision</span>
-          </label>
+          <label className="block text-sm text-fog">Describe the vision</label>
           <div className="overflow-hidden rounded-sm border border-rule bg-graphite">
             <textarea
               className="min-h-32 w-full resize-none border-0 bg-transparent p-4 text-[15px] leading-relaxed text-paper placeholder:text-fog focus:outline-none focus:ring-0"
@@ -250,11 +234,7 @@ const DiagramSelectionGrid = ({
 
       {/* Advanced options */}
       <div className="space-y-4">
-        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-signal">
-          <span>ADV</span>
-          <span className="h-px w-8 bg-signal/50" />
-          <span className="text-fog">Advanced · optional</span>
-        </div>
+        <div className="text-sm text-fog">Advanced (optional)</div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <DraftingSelect
@@ -294,13 +274,13 @@ function DraftingSelect({
 }) {
   return (
     <div>
-      <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+      <label className="mb-2 block text-sm text-fog">
         {label}
       </label>
       <Menu as="div" className="relative">
         <Menu.Button className="flex w-full items-center justify-between rounded-sm border border-rule bg-graphite px-4 py-3 text-left text-sm text-paper transition-colors hover:border-signal/40">
           <span>{value}</span>
-          <span className="font-mono text-xs text-fog">▾</span>
+          <span className="text-xs text-fog">▾</span>
         </Menu.Button>
 
         <Menu.Items className="absolute z-20 mt-1 w-full overflow-hidden rounded-sm border border-rule bg-graphite shadow-2xl shadow-black/40">

@@ -73,18 +73,17 @@ export default function CodePane({
     >
       {/* Header rail */}
       <div className="flex items-center justify-between border-b border-rule/60 bg-ink/70 px-5 py-3">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+        <div className="flex items-center gap-3 text-xs text-fog">
           <span className="text-paper/80">Mermaid</span>
-          <span className="h-px w-8 bg-signal/50" />
           <span className={streaming ? 'text-signal' : 'text-fog'}>
-            {streaming ? 'receiving' : readOnly ? 'read only' : 'editable'}
+            {streaming ? 'Receiving' : readOnly ? 'Read only' : 'Editable'}
           </span>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[10px]">
+        <div className="flex items-center gap-2 text-xs">
           <button
             type="button"
             onClick={handleCopy}
-            className="rounded-sm border border-rule/60 px-2 py-1 uppercase tracking-[0.18em] text-fog hover:border-signal/60 hover:text-paper"
+            className="rounded-sm border border-rule/60 px-2 py-1 text-fog hover:border-signal/60 hover:text-paper"
           >
             Copy
           </button>
@@ -94,7 +93,7 @@ export default function CodePane({
               onClick={onCollapse}
               aria-label="Collapse code pane"
               title="Collapse"
-              className="rounded-sm border border-rule/60 px-2 py-1 uppercase tracking-[0.18em] text-fog hover:border-signal/60 hover:text-paper"
+              className="rounded-sm border border-rule/60 px-2 py-1 text-fog hover:border-signal/60 hover:text-paper"
             >
               ⟨
             </button>
@@ -133,7 +132,7 @@ export default function CodePane({
         />
 
         {streaming && (
-          <div className="pointer-events-none absolute bottom-3 right-4 font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+          <div className="pointer-events-none absolute bottom-3 right-4 text-xs text-signal">
             <span className="inline-block h-2 w-2 rounded-full bg-signal animate-tick align-middle" />
             <span className="ml-2 align-middle">writing</span>
           </div>

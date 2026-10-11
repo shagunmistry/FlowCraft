@@ -25,7 +25,7 @@ function SectionDot({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3">
       <span className="h-1.5 w-1.5 rounded-full bg-signal" />
-      <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+      <span className="text-sm text-fog">
         {label}
       </span>
     </div>
@@ -234,15 +234,7 @@ export default function NewDiagramPage() {
 
           {/* Step 2: prompt */}
           <div className="space-y-5">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
-                02
-              </span>
-              <span className="h-px w-8 bg-signal/50" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                Describe your diagram
-              </span>
-            </div>
+            <div className="text-sm text-fog">Describe your diagram</div>
 
             <ChatComposer
               value={prompt}
@@ -265,9 +257,9 @@ export default function NewDiagramPage() {
               <button
                 type="button"
                 onClick={() => setShowAdvanced((v) => !v)}
-                className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog hover:text-paper"
+                className="text-sm text-fog hover:text-paper"
               >
-                {showAdvanced ? '— Hide' : '+ Advanced options'}
+                {showAdvanced ? 'Hide advanced options' : '+ Advanced options'}
               </button>
               <AnimatePresence>
                 {showAdvanced && (
@@ -278,7 +270,7 @@ export default function NewDiagramPage() {
                     className="mt-4 grid gap-4 sm:grid-cols-3"
                   >
                     <label className="flex flex-col gap-2">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                      <span className="text-sm text-fog">
                         Palette
                       </span>
                       <select
@@ -294,7 +286,7 @@ export default function NewDiagramPage() {
                       </select>
                     </label>
                     <label className="flex flex-col gap-2">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                      <span className="text-sm text-fog">
                         Complexity
                       </span>
                       <select
@@ -310,7 +302,7 @@ export default function NewDiagramPage() {
                       </select>
                     </label>
                     <label className="flex flex-col gap-2">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                      <span className="text-sm text-fog">
                         Visibility
                       </span>
                       <div className="flex rounded-sm border border-rule bg-graphite p-1">
@@ -325,7 +317,7 @@ export default function NewDiagramPage() {
                             type="button"
                             onClick={() => setIsPublic(o.v)}
                             className={clsx(
-                              'flex-1 rounded-[2px] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] transition',
+                              'flex-1 rounded-[2px] px-3 py-1.5 text-xs transition',
                               isPublic === o.v
                                 ? 'bg-paper text-ink'
                                 : 'text-fog hover:text-paper',
@@ -357,7 +349,7 @@ export default function NewDiagramPage() {
                 }
               />
               <div className="overflow-hidden rounded-md border border-rule/60 bg-graphite/60">
-                <div className="flex items-center justify-between border-b border-rule/50 bg-ink/60 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                <div className="flex items-center justify-between border-b border-rule/50 bg-ink/60 px-4 py-2 text-xs text-fog">
                   <span className="text-paper/80">Mermaid · live</span>
                   <span className="inline-flex items-center gap-2 text-signal">
                     <span className="h-1.5 w-1.5 rounded-full bg-signal animate-tick" />

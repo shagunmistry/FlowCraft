@@ -16,7 +16,6 @@ export default function BlogsHomePage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([])
   const [featuredPost, setFeaturedPost] = useState<BlogPost | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [time, setTime] = useState('')
 
   useEffect(() => {
     const init = async () => {
@@ -45,21 +44,6 @@ export default function BlogsHomePage() {
     init()
   }, [])
 
-  useEffect(() => {
-    const update = () => {
-      const d = new Date()
-      setTime(
-        `${d.getUTCHours().toString().padStart(2, '0')}:${d
-          .getUTCMinutes()
-          .toString()
-          .padStart(2, '0')} UTC`,
-      )
-    }
-    update()
-    const i = setInterval(update, 1000 * 30)
-    return () => clearInterval(i)
-  }, [])
-
   return (
     <div className="min-h-screen overflow-x-hidden bg-ink text-paper selection:bg-signal selection:text-ink">
       <main className="relative">
@@ -79,24 +63,6 @@ export default function BlogsHomePage() {
           />
 
           <div className="relative mx-auto max-w-[1280px] px-6 lg:px-8">
-            {/* sheet header */}
-            <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-                  </span>
-                  <span className="text-paper">Field Notes</span>
-                </span>
-              </div>
-              <div className="hidden items-center gap-3 md:flex">
-                <span>{time || '—:—'}</span>
-                <span className="text-signal">◆</span>
-                <span>Editor in</span>
-              </div>
-            </div>
-
             <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
@@ -126,13 +92,7 @@ export default function BlogsHomePage() {
               >
                 <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite">
                   <CornerTicks />
-                  <div className="relative border-b border-rule px-5 py-3 font-mono text-[9px] uppercase tracking-[0.25em] text-fog">
-                    <div className="flex items-center justify-between">
-                      <span>Title block</span>
-                      <span className="text-signal">◆</span>
-                    </div>
-                  </div>
-                  <dl className="divide-y divide-rule font-mono text-[10px] uppercase tracking-[0.22em]">
+                  <dl className="divide-y divide-rule text-sm">
                     <Meta k="Volume" v="V · 2026" />
                     <Meta k="Contributors" v="04" />
                     <Meta k="Frequency" v="Irregular" />
@@ -145,17 +105,13 @@ export default function BlogsHomePage() {
                     <div className="border-t border-rule p-4">
                       <Link
                         href="/blogs/create"
-                        className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-signal transition-opacity hover:opacity-80"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-signal transition-opacity hover:opacity-80"
                       >
                         <span className="h-px w-6 bg-current" />
                         New entry
                       </Link>
                     </div>
                   )}
-                </div>
-                <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                  <span>Ref. 00</span>
-                  <span>Masthead</span>
                 </div>
               </motion.aside>
             </div>
@@ -182,7 +138,7 @@ export default function BlogsHomePage() {
                     <div className="flex items-baseline gap-4">
                       <time
                         dateTime={featuredPost.published_at}
-                        className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog"
+                        className="text-xs text-fog"
                       >
                         {formatDate(featuredPost.published_at)}
                       </time>
@@ -201,7 +157,7 @@ export default function BlogsHomePage() {
                       {featuredPost.description}
                     </p>
 
-                    <div className="mt-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-fog">
+                    <div className="mt-8 flex items-center gap-3 text-sm text-fog">
                       <span>By</span>
                       <span className="text-paper">
                         {featuredPost.author || 'Flowcraft'}
@@ -210,12 +166,9 @@ export default function BlogsHomePage() {
 
                     <Link
                       href={`/blogs/${featuredPost.id}`}
-                      className="group mt-10 inline-flex items-center gap-3 rounded-sm bg-signal px-6 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+                      className="group mt-10 inline-flex items-center gap-3 rounded-sm bg-signal px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-paper"
                     >
                       <span>Read dispatch</span>
-                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                        →
-                      </span>
                     </Link>
                   </div>
 
@@ -253,9 +206,6 @@ export default function BlogsHomePage() {
                         ) : (
                           <SchematicPlaceholder />
                         )}
-                      </div>
-                      <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                        <span>Featured</span>
                       </div>
                     </Link>
                   </div>
@@ -297,13 +247,6 @@ export default function BlogsHomePage() {
                         }}
                         className="group relative flex flex-col gap-5 bg-ink p-7 transition-colors duration-300 hover:bg-graphite"
                       >
-                        <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                          <span>Entry {String(i + 2).padStart(2, '0')}</span>
-                          <span className="transition-transform duration-500 group-hover:rotate-90">
-                            ┼
-                          </span>
-                        </div>
-
                         <Link href={`/blogs/${post.id}`} className="block">
                           <div className="relative aspect-[4/3] overflow-hidden rounded-sm border border-rule bg-graphite">
                             <div
@@ -325,15 +268,12 @@ export default function BlogsHomePage() {
                             ) : (
                               <SchematicPlaceholder mini />
                             )}
-                            <span className="absolute bottom-2 right-2 z-20 font-mono text-[9px] uppercase tracking-[0.22em] text-fog">
-                              Fig. {String(i + 2).padStart(2, '0')}
-                            </span>
                           </div>
                         </Link>
 
                         <time
                           dateTime={post.published_at}
-                          className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog"
+                          className="text-xs text-fog"
                         >
                           {formatDate(post.published_at)}
                         </time>
@@ -348,7 +288,7 @@ export default function BlogsHomePage() {
 
                         <Link
                           href={`/blogs/${post.id}`}
-                          className="mt-auto inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+                          className="mt-auto inline-flex items-center gap-2 text-sm text-fog transition-colors hover:text-signal"
                         >
                           <span className="h-px w-6 bg-current" />
                           Read
@@ -369,7 +309,7 @@ export default function BlogsHomePage() {
             className="pointer-events-none absolute inset-0 bg-dot-grid bg-dot-24 opacity-40"
           />
           <div className="relative mx-auto max-w-[1280px] px-6 lg:px-8">
-            <div className="flex flex-wrap items-end justify-end gap-6 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+            <div className="flex flex-wrap items-end justify-end gap-6 text-sm text-fog">
               <Link
                 href="/"
                 className="group inline-flex items-center gap-3 text-paper transition-colors hover:text-signal"
@@ -420,7 +360,6 @@ function formatDate(iso: string) {
         day: '2-digit',
         year: 'numeric',
       })
-      .toUpperCase()
   } catch {
     return '—'
   }
@@ -509,10 +448,9 @@ function EmptyState({ isAdmin }: { isAdmin: boolean }) {
         {isAdmin && (
           <Link
             href="/blogs/create"
-            className="mt-10 inline-flex items-center gap-3 rounded-sm bg-signal px-6 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+            className="mt-10 inline-flex items-center gap-3 rounded-sm bg-signal px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-paper"
           >
             <span>File first entry</span>
-            <span>→</span>
           </Link>
         )}
       </div>

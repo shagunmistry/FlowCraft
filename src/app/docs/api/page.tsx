@@ -42,7 +42,7 @@ export default function ApiDocumentation() {
           {/* Sidebar Navigation */}
           <aside className="lg:col-span-1">
             <nav className="sticky top-8 space-y-1">
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              <h3 className="mb-3 text-xs font-semibold text-zinc-500">
                 On This Page
               </h3>
               {[

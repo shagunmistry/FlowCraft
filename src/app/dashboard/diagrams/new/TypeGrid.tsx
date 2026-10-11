@@ -62,15 +62,7 @@ export default function TypeGrid({
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center gap-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
-          01
-        </span>
-        <span className="h-px w-8 bg-signal/50" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-          Choose a type
-        </span>
-      </div>
+      <div className="text-sm text-fog">Choose a type</div>
 
       <div className="flex flex-wrap items-center gap-1 border-b border-rule/60">
         {CATEGORIES.map((c) => (
@@ -78,7 +70,7 @@ export default function TypeGrid({
             key={c.key}
             onClick={() => setCat(c.key)}
             className={clsx(
-              '-mb-px px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] transition',
+              '-mb-px px-3 py-2 text-xs transition',
               cat === c.key
                 ? 'border-b-2 border-signal text-paper'
                 : 'border-b-2 border-transparent text-fog hover:text-paper',
@@ -119,7 +111,7 @@ export default function TypeGrid({
                 {entry.description}
               </span>
               {selected && (
-                <span className="pointer-events-none absolute right-2 top-2 font-mono text-[9px] uppercase tracking-[0.22em] text-signal">
+                <span className="pointer-events-none absolute right-2 top-2 text-xs text-signal">
                   ✓
                 </span>
               )}

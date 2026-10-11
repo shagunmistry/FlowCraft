@@ -28,26 +28,6 @@ export function ReleaseNotesLayout({
           />
 
           <div className="relative mx-auto max-w-[1280px] px-6 lg:px-8">
-            <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-                  </span>
-                  <span className="text-paper">Sheet 12</span>
-                </span>
-                <span>/</span>
-                <span>Changelog · Field log</span>
-                <span>/</span>
-                <span className="hidden sm:inline">Ongoing</span>
-              </div>
-              <div className="hidden items-center gap-3 md:flex">
-                <span className="text-signal">◆</span>
-                <span>Log open</span>
-              </div>
-            </div>
-
             <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
               <div className="lg:col-span-8">
                 <h1 className="font-serif text-[52px] leading-[0.95] tracking-[-0.01em] text-paper md:text-[96px] lg:text-[108px]">
@@ -68,22 +48,12 @@ export function ReleaseNotesLayout({
               <aside className="lg:col-span-4">
                 <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite">
                   <CornerTicks />
-                  <div className="relative border-b border-rule px-5 py-3 font-mono text-[9px] uppercase tracking-[0.25em] text-fog">
-                    <div className="flex items-center justify-between">
-                      <span>Index</span>
-                      <span className="text-signal">◆</span>
-                    </div>
-                  </div>
-                  <dl className="divide-y divide-rule font-mono text-[10px] uppercase tracking-[0.22em]">
+                  <dl className="divide-y divide-rule text-sm">
                     <Meta k="Format" v="Chronological" />
                     <Meta k="Latest" v="V · 5.0.0" />
                     <Meta k="Cadence" v="Irregular" />
                     <Meta k="Maintainer" v="Flowcraft" />
                   </dl>
-                </div>
-                <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                  <span>Ref. 00</span>
-                  <span>Log index</span>
                 </div>
               </aside>
             </div>
@@ -152,16 +122,6 @@ export function ReleaseNotesLayout({
               height: 1px;
               background: #C4FF3D;
             }
-            .prose h2::before {
-              content: '◆ Release';
-              font-family: 'JetBrains Mono', monospace;
-              font-size: 10px;
-              letter-spacing: 0.24em;
-              text-transform: uppercase;
-              color: #C4FF3D;
-              display: block;
-              margin-bottom: 18px;
-            }
             .prose h3::before {
               content: '';
               display: inline-block;
@@ -181,7 +141,7 @@ export function ReleaseNotesLayout({
             className="pointer-events-none absolute inset-0 bg-dot-grid bg-dot-24 opacity-40"
           />
           <div className="relative mx-auto max-w-[1280px] px-6 lg:px-8">
-            <div className="flex flex-wrap items-end justify-end gap-6 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+            <div className="flex flex-wrap items-end justify-end gap-6 text-sm text-fog">
               <div className="flex flex-wrap gap-3">
                 <Link
                   href="/"
@@ -197,9 +157,6 @@ export function ReleaseNotesLayout({
                   className="group inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 text-ink transition-colors hover:bg-paper"
                 >
                   <span>Send feedback</span>
-                  <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                    →
-                  </span>
                 </Link>
               </div>
             </div>

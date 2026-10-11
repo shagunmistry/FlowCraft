@@ -127,27 +127,10 @@ export default async function Dashboard() {
       <div className="pointer-events-none fixed inset-x-0 bottom-0 top-[76px] bg-dot-grid bg-dot-24 opacity-60" />
 
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-8">
-        {/* Sheet header */}
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 text-paper">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-                <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-              </span>
-              Sheet · Workspace
-            </span>
-            <span>/</span>
-            <span>{greetingDate}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-signal">◆</span>
-            <span>
-              {user.subscribed ? 'Pro tier' : 'Free tier'} ·{' '}
-              <span className="text-paper">{remaining} left</span>
-            </span>
-          </div>
-        </div>
+        <p className="mb-10 text-sm text-fog">
+          {greetingDate} · {user.subscribed ? 'Pro tier' : 'Free tier'} ·{' '}
+          <span className="text-paper">{remaining} left</span>
+        </p>
 
         {/* Quota notice — shown before the user attempts to draft */}
         {atLimit && (
@@ -183,12 +166,8 @@ export default async function Dashboard() {
 
             <div className="relative grid grid-cols-1 items-center gap-8 p-8 md:grid-cols-12 md:p-10">
               <div className="md:col-span-8">
-                <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-red-300/90">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-red-400/60" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-red-400" />
-                  </span>
-                  <span>Quota · Exhausted</span>
+                <div className="flex flex-wrap items-center gap-3 text-sm text-red-300/90">
+                  <span>Quota exhausted</span>
                   <span className="text-red-300/40">/</span>
                   <span className="text-red-300/70">
                     {user.diagrams_created || 0} of {freeLimit} drafts used
@@ -209,16 +188,13 @@ export default async function Dashboard() {
               <div className="flex flex-col gap-3 md:col-span-4 md:items-end">
                 <Link
                   href="/pricing?sourcePage=dashboard-limit"
-                  className="group inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+                  className="group inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
                 >
-                  ★ Upgrade to Pro
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
+                  Upgrade to Pro
                 </Link>
                 <Link
                   href="/dashboard/diagrams"
-                  className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-fog transition-colors hover:text-paper"
+                  className="group inline-flex items-center gap-2 text-sm text-fog transition-colors hover:text-paper"
                 >
                   <span className="h-px w-6 bg-current" />
                   Browse existing drafts
@@ -234,9 +210,9 @@ export default async function Dashboard() {
             aria-label="Low draft quota"
             className="mb-10 flex flex-wrap items-center justify-between gap-4 rounded-sm border border-amber-300/25 bg-amber-200/[0.04] px-5 py-4"
           >
-            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-amber-200/80">
+            <div className="flex items-center gap-3 text-sm text-amber-200/80">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-300" />
-              <span>Quota · Low</span>
+              <span>Quota low</span>
               <span className="text-amber-200/40">/</span>
               <span className="text-paper/70">
                 {remaining} draft{remaining === 1 ? '' : 's'} left before limit
@@ -244,12 +220,9 @@ export default async function Dashboard() {
             </div>
             <Link
               href="/pricing?sourcePage=dashboard-low-quota"
-              className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-signal transition-colors hover:text-paper"
+              className="group inline-flex items-center gap-2 text-sm font-medium text-signal transition-colors hover:text-paper"
             >
               Upgrade to Pro
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
             </Link>
           </section>
         )}
@@ -272,22 +245,16 @@ export default async function Dashboard() {
             {!user.subscribed && (
               <Link
                 href="/pricing?sourcePage=dashboard"
-                className="group inline-flex items-center gap-2 rounded-sm border border-signal/40 bg-signal/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal/20"
+                className="group inline-flex items-center gap-2 rounded-sm border border-signal/40 bg-signal/10 px-4 py-2 text-sm font-medium text-signal transition-colors hover:bg-signal/20"
               >
-                ★ Upgrade to Pro
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
+                Upgrade to Pro
               </Link>
             )}
             <Link
               href="/dashboard/diagrams/new"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
             >
               <span className="relative z-10">+ New draft</span>
-              <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1.5">
-                →
-              </span>
             </Link>
           </div>
         </section>
@@ -302,14 +269,11 @@ export default async function Dashboard() {
               key={s.name}
               className="group relative flex flex-col justify-between gap-8 bg-graphite p-6 transition-colors duration-300 hover:bg-ink"
             >
-              <div className="flex items-center justify-end font-mono text-[10px] uppercase tracking-[0.22em]">
-                <span className="text-fog">▸</span>
-              </div>
               <div>
                 <div className="font-serif text-5xl leading-none text-paper md:text-6xl">
                   {s.value}
                 </div>
-                <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+                <div className="mt-3 text-sm text-fog">
                   {s.name}
                 </div>
               </div>
@@ -362,7 +326,7 @@ export default async function Dashboard() {
                 </div>
               ) : (
                 <div className="mt-8 rounded-sm border border-dashed border-rule bg-graphite/40 p-8 text-center">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                  <p className="text-sm text-fog">
                     Nothing finalized yet · ship a draft to see it here
                   </p>
                 </div>
@@ -416,7 +380,7 @@ export default async function Dashboard() {
                   ))
               ) : (
                 <div className="rounded-sm border border-dashed border-rule bg-graphite/40 p-6 text-center">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                  <p className="text-sm text-fog">
                     No shared drafts yet
                   </p>
                 </div>
@@ -436,7 +400,7 @@ export default async function Dashboard() {
                   <p className="mt-3 text-sm leading-relaxed text-paper/60">
                     Browse the community gallery for inspiration.
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-paper transition-colors group-hover:text-signal">
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-paper transition-colors group-hover:text-signal">
                     <span className="h-px w-6 bg-current" />
                     Browse
                   </span>
@@ -469,12 +433,9 @@ function DashSectionHeader({
       {link && (
         <Link
           href={link}
-          className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+          className="group inline-flex items-center gap-2 text-sm text-fog transition-colors hover:text-signal"
         >
           {linkText}
-          <span className="transition-transform duration-300 group-hover:translate-x-1">
-            →
-          </span>
         </Link>
       )}
     </div>
@@ -509,16 +470,6 @@ function QuickActionCard({
           primary ? '' : 'bg-dot-grid bg-dot-24',
         )}
       />
-      <div className="relative flex items-center justify-end font-mono text-[10px] uppercase tracking-[0.22em]">
-        <span
-          className={cn(
-            'transition-transform duration-300 group-hover:translate-x-1',
-            primary ? 'text-ink' : 'text-fog group-hover:text-signal',
-          )}
-        >
-          →
-        </span>
-      </div>
       <div className="relative">
         <h3
           className={cn(
@@ -560,10 +511,10 @@ function DiagramCard({
       href={href}
       className="group relative flex flex-col justify-between gap-6 bg-graphite p-6 transition-colors duration-300 hover:bg-ink"
     >
-      <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em]">
+      <div className="flex items-center justify-between text-xs">
         {variant === 'finalized' ? (
-          <span className="rounded-sm border border-signal/50 px-1.5 py-0.5 text-[9px] text-signal">
-            ◆ Finalized
+          <span className="rounded-sm border border-signal/50 px-1.5 py-0.5 text-xs text-signal">
+            Finalized
           </span>
         ) : (
           <span />
@@ -583,11 +534,8 @@ function DiagramCard({
       </div>
 
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog transition-colors group-hover:text-signal">
+        <span className="text-sm text-fog transition-colors group-hover:text-signal">
           {footerLabel}
-        </span>
-        <span className="font-mono text-xs text-fog transition-transform duration-300 group-hover:translate-x-1 group-hover:text-signal">
-          →
         </span>
       </div>
     </Link>
@@ -606,7 +554,7 @@ function SharedDiagramCard({
       href={`${baseUrl}/share/${share.id}`}
       className="group relative block rounded-sm border border-rule bg-graphite p-5 transition-colors hover:border-signal/40"
     >
-      <div className="flex items-center justify-end font-mono text-[10px] uppercase tracking-[0.22em]">
+      <div className="flex items-center justify-end text-xs">
         <span className="text-fog">
           {new Date(share.created_at).toLocaleDateString('en-US', {
             month: 'short',
@@ -618,10 +566,8 @@ function SharedDiagramCard({
         {share.title}
       </h3>
       <div className="mt-4 flex items-center justify-between border-t border-rule pt-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-          Invite
-        </span>
-        <code className="rounded-sm border border-rule bg-ink px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-paper/80">
+        <span className="text-xs text-fog">Invite</span>
+        <code className="rounded-sm border border-rule bg-ink px-2 py-1 font-mono text-xs text-paper/80">
           {share.invite_code}
         </code>
       </div>
@@ -654,9 +600,9 @@ function EmptyState({
         <p className="mt-3 text-sm text-paper/60">{desc}</p>
         <Link
           href={cta.href}
-          className="mt-6 inline-flex items-center gap-2 rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+          className="mt-6 inline-flex items-center gap-2 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
         >
-          {cta.label} →
+          {cta.label}
         </Link>
       </div>
     </div>

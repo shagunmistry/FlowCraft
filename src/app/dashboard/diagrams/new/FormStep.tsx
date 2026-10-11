@@ -40,12 +40,10 @@ const FormStep: React.FC<FormStepProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-signal">
-        <span>PRV</span>
-        <span className="h-px w-8 bg-signal/50" />
-        <span className="text-fog">Privacy</span>
+      <div className="flex items-center gap-3 text-sm text-fog">
+        <span>Privacy</span>
         {!canTogglePrivate && (
-          <span className="ml-auto rounded-sm border border-signal/40 bg-signal/10 px-1.5 py-0.5 font-mono text-[9px] tracking-[0.15em] text-signal">
+          <span className="ml-auto rounded-sm border border-signal/40 bg-signal/10 px-1.5 py-0.5 text-xs text-signal">
             Pro only
           </span>
         )}
@@ -70,7 +68,7 @@ const FormStep: React.FC<FormStepProps> = ({
             }`}
           />
           <div className="text-left">
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em]">
+            <div className="text-sm font-medium">
               {isPublic ? 'Public diagram' : 'Private diagram'}
             </div>
             <div className="mt-0.5 font-serif text-lg">
@@ -106,7 +104,7 @@ const FormStep: React.FC<FormStepProps> = ({
 
       {!canTogglePrivate && (
         <div className="rounded-sm border border-signal/30 bg-signal/5 p-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+          <p className="text-sm text-fog">
             Upgrade to{' '}
             <a
               href="/pricing"

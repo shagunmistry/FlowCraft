@@ -76,7 +76,7 @@ export function GalleryGrid({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search templates…"
-          className="w-full rounded-sm border border-rule bg-ink/60 px-4 py-2.5 font-mono text-[12px] text-paper placeholder:text-fog focus:border-signal/40 focus:outline-none"
+          className="w-full rounded-sm border border-rule bg-ink/60 px-4 py-2.5 text-sm text-paper placeholder:text-fog focus:border-signal/40 focus:outline-none"
         />
         <Section title="Diagram type">
           {types.map((t) => (
@@ -101,7 +101,7 @@ export function GalleryGrid({
       </aside>
 
       <div className="flex-1">
-        <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
+        <div className="mb-4 text-sm text-fog">
           {filtered.length} templates
         </div>
         <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -122,7 +122,7 @@ export function GalleryGrid({
                     className="h-40 w-full bg-graphite object-contain"
                   />
                   <div className="p-4">
-                    <div className="mb-2 inline-block rounded-sm border border-rule px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+                    <div className="mb-2 inline-block rounded-sm border border-rule px-2 py-0.5 text-xs text-signal">
                       {t.title}
                     </div>
                     <div className="text-sm font-medium text-paper">
@@ -156,7 +156,7 @@ function Section({
 }) {
   return (
     <div className="mt-5">
-      <h3 className="mb-2 font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
+      <h3 className="mb-2 text-xs font-medium text-fog">
         {title}
       </h3>
       <div className="flex flex-wrap gap-1.5">{children}</div>
@@ -176,7 +176,7 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className={`rounded-sm border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.15em] transition ${
+      className={`rounded-sm border px-3 py-1 text-sm transition ${
         active
           ? 'border-signal bg-signal text-ink'
           : 'border-rule bg-ink/60 text-fog hover:border-signal/40 hover:text-paper'

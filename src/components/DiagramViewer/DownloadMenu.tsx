@@ -126,8 +126,8 @@ export default function DownloadMenu({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 top-full z-50 mt-2 w-56 origin-top-right overflow-hidden rounded-sm border border-rule bg-graphite py-1 shadow-2xl shadow-black/60 focus:outline-none">
-          <div className="border-b border-rule px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.28em] text-signal">
-            ▸ Export
+          <div className="border-b border-rule px-4 py-2.5 text-xs font-medium text-signal">
+            Export
           </div>
           <DownloadItem
             onClick={handleDownloadPng}
@@ -180,7 +180,7 @@ function DownloadItem({
           />
           <span className="flex-1 text-left">{label}</span>
           <span
-            className={`font-mono text-[9px] uppercase tracking-[0.22em] ${
+            className={`text-xs ${
               active ? 'text-signal' : 'text-fog'
             }`}
           >

@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main className="relative flex h-full items-center py-36 lg:px-8">
       <div className="relative mx-auto flex w-full max-w-2xl flex-col items-center px-4 sm:px-6 lg:px-0">
-        <p className="font-mono text-sm leading-7 text-slate-500">404</p>
+        <p className="text-sm font-semibold leading-7 text-slate-500">404</p>
         <h2 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
           FlowCraft
         </h2>

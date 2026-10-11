@@ -18,14 +18,7 @@ const CanvasLoader = () => (
       className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.06] blur-[120px]"
     />
     <div className="relative flex flex-col items-center">
-      <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-        <span className="relative flex h-1.5 w-1.5">
-          <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-          <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-        </span>
-        Sheet · Loading
-      </div>
-      <p className="mt-5 font-serif text-4xl italic text-paper/80">
+      <p className="font-serif text-4xl italic text-paper/80">
         Drafting canvas<span className="animate-pulse text-signal">.</span>
       </p>
       <div className="mt-6 h-px w-40 overflow-hidden bg-rule">
@@ -167,12 +160,9 @@ export default function DiagramPage({
           </p>
           <Link
             href="/dashboard"
-            className="group mt-8 inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+            className="group mt-8 inline-flex items-center gap-3 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
           >
-            ← Back to dashboard
-            <span className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
+            Back to dashboard
           </Link>
         </div>
       </div>

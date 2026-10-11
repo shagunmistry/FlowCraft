@@ -36,14 +36,8 @@ export function SkeletonLine({
 
 export function SkeletonHeader({ label }: { label: string }) {
   return (
-    <div className="mb-8 flex items-center justify-between border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-      <span>
-        <span className="text-signal">◆</span> {label}
-      </span>
-      <span className="flex items-center gap-1.5">
-        <span className="inline-flex h-1.5 w-1.5 rounded-full bg-signal animate-tick" />
-        <span>loading</span>
-      </span>
+    <div className="mb-8 border-b border-rule pb-4 text-sm text-fog">
+      {label}
     </div>
   )
 }

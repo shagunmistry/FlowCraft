@@ -120,15 +120,7 @@ export default function GalleryCard({
       className="group relative flex cursor-pointer flex-col bg-ink p-6 transition-colors duration-300 hover:bg-graphite"
     >
       {/* Top meta row */}
-      <div className="mb-5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-        <span className="inline-flex items-center gap-2">
-          <span className="text-signal">◆</span>
-          <span>{typeLabel}</span>
-        </span>
-        <span className="transition-transform duration-500 group-hover:rotate-90">
-          ┼
-        </span>
-      </div>
+      <div className="mb-5 text-xs text-fog">{typeLabel}</div>
 
       {/* Preview */}
       <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-sm border border-rule bg-ink">
@@ -145,10 +137,6 @@ export default function GalleryCard({
         <div className="relative h-full w-full">
           <PreviewThumb visual={visual} />
         </div>
-
-        <span className="absolute bottom-2 left-2 font-mono text-[9px] uppercase tracking-[0.22em] text-fog/80">
-          Fig. {String(index + 1).padStart(2, '0')}
-        </span>
 
         {/* Hover action buttons */}
         <div className="absolute right-2 top-2 flex gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
@@ -188,7 +176,7 @@ export default function GalleryCard({
       )}
 
       {/* Footer meta */}
-      <div className="mt-6 flex items-center justify-between border-t border-rule pt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+      <div className="mt-6 flex items-center justify-between border-t border-rule pt-4 text-xs text-fog">
         <span>
           {new Date(visual.createdAt).toLocaleDateString('en-US', {
             month: 'short',

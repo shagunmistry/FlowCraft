@@ -43,12 +43,9 @@ export default function EmptyState({ searchQuery }: EmptyStateProps) {
         </p>
         <Link
           href="/dashboard/diagrams/new"
-          className="group mt-6 inline-flex items-center gap-2 rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+          className="group mt-6 inline-flex items-center gap-2 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
         >
           <span>Start a draft</span>
-          <span className="transition-transform duration-300 group-hover:translate-x-1">
-            →
-          </span>
         </Link>
       </div>
     </div>

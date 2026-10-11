@@ -50,7 +50,7 @@ export default async function Page({
       />
 
       <div className="relative mx-auto max-w-[1280px] px-6 py-16 lg:px-8 lg:py-20">
-        <div className="mb-10 flex items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+        <div className="mb-10 flex items-center justify-between gap-4 border-b border-rule pb-4 text-sm text-fog">
           <nav className="flex items-center gap-2">
             <Link href="/templates" className="transition-colors hover:text-paper">
               Templates
@@ -78,7 +78,7 @@ export default async function Page({
         </header>
 
         <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-rule bg-rule">
-          {TEMPLATE_TYPES.map((t, i) => {
+          {TEMPLATE_TYPES.map((t) => {
             const r = byType.get(t.id)
             if (!r) return null
             return (
@@ -95,12 +95,9 @@ export default async function Page({
                       decoding="async"
                       className="h-36 w-full object-contain p-3"
                     />
-                    <span className="absolute bottom-1.5 right-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-fog">
-                      Fig. {String(i + 1).padStart(2, '0')}
-                    </span>
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+                    <div className="flex items-center gap-3 text-xs text-signal">
                       <span className="h-px w-8 bg-signal/50" />
                       <span>{t.title}</span>
                     </div>
@@ -111,16 +108,13 @@ export default async function Page({
                       {r.description}
                     </div>
                   </div>
-                  <span className="hidden font-mono text-fog transition-all duration-300 group-hover:translate-x-1 group-hover:text-signal sm:inline">
-                    →
-                  </span>
                 </Link>
               </li>
             )
           })}
         </ul>
 
-        <div className="mt-16 flex items-center justify-between border-t border-rule pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-fog">
+        <div className="mt-16 flex items-center justify-between border-t border-rule pt-6 text-sm text-fog">
           <Link
             href="/templates"
             className="group inline-flex items-center gap-3 transition-colors hover:text-signal"

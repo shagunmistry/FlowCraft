@@ -130,8 +130,7 @@ export default function ShareDialog({
                 <div className="relative space-y-5 px-6 py-6">
                   {/* Current URL */}
                   <div>
-                    <label className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
-                      <span className="h-px w-4 bg-fog/60" />
+                    <label className="text-xs font-medium text-fog">
                       Page link
                     </label>
                     <div className="mt-3 flex items-center gap-2 border border-rule bg-ink px-3 py-2.5">
@@ -158,8 +157,7 @@ export default function ShareDialog({
                     <div>
                       {shareableLink ? (
                         <div>
-                          <label className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-signal">
-                            <span className="h-px w-4 bg-signal/60" />
+                          <label className="text-xs font-medium text-signal">
                             Public shareable link
                           </label>
                           <div className="mt-3 flex items-center gap-2 border border-signal/40 bg-signal/5 px-3 py-2.5">
@@ -184,15 +182,12 @@ export default function ShareDialog({
                         <button
                           onClick={handleGenerateLink}
                           disabled={generatingLink}
-                          className="group flex w-full items-center justify-between gap-3 rounded-sm bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper disabled:opacity-50"
+                          className="group flex w-full items-center justify-between gap-3 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:opacity-50"
                         >
                           <span>
                             {generatingLink
                               ? 'Generating…'
                               : '+ Generate shareable link'}
-                          </span>
-                          <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                            →
                           </span>
                         </button>
                       )}
@@ -200,8 +195,8 @@ export default function ShareDialog({
                   )}
                 </div>
 
-                <div className="relative border-t border-rule px-6 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                  ▸ Anyone with the link can read this draft
+                <div className="relative border-t border-rule px-6 py-4 text-xs text-fog">
+                  Anyone with the link can read this draft
                 </div>
               </Dialog.Panel>
             </Transition.Child>

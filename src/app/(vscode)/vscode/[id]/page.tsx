@@ -188,7 +188,7 @@ export default function VSCodeDiagramPage({
         {/* SEO-Friendly Header Section */}
         <header className="mb-12 flex flex-col items-center space-y-4 text-center">
           <div className="flex items-center space-x-2">
-            <span className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium uppercase tracking-wide text-zinc-500">
+            <span className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-500">
               {diagramdata.difficulty || 'Diagram'}
             </span>
           </div>

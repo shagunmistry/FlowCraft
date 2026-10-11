@@ -96,10 +96,6 @@ const Footer = () => {
               Transform ideas into stunning visual content — drafted with the
               precision of AI.
             </p>
-            <div className="flex items-center gap-2 pt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-fog">
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-signal animate-tick" />
-              <span>Signal live</span>
-            </div>
           </div>
 
           {/* Navigation Columns */}
@@ -114,19 +110,16 @@ const Footer = () => {
               </p>
               <button
                 onClick={() => setIsFeedbackOpen(true)}
-                className="group mt-5 inline-flex items-center gap-2 rounded-sm border border-signal/40 bg-signal/10 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-signal transition-colors hover:bg-signal/20"
+                className="group mt-5 inline-flex items-center gap-2 rounded-sm border border-signal/40 bg-signal/10 px-3 py-2 text-sm text-signal transition-colors hover:bg-signal/20"
               >
-                <span>Share Feedback</span>
-                <span className="transition-transform duration-200 group-hover:translate-x-1">
-                  →
-                </span>
+                <span>Share feedback</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-14 flex flex-col gap-4 border-t border-rule pt-8 font-mono text-[10px] uppercase tracking-[0.22em] text-fog sm:flex-row sm:items-center sm:justify-between lg:mt-20">
+        <div className="mt-14 flex flex-col gap-4 border-t border-rule pt-8 text-xs text-fog sm:flex-row sm:items-center sm:justify-between lg:mt-20">
           <p>
             <span className="text-signal">©</span> {new Date().getFullYear()}{' '}
             FlowCraft · All rights reserved
@@ -172,15 +165,15 @@ const Footer = () => {
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(false)}
-                  className="rounded-sm px-3 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-fog transition-colors hover:text-paper"
+                  className="rounded-sm px-3 py-2 text-sm text-fog transition-colors hover:text-paper"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-sm bg-signal px-3 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:bg-paper"
+                  className="rounded-sm bg-signal px-3 py-2 text-sm text-ink transition-colors hover:bg-paper"
                 >
-                  Submit →
+                  Submit
                 </button>
               </div>
             </form>
@@ -194,7 +187,7 @@ const Footer = () => {
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-fog">
+      <span className="text-xs font-medium text-fog">
         {children}
       </span>
       <span className="h-px flex-1 bg-rule" />

@@ -36,10 +36,7 @@ export default function DiagramSkeleton() {
           />
           <circle cx="24" cy="2" r="2" fill="#C4FF3D" />
         </svg>
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-signal animate-tick" />
-          <span>Loading diagram</span>
-        </div>
+        <p className="text-sm text-fog">Loading diagram</p>
       </div>
     </div>
   )

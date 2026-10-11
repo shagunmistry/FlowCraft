@@ -98,7 +98,6 @@ const itemVariants = {
 export default function MainLanding() {
   const [authenticated, setAuthenticated] = useState(false)
   const [wordIndex, setWordIndex] = useState(0)
-  const [time, setTime] = useState('')
 
   const heroRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -119,21 +118,6 @@ export default function MainLanding() {
     const interval = setInterval(() => {
       setWordIndex((p) => (p + 1) % rotatingWords.length)
     }, 2600)
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    const update = () => {
-      const d = new Date()
-      setTime(
-        `${d.getUTCHours().toString().padStart(2, '0')}:${d
-          .getUTCMinutes()
-          .toString()
-          .padStart(2, '0')} UTC`,
-      )
-    }
-    update()
-    const interval = setInterval(update, 1000 * 30)
     return () => clearInterval(interval)
   }, [])
 
@@ -168,27 +152,6 @@ export default function MainLanding() {
             style={{ y: heroY, opacity: heroOpacity }}
             className="relative mx-auto max-w-[1280px] px-6 lg:px-8"
           >
-            {/* sheet header */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-                  </span>
-                  <span className="text-paper">FlowCraft</span>
-                </span>
-              </div>
-              <div className="hidden items-center gap-3 md:flex">
-                <span>{time || '—:—'}</span>
-              </div>
-            </motion.div>
-
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -219,8 +182,7 @@ export default function MainLanding() {
                     It's drafted.
                   </p>
 
-                  <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-fog">
-                    <span className="text-signal">▸</span>
+                  <div className="flex items-center gap-2 text-sm text-fog">
                     <span>Drafting</span>
                     <span className="relative inline-flex min-w-[180px] items-baseline overflow-hidden text-paper md:min-w-[240px]">
                       <AnimatePresence mode="wait">
@@ -246,21 +208,15 @@ export default function MainLanding() {
                 >
                   <Link
                     href={primaryCta}
-                    className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-6 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+                    className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-paper"
                   >
                     <span className="relative z-10">{primaryLabel}</span>
-                    <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1.5">
-                      →
-                    </span>
                   </Link>
                   <Link
                     href="/gallery"
-                    className="group inline-flex items-center gap-3 rounded-sm border border-rule px-6 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-paper transition-colors hover:border-signal/50 hover:text-signal"
+                    className="group inline-flex items-center gap-3 rounded-sm border border-rule px-6 py-4 text-sm text-paper transition-colors hover:border-signal/50 hover:text-signal"
                   >
                     <span>View gallery</span>
-                    <span className="transition-transform duration-300 group-hover:rotate-45">
-                      ↗
-                    </span>
                   </Link>
                 </motion.div>
 
@@ -285,16 +241,11 @@ export default function MainLanding() {
                     }}
                   />
 
-                  <div className="relative flex items-center justify-between border-b border-rule px-5 py-3 font-mono text-[9px] uppercase tracking-[0.25em] text-fog">
-                    <span>Title Block</span>
-                    <span className="text-signal">◆</span>
-                  </div>
-
                   <div className="relative p-5">
                     <LiveSchematic />
                   </div>
 
-                  <div className="relative grid grid-cols-2 border-t border-rule font-mono text-[10px] uppercase tracking-[0.2em]">
+                  <div className="relative grid grid-cols-2 border-t border-rule text-xs">
                     <div className="border-r border-rule p-4">
                       <div className="text-fog">Scale</div>
                       <div className="mt-1 text-paper">1 : ∞</div>
@@ -317,11 +268,6 @@ export default function MainLanding() {
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                  <span>Fig. 01</span>
-                  <span>Reference draft</span>
                 </div>
               </motion.aside>
             </motion.div>
@@ -346,8 +292,8 @@ export default function MainLanding() {
                   transition={{ delay: i * 0.05, duration: 0.5 }}
                   className="flex flex-col gap-2 py-8 lg:px-8"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-                    ▸ {s.k}
+                  <span className="text-sm text-fog">
+                    {s.k}
                   </span>
                   <span className="font-serif text-4xl text-paper md:text-5xl">
                     {s.v}
@@ -386,12 +332,6 @@ export default function MainLanding() {
                   }}
                   className="group relative flex flex-col gap-6 bg-ink p-8 transition-colors duration-300 hover:bg-graphite"
                 >
-                  <div className="flex items-center justify-end font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                    <span className="transition-transform duration-500 group-hover:rotate-90">
-                      ┼
-                    </span>
-                  </div>
-
                   <div className="relative h-36 overflow-hidden rounded-sm border border-rule bg-ink">
                     <div
                       aria-hidden
@@ -405,9 +345,6 @@ export default function MainLanding() {
                     <div className="absolute inset-0 flex items-center justify-center">
                       {s.preview}
                     </div>
-                    <span className="absolute bottom-2 right-2 font-mono text-[9px] uppercase tracking-[0.22em] text-fog">
-                      Fig. {i + 1}
-                    </span>
                   </div>
 
                   <div>
@@ -421,7 +358,7 @@ export default function MainLanding() {
 
                   <Link
                     href={primaryCta}
-                    className="mt-auto inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-fog transition-colors hover:text-signal"
+                    className="mt-auto inline-flex items-center gap-2 text-sm text-fog transition-colors hover:text-signal"
                   >
                     <span className="h-px w-6 bg-current" />
                     Draft one
@@ -522,12 +459,6 @@ export default function MainLanding() {
                           unoptimized
                         />
                       </div>
-                      <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                        <span>Fig. {idx + 2}</span>
-                        <span>
-                          {item.title} · {item.step}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -565,11 +496,6 @@ export default function MainLanding() {
                   }}
                   className="group flex flex-col gap-4 bg-ink p-8 transition-colors duration-300 hover:bg-graphite"
                 >
-                  <div className="flex items-center justify-end font-mono text-[10px] uppercase tracking-[0.22em]">
-                    <span className="text-fog transition-transform duration-300 group-hover:translate-x-1 group-hover:text-signal">
-                      →
-                    </span>
-                  </div>
                   <h3 className="font-serif text-2xl text-paper">{u.title}</h3>
                   <p className="text-sm leading-relaxed text-paper/60">
                     {u.desc}
@@ -614,24 +540,20 @@ export default function MainLanding() {
             <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href={primaryCta}
-                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-8 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink transition-colors hover:bg-paper"
+                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-sm bg-signal px-8 py-4 text-sm font-medium text-ink transition-colors hover:bg-paper"
               >
                 <span className="relative z-10">{primaryLabel}</span>
-                <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1.5">
-                  →
-                </span>
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center gap-3 rounded-sm border border-rule px-8 py-4 font-mono text-[12px] uppercase tracking-[0.22em] text-paper transition-colors hover:border-signal/50 hover:text-signal"
+                className="inline-flex items-center gap-3 rounded-sm border border-rule px-8 py-4 text-sm text-paper transition-colors hover:border-signal/50 hover:text-signal"
               >
                 See pricing
               </Link>
             </div>
 
-            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-              <span className="text-signal">◆</span> Free tier · No credit card
-              · Exports in PNG / SVG / PDF
+            <p className="mt-8 text-sm text-fog">
+              Free tier · No credit card · Exports in PNG / SVG / PDF
             </p>
           </div>
         </section>

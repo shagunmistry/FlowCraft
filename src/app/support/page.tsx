@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import { motion } from 'framer-motion'
@@ -12,12 +12,10 @@ import SimpleNotification from '@/components/SimpleNotification'
 /* ──────────────────────────────────────────── */
 
 function FieldRow({
-  index,
   label,
   children,
   hint,
 }: {
-  index: string
   label: string
   children: React.ReactNode
   hint?: string
@@ -25,12 +23,9 @@ function FieldRow({
   return (
     <div className="grid grid-cols-1 gap-3 border-t border-rule px-5 py-6 md:grid-cols-12 md:gap-6 md:px-8">
       <div className="md:col-span-4">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-          <span className="text-signal">{index}</span>
-          <span>{label}</span>
-        </div>
+        <div className="text-sm font-medium text-fog">{label}</div>
         {hint && (
-          <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog/70">
+          <p className="mt-2 text-xs text-fog/70">
             {hint}
           </p>
         )}
@@ -51,27 +46,11 @@ export default function SupportPage() {
   const [loading, setLoading] = useState(false)
   const startedAt = useRef(Date.now())
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-  const [time, setTime] = useState('')
   const [notification, setNotification] = useState({
     message: '',
     type: 'success' as 'success' | 'error' | 'warning' | 'info',
     open: false,
   })
-
-  useEffect(() => {
-    const update = () => {
-      const d = new Date()
-      setTime(
-        `${d.getUTCHours().toString().padStart(2, '0')}:${d
-          .getUTCMinutes()
-          .toString()
-          .padStart(2, '0')} UTC`,
-      )
-    }
-    update()
-    const i = setInterval(update, 1000 * 30)
-    return () => clearInterval(i)
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -143,18 +122,6 @@ export default function SupportPage() {
           />
 
           <div className="relative mx-auto max-w-[1280px] px-6 lg:px-8">
-            <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inset-0 animate-ping rounded-full bg-signal/60" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-signal" />
-                  </span>
-                  <span className="text-paper">Contact</span>
-                </span>
-              </div>
-            </div>
-
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -178,22 +145,15 @@ export default function SupportPage() {
               <aside className="lg:col-span-4">
                 <div className="relative overflow-hidden rounded-sm border border-rule bg-graphite">
                   <CornerTicks />
-                  <div className="relative border-b border-rule px-5 py-3 font-mono text-[9px] uppercase tracking-[0.25em] text-fog">
-                    <div className="flex items-center justify-between">
-                      <span>Channels</span>
-                      <span className="text-signal">◆</span>
-                    </div>
+                  <div className="relative border-b border-rule px-5 py-3 text-sm font-medium text-fog">
+                    Channels
                   </div>
-                  <dl className="divide-y divide-rule font-mono text-[10px] uppercase tracking-[0.22em]">
+                  <dl className="divide-y divide-rule text-sm">
                     <Meta k="Response" v="< 24h" />
                     <Meta k="Hours" v="Mon–Fri" />
                     <Meta k="Preferred" v="This form" />
                     <Meta k="Status" v={<LiveDot label="Staffed" />} />
                   </dl>
-                </div>
-                <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                  <span>Ref. 00</span>
-                  <span>Reception desk</span>
                 </div>
               </aside>
             </motion.div>
@@ -229,12 +189,8 @@ export default function SupportPage() {
             >
               <CornerTicks />
 
-              <div className="flex items-center justify-between border-b border-rule px-5 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-fog md:px-8">
-                <span>Contact form</span>
-              </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-rule">
-                <FieldRow index="01" label="First name" hint="Given">
+                <FieldRow label="First name" hint="Given">
                   <input
                     type="text"
                     name="first-name"
@@ -246,7 +202,7 @@ export default function SupportPage() {
                     className={inputClass}
                   />
                 </FieldRow>
-                <FieldRow index="02" label="Last name" hint="Family">
+                <FieldRow label="Last name" hint="Family">
                   <input
                     type="text"
                     name="last-name"
@@ -276,7 +232,6 @@ export default function SupportPage() {
               </div>
 
               <FieldRow
-                index="03"
                 label="Email"
                 hint="Where the reply lands"
               >
@@ -293,7 +248,6 @@ export default function SupportPage() {
               </FieldRow>
 
               <FieldRow
-                index="04"
                 label="Message"
                 hint="Symptoms, context, hopes"
               >
@@ -324,8 +278,8 @@ export default function SupportPage() {
               )}
 
               <div className="flex flex-col items-stretch gap-6 border-t border-rule px-5 py-6 md:flex-row md:items-center md:justify-between md:px-8">
-                <p className="max-w-md font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                  By transmitting you agree to our{' '}
+                <p className="max-w-md text-xs text-fog">
+                  By submitting you agree to our{' '}
                   <Link
                     href="/terms"
                     className="text-paper underline underline-offset-[3px] decoration-rule hover:text-signal hover:decoration-signal"
@@ -362,16 +316,11 @@ export default function SupportPage() {
                   v: 'press@flowcraft.app',
                   sub: 'Media & partnerships',
                 },
-              ].map((c, i) => (
+              ].map((c) => (
                 <div key={c.k} className="group flex flex-col gap-3 bg-ink p-6">
-                  <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
-                    <span>
-                      Channel {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span>{c.k}</span>
-                  </div>
+                  <div className="text-sm font-medium text-fog">{c.k}</div>
                   <div className="font-serif text-xl text-paper">{c.v}</div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+                  <div className="text-xs text-fog">
                     {c.sub}
                   </div>
                 </div>
@@ -387,7 +336,7 @@ export default function SupportPage() {
             className="pointer-events-none absolute inset-0 bg-dot-grid bg-dot-24 opacity-40"
           />
           <div className="relative mx-auto max-w-[1280px] px-6 lg:px-8">
-            <div className="flex flex-wrap items-end justify-end gap-6 font-mono text-[10px] uppercase tracking-[0.24em] text-fog">
+            <div className="flex flex-wrap items-end justify-end gap-6 text-sm text-fog">
               <Link
                 href="/"
                 className="group inline-flex items-center gap-3 text-paper transition-colors hover:text-signal"
@@ -444,7 +393,7 @@ function SubmitButton({ loading }: { loading: boolean }) {
       type="submit"
       disabled={loading}
       className={clsx(
-        'group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-sm px-8 py-4 font-mono text-[12px] uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed disabled:opacity-70',
+        'group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-sm px-8 py-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-70',
         loading
           ? 'bg-paper/40 text-ink'
           : 'bg-signal text-ink hover:bg-paper',
@@ -473,9 +422,6 @@ function SubmitButton({ loading }: { loading: boolean }) {
       ) : (
         <>
           <span>Send message</span>
-          <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-            →
-          </span>
         </>
       )}
     </button>

@@ -83,8 +83,7 @@ const LoadingOverlay = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-paper">
-          <span className="text-signal">◆</span>
+        <div className="flex items-center gap-2 text-sm text-paper">
           <span>
             {text}
             {dots}
