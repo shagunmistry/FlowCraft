@@ -13,7 +13,7 @@ import {
   ComputerDesktopIcon,
   PencilIcon,
 } from '@heroicons/react/20/solid'
-import { track } from '@vercel/analytics'
+import { track } from '@/lib/analytics'
 import ExamplesDropdown from './Dropdown'
 import ErrorDialog from './ErrorDialog'
 // import { CompletionCommandsAssistant } from './Whiteboard/CompletionCommandsAssistant'
@@ -78,10 +78,8 @@ export default function DiagramInputsForm({
 
       // Submit analytics event
       if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
-        track('create', {
-          type: type,
-          title: title,
-        })
+        // Type only: the title is user-authored text and must not be sent.
+        track('create', { type })
       }
 
       console.log('Selected Type: ', type)

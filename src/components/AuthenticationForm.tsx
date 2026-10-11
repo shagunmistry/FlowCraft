@@ -12,6 +12,7 @@ import GoogleSVG from '@/lib/Shared/svgs/Google.svg'
 import Button from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
 import { trackTryIt } from '@/lib/free-taste/track'
+import { track } from '@/lib/analytics'
 
 export default function AuthenticationForm({
   isLoginOrSignup,
@@ -81,6 +82,7 @@ export default function AuthenticationForm({
           passwordField.focus()
         }
       } else {
+        track('login_succeeded', { method: 'password' })
         const dest = data.diagramId
           ? `/dashboard/diagram/${data.diagramId}`
           : '/dashboard'

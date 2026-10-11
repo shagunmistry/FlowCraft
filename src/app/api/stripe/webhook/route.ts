@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest } from 'next/server'
 import Stripe from 'stripe'
+import { trackServer } from '@/lib/analytics-server'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
 
         if (session.mode === 'subscription' && session.customer_email) {
           // Backup handler: update user if the redirect didn't catch it
-          const { error } = await supabase
+          const { data: updated, error } = await supabase
             .from('users')
             .update({
               subscribed: true,
@@ -51,6 +52,13 @@ export async function POST(request: NextRequest) {
               date_subscribed: new Date().toISOString(),
             })
             .eq('email', session.customer_email)
+            .select('user_id')
+
+          if (!error) {
+            // Most reliable conversion signal: the browser may never return
+            // from Stripe. Keyed by Supabase user id, no email or amount.
+            await trackServer('subscription_started', updated?.[0]?.user_id)
+          }
 
           if (error) {
             console.error(

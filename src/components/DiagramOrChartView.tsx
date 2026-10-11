@@ -1,5 +1,6 @@
 'use client'
 
+import { track } from '@/lib/analytics'
 import React, {
   useCallback,
   useContext,
@@ -447,6 +448,7 @@ export default function DiagramOrChartView({
       const data = await res.json()
 
       if (data.result) {
+        track('share_created', { surface: 'editor' })
         setShareableLink({
           link: data.result.link,
           inviteCode: data.result.inviteCode,

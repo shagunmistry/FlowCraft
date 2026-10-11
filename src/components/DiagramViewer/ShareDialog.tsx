@@ -1,5 +1,6 @@
 'use client'
 
+import { track } from '@/lib/analytics'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -56,6 +57,7 @@ export default function ShareDialog({
       })
       const data = await res.json()
       if (data.result?.link) {
+        track('share_created', { surface: 'viewer' })
         setShareableLink(data.result.link)
       }
     } catch (err) {

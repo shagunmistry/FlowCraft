@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { toPng } from 'html-to-image'
 import { exportAsPdf } from '@/lib/export-utils'
+import { track } from '@/lib/analytics'
 
 interface DownloadMenuProps {
   contentRef: React.RefObject<HTMLDivElement | null>
@@ -67,6 +68,7 @@ export default function DownloadMenu({
     ))
 
   const handleDownloadPng = async () => {
+    track('export_clicked', { format: 'png' })
     const target = getExportTarget(contentRef, isFlowDiagram)
     if (!target) return
     try {
@@ -84,6 +86,7 @@ export default function DownloadMenu({
   }
 
   const handleDownloadSvg = () => {
+    track('export_clicked', { format: 'svg' })
     const target = getExportTarget(contentRef, isFlowDiagram)
     if (!target) return
     const svgElement = target.querySelector('svg')
@@ -93,6 +96,7 @@ export default function DownloadMenu({
   }
 
   const handleDownloadPdf = async () => {
+    track('export_clicked', { format: 'pdf' })
     const target = getExportTarget(contentRef, isFlowDiagram)
     if (!target) return
     try {

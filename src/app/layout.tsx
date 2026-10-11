@@ -7,6 +7,7 @@ import MicrosoftClarity from '@/components/MicrosoftClarity'
 import { LoadingProvider } from '@/lib/LoadingProvider'
 import ThemeProvider from '@/components/ThemeProvider'
 import { Toaster } from 'react-hot-toast'
+import Script from 'next/script'
 import { SITE_URL, SITE_NAME } from '@/lib/seo'
 
 export const metadata: Metadata = {
@@ -96,6 +97,13 @@ export default function RootLayout({
       </head>
       <GoogleAnalytics gaId="AW-16550420965" />
       <MicrosoftClarity />
+      {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          strategy="afterInteractive"
+        />
+      )}
       <body className="flex min-h-full bg-ink text-paper">
         <ThemeProvider>
           <LoadingProvider>

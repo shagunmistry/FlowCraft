@@ -2,8 +2,9 @@
 
 import { cn } from '@/lib/utils'
 import type { PricingTier } from '@/lib/pricing'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { track } from '@/lib/analytics'
 import SimpleNotification from '../SimpleNotification'
 import { loadStripe } from '@stripe/stripe-js'
 import { motion } from 'framer-motion'
@@ -27,6 +28,10 @@ export default function PricingTemplate({
     'success',
   )
   const [openNotification, setOpenNotification] = useState(false)
+
+  useEffect(() => {
+    track('pricing_viewed', { source: sourcePage })
+  }, [sourcePage])
 
   const openErrorNotification = () => {
     setNotificationMessage(
@@ -61,6 +66,12 @@ export default function PricingTemplate({
         setOpenNotification(true)
         return
       }
+
+      track('checkout_started', {
+        tier: id,
+        interval: isYearly ? 'yearly' : 'monthly',
+        source: sourcePage,
+      })
 
       const stripe = await loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,

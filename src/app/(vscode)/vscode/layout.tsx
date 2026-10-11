@@ -4,7 +4,6 @@ import { type Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/react'
-import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +23,6 @@ export default function VsCodePageLaytout({
   return (
     <>
       <Navbar />
-      <GoogleAnalytics gaId="AW-16550420965" />
 
       <main>
         {/* <Navbar /> */}

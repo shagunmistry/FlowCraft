@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { Edge, Node } from 'reactflow'
 import FeedbackDialog from '@/components/FeedbackDialog'
 import NextTopLoader from 'nextjs-toploader'
+import AnalyticsIdentify from '@/components/AnalyticsIdentify'
 
 export default function DashboardShell({
   children,
@@ -52,6 +53,7 @@ export default function DashboardShell({
 
   return (
     <>
+      <AnalyticsIdentify />
       <WhiteboardContext.Provider
         value={{
           input: whiteboardInput,
