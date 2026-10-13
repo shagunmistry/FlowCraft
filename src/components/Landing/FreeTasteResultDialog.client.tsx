@@ -37,14 +37,26 @@ export default function FreeTasteResultDialog({ open, onClose, code, prompt, rem
                 {prompt}
               </p>
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close"
-              className="shrink-0 rounded-sm border border-rule px-2.5 py-1 text-xs text-fog transition-colors hover:text-paper"
-            >
-              Close
-            </button>
+            <div className="flex shrink-0 items-center gap-2">
+              {(['save', 'export'] as const).map((action) => (
+                <Link
+                  key={action}
+                  href={`/sign-up?src=try-it-${action}`}
+                  onClick={() => trackTryIt('try_it_cta_clicked', { where: `dialog_${action}` })}
+                  className="rounded-sm border border-signal/60 px-2.5 py-1 text-xs font-medium text-signal transition-colors hover:bg-signal hover:text-ink"
+                >
+                  {action === 'save' ? 'Save' : 'Export'}
+                </Link>
+              ))}
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="rounded-sm border border-rule px-2.5 py-1 text-xs text-fog transition-colors hover:text-paper"
+              >
+                Close
+              </button>
+            </div>
           </header>
 
           <div className="h-[min(60vh,640px)] min-h-[220px] shrink-0">
@@ -72,9 +84,9 @@ export default function FreeTasteResultDialog({ open, onClose, code, prompt, rem
               <Link
                 href="/sign-up?src=try-it"
                 onClick={() => trackTryIt('try_it_cta_clicked', { where: 'dialog' })}
-                className="rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:opacity-90"
+                className="rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:opacity-90 motion-safe:animate-attention-glow"
               >
-                Sign up free to save and export
+                Save and export free
               </Link>
             </div>
           </footer>
