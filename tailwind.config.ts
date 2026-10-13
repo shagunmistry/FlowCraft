@@ -64,6 +64,10 @@ export default {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        'attention-glow': {
+          '0%,100%': { boxShadow: '0 0 0 0 rgb(var(--color-signal) / 0.55), 0 24px 60px -30px rgba(16,18,22,0.25)' },
+          '50%': { boxShadow: '0 0 0 10px rgb(var(--color-signal) / 0), 0 24px 60px -30px rgba(16,18,22,0.25)' },
+        },
         tick: {
           '0%,100%': { opacity: '1' },
           '50%': { opacity: '0.3' },
@@ -73,6 +77,7 @@ export default {
         typing: 'typing 2s steps(20) infinite alternate, blink .7s infinite',
         scan: 'scan 3.5s linear infinite',
         tick: 'tick 1.4s ease-in-out infinite',
+        'attention-glow': 'attention-glow 2.2s ease-in-out infinite',
       },
     },
   },

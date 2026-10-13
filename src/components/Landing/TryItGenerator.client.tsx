@@ -42,6 +42,8 @@ export default function TryItGenerator() {
   const [remaining, setRemaining] = useState<number | null>(null)
   const [message, setMessage] = useState('')
   const [resultOpen, setResultOpen] = useState(false)
+  const [engaged, setEngaged] = useState(false)
+  const [phIndex, setPhIndex] = useState(0)
   const challengeRef = useRef<Challenge | null>(null)
 
   // The generator only appears if the backend answers a challenge request.
@@ -59,6 +61,19 @@ export default function TryItGenerator() {
       alive = false
     }
   }, [])
+
+  // Rotate example prompts in the placeholder until the visitor engages.
+  useEffect(() => {
+    if (engaged) return
+    const id = setInterval(() => setPhIndex((i) => (i + 1) % EXAMPLES.length), 3200)
+    return () => clearInterval(id)
+  }, [engaged])
+
+  function markEngaged() {
+    if (engaged) return
+    setEngaged(true)
+    trackTryIt('try_it_engaged')
+  }
 
   async function freshChallenge(force = false): Promise<Challenge> {
     const cur = challengeRef.current
@@ -155,18 +170,35 @@ export default function TryItGenerator() {
   const working = phase === 'working'
   return (
     <div className="mt-10 max-w-3xl">
-      <div className="rounded-2xl border border-rule bg-graphite p-3 shadow-[0_24px_60px_-30px_rgba(16,18,22,0.25)] focus-within:border-signal sm:p-4">
+      {!engaged && (
+        <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-signal/40 px-3 py-1 text-xs text-paper">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-signal opacity-75 motion-safe:animate-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+          </span>
+          Free to try. No account needed.
+        </p>
+      )}
+      <div
+        className={`rounded-2xl border bg-graphite p-3 shadow-[0_24px_60px_-30px_rgba(16,18,22,0.25)] focus-within:border-signal sm:p-4 ${
+          engaged ? 'border-rule' : 'border-signal/60 motion-safe:animate-attention-glow'
+        }`}
+      >
         <label htmlFor="hero-prompt" className="sr-only">
           Describe your diagram
         </label>
         <textarea
           id="hero-prompt"
           value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={(e) => {
+            markEngaged()
+            setPrompt(e.target.value)
+          }}
+          onFocus={markEngaged}
           maxLength={1500}
           rows={3}
           disabled={working}
-          placeholder="Describe a process, system or idea"
+          placeholder={engaged ? 'Describe a process, system or idea' : `Try: ${EXAMPLES[phIndex]}`}
           className="w-full resize-none border-0 bg-transparent p-2 text-lg leading-snug text-paper placeholder:text-fog focus:outline-none focus:ring-0"
         />
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-rule px-1 pt-3">
@@ -207,10 +239,11 @@ export default function TryItGenerator() {
             type="button"
             disabled={working}
             onClick={() => {
+              markEngaged()
               setPrompt(ex)
               trackTryIt('try_it_example_used', { index: i })
             }}
-            className="text-left text-paper underline decoration-rule underline-offset-4 transition-colors hover:decoration-signal"
+            className="rounded-full border border-rule px-3 py-1.5 text-left text-paper transition-colors hover:border-signal"
           >
             {ex}
           </button>

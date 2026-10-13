@@ -18,6 +18,9 @@ export type AnalyticsEvent =
   | 'try_it_result_closed'
   | 'try_it_example_used'
   | 'signup_completed'
+  | 'signup_viewed'
+  | 'signup_oauth_clicked'
+  | 'try_it_engaged'
   // product + conversion
   | 'create'
   | 'pricing_viewed'

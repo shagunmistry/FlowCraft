@@ -14,9 +14,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('Email', email)
-    console.log('Password', password)
-
     const supabase = await createClient()
     const { error } = await supabase.auth.signUp({
       email,

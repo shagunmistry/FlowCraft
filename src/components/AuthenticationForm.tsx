@@ -36,11 +36,18 @@ export default function AuthenticationForm({
       const t = params.get('template')
       if (t) setTemplateId(t)
       const src = params.get('src')
-      if (src && /^[a-z0-9-]{1,32}$/.test(src)) setSignupSource(src)
+      if (src && /^[a-z0-9-]{1,32}$/.test(src)) {
+        setSignupSource(src)
+        if (isLoginOrSignup === 'signup') trackTryIt('signup_viewed', { source: src })
+      } else if (isLoginOrSignup === 'signup') {
+        trackTryIt('signup_viewed', { source: 'direct' })
+      }
     } catch {
       // ignore
     }
-  }, [])
+  }, [isLoginOrSignup])
+
+  const isSignup = isLoginOrSignup === 'signup'
 
   const _login = async () => {
     const emailField = document.getElementById('email') as HTMLInputElement
@@ -279,11 +286,16 @@ export default function AuthenticationForm({
                   ? 'Enter your credentials to access your workspace.'
                   : 'Save, edit and export every diagram you make.'}
               </p>
+              {isSignup && (
+                <p className="mt-3 text-xs text-fog">
+                  Free to start · No credit card · Takes 10 seconds
+                </p>
+              )}
             </div>
 
             {/* Main Form */}
-            <div className="mt-8">
-              <form className="space-y-5" onSubmit={handleSubmit}>
+            <div className="mt-8 flex flex-col">
+              <form className={`space-y-5 ${isSignup ? 'order-3' : ''}`} onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="email"
@@ -390,7 +402,7 @@ export default function AuthenticationForm({
           </form>
 
           {/* Feedback Alerts */}
-          <div className="mt-4 space-y-2">
+          <div className={`mt-4 space-y-2 ${isSignup ? 'order-4' : ''}`}>
             <ErrorAlert message={errorMessage} show={showError} />
             <SuccessAlert
               message={successMessage}
@@ -400,7 +412,7 @@ export default function AuthenticationForm({
           </div>
 
           {/* Toggle Login/Signup */}
-          <p className="mt-6 text-center text-sm text-fog">
+          <p className={`mt-6 text-center text-sm text-fog ${isSignup ? 'order-5' : ''}`}>
             {isLoginOrSignup === 'login' ? (
               <>
                 Not a member?{' '}
@@ -427,7 +439,7 @@ export default function AuthenticationForm({
           </p>
 
           {/* Divider */}
-          <div className="relative mt-8">
+          <div className={`relative ${isSignup ? 'order-2 my-6' : 'mt-8'}`}>
             <div
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
@@ -436,16 +448,19 @@ export default function AuthenticationForm({
             </div>
             <div className="relative flex justify-center">
               <span className="bg-graphite px-4 text-xs text-fog">
-                Or continue with
+                {isSignup ? 'or sign up with email' : 'Or continue with'}
               </span>
             </div>
           </div>
 
           {/* Social Buttons */}
-          <div className="mt-6 grid grid-cols-2 gap-3">
+          <div className={`grid grid-cols-2 gap-3 ${isSignup ? 'order-1' : 'mt-6'}`}>
             <button
               type="button"
-              onClick={_loginWithGoogle}
+              onClick={() => {
+                if (isSignup) trackTryIt('signup_oauth_clicked', { provider: 'google', source: signupSource })
+                _loginWithGoogle()
+              }}
               disabled={isLoading}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-rule bg-graphite px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
             >
@@ -496,7 +511,10 @@ export default function AuthenticationForm({
 
             <button
               type="button"
-              onClick={_loginWithGithub}
+              onClick={() => {
+                if (isSignup) trackTryIt('signup_oauth_clicked', { provider: 'github', source: signupSource })
+                _loginWithGithub()
+              }}
               disabled={isLoading}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-rule bg-graphite px-3 py-2.5 text-sm text-paper/80 transition-all hover:border-signal/40 hover:text-paper disabled:opacity-60 disabled:cursor-not-allowed"
             >
