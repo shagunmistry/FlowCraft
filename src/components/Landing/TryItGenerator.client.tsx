@@ -14,6 +14,7 @@ import {
 } from '@/lib/free-taste/client'
 import { getDeviceId } from '@/lib/free-taste/device'
 import { solveInWorker } from '@/lib/free-taste/solve'
+import { FREE_TASTE_STORAGE_KEY, parsePrefill } from '@/lib/free-taste/prefill'
 import { promptLenBucket, trackTryIt } from '@/lib/free-taste/track'
 
 const TYPE_LABELS: Record<FreeTasteType, string> = {
@@ -60,6 +61,18 @@ export default function TryItGenerator() {
     return () => {
       alive = false
     }
+  }, [])
+
+  // Arrive from a template page (or any link) with a prompt prefilled. We never
+  // auto-submit: the visitor reviews it and presses Generate.
+  useEffect(() => {
+    const pre = parsePrefill(window.location.search)
+    if (!pre) return
+    setPrompt(pre.prompt)
+    setType(pre.type)
+    setEngaged(true)
+    trackTryIt('try_it_prefilled', { source: pre.src, type: pre.type })
+    document.getElementById('try')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [])
 
   // Rotate example prompts in the placeholder until the visitor engages.
@@ -126,7 +139,7 @@ export default function TryItGenerator() {
       })
       try {
         localStorage.setItem(
-          'flowcraft:free-taste:last',
+          FREE_TASTE_STORAGE_KEY,
           JSON.stringify({ code: res.mermaidCode, type, prompt: prompt.trim() }),
         )
       } catch {}
@@ -169,7 +182,7 @@ export default function TryItGenerator() {
 
   const working = phase === 'working'
   return (
-    <div className="mt-10 max-w-3xl">
+    <div id="try" className="mt-10 max-w-3xl scroll-mt-24">
       {!engaged && (
         <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-signal/40 px-3 py-1 text-xs text-paper">
           <span className="relative flex h-2 w-2">

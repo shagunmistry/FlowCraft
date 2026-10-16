@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase-auth/server'
 import { redirect } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import Button from '@/components/ui/Button'
+import RestoreFreeTaste from '@/components/Dashboard/RestoreFreeTaste.client'
 
 const errorMessagePage =
   '/error?message=There was an error getting your user data. Please contact support.'
@@ -119,6 +120,7 @@ export default async function Dashboard() {
 
   return (
     <main className="min-h-screen bg-ink pb-24 pt-12 text-paper">
+      <RestoreFreeTaste />
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         {atLimit && (
           <section

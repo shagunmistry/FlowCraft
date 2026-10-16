@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import TrackedLink from '@/components/TrackedLink.client'
 
 interface GalleryHeaderProps {
   totalItems?: number
@@ -67,6 +68,13 @@ export default function GalleryHeader({ totalItems }: GalleryHeaderProps) {
             A rolling archive of flowcharts, mind maps, illustrations, and
             infographics, drafted from sentences by people like you.
           </p>
+          <TrackedLink
+            href="/?src=gallery"
+            event="gallery_cta_clicked"
+            className="mt-6 inline-flex items-center gap-2 rounded-sm bg-signal px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper"
+          >
+            Generate your own
+          </TrackedLink>
           <p className="mt-5 text-sm text-fog">Updated continuously</p>
         </motion.div>
       </motion.div>

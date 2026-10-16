@@ -21,6 +21,12 @@ export type AnalyticsEvent =
   | 'signup_viewed'
   | 'signup_oauth_clicked'
   | 'try_it_engaged'
+  | 'try_it_prefilled'
+  // growth surfaces
+  | 'template_customize_clicked'
+  | 'shared_cta_clicked'
+  | 'gallery_cta_clicked'
+  | 'free_taste_restored'
   // product + conversion
   | 'create'
   | 'pricing_viewed'

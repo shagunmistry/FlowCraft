@@ -14,6 +14,7 @@ export type TryItEvent = Extract<
   | 'signup_viewed'
   | 'signup_oauth_clicked'
   | 'try_it_engaged'
+  | 'try_it_prefilled'
 >
 
 type Props = Record<string, string | number | boolean | null | undefined>

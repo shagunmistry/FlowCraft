@@ -16,6 +16,7 @@ import InfoPanel from './InfoPanel'
 import ShareDialog from './ShareDialog'
 import DownloadMenu from './DownloadMenu'
 import DiagramCanvas, { DiagramCanvasHandle } from './DiagramCanvas'
+import TrackedLink from '@/components/TrackedLink.client'
 
 export interface DiagramViewerShellProps {
   title: string
@@ -249,7 +250,18 @@ export default function DiagramViewerShell({
                 title={title}
                 type={type}
               />
-
+              {mode === 'viewer' && (
+                <TrackedLink
+                  href="/?src=shared&utm_source=share&utm_medium=viewer"
+                  event="shared_cta_clicked"
+                  className="ml-2 inline-flex items-center gap-2 rounded-sm bg-signal px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-paper"
+                  title="Made with FlowCraft. Describe an idea and get your own diagram."
+                >
+                  Made with FlowCraft
+                  <span aria-hidden className="text-ink/60">/</span>
+                  Make your own
+                </TrackedLink>
+              )}
             </div>
           </motion.header>
         )}

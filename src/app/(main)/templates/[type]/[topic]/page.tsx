@@ -11,6 +11,8 @@ import { TEMPLATE_TOPIC_BY_SLUG } from '@/lib/templates/topics'
 import { isExcluded } from '@/lib/templates/exclusions'
 import { TemplateRenderer } from '@/components/Templates/TemplateRenderer'
 import { useTemplate } from './actions'
+import TrackedLink from '@/components/TrackedLink.client'
+import { buildTryItHref } from '@/lib/free-taste/prefill'
 
 export const revalidate = 86400
 
@@ -202,6 +204,20 @@ export default async function Page({
                 <span>Use this template</span>
               </button>
             </form>
+
+            <TrackedLink
+              href={buildTryItHref({
+                title: tp.title,
+                description: row.description,
+                templateTypeId: t.id,
+                src: 'template',
+              })}
+              event="template_customize_clicked"
+              eventProps={{ type: t.id }}
+              className="group inline-flex items-center justify-between gap-3 rounded-sm border border-signal/40 bg-graphite/40 px-5 py-4 text-sm text-paper transition-colors hover:border-signal hover:bg-graphite"
+            >
+              <span>Customize with AI</span>
+            </TrackedLink>
 
             <Link
               href={`/templates/topic/${tp.slug}`}
