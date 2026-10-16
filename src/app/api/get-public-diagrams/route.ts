@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
         'User-Id': userId || ''
       },
       cache: 'no-store',
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (!response.ok) {
@@ -52,6 +53,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ diagrams: formattedDiagrams });
   } catch (error) {
     console.error('Error fetching public diagrams:', error);
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
+      return NextResponse.json(
+        { error: 'Public diagrams are taking too long to load. Please retry.' },
+        { status: 504 }
+      );
+    }
     return NextResponse.json(
       {
         error: 'An error occurred while fetching public diagrams',

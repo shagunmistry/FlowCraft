@@ -51,7 +51,15 @@ function adminClient() {
       'Missing SUPABASE_URL or SUPABASE_PRIVATE_KEY env for templates data layer',
     )
   }
-  return createClient(url, key, { auth: { persistSession: false } })
+  // Fail fast instead of hanging until the function timeout (300s) when
+  // Supabase is slow; callers already degrade gracefully on error.
+  return createClient(url, key, {
+    auth: { persistSession: false },
+    global: {
+      fetch: (input, init) =>
+        fetch(input, { ...init, signal: init?.signal ?? AbortSignal.timeout(10_000) }),
+    },
+  })
 }
 
 export async function getTemplate(
