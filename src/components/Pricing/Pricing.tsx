@@ -56,7 +56,7 @@ export default function PricingTemplate({
       const data = await response.json()
 
       if (data && !!data.error) {
-        window.location.href = '/login'
+        window.location.href = '/sign-up?src=pricing'
         return
       }
 

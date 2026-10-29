@@ -18,7 +18,7 @@ export const staticTiers: PricingTier[] = [
   {
     name: 'Hobby',
     id: 'tier-hobby',
-    href: '/login',
+    href: '/sign-up?src=pricing',
     featured: false,
     description: 'Perfect for individual users',
     price: { monthly: '$8', annually: '$70' },
@@ -33,7 +33,7 @@ export const staticTiers: PricingTier[] = [
   {
     name: 'Pro',
     id: 'tier-pro',
-    href: '/login',
+    href: '/sign-up?src=pricing',
     featured: true,
     description: 'Perfect for professionals',
     price: { monthly: '$15', annually: '$150' },
@@ -50,7 +50,7 @@ export const staticTiers: PricingTier[] = [
   {
     name: 'Teams',
     id: 'tier-teams',
-    href: '/login',
+    href: '/sign-up?src=pricing',
     featured: false,
     description: 'For teams and organizations',
     price: { monthly: '$49', annually: '$490' },

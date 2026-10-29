@@ -335,7 +335,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                   Sign in
                 </Link>
                 <Link
-                  href="/login"
+                  href="/sign-up?src=nav"
                   className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm bg-signal px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper"
                 >
                   <span className="relative z-10">Start drafting</span>
@@ -494,7 +494,7 @@ export default function NavbarClient({ auth }: { auth: NavbarAuth }) {
                         Sign in
                       </Link>
                       <Link
-                        href="/login"
+                        href="/sign-up?src=nav"
                         onClick={closeMenus}
                         className="flex items-center justify-between rounded-sm bg-signal px-4 py-4 text-sm font-medium text-ink"
                       >

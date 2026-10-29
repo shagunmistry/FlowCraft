@@ -250,7 +250,7 @@ export default function BaseUseCaseLanding({
                   </div>
                 ) : null}
                 <div className="mt-4 sm:ml-3 sm:mt-0">
-                  <a href="/login" className={ctaButtonStyle}>
+                  <a href="/sign-up?src=usecase" className={ctaButtonStyle}>
                     Get Started
                   </a>
                 </div>
