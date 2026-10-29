@@ -39,8 +39,11 @@ export default function AuthenticationForm({
       if (src && /^[a-z0-9-]{1,32}$/.test(src)) {
         setSignupSource(src)
         if (isLoginOrSignup === 'signup') trackTryIt('signup_viewed', { source: src })
+        else track('login_viewed', { source: src })
       } else if (isLoginOrSignup === 'signup') {
         trackTryIt('signup_viewed', { source: 'direct' })
+      } else {
+        track('login_viewed', { source: 'direct' })
       }
     } catch {
       // ignore
@@ -176,7 +179,7 @@ export default function AuthenticationForm({
       const response = await fetch('/api/auth/github', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ templateId }),
+        body: JSON.stringify({ templateId, src: signupSource }),
       })
 
       const data = await response.json()
@@ -214,7 +217,7 @@ export default function AuthenticationForm({
       const response = await fetch('/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ templateId }),
+        body: JSON.stringify({ templateId, src: signupSource }),
       })
 
       const data = await response.json()
@@ -459,6 +462,7 @@ export default function AuthenticationForm({
               type="button"
               onClick={() => {
                 if (isSignup) trackTryIt('signup_oauth_clicked', { provider: 'google', source: signupSource })
+                else track('login_oauth_clicked', { provider: 'google', source: signupSource })
                 _loginWithGoogle()
               }}
               disabled={isLoading}
@@ -513,6 +517,7 @@ export default function AuthenticationForm({
               type="button"
               onClick={() => {
                 if (isSignup) trackTryIt('signup_oauth_clicked', { provider: 'github', source: signupSource })
+                else track('login_oauth_clicked', { provider: 'github', source: signupSource })
                 _loginWithGithub()
               }}
               disabled={isLoading}

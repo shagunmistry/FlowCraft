@@ -32,6 +32,10 @@ export type AnalyticsEvent =
   | 'pricing_viewed'
   | 'checkout_started'
   | 'login_succeeded'
+  | 'login_viewed'
+  | 'login_oauth_clicked'
+  | 'auth_succeeded'
+  | 'auth_failed'
   | 'share_created'
   | 'export_clicked'
 
