@@ -2,7 +2,7 @@ import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Features | FlowCraft',
+  title: 'AI Diagram Generator Features | FlowCraft',
   description:
     'Explore FlowCraft features: AI-generated diagrams, mind maps, flowcharts, sequence diagrams, user journeys, knowledge graphs, and more.',
   path: '/features',
