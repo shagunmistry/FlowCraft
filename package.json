@@ -30,6 +30,7 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^2.0.0",
     "@xyflow/react": "^12.9.3",
     "autoprefixer": "^10.4.12",
     "bufferutil": "^4.0.9",

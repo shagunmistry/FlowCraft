@@ -3,6 +3,8 @@ import { type Metadata } from 'next'
 import '@/styles/tailwind.css'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import MicrosoftClarity from '@/components/MicrosoftClarity'
 import { LoadingProvider } from '@/lib/LoadingProvider'
 import ThemeProvider from '@/components/ThemeProvider'
@@ -121,6 +123,9 @@ export default function RootLayout({
             />
           </LoadingProvider>
         </ThemeProvider>
+        {/* Single highest-level mount: nested route layouts must not render their own. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

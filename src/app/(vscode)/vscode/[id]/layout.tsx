@@ -1,5 +1,4 @@
 'use client'
-import { Analytics } from '@vercel/analytics/react'
 import Navbar from '@/components/Navbar'
 
 import Footer from '@/components/Footer'
@@ -34,7 +33,7 @@ export default function VSCodeDiagramsLayout({
         <main>
           <div className="relative">{children}</div>
         </main>
-        <Analytics />
+        {/* Analytics is mounted in the root layout to avoid double-counting page views. */}
       </VSCodeDiagramsContext.Provider>
     </>
   )

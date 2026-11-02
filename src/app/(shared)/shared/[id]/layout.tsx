@@ -1,7 +1,5 @@
 'use client'
 
-import { Analytics } from '@vercel/analytics/react'
-
 import 'reactflow/dist/style.css'
 
 export default function SharedDiagramsLayout({
@@ -12,7 +10,7 @@ export default function SharedDiagramsLayout({
   return (
     <>
       <main className="h-screen w-full">{children}</main>
-      <Analytics />
+      {/* Analytics is mounted in the root layout to avoid double-counting page views. */}
     </>
   )
 }

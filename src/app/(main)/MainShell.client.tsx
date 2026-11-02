@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { DiagramContext } from '@/lib/Contexts/DiagramContext'
 import { Edge, Node } from 'reactflow'
 
-import { Analytics } from '@vercel/analytics/react'
 import { DiagramOrChartType } from '@/lib/utils'
 import { exampleChartJsDataForTesla } from '@/lib/chart-js.code'
 
@@ -122,7 +121,7 @@ export default function MainShell({
           />
           <div className="relative">{children}</div>
         </main>
-        <Analytics />
+        {/* Analytics is mounted in the root layout to avoid double-counting page views. */}
       </DiagramContext.Provider>
     </WhiteboardContext.Provider>
   )

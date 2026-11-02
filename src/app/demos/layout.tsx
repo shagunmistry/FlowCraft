@@ -1,6 +1,5 @@
 'use client'
 
-import { Analytics } from '@vercel/analytics/react'
 import Navbar from '@/components/Navbar'
 
 import 'reactflow/dist/style.css'
@@ -18,7 +17,7 @@ export default function MainLayout({
         <div className="relative pt-16 lg:pt-[72px]">{children}</div>
       </main>
       <Footer />
-      <Analytics />
+      {/* Analytics is mounted in the root layout to avoid double-counting page views. */}
     </>
   )
 }

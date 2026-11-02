@@ -303,19 +303,25 @@ export default function DiagramOrChartView({
   const getFlowViewportElement = () =>
     document.querySelector('.react-flow__viewport') as HTMLElement | null
 
-  const handleExportPng = useCallback(() => {
+  const handleExportPng = useCallback(async () => {
     const el = getFlowViewportElement()
-    if (el) exportAsPng(el, `${context.title || 'diagram'}.png`)
+    if (!el) return
+    await exportAsPng(el, `${context.title || 'diagram'}.png`)
+    track('export_clicked', { format: 'png' })
   }, [context.title])
 
-  const handleExportSvg = useCallback(() => {
+  const handleExportSvg = useCallback(async () => {
     const el = getFlowViewportElement()
-    if (el) exportAsSvg(el, `${context.title || 'diagram'}.svg`)
+    if (!el) return
+    await exportAsSvg(el, `${context.title || 'diagram'}.svg`)
+    track('export_clicked', { format: 'svg' })
   }, [context.title])
 
-  const handleExportPdf = useCallback(() => {
+  const handleExportPdf = useCallback(async () => {
     const el = getFlowViewportElement()
-    if (el) exportAsPdf(el, `${context.title || 'diagram'}.pdf`)
+    if (!el) return
+    await exportAsPdf(el, `${context.title || 'diagram'}.pdf`)
+    track('export_clicked', { format: 'pdf' })
   }, [context.title])
 
   // Keyboard shortcuts for undo/redo

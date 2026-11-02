@@ -3,7 +3,6 @@ import { type Metadata } from 'next'
 // import '@/styles/tailwind.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +28,7 @@ export default function VsCodePageLaytout({
         <div className="relative">{children}</div>
       </main>
       <Footer />
-      <Analytics />
+      {/* Analytics is mounted in the root layout to avoid double-counting page views. */}
     </>
   )
 }
